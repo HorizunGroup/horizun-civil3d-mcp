@@ -1,0 +1,84 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.Styles.StylesRoot : Autodesk.Civil.TreeOidWrapper
+  P AlignmentDesignCheckSetCollection AlignmentDesignCheckSets {get;}
+  P AlignmentStyleCollection AlignmentStyles {get;}
+  P AssemblyStyleCollection AssemblyStyles {get;}
+  P BandStylesRoot BandStyles {get;}
+  P BuildingSiteStyleCollection BuildingSiteStyles {get;}
+  P CantViewStyleCollection CantViewStyles {get;}
+  P CatchmentStyleCollection CatchmentStyles {get;}
+  P CodeSetStyleCollection CodeSetStyles {get;}
+  P CorridorStyleCollection CorridorStyles {get;}
+  P FeatureLineStyleCollection FeatureLineStyles {get;}
+  P GradingCriteriaSetCollection GradingCriteriaSets {get;}
+  P GradingStyleCollection GradingStyles {get;}
+  P GroupPlotStyleCollection GroupPlotStyles {get;}
+  P InterferenceStyleCollection InterferenceStyles {get;}
+  P IntersectionStyleCollection IntersectionStyles {get;}
+  P LabelSetStylesRoot LabelSetStyles {get;}
+  P LabelStylesRoot LabelStyles {get;}
+  P LinkStyleCollection LinkStyles {get;}
+  P MarkerStyleCollection MarkerStyles {get;}
+  P MassHaulLineStyleCollection MassHaulLineStyles {get;}
+  P MassHaulViewStyleCollection MassHaulViewStyles {get;}
+  P MatchLineStyleCollection MatchLineStyles {get;}
+  P ParcelStyleCollection ParcelStyles {get;}
+  P PartsListCollection PartsListSet {get;}
+  P PipeRuleSetStyleCollection PipeRuleSetStyles {get;}
+  P PipeStyleCollection PipeStyles {get;}
+  P PointCloudStyleCollection PointCloudStyles {get;}
+  P PointStyleCollection PointStyles {get;}
+  P ProfileDesignCheckSetCollection ProfileDesignCheckSets {get;}
+  P ProfileStyleCollection ProfileStyles {get;}
+  P ProfileViewBandSetStyleCollection ProfileViewBandSetStyles {get;}
+  P ProfileViewStyleCollection ProfileViewStyles {get;}
+  P ProjectionStyleCollection ProjectionStyles {get;}
+  P QuantityTakeoffCriteriaCollection QuantityTakeoffCriterias {get;}
+  P SampleLineStyleCollection SampleLineStyles {get;}
+  P SectionStyleCollection SectionStyles {get;}
+  P SectionViewBandSetStyleCollection SectionViewBandSetStyles {get;}
+  P SectionViewStyleCollection SectionViewStyles {get;}
+  P ShapeStyleCollection ShapeStyles {get;}
+  P SheetStyleCollection SheetStyles {get;}
+  P SlopePatternStyleCollection SlopePatternStyles {get;}
+  P StructureRuleSetStyleCollection StructureRuleSetStyles {get;}
+  P StructureStyleCollection StructureStyles {get;}
+  P SuperelevationViewStyleCollection SuperelevationViewStyles {get;}
+  P SurfaceStyleCollection SurfaceStyles {get;}
+  P SurveyFigureStyleCollection SurveyFigureStyles {get;}
+  P SurveyNetworkStyleCollection SurveyNetworkStyles {get;}
+  P TableStylesRoot TableStyles {get;}
+  P ViewFrameStyleCollection ViewFrameStyles {get;}
+== Autodesk.Civil.DatabaseServices.Styles.StyleBase : Autodesk.Civil.DatabaseServices.DBObject
+  M ObjectId CopyAsSibling(String styleName)
+  M static Void ExportTo(ObjectIdCollection styleIds, Database destinationDatabase, StyleConflictResolverType conflictResolution)
+  M Void ExportTo(Database destinationDatabase, StyleConflictResolverType conflictResolution)
+  P String CreateBy {get;set;}
+  P String DateCreated {get;}
+  P String DateModified {get;}
+  P String ModifiedBy {get;}
+  P String Name {get;set;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStylesRoot : Autodesk.Civil.DatabaseServices.Styles.LabelStylesNode
+  M LabelStylesSurveyRoot GetSurveyLabelStyles()
+  P LabelStylesAlignmentRoot AlignmentLabelStyles {get;}
+  P LabelStylesCatchmentRoot CatchmentLabelStyles {get;}
+  P LabelStyleCollection GeneralCurveLabelStyles {get;}
+  P LabelStyleCollection GeneralLineLabelStyles {get;}
+  P LabelStyleCollection GeneralLinkLabelStyles {get;}
+  P LabelStyleCollection GeneralMarkerLabelStyles {get;}
+  P LabelStyleCollection GeneralNoteLabelStyles {get;}
+  P LabelStyleCollection GeneralShapeLabelStyles {get;}
+  P LabelStylesIntersectionRoot IntersectionLabelStyles {get;}
+  P LabelStylesMatchLineRoot MatchLineLabelStyles {get;}
+  P LabelStylesParcelRoot ParcelLabelStyles {get;}
+  P LabelStylesPipeRoot PipeLabelStyles {get;}
+  P LabelStylesPointRoot PointLabelStyles {get;}
+  P LabelStylesProfileRoot ProfileLabelStyles {get;}
+  P LabelStylesProfileViewRoot ProfileViewLabelStyles {get;}
+  P LabelStylesProjectionRoot ProjectionLabelStyles {get;}
+  P LabelStylesSampleLineRoot SampleLineLabelStyles {get;}
+  P LabelStylesSectionRoot SectionLabelStyles {get;}
+  P LabelStylesSectionViewRoot SectionViewLabelStyles {get;}
+  P LabelStylesStructureRoot StructureLabelStyles {get;}
+  P LabelStylesSurfaceRoot SurfaceLabelStyles {get;}
+  P LabelStylesViewFrameRoot ViewFrameLabelStyles {get;}

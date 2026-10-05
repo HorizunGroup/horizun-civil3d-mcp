@@ -1,0 +1,83 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+NOTFOUND Autodesk.Civil.DataShortcuts.DataShortcuts
+== Autodesk.Civil.DataShortcuts.DataShortcutKey : Autodesk.AutoCAD.Runtime.DisposableWrapper
+  P UInt32 HandleHigh {get;}
+  P UInt32 HandleLow {get;}
+  P Boolean IsSourceDrawingExistent {get;}
+  P String Name {get;}
+  P String SourceDrawing {get;}
+  P DataShortcutEntityType Type {get;}
+== Autodesk.Civil.DataShortcuts.DataShortcutEntityType : System.Enum
+  E Alignment
+  E Corridor
+  E PipeNetwork
+  E PressurePipeNetwork
+  E Profile
+  E SampleLineGroup
+  E Surface
+  E Unknown
+  F Int32 value__
+  E ViewFrameGroup
+# AeccDataShortcutMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DataShortcuts.DataShortcuts : System.Object
+  M static Void AssociateDSProject(String projectId, Database drawing, Boolean isSave)
+  M static Void AssociateDSProject(String projectId, String dwgFilePath)
+  M static Void AssociateDSProject(String projectId)
+  M static DataShortcutManager CreateDataShortcutManager(Boolean& isValidCreation)
+  M static Void CreateProjectFolder(String nameFolder, String descrFolder, String pathTemplate, Boolean setAsCurrent)
+  M static Void CreateProjectFolder(String nameFolder, String descrFolder, Boolean setAsCurrent)
+  M static Void CreateProjectFolder(String nameFolder, Boolean setAsCurrent)
+  M static ObjectIdCollection CreateReference(Database hostDrawing, String sourceDrawingFilename, String entityName, DataShortcutEntityType dsEntityType)
+  M static ObjectIdCollection CreateReference(Database hostDrawing, Database sourceDrawing, String entityName, DataShortcutEntityType dsEntityType)
+  M Void Dispose()
+  M static Void GetAllProjectFolders(String& currentProject, List`1& otherProjects)
+  M static String GetAssociateShortcutProjectIdFromDrawing(Database drawing)
+  M static String GetCurrentProjectFolder()
+  M static String GetDescriptionDataShorcutProjectFolder(String nameFolder)
+  M static String GetDescriptionDataShorcutProjectFolder()
+  M static String GetDSProjectId(String projectPath)
+  M static IList<String> GetOtherProjectFolders()
+  M static String GetWorkingFolder()
+  M static Boolean RepairBrokenDRef(ObjectId brokenDRefId, String targetDwgFullPath)
+  M static Boolean RepairBrokenDRef(ObjectId brokenDRefId, String targetDwgFullPath, Boolean autoRepairOther)
+  M static Boolean SaveDataShortcutManager(DataShortcutManager& manager)
+  M static Void SetCurrentProjectFolder(String nameNewDataFolder)
+  M static Void SetWorkingFolder(String newVal)
+  M static Void Validate()
+== Autodesk.Civil.DataShortcuts.DataShortcuts+DataShortcutManager : System.Object
+  M ObjectIdCollection CreateReference(Int32 index, Database hostDrawing)
+  M Void Dispose()
+  M IList<Int32> GetCurrentlySelectedItemsIndexList()
+  M IList<Int32> GetDependentItemsIndexList(Int32 index)
+  M IList<Int32> GetDirectChildrenItemsIndexList(Int32 index)
+  M ExportableItem GetExportableItemAt(Int32 index)
+  M Int32 GetExportableItemsCount()
+  M String GetItemNameAt(Int32 index)
+  M Int32 GetParentItemIndex(Int32 index)
+  M PublishedItem GetPublishedItemAt(Int32 index)
+  M Int32 GetPublishedItemsCount()
+  M IList<Int32> GetRecursiveChildrenItemsIndexList(Int32 index)
+  M Boolean HasExpired()
+  M Boolean IsItemAtIndexAlreadyPublished(Int32 index)
+  M Boolean RepairBrokenDataShortcut(Int32 index, String targetDwgFullPath, Boolean autoRepairOther)
+  M Boolean RepairBrokenDataShortcut(Int32 index, String targetDwgFullPath)
+  M Boolean SetSelectItemAtIndex(Int32 index, Boolean isSelected)
+== Autodesk.Civil.DataShortcuts.DataShortcuts+DataShortcutManager+PublishedItem : System.Object
+  C ()
+  F String Description
+  F DataShortcutEntityType DSEntityType
+  F Boolean IsBroken
+  F String Name
+  F String SourceFileName
+  F String SourceLocation
+== Autodesk.Civil.DataShortcuts.DataShortcuts+DataShortcutManager+ExportableItem : System.Object
+  C (Int32 index, String name, String description, DataShortcutEntityType dsEntityType, Boolean isExported)
+  P IList<ExportableItem> DependentItems {get;}
+  P String Description {get;}
+  P IList<ExportableItem> DirectChildrenItems {get;}
+  P DataShortcutEntityType DSEntityType {get;}
+  P Int32 Index {get;}
+  P Boolean IsExported {get;}
+  P String Name {get;}
+  P ExportableItem ParentItem {get;}
+  P IList<ExportableItem> RecursiveChildrenItems {get;}

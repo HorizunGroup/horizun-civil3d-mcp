@@ -1,0 +1,46 @@
+# acdbmgd.dll 25.0.0.0 (Civil 3D 2025)
+== Autodesk.AutoCAD.Colors.Color : Autodesk.AutoCAD.Runtime.DisposableWrapper
+  C ()
+  M Void Audit(AuditInfo auditInfo)
+  M Object Clone()
+  M Int32 CompareTo(Object obj)
+  M static Color DwgIn(DwgFiler inputFiler)
+  M Void DwgOut(DwgFiler outputFiler)
+  M static Color DxfIn(DxfFiler inputFiler, Int32 groupCodeOffset)
+  M Void DxfOut(DxfFiler outputFiler, Int32 groupCodeOffset)
+  M Boolean Equals(Object obj)
+  M static Color FromColor(Color value)
+  M static Color FromColor(Color value)
+  M static Color FromColorIndex(ColorMethod colorMethod, Int16 colorIndex)
+  M static Color FromDictionaryName(String name)
+  M static Color FromEntityColor(EntityColor eclr)
+  M static Color FromNames(String colorName, String bookName)
+  M static Color FromRgb(Byte red, Byte green, Byte blue)
+  M static Color GetColorValue(Int16 colorIndex, Color backgroundColor)
+  M Int32 GetHashCode()
+  M String ToString()
+  M String ToString(IFormatProvider provider)
+  P Byte Blue {get;}
+  P String BookName {get;}
+  P Int16 ColorIndex {get;}
+  P ColorMethod ColorMethod {get;}
+  P String ColorName {get;}
+  P String ColorNameForDisplay {get;}
+  P Color ColorValue {get;}
+  P String Description {get;}
+  P String DictionaryKey {get;}
+  P Int32 DictionaryKeyLength {get;}
+  P EntityColor EntityColor {get;}
+  P String Explanation {get;}
+  P Byte Green {get;}
+  P Boolean HasBookName {get;}
+  P Boolean HasColorName {get;}
+  P Boolean IsByAci {get;}
+  P Boolean IsByBlock {get;}
+  P Boolean IsByColor {get;}
+  P Boolean IsByLayer {get;}
+  P Boolean IsByPen {get;}
+  P Boolean IsForeground {get;}
+  P Boolean IsNone {get;}
+  P Int16 PenIndex {get;}
+  P Byte Red {get;}

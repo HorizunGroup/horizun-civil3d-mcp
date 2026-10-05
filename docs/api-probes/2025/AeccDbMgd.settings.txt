@@ -1,0 +1,48 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.Settings.SettingsRoot : Autodesk.Civil.TreeOidWrapper
+  M T GetSettings()
+  P String AssociateShortcutProjectId {get;set;}
+  P SettingsDrawing DrawingSettings {get;}
+  P SettingsLandXML LandXMLSettings {get;}
+  P SettingsTag TagSettings {get;}
+== Autodesk.Civil.Settings.SettingsDrawing : Autodesk.Civil.TreeOidWrapper
+  P SettingsAbbreviation AbbreviationsSettings {get;}
+  P SettingsAmbient AmbientSettings {get;}
+  P Boolean ApplyTransformSettings {get;set;}
+  P SettingsObjectLayers ObjectLayerSettings {get;}
+  P SettingsTransformation TransformationSettings {get;}
+  P SettingsUnitZone UnitZoneSettings {get;}
+== Autodesk.Civil.Settings.SettingsUnitZone : Autodesk.Civil.TreeOidWrapper
+  M static String[] GetAllCodes()
+  M static SettingsCoordinateSystem GetCoordinateSystemByCode(String code)
+  P AngleUnitType AngularUnits {get;set;}
+  P String CoordinateSystemCode {get;set;}
+  P Double DrawingScale {get;set;}
+  P DrawingUnitType DrawingUnits {get;set;}
+  P ImperialToMetricConversionType ImperialToMetricConversion {get;set;}
+  P Boolean MatchAutoCADVariables {get;set;}
+  P Boolean ScaleObjectsFromOtherDrawings {get;set;}
+== Autodesk.Civil.Settings.SettingsAmbient : Autodesk.Civil.TreeOidWrapper
+  P SettingsAcceleration Acceleration {get;}
+  P SettingsAngle Angle {get;}
+  P SettingsArea Area {get;}
+  P SettingsCoordinate Coordinate {get;}
+  P SettingsDegreeOfCurvature DegreeOfCurvature {get;}
+  P SettingsDimension Dimension {get;}
+  P SettingsDirection Direction {get;}
+  P SettingsDistance Distance {get;}
+  P SettingsElevation Elevation {get;}
+  P SettingsGeneral General {get;}
+  P SettingsGrade Grade {get;}
+  P SettingsGradeSlope GradeSlope {get;}
+  P SettingsGridCoordinate GridCoordinate {get;}
+  P SettingsLabeling Labeling {get;}
+  P SettingsLatLong LatLong {get;}
+  P SettingsPressure Pressure {get;}
+  P SettingsSlope Slope {get;}
+  P SettingsSpeed Speed {get;}
+  P SettingsStation Station {get;}
+  P SettingsTime Time {get;}
+  P SettingsTransparentCommands TransparentCommands {get;}
+  P SettingsUnitless Unitless {get;}
+  P SettingsVolume Volume {get;}

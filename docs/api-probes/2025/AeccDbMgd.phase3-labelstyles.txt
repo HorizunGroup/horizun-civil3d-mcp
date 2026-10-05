@@ -1,0 +1,91 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.Styles.LabelStylesRoot : Autodesk.Civil.DatabaseServices.Styles.LabelStylesNode
+  M LabelStylesSurveyRoot GetSurveyLabelStyles()
+  P LabelStylesAlignmentRoot AlignmentLabelStyles {get;}
+  P LabelStylesCatchmentRoot CatchmentLabelStyles {get;}
+  P LabelStyleCollection GeneralCurveLabelStyles {get;}
+  P LabelStyleCollection GeneralLineLabelStyles {get;}
+  P LabelStyleCollection GeneralLinkLabelStyles {get;}
+  P LabelStyleCollection GeneralMarkerLabelStyles {get;}
+  P LabelStyleCollection GeneralNoteLabelStyles {get;}
+  P LabelStyleCollection GeneralShapeLabelStyles {get;}
+  P LabelStylesIntersectionRoot IntersectionLabelStyles {get;}
+  P LabelStylesMatchLineRoot MatchLineLabelStyles {get;}
+  P LabelStylesParcelRoot ParcelLabelStyles {get;}
+  P LabelStylesPipeRoot PipeLabelStyles {get;}
+  P LabelStylesPointRoot PointLabelStyles {get;}
+  P LabelStylesProfileRoot ProfileLabelStyles {get;}
+  P LabelStylesProfileViewRoot ProfileViewLabelStyles {get;}
+  P LabelStylesProjectionRoot ProjectionLabelStyles {get;}
+  P LabelStylesSampleLineRoot SampleLineLabelStyles {get;}
+  P LabelStylesSectionRoot SectionLabelStyles {get;}
+  P LabelStylesSectionViewRoot SectionViewLabelStyles {get;}
+  P LabelStylesStructureRoot StructureLabelStyles {get;}
+  P LabelStylesSurfaceRoot SurfaceLabelStyles {get;}
+  P LabelStylesViewFrameRoot ViewFrameLabelStyles {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStylesAlignmentRoot : Autodesk.Civil.DatabaseServices.Styles.LabelStylesNode
+  P LabelStyleCollection CantCriticalPointsLabelStyles {get;}
+  P LabelStyleCollection CurveLabelStyles {get;}
+  P LabelStyleCollection DesignSpeedLabelStyles {get;}
+  P LabelStyleCollection GeometryPointLabelStyles {get;}
+  P LabelStyleCollection LineLabelStyles {get;}
+  P LabelStyleCollection MajorStationLabelStyles {get;}
+  P LabelStyleCollection MinorStationLabelStyles {get;}
+  P LabelStyleCollection PointOfIntersectionLabelStyles {get;}
+  P LabelStyleCollection SpiralLabelStyles {get;}
+  P LabelStyleCollection StationEquationLabelStyles {get;}
+  P LabelStyleCollection StationOffsetLabelStyles {get;}
+  P LabelStyleCollection SuperelevationCriticalPointsLabelStyles {get;}
+  P LabelStyleCollection TangentIntersectionLabelStyles {get;}
+  P LabelStyleCollection VerticalGeometryPointLabelStyles {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStylesSurfaceRoot : Autodesk.Civil.DatabaseServices.Styles.LabelStylesNode
+  P LabelStyleCollection ContourLabelStyles {get;}
+  P LabelStyleCollection SlopeLabelStyles {get;}
+  P LabelStyleCollection SpotElevationLabelStyles {get;}
+  P LabelStyleCollection WatershedLabelStyles {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStylesProfileRoot : Autodesk.Civil.DatabaseServices.Styles.LabelStylesNode
+  P LabelStyleCollection CurveLabelStyles {get;}
+  P LabelStyleCollection GradeBreadLabelStyles {get;}
+  P LabelStyleCollection GradeBreakLabelStyles {get;}
+  P LabelStyleCollection HorizontalGeometryPointLabelStyles {get;}
+  P LabelStyleCollection LineLabelStyles {get;}
+  P LabelStyleCollection MajorStationLabelStyles {get;}
+  P LabelStyleCollection MinorStationLabelStyles {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStylesProfileViewRoot : Autodesk.Civil.DatabaseServices.Styles.LabelStylesNode
+  P LabelStyleCollection DepthLabelStyles {get;}
+  P LabelStyleCollection StationElevationLabelStyles {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStylesPointRoot : Autodesk.Civil.DatabaseServices.Styles.LabelStylesNode
+  P LabelStyleCollection LabelStyles {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStylesPipeRoot : Autodesk.Civil.DatabaseServices.Styles.LabelStylesNode
+  P LabelStyleCollection CrossProfileLabelStyles {get;}
+  P LabelStyleCollection CrossSectionLabelStyles {get;}
+  P LabelStyleCollection PlanProfileLabelStyles {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStylesStructureRoot : Autodesk.Civil.DatabaseServices.Styles.LabelStylesNode
+  P LabelStyleCollection LabelStyles {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStyleCollection : Autodesk.Civil.DatabaseServices.Styles.StyleCollectionBase
+  M ObjectId Add(String name)
+  M Void Remove(String styleName)
+  M Void Remove(Int32 index)
+  P LabelStyleDefault DefaultLabelStyle {get;}
+  P ExpressionCollection Expressions {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStyle : Autodesk.Civil.DatabaseServices.Styles.StyleBase
+  M ObjectId AddChild(String labelStyleName)
+  M ObjectId AddComponent(String name, LabelStyleComponentType type)
+  M ObjectId AddReferenceTextComponent(String name, ReferenceTextComponentSelectedType selectedType)
+  M ObjectId AddTextForEachComponent(String name, TextForEachComponentSelectedType selectedType)
+  M ObjectIdCollection GetComponents(LabelStyleComponentType type)
+  M Int32 GetComponentsCount()
+  M Int32 GetComponentsCount(LabelStyleComponentType type)
+  M ObjectId[] GetComponentsDrawOrder()
+  M Boolean IsSupportedComponent(LabelStyleComponentType type)
+  M Void RemoveAllDescendants()
+  M Void RemoveChild(Int32 index)
+  M Void RemoveChild(String labelStyleName)
+  M Void RemoveComponent(String name)
+  M Void SetComponentsDrawOrder(ObjectId[] componentIds)
+  M Void SwitchComponentsDrawOrder(Int32 index1, Int32 index2)
+  P Int32 ChildrenCount {get;}
+  P ObjectId Item[Int32 index] {get;}
+  P ObjectId Item[String labelStyleName] {get;}
+  P ObjectId ParentLabelStyleId {get;}
+  P LabelStyleBase Properties {get;}

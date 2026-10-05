@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Horizun Civil 3D plug-in, loaded inside acad.exe (Civil 3D).
+    Build one binary per Civil 3D year:  dotnet build -p:Civil3DYear=2025
+      2025, 2026 -> net8.0-windows     2027 -> net10.0-windows (confirm on a 2027 machine)
+      2023, 2024 (net48) are not built yet: refused below rather than half-supported.
+    Autodesk assemblies are referenced from the LOCAL installation and never copied.
+  -->
+  <PropertyGroup>
+    <TargetFramework Condition="'$(Civil3DYear)' &gt;= '2027'">net10.0-windows</TargetFramework>
+    <TargetFramework Condition="'$(Civil3DYear)' &lt; '2027'">net8.0-windows</TargetFramework>
+    <AssemblyName>Horizun.Civil3D</AssemblyName>
+    <RootNamespace>Horizun.Civil3D.Plugin</RootNamespace>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <OutputPath>bin\$(Configuration)\$(Civil3DYear)\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <DefineConstants>$(DefineConstants);C3D$(Civil3DYear)</DefineConstants>
+    <!-- Edition: development (default, HZ_DEVTOOLS) or release (-p:HorizunEdition=release: no developer buttons). -->
+    <HorizunEdition Condition="'$(HorizunEdition)' == ''">development</HorizunEdition>
+    <DefineConstants Condition="'$(HorizunEdition)' != 'release'">$(DefineConstants);HZ_DEVTOOLS</DefineConstants>
+    <AcadDir Condition="'$(AcadDir)' == ''">C:\Program Files\Autodesk\AutoCAD $(Civil3DYear)</AcadDir>
+    <NoWarn>$(NoWarn);MSB3277;CA1416</NoWarn>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <Target Name="HorizunCheckCivil3D" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="'$(Civil3DYear)' &lt; '2025'" Text="Civil 3D $(Civil3DYear) (net48) is not supported by this build yet." />
+    <Error Condition="!Exists('$(AcadDir)\C3D\AeccDbMgd.dll')" Text="Civil 3D $(Civil3DYear) not found: $(AcadDir)\C3D\AeccDbMgd.dll is missing. An AutoCAD without Civil 3D does not count." />
+  </Target>
+
+  <ItemGroup>
+    <Reference Include="accoremgd"><HintPath>$(AcadDir)\accoremgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="acdbmgd"><HintPath>$(AcadDir)\acdbmgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="acmgd"><HintPath>$(AcadDir)\acmgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="AdWindows"><HintPath>$(AcadDir)\AdWindows.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="AecBaseMgd"><HintPath>$(AcadDir)\ACA\AecBaseMgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="AeccDbMgd"><HintPath>$(AcadDir)\C3D\AeccDbMgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="AeccDataShortcutMgd"><HintPath>$(AcadDir)\C3D\AeccDataShortcutMgd.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyMetadata Include="Civil3DYear" Value="$(Civil3DYear)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Same Roslyn version the legacy connector loads into acad.exe: two versions in one process would clash. -->
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Horizun.Civil3D.Core\Horizun.Civil3D.Core.csproj" />
+  </ItemGroup>
+</Project>

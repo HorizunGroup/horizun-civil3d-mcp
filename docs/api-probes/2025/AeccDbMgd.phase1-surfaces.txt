@@ -1,0 +1,134 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.Surface : Autodesk.Civil.DatabaseServices.Entity
+  M Void CreateSnapshot()
+  M Void ExportToDEM(String fileName, String coordinateSystemCode, Double gridSpacing, ExportDetermineElevationType deteElevBy)
+  M Void ExportToDEM(String fileName, String coordinateSystemCode, Double gridSpacing, ExportDetermineElevationType deteElevBy, Boolean useCustomNullElevationation, Single customNullElevation)
+  M Double FindDirectionAtXY(Double x, Double y)
+  M Double FindElevationAtXY(Double x, Double y)
+  M Point3dCollection FindPointsAlongLine(LineSegment3d lineSeg3d)
+  M Double FindSlopeAtXY(Double x, Double y)
+  M SurfaceVolumeInfo GetBoundedVolumes(Point3dCollection polygon, Double datumElevation)
+  M SurfaceVolumeInfo GetBoundedVolumes(Point3dCollection polygon)
+  M GeneralSurfaceProperties GetGeneralProperties()
+  M Point3d GetIntersectionPoint(Point3d startPoint, Vector3d dir)
+  M Void Rebuild()
+  M Void RebuildSnapshot()
+  M Void RemoveSnapshot()
+  P SurfaceAnalysis Analysis {get;}
+  P Boolean AutoRebuild {get;set;}
+  P SurfaceDefinitionBoundaries BoundariesDefinition {get;}
+  P SurfaceBuildOptions BuildOptions {get;}
+  P Boolean HasSnapshot {get;}
+  P Boolean IsLevelOfDetailEnabled {get;set;}
+  P Boolean IsOutOfDate {get;}
+  P Boolean IsSnapshotOutOfDate {get;}
+  P Boolean IsVolumeSurface {get;}
+  P Boolean Lock {get;set;}
+  P SurfaceMaskCollection Masks {get;}
+  P SurfaceOperationCollection Operations {get;}
+  P ObjectId StyleId {get;set;}
+== Autodesk.Civil.DatabaseServices.TinSurface : Autodesk.Civil.DatabaseServices.Surface
+  M SurfaceOperationAddLine AddLine(TinSurfaceVertex vertex1, TinSurfaceVertex vertex2)
+  M SurfaceOperationAddTinVertex AddVertex(Point2d location)
+  M SurfaceOperationAddTinVertex AddVertex(Point3d location)
+  M SurfaceOperationAddTinMultipleVertices AddVertices(Point2dCollection locations)
+  M SurfaceOperationAddTinMultipleVertices AddVertices(Point3dCollection locations)
+  M static ObjectId Create(String surfaceName, ObjectId styleId)
+  M static ObjectId Create(Database database, String surfaceName)
+  M static ObjectId CreateByCropping(Database destDatabase, String surfaceName, ObjectId srcSurfaceId, ObjectIdCollection objects, Point2d location)
+  M static ObjectId CreateByCropping(Database destDatabase, String surfaceName, ObjectId srcSurfaceId, Point3dCollection points)
+  M static ObjectId CreateByCropping(Database destDatabase, String surfaceName, ObjectId srcSurfaceId, Point2dCollection points)
+  M static ObjectId CreateFromCorridorSurface(String surfaceName, CorridorSurface corridorSurface)
+  M static ObjectId CreateFromIMX(Database database, ObjectId styleId, String imxFileName, String surfaceName, String gitHash, String query, Boolean doCoordSysConversion)
+  M static ObjectId CreateFromLandXML(Database database, String newSurfaceName, String landXMLfileName, String landXMLSurfaceName)
+  M static ObjectId CreateFromLandXML(Database database, String surfaceName, String landXMLfileName)
+  M static ObjectId CreateFromTin(Database database, String tinFileName)
+  M ObjectIdCollection CreateSolidsAtDepth(Double depth, String layer, UInt16 penIndex)
+  M ObjectIdCollection CreateSolidsAtDepthToFile(Double depth, String layer, UInt16 penIndex, String& fileName)
+  M ObjectIdCollection CreateSolidsAtFixedElevation(Double elevation, String layer, UInt16 penIndex)
+  M ObjectIdCollection CreateSolidsAtFixedElevationToFile(Double elevation, String layer, UInt16 penIndex, String& fileName)
+  M ObjectIdCollection CreateSolidsAtSurface(ObjectId bottomSurfaceId, String layer, UInt16 penIndex)
+  M ObjectIdCollection CreateSolidsAtSurfaceToFile(ObjectId bottomSurfaceId, String layer, UInt16 penIndex, String& fileName)
+  M SurfaceOperationDeleteLine DeleteLine(TinSurfaceEdge tinTriangleEdge)
+  M SurfaceOperationDeleteMultipleLines DeleteLines(IEnumerable<TinSurfaceEdge> tinTriangleEdges)
+  M SurfaceOperationDeleteTinVertex DeleteVertex(TinSurfaceVertex vertex)
+  M SurfaceOperationDeleteMultipleTinVertices DeleteVertices(IEnumerable<TinSurfaceVertex> vertices)
+  M ObjectIdCollection ExtractBorder(SurfaceExtractionSettingsType settingsType)
+  M ObjectIdCollection ExtractContours(Double interval, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractContours(Double interval)
+  M ObjectIdCollection ExtractContours(Double lowElev, Double highElev, Double interval, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractContours(Double lowElev, Double highElev, Double interval)
+  M ObjectIdCollection ExtractContoursAt(Double elevation, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractContoursAt(Double elevation)
+  M ObjectIdCollection ExtractGridded(SurfaceExtractionSettingsType settingsType)
+  M ObjectIdCollection ExtractMajorContours(SurfaceExtractionSettingsType settingsType, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractMajorContours(SurfaceExtractionSettingsType settingsType)
+  M ObjectIdCollection ExtractMinorContours(SurfaceExtractionSettingsType settingsType, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractMinorContours(SurfaceExtractionSettingsType settingsType)
+  M ObjectIdCollection ExtractWatershed(SurfaceExtractionSettingsType settingsType)
+  M TinSurfaceEdge FindEdgeAtXY(Double x, Double y)
+  M TinSurfaceTriangle FindTriangleAtXY(Double x, Double y)
+  M TinSurfaceVertex FindVertexAtXY(Double x, Double y)
+  M TerrainSurfaceProperties GetTerrainProperties()
+  M TinSurfaceProperties GetTinProperties()
+  M TinSurfaceTriangleCollection GetTriangles(Boolean includeInvisible)
+  M TinSurfaceVertex[] GetVerticesInsideBorder(Point3dCollection border)
+  M TinSurfaceVertex[] GetVerticesInsideBorderRandom(Point3dCollection border, Int32 randomNumber)
+  M TinSurfaceVertex[] GetVerticesInsidePolylines(ObjectIdCollection polylineIds)
+  M TinSurfaceVertex[] GetVerticesInsidePolylinesRandom(ObjectIdCollection polylineIds, Int32 randomNumber)
+  M Type IdentifyFeatureTypeAtXY(Double x, Double y)
+  M SurfaceOperationMinimizeFlatAreas MinimizeFlatAreas(SurfaceMinimizeFlatAreaOptions minimizeOptions)
+  M SurfaceOperationMoveTinVertex MoveVertex(TinSurfaceVertex vertex, Point2d newLocation)
+  M SurfaceOperationPasteSurface PasteSurface(ObjectId surfaceId)
+  M SurfaceOperationRaise RaiseSurface(Double deltaElevation)
+  M SurfaceOperationModifyMultipleTinVerticesElevation RaiseVertices(IEnumerable<TinSurfaceVertex> vertices, Double deltaElevation)
+  M Point3dCollection SampleElevations(Point3d pt1, Point3d pt2)
+  M Point3dCollection SampleElevations(ObjectId curveId)
+  M SurfaceOperationModifyTinVertexElevation SetVertexElevation(TinSurfaceVertex vertex, Double newElevation)
+  M SurfaceOperationModifyMultipleTinVerticesElevation SetVerticesElevation(IEnumerable<TinSurfaceVertex> vertices, Double newElevation)
+  M SurfaceOperationSimplify SimplifySurface(SurfaceSimplifyOptions simplifyOptions)
+  M SurfaceOperationSmooth SmoothSurfaceByKriging(KrigingMethodOptions krigingOptions, SurfacePointOutputOptions pointOutputOptions)
+  M SurfaceOperationSmooth SmoothSurfaceByNNI(SurfacePointOutputOptions pointOutputOptions)
+  M SurfaceOperationSwapEdge SwapEdge(TinSurfaceEdge tinTriangleEdge)
+  P SurfaceDefinitionBreaklines BreaklinesDefinition {get;}
+  P SurfaceDefinitionContours ContoursDefinition {get;}
+  P SurfaceDefinitionDEMFiles DEMFilesDefinition {get;}
+  P SurfaceDefinitionDrawingObjects DrawingObjectsDefinition {get;}
+  P SurfaceDefinitionPointFiles PointFilesDefinition {get;}
+  P SurfaceDefinitionPointGroups PointGroupsDefinition {get;}
+  P SurfaceDefinitionAddFigureSurveyQueries SurveyQueriesAddFigureDefinition {get;}
+  P SurfaceDefinitionAddPointSurveyQueries SurveyQueriesAddPointDefinition {get;}
+  P TinSurfaceTriangleCollection Triangles {get;}
+  P TinSurfaceVertexCollection Vertices {get;}
+== Autodesk.Civil.DatabaseServices.TinVolumeSurface : Autodesk.Civil.DatabaseServices.Surface
+  M static ObjectId Create(String surfaceName, ObjectId baseSurfaceId, ObjectId comparisonSurfaceId, ObjectId styleId)
+  M static ObjectId Create(String surfaceName, ObjectId baseSurfaceId, ObjectId comparisonSurfaceId)
+  M TinSurfaceProperties GetTinProperties()
+  M VolumeSurfaceProperties GetVolumeProperties()
+  P Double CutFactor {get;set;}
+  P Double FillFactor {get;set;}
+NOTFOUND Autodesk.Civil.DatabaseServices.SurfaceGeneralProperties
+NOTFOUND Autodesk.Civil.DatabaseServices.SurfaceTerrainProperties
+NOTFOUND Autodesk.Civil.DatabaseServices.SurfaceVolumeProperties
+== Autodesk.Civil.DatabaseServices.TinSurfaceTriangle : Autodesk.Civil.DatabaseServices.TinSurfaceObject
+  P TinSurfaceEdge Edge1 {get;}
+  P TinSurfaceEdge Edge2 {get;}
+  P TinSurfaceEdge Edge3 {get;}
+  P Boolean IsVisible {get;}
+  P TinSurfaceVertex Vertex1 {get;}
+  P TinSurfaceVertex Vertex2 {get;}
+  P TinSurfaceVertex Vertex3 {get;}
+== Autodesk.Civil.DatabaseServices.TinSurfaceVertex : Autodesk.Civil.DatabaseServices.TinSurfaceObject
+  P TinSurfaceEdgeCollection Edges {get;}
+  P Point3d Location {get;}
+  P TinSurfaceTriangleCollection Triangles {get;}
+  P TinSurfaceVertexCollection Vertices {get;}
+== Autodesk.Civil.DatabaseServices.Styles.StyleBase : Autodesk.Civil.DatabaseServices.DBObject
+  M ObjectId CopyAsSibling(String styleName)
+  M static Void ExportTo(ObjectIdCollection styleIds, Database destinationDatabase, StyleConflictResolverType conflictResolution)
+  M Void ExportTo(Database destinationDatabase, StyleConflictResolverType conflictResolution)
+  P String CreateBy {get;set;}
+  P String DateCreated {get;}
+  P String DateModified {get;}
+  P String ModifiedBy {get;}
+  P String Name {get;set;}

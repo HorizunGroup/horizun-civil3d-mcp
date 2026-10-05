@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Horizun.Civil3D.Core/Horizun.Civil3D.Core.csproj" />
+    <Project Path="src/Horizun.Civil3D.Plugin/Horizun.Civil3D.Plugin.csproj" />
+    <Project Path="src/Horizun.Civil3D.Server/Horizun.Civil3D.Server.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Horizun.Civil3D.Core.Tests/Horizun.Civil3D.Core.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/Horizun.Civil3D.ApiProbe/Horizun.Civil3D.ApiProbe.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,380 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.AlignmentEntity : Autodesk.AutoCAD.Runtime.DisposableWrapper
+  M Collection<AlignmentDesignCheck> DesignChecks()
+  M Boolean Equals(Object obj)
+  M Boolean ValidateDesignCheck(AlignmentDesignCheck designCheck)
+  P AlignmentEntityConstraintType Constraint1 {get;}
+  P Int32 EntityAfter {get;}
+  P Int32 EntityBefore {get;}
+  P Int32 EntityId {get;}
+  P AlignmentEntityType EntityType {get;}
+  P AlignmentSubEntity Item[Int32 index] {get;}
+  P Int32 SubEntityCount {get;}
+== Autodesk.Civil.DatabaseServices.AlignmentLine : Autodesk.Civil.DatabaseServices.AlignmentCurve
+  P AlignmentLineConstraintType Constraint2 {get;}
+  P String CurveGroupIndex {get;set;}
+  P String CurveGroupSubEntityIndex {get;set;}
+  P Double Direction {get;}
+  P AlignmentSubEntity Item[Int32 index] {get;}
+  P Double Length {get;set;}
+  P Point2d MidPoint {get;}
+  P Point2d PassThroughPoint1 {get;set;}
+  P Point2d PassThroughPoint2 {get;set;}
+== Autodesk.Civil.DatabaseServices.AlignmentArc : Autodesk.Civil.DatabaseServices.AlignmentCurve
+  P Point2d CenterPoint {get;set;}
+  P Double ChordDirection {get;}
+  P Double ChordLength {get;set;}
+  P Boolean Clockwise {get;}
+  P AlignmentArcConstraintType Constraint2 {get;}
+  P String CurveGroupIndex {get;set;}
+  P String CurveGroupSubEntityIndex {get;set;}
+  P Double DeflectedAngle {get;set;}
+  P Double Delta {get;set;}
+  P Double DirectionAtPoint1 {get;set;}
+  P Double DirectionAtPoint2 {get;set;}
+  P Double EndDirection {get;}
+  P Double ExternalSecant {get;set;}
+  P Double ExternalTangent {get;set;}
+  P Boolean GreaterThan180 {get;set;}
+  P AlignmentSubEntity Item[Int32 index] {get;}
+  P Double Length {get;set;}
+  P Double MidOrdinate {get;set;}
+  P Double MinimumRadius {get;}
+  P Point2d PassThroughPoint1 {get;set;}
+  P Point2d PassThroughPoint2 {get;set;}
+  P Point2d PassThroughPoint3 {get;set;}
+  P Double PIStation {get;}
+  P Double Radius {get;set;}
+  P Boolean ReverseCurve {get;}
+  P Double StartDirection {get;}
+== Autodesk.Civil.DatabaseServices.AlignmentCurve : Autodesk.Civil.DatabaseServices.AlignmentEntity
+  P Point2d EndPoint {get;}
+  P Double EndStation {get;}
+  P Double HighestDesignSpeed {get;}
+  P Double Length {get;set;}
+  P Point2d StartPoint {get;}
+  P Double StartStation {get;}
+== Autodesk.Civil.DatabaseServices.ProfilePVI : Autodesk.Civil.CivilWrapper<AeccDbVAlignment>
+  P Double Elevation {get;set;}
+  P UInt32 EntityAfter {get;}
+  P UInt32 EntityBefore {get;}
+  P Double GradeIn {get;set;}
+  P Double GradeOut {get;set;}
+  P Double HeadlightSightDistance {get;set;}
+  P Double PassingSightDistance {get;set;}
+  P ProfileEntityType PVIType {get;}
+  P Double RawStation {get;set;}
+  P Double Station {get;set;}
+  P Double StoppingSightDistance {get;set;}
+  P ProfileEntity VerticalCurve {get;}
+== Autodesk.Civil.DatabaseServices.ProfileEntity : Autodesk.Civil.CivilWrapper<AeccDbVAlignment>
+  M ProfileDesignCheck[] DesignChecks()
+  M Boolean ValidateDesignCheck(ProfileDesignCheck designCheck, ProfileApplyCurveType curveType)
+  P ProfileEntityConstraintType Constraint1 {get;}
+  P EntityVerticalConstraintType Constraint2 {get;}
+  P Double EndElevation {get;}
+  P Double EndStation {get;}
+  P UInt32 EntityAfter {get;}
+  P UInt32 EntityBefore {get;}
+  P UInt32 EntityId {get;}
+  P ProfileEntityType EntityType {get;}
+  P Double HighestDesignSpeed {get;}
+  P Double Length {get;set;}
+  P Double MinimumKValueHSD {get;}
+  P Double MinimumKValuePSD {get;}
+  P Double MinimumKValueSSD {get;}
+  P Double StartElevation {get;}
+  P Double StartStation {get;}
+== Autodesk.Civil.DatabaseServices.ProfileEntityCollection : Autodesk.Civil.CivilWrapper<AeccDbVAlignment>
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByEntityEndAndThroughPoint(UInt32 attachEntityId, Point3d passPoint)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByEntityEndAndThroughPoint(UInt32 attachEntityId, Point2d passPoint)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByThreePoints(Point3d point, Point3d point2, Point3d point3)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByThreePoints(Point2d point, Point2d point2, Point2d point3)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndEndGrade(Point3d point1, Point3d point2, Double endGrade)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndEndGrade(Point2d point1, Point2d point2, Double endGrade)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndK(Point3d point1, Point3d point2, VerticalCurveType curveType, Double k)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndK(Point2d point1, Point2d point2, VerticalCurveType curveType, Double k)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndRadius(Point3d point1, Point3d point2, VerticalCurveType curType, Double radius)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndRadius(Point2d point1, Point2d point2, VerticalCurveType curType, Double radius)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndStartGrade(Point3d point1, Point3d point2, Double startGrade)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndStartGrade(Point2d point1, Point2d point2, Double startGrade)
+  M ProfileTangent AddFixedTangent(Point3d startPoint, Point3d endPoint)
+  M ProfileTangent AddFixedTangent(Point2d startPoint, Point2d endPoint)
+  M ProfileTangent AddFixedTangentWithPreviousEntity(UInt32 previousEntityId, Point3d startPoint, Point3d endPoint)
+  M ProfileTangent AddFixedTangentWithPreviousEntity(UInt32 previousEntityId, Point2d startPoint, Point2d endPoint)
+  M ProfileParabolaSymmetric AddFloatingSymmetricParabolaByThroughPointAndGrade(UInt32 attachEntityId, Point3d passPoint, Double grade, EntityAttachType attachType)
+  M ProfileParabolaSymmetric AddFloatingSymmetricParabolaByThroughPointAndGrade(UInt32 attachEntityId, Point2d passPoint, Double grade, EntityAttachType attachType)
+  M ProfileParabolaSymmetric AddFloatingSymmetricParabolaByThroughPointAndK(UInt32 attachEntityId, Point3d passPoint, Double k, EntityAttachType attachType)
+  M ProfileParabolaSymmetric AddFloatingSymmetricParabolaByThroughPointAndK(UInt32 attachEntityId, Point2d passPoint, Double k, EntityAttachType attachType)
+  M ProfileParabolaSymmetric AddFloatingSymmetricParabolaByThroughPointAndRadius(UInt32 attachEntityId, Point3d passPoint, Double radius, EntityAttachType attachType)
+  M ProfileParabolaSymmetric AddFloatingSymmetricParabolaByThroughPointAndRadius(UInt32 attachEntityId, Point2d passPoint, Double radius, EntityAttachType attachType)
+  M ProfileTangent AddFloatingTangent(UInt32 entityId, Point3d passPoint, EntityAttachType attachType)
+  M ProfileTangent AddFloatingTangent(UInt32 entityId, Point2d passPoint, EntityAttachType attachType)
+  M ProfileParabolaAsymmetric AddFreeAsymmetricParabolaByPVIAndLengths(ProfilePVI attachProfilePVI, Double length1, Double length2)
+  M ProfileCircular AddFreeCircularCurveByPVIAndLength(ProfilePVI attachProfilePVI, Double length)
+  M ProfileCircular AddFreeCircularCurveByPVIAndRadius(ProfilePVI attachProfilePVI, Double radius)
+  M ProfileCircular AddFreeCircularCurveByPVIAndThroughPoint(ProfilePVI attachProfilePVI, Point3d passPoint)
+  M ProfileCircular AddFreeCircularCurveByPVIAndThroughPoint(ProfilePVI attachProfilePVI, Point2d passPoint)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByK(UInt32 previousEntityId, UInt32 nextEntityId, VerticalCurveType curveType, Double k)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByLength(UInt32 previousEntityId, UInt32 nextEntityId, VerticalCurveType curveType, Double length, Boolean preferFlat)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByPVIAndCurveLength(ProfilePVI attachProfilePVI, Double curveLength)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByPVIAndK(ProfilePVI attachProfilePVI, Double k)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByPVIAndThroughPoint(ProfilePVI attachProfilePVI, Point3d passPoint)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByPVIAndThroughPoint(ProfilePVI attachProfilePVI, Point2d passPoint)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByRadius(UInt32 previousEntityId, UInt32 nextEntityId, VerticalCurveType curveType, Double radius)
+  M ProfileTangent AddFreeTangent(UInt32 previousEntityId, UInt32 nextEntityId)
+  M Void Clear()
+  M ProfileEntity EntityAtId(UInt32 id)
+  M IEnumerator<ProfileEntity> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M Void Remove(ProfileEntity entity)
+  M Void RemoveAt(Int32 index)
+  P Int32 Count {get;}
+  P UInt32 FirstEntity {get;}
+  P ProfileEntity Item[Int32 index] {get;}
+  P UInt32 LastEntity {get;}
+NOTFOUND Autodesk.Civil.DatabaseServices.ProfileCurve
+== Autodesk.Civil.DatabaseServices.ProfileParabolaSymmetric : Autodesk.Civil.DatabaseServices.ProfileEntity
+  M Double GetHeadlightSightDistance(Double maxAngle, Double headlightHeight)
+  M Double GetPassingSightDistance(Double eyeHeight, Double objectHeight)
+  M Double GetStoppingSightDistance(Double eyeHeight, Double objectHeight)
+  M Void SetHeadlightSightDistance(Double maxAngle, Double headlightHeight, Double distance)
+  M Void SetPassingSightDistance(Double eyeHeight, Double objectHeight, Double distance)
+  M Void SetStoppingSightDistance(Double eyeHeight, Double objectHeight, Double distance)
+  P VerticalCurveType CurveType {get;}
+  P ProfileEntityType EntityType {get;}
+  P Double GradeAtThroughPoint1 {get;set;}
+  P Double GradeAtThroughPoint2 {get;set;}
+  P Double GradeChange {get;}
+  P Double GradeIn {get;}
+  P Double GradeOut {get;}
+  P Double HighLowPointElevation {get;}
+  P Double HighLowPointStation {get;}
+  P Double K {get;set;}
+  P Double M {get;}
+  P Double PVIElevation {get;}
+  P Double PVIStation {get;}
+  P Double Radius {get;set;}
+  P Double TangentOffsetAtPVI {get;}
+  P Double ThroughPoint1Elevation {get;set;}
+  P Double ThroughPoint1Station {get;set;}
+  P Double ThroughPoint2Elevation {get;set;}
+  P Double ThroughPoint2Station {get;set;}
+  P Double ThroughPoint3Elevation {get;set;}
+  P Double ThroughPoint3Station {get;set;}
+== Autodesk.Civil.DatabaseServices.SampleLineVertex : Autodesk.Civil.CivilWrapper<AeccDbSampleLine>
+  P Point3d Location {get;set;}
+  P Int32 OffsetIndex {get;}
+  P SampleLineVertexSideType Side {get;}
+== Autodesk.Civil.DatabaseServices.SampleLineGroup : Autodesk.Civil.DatabaseServices.GeoEntity
+  M static ObjectId Create(String groupName, ObjectId alignmentId)
+  M ObjectIdCollection GetAvailableSampleLineLabelGroupIds()
+  M Guid GetMappingGuid(String mappingName)
+  M ObjectIdCollection GetMassHaulViewIds()
+  M Guid GetMaterialGuid(Guid mappingGuid, String materialName)
+  M String[] GetMaterialNamesInMapping(Guid mappingGuid)
+  M MaterialSectionSourceCollection GetMaterialSectionSources()
+  M String[] GetQTOMappingNames()
+  M ObjectIdCollection GetSampleLineIds(Double station, Double tolerance)
+  M ObjectIdCollection GetSampleLineIds()
+  M SectionSourceCollection GetSectionSources()
+  M QuantityTakeoffResult GetTotalVolumeResultDataForMaterialList(Guid mappingGuid)
+  M static Void ReportQuantities(ObjectId sampleLineGroupId, String materialList, String reportFile, String styleSheetFile)
+  P ObjectId DefaultSamplineLabelStyleId {get;set;}
+  P ObjectId DefaultSamplineStyleId {get;set;}
+  P SectionViewGroup IndividualSectionViewGroup {get;}
+  P QTOMaterialListCollection MaterialLists {get;}
+  P ObjectId ParentAlignmentId {get;}
+  P SectionViewGroupCollection SectionViewGroups {get;}
+== Autodesk.Civil.DatabaseServices.SectionSource : System.Object
+  M ObjectIdCollection GetSectionIds()
+  P Boolean IsSampled {get;set;}
+  P ObjectId SourceId {get;}
+  P String SourceName {get;}
+  P SectionSourceType SourceType {get;}
+  P ObjectId StyleId {get;set;}
+  P SectionUpdateType UpdateMode {get;set;}
+== Autodesk.Civil.DatabaseServices.SectionSourceCollection : System.Object
+  M IEnumerator<SectionSource> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  P Int32 Count {get;}
+  P SectionSource Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.Section : Autodesk.Civil.DatabaseServices.GeoEntity
+  P ObjectId CorridorSurfaceId {get;}
+  P Double LeftOffset {get;}
+  P Double LeftSwathWidth {get;set;}
+  P Double MaximumElevation {get;}
+  P Double MinmumElevation {get;}
+  P ObjectId ParentId {get;}
+  P Double RightOffset {get;}
+  P Double RightSwathWidth {get;set;}
+  P ObjectId SampleLineId {get;}
+  P SectionPointCollection SectionPoints {get;}
+  P ObjectId SourceId {get;}
+  P String SourceName {get;}
+  P SectionSourceType SourceType {get;}
+  P Double Station {get;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+  P SectionUpdateType UpdateMode {get;set;}
+== Autodesk.Civil.DatabaseServices.SectionPoint : Autodesk.Civil.CivilWrapper<AeccDbSection>
+  P Point3d Location {get;}
+  P Int32 SegmentTo {get;}
+== Autodesk.Civil.DatabaseServices.SectionViewGroupCollection : System.Object
+  M SectionViewGroup Add(Point3d insertPosition, Double startStation, Double endStation, SectionViewGroupCreationRangeOptions rangeOptions, SectionViewGroupCreationPlacementOptions placementOptions, SectionDisplayOptionCollection sectionDisplayOptions, ObjectId sectionViewStyleId, ObjectId sectionViewBandSetStyleId)
+  M SectionViewGroup Add(Point3d insertPosition, Double startStation, Double endStation, SectionViewGroupCreationRangeOptions rangeOptions, SectionViewGroupCreationPlacementOptions placementOptions)
+  M SectionViewGroup Add(Point3d insertPosition)
+  M IEnumerator<SectionViewGroup> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M Boolean Remove(SectionViewGroup sectionViewGroup)
+  M Void RemoveAt(Int32 index)
+  P Int32 Count {get;}
+  P SectionViewGroup Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.SectionViewGroup : System.Object
+  M ObjectIdCollection GetSectionViewIds()
+  M Void ImportLabelSetForSectionsInGroup(SectionSource sectionSource, ObjectId labelSetId)
+  M Void UpdateLayout()
+  P Boolean IsIndividual {get;}
+  P String LayoutName {get;}
+  P String Name {get;}
+  P ObjectId PlotStyleId {get;set;}
+  P ObjectId SampleLineGroupId {get;}
+  P String TemplateFilePath {get;}
+== Autodesk.Civil.DatabaseServices.AppliedAssemblySetting : System.Object
+  P List<AdditionalAppliedAssemblyInfo> AdditionalAppliedAssemblies {get;set;}
+  P Boolean AppliedAdjacentToOffsetTargetStartEnd {get;set;}
+  P Boolean AppliedAtHorizontalGeometryPoints {get;set;}
+  P Boolean AppliedAtOffsetTargetGeometryPoints {get;set;}
+  P Boolean AppliedAtProfileGeometryPoints {get;set;}
+  P Boolean AppliedAtProfileHighLowPoints {get;set;}
+  P Boolean AppliedAtSuperelevationCriticalPoints {get;set;}
+  P CorridorAlongCurveOption CorridorAlongCurvesOption {get;set;}
+  P Double FrequencyAlongCurves {get;set;}
+  P Double FrequencyAlongProfileCurves {get;set;}
+  P Double FrequencyAlongSpirals {get;set;}
+  P Double FrequencyAlongTangents {get;set;}
+  P Double FrequencyAlongTargetCurves {get;set;}
+  P Double MODAlongCurves {get;set;}
+  P Double MODAlongTargetCurves {get;set;}
+  P CorridorAlongOffsetTargetCurveOption TargetCurveOption {get;set;}
+== Autodesk.Civil.DatabaseServices.AssemblyCollection : Autodesk.Civil.CivilWrapper<AcDbDatabase>
+  M ObjectId Add(String assemblyName, AssemblyType type, Point3d location, ObjectId styleId, ObjectId codeSetStyleId)
+  M ObjectId Add(String assemblyName, AssemblyType type, Point3d location)
+  M IEnumerator<ObjectId> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M ObjectId ImportAssembly(String assemblyName, Database sourceDatabase, String sourceAssemblyName, Point3d location)
+  M ObjectId ImportAssembly(String assemblyName, String atcFilePath, String itemId, Point3d location)
+  P Int32 Count {get;}
+  P ObjectId Item[String assemblyName] {get;}
+  P ObjectId Item[Int32 index] {get;}
+NOTFOUND Autodesk.Civil.AssemblyType
+== Autodesk.Civil.DatabaseServices.CorridorSurface : Autodesk.Civil.CivilWrapper<AeccDbCorridor>
+  M Void AddFeatureLineCode(String codeName)
+  M Void AddLinkCode(String codeName, Boolean addAsBreakLine)
+  M Boolean FeatureLineCodeIsBreak(String name)
+  M String[] FeatureLineCodes()
+  M Double FindElevationAtXY(Double x, Double y)
+  M Point3dCollection GetSampleElevations(Double startX, Double startY, Double endX, Double endY)
+  M Boolean IsLinkCodeAsBreakLine(String codeName)
+  M String[] LinkCodes()
+  M String[] PointCodes()
+  M Boolean RemoveFeatureLineCode(String codeName)
+  M Boolean RemoveLinkCode(String codeName)
+  M Void SetLinkCodeAsBreakLine(String codeName, Boolean asBreakLine)
+  P CorridorSurfaceBoundaryCollection Boundaries {get;}
+  P ObjectId CorridorId {get;}
+  P String Description {get;set;}
+  P Boolean IsBuild {get;set;}
+  P Boolean IsDraw {get;}
+  P CorridorSurfaceMaskCollection Masks {get;}
+  P String Name {get;set;}
+  P OverhangCorrectionType OverhangCorrection {get;set;}
+  P ObjectId RenderMaterialId {get;set;}
+  P ObjectId SectionStyleId {get;}
+  P ObjectId SurfaceId {get;}
+  P ObjectId SurfaceStyleId {get;set;}
+== Autodesk.Civil.DatabaseServices.SectionViewGroupCreationPlacementOptions : System.Object
+  C ()
+  M String[] GetAvailableLayoutNames(String templateFilePath)
+  M Void UseDraftPlacement()
+  M Void UseProductionPlacement(String templateFilePath, String layoutName)
+  P String LayoutName {get;}
+  P PlacementOptionType PlacementOption {get;}
+  P String TemplateFilePath {get;}
+== Autodesk.Civil.DatabaseServices.SectionViewGroupCreationRangeOptions : System.Object
+  C (ObjectId sampleLineGroupId)
+  M Void Dispose()
+  M Void FollowSection(SectionSource sectionSource)
+  M Void SetOffsetRange(Double leftOffset, Double rightOffset)
+  P Double Elevation {get;set;}
+  P SectionViewElevationRangeType ElevationRangeType {get;set;}
+  P Double LeftOffset {get;}
+  P Double RightOffset {get;}
+  P Boolean UseUserSpecifiedElevation {get;set;}
+  P Boolean UseUserSpecifiedOffset {get;set;}
+== Autodesk.Civil.DatabaseServices.AlignmentEntityCollection : Autodesk.Civil.CivilWrapper<AeccDbAlignment>
+  M AlignmentArc AddFixedCurve(Int32 previousEntityId, Point3d passThroughPoint)
+  M AlignmentArc AddFixedCurve(Point3d passThroughPoint1, Vector3d directionAtPassThroughPoint1, Double radius, Boolean isClockwise)
+  M AlignmentArc AddFixedCurve(Int32 previousEntityId, Point3d passThroughPoint1, Point3d passThroughPoint2, Double radius, Boolean isClockwise, Boolean isGreaterThan180)
+  M AlignmentArc AddFixedCurve(Point3d passThroughPoint1, Point3d passThroughPoint2, Double radius, Boolean isClockwise)
+  M AlignmentArc AddFixedCurve(Point3d passThroughPoint1, Point3d passThroughPoint2, Vector3d directionAtPassThroughPoint2)
+  M AlignmentArc AddFixedCurve(Point3d passThroughPoint1, Vector3d directionAtPassThroughPoint1, Point3d passThroughPoint2)
+  M AlignmentArc AddFixedCurve(Point3d centerPoint, Point3d passThroughPoint, Boolean isClockwise)
+  M AlignmentArc AddFixedCurve(Point3d centerPoint, Double radius, Boolean isClockwise)
+  M AlignmentArc AddFixedCurve(Int32 previousEntityId, Point3d startPoint, Point3d middlePoint, Point3d endPoint)
+  M AlignmentLine AddFixedLine(Int32 previousEntityId, Double distance)
+  M AlignmentLine AddFixedLine(Point3d startPoint, Point3d endPoint)
+  M AlignmentLine AddFixedLine(Int32 previousEntityId, Point3d startPoint, Point3d endPoint)
+  M AlignmentSpiral AddFixedSpiral(Int32 previousEntityId, Double startRadius, Double endRadius, Double length, SpiralType spiralDefinition)
+  M AlignmentSpiral AddFixedSpiral(Int32 previousEntityId, Double radius, Double length, SpiralCurveType spiralCurveType, SpiralType spiralDefinition)
+  M AlignmentSpiral AddFixedSpiral(Int32 previousEntityId, Point3d startPoint, Point3d spiralPI, Point3d endPoint, SpiralType definitionType)
+  M AlignmentSpiral AddFixedSpiral(Int32 previousEntityId, Point3d startPoint, Point3d spiralPI, Double startRadius, Double endRadius, Double length, Boolean isClockwise, SpiralType spiralDefinition)
+  M AlignmentSpiral AddFixedSpiral(Int32 previousEntityId, Point3d startPoint, Point3d spiralPI, Double radius, Double length, SpiralCurveType spiralCurveType, Boolean isClockwise, SpiralType spiralDefinition)
+  M AlignmentSCS AddFloatingArcWithSpiral(Int32 attachEntityId, EntityAttachType attachType, Double spParam, SpiralParamType spType, Double radius, Double arcLength, Boolean isClockwise, SpiralType spiralDefinition)
+  M AlignmentSCS AddFloatingArcWithSpiral(Int32 attachEntityId, EntityAttachType attachType, Double spParam, SpiralParamType spType, Double radius, Point3d passThroughPoint, Boolean isGreaterThan180, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFloatingCSS(Int32 nextEntityId, Point3d passThroughPoint1, Point3d passThroughPoint2, Double sp3Param, Double sp4Param, SpiralParamType spType, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFloatingCSS(Int32 nextEntityId, Double radius, Point3d passThroughPoint, Double sp3Param, Double sp4Param, SpiralParamType spType, SpiralType spiralDefinition)
+  M AlignmentArc AddFloatingCurve(Double radius, Double paramValue, CurveParamType paramType, Boolean isClockwise, Int32 nextEntityId)
+  M AlignmentArc AddFloatingCurve(Int32 previousEntityId, Double radius, Double paramValue, CurveParamType paramType, Boolean isClockwise)
+  M AlignmentArc AddFloatingCurve(Int32 previousEntityId, Point3d passThroughPoint)
+  M AlignmentArc AddFloatingCurve(Int32 previousEntityId, Point3d passThroughPoint, Vector3d directionAtPassThroughPoint)
+  M AlignmentArc AddFloatingCurve(Point3d passThroughPoint, Double radius, Boolean isGreaterThan180, CurveType curveType, Int32 nextEntityId)
+  M AlignmentArc AddFloatingCurve(Point3d passThroughPoint, Int32 nextEntityId)
+  M AlignmentArc AddFloatingCurve(Point3d passThroughPoint, Vector3d directionAtPassThroughPoint, Int32 nextEntityId)
+  M AlignmentArc AddFloatingCurve(Int32 previousEntityId, Point3d passThroughPoint, Double radius, Boolean isGreaterThan180, CurveType curveType)
+  M AlignmentLine AddFloatingLine(Double length, Int32 nextEntityId)
+  M AlignmentLine AddFloatingLine(Point3d passThroughPoint, Int32 nextEntityId)
+  M AlignmentLine AddFloatingLine(Int32 previousEntityId, Double length)
+  M AlignmentLine AddFloatingLine(Int32 previousEntityId, Point3d passThroughPoint)
+  M AlignmentSTS AddFloatingLineWithSpiral(Int32 attachEntityId, EntityAttachType attachType, Double spParam, SpiralParamType spType, Double tanLength, SpiralType spiralDefinition)
+  M AlignmentSTS AddFloatingLineWithSpiral(Int32 attachEntityId, EntityAttachType attachType, Double spParam, SpiralParamType spType, Point3d passThroughPoint, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFloatingSSC(Int32 previousEntityId, Double sp1Param, Double sp2Param, SpiralParamType spType, Point3d passThroughPoint1, Point3d passThroughPoint2, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFloatingSSC(Int32 previousEntityId, Double sp1Param, Double sp2Param, SpiralParamType spType, Double radius, Point3d passThroughPoint, SpiralType spiralDefinition)
+  M AlignmentSpiral AddFloatSpiral(Double radius, Double length, Int32 nextEntityId, Boolean isClockwise, SpiralType spiralDefinition)
+  M AlignmentSpiral AddFloatSpiral(Int32 previousEntityId, Double radius, Double length, Boolean isClockwise, SpiralType spiralDefinition)
+  M AlignmentArc AddFreeCurve(Int32 previousEntityId, Int32 nextEntityId, Point3d passThroughPoint)
+  M AlignmentArc AddFreeCurve(Int32 previousEntityId, Int32 nextEntityId, Double paramValue, CurveParamType paramType, Boolean isGreaterThan180, CurveType curveType)
+  M AlignmentLine AddFreeLine(Int32 previousEntityId, Int32 nextEntityId)
+  M AlignmentSCS AddFreeSCS(Int32 previousEntityId, Int32 nextEntityId, Double spiral1Param, Double spiral2Param, SpiralParamType spType, Double radius, Boolean isGreaterThan180, SpiralType spiralDefinition)
+  M AlignmentSCSCS AddFreeSCSCS(Int32 previousEntityId, Int32 nextEntityId, SCSCSConstraints constraintValue, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFreeSCSS(Int32 previousEntityId, Int32 nextEntityId, Double sp1Param, Double radius, Double sp3Param, Double sp4Param, Boolean isGreaterThan180, SpiralType spiralDefinition)
+  M AlignmentSCSSCS AddFreeSCSSCS(Int32 previousEntityId, Int32 nextEntityId, SCSSCSConstraints constraintValue, SpiralType spiralDefinition)
+  M AlignmentSCS AddFreeSpiral(Int32 previousEntityId, Int32 nextEntityId, Double spParam, SpiralParamType spType, SpiralCurveType spiralCurveType, SpiralType spiralDefinition)
+  M AlignmentSTS AddFreeSSBetweenCurves(Int32 previousEntityId, Int32 nextEntityId, Double spRatio, SpiralParamType spType, SpiralType spiralDefinition)
+  M AlignmentSCS AddFreeSSBetweenTangents(Int32 previousEntityId, Int32 nextEntityId, Double spiral1Param, Double spiral2Param, SpiralParamType spType, Boolean isGreaterThan180, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFreeSSCS(Int32 previousEntityId, Int32 nextEntityId, Double sp1Param, Double sp2Param, Double radius, Double sp3Param, Boolean isGreaterThan180, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFreeSSCSS(Int32 previousEntityId, Int32 nextEntityId, Double sp1Param, Double sp2Param, Double radius, Double sp3Param, Double sp4Param, Boolean isGreaterThan180, SpiralType spiralDefinition)
+  M AlignmentSTS AddFreeSTS(Int32 previousEntityId, Int32 nextEntityId, Double tanLength, SpiralType spiralDefinition)
+  M AlignmentSTS AddFreeSTS(Int32 previousEntityId, Int32 nextEntityId, Double sp1Param, Double sp2Param, SpiralParamType spType, SpiralType spiralDefinition)
+  M Void Clear()
+  M AlignmentEntity EntityAtId(Int32 id)
+  M AlignmentEntity EntityAtStation(Double rawStation)
+  M AlignmentEntity GetEntityByOrder(Int32 index)
+  M IEnumerator<AlignmentEntity> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M Void Remove(AlignmentEntity entity)
+  M Void RemoveAt(Int32 index)
+  P Int32 Count {get;}
+  P Int32 FirstEntity {get;}
+  P AlignmentEntity Item[Int32 index] {get;}
+  P Int32 LastEntity {get;}

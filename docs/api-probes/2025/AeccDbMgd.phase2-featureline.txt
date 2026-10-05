@@ -1,0 +1,59 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.FeatureLine : Autodesk.Civil.DatabaseServices.Feature
+  M Void AssignElevationsFromSurface(ObjectId surfaceId, Boolean bIncIntermediate)
+  M static ObjectId Create(String featurelineName, ObjectId idCreatedFrom)
+  M static ObjectId Create(String featurelineName, ObjectId idCreatedFrom, ObjectId siteId)
+  M Void DeleteElevationPoint(Point3d pt)
+  M Void DeleteElevationPoints(Point3dCollection cliPoints)
+  M Void DeletePIPoint(Point3d pt)
+  M Double Get3dDistanceAtPoint(Point3d pt)
+  M Double GetBulge(Int32 index)
+  M Double GetCurveRadius(Int32 index)
+  M Double GetDeflectionAngleAtPoint(Point3d pt)
+  M Double GetGradeInAtPoint(Point3d pt)
+  M Double GetGradeOutAtPoint(Point3d pt)
+  M Double GetPointRelativeElevation(Point3d pt)
+  M Point3dCollection GetPoints(FeatureLinePointType type)
+  M Void InsertElevationPoint(Point3d pt)
+  M Void InsertElevationPoints(Point3dCollection cliPoints)
+  M Void InsertPIPoint(Point3d pt)
+  M Boolean IsElevationRelativeToSurface(Point3d pt)
+  M static Void MoveToNoneSite(ObjectId featureLineId)
+  M static Void MoveToSite(ObjectId featureLineId, ObjectId destinationSiteId)
+  M Void SetBulge(Int32 index, Double bugle)
+  M Void SetCurveRadius(Int32 index, Double radius)
+  M Void SetPointElevation(Int32 index, Double elevation)
+  M Void SetPointRelativeElevation(Point3d pt, Boolean relative, Double elevation)
+  P Int32 CurvesCount {get;}
+  P Int32 ElevationPointsCount {get;}
+  P Double Length2D {get;}
+  P Double Length3D {get;}
+  P Double MaxElevation {get;}
+  P Double MaxGrade {get;}
+  P Double MinElevation {get;}
+  P Double MinGrade {get;}
+  P Int32 PIPointsCount {get;}
+  P Int32 PointsCount {get;}
+  P ObjectId RelativeSurfaceId {get;set;}
+  P ObjectId SiteId {get;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+== Autodesk.Civil.DatabaseServices.Feature : Autodesk.Civil.DatabaseServices.Entity
+  M static Boolean IsEditableFeature(ObjectId featureId)
+  P Boolean IsEditable {get;}
+== Autodesk.Civil.DatabaseServices.Site : Autodesk.Civil.DatabaseServices.Entity
+  M static ObjectId Create(CivilDocument document, String siteName)
+  M ObjectIdCollection GetAlignmentIds()
+  M ObjectIdCollection GetFeatureLineIds()
+  M ObjectIdCollection GetParcelIds()
+  M Void UseAllClassifications()
+  M Void UseCustomClassification(UDPClassification udpClassification)
+  M Void UseCustomClassification(String name)
+  M Void UseNoneClassification()
+  P UDPClassificationApplyType UDPClassificationApplyType {get;}
+  P String UDPClassificationName {get;}
+== Autodesk.Civil.FeatureLinePointType : System.Enum
+  E AllPoints
+  E ElevationPoint
+  E PIPoint
+  F Int32 value__

@@ -1,0 +1,100 @@
+# acdbmgd.dll 25.0.0.0 (Civil 3D 2025)
+== Autodesk.AutoCAD.DatabaseServices.LayerStateManager : Autodesk.AutoCAD.Runtime.RXObject
+  C (Database database)
+  M Boolean CompareLayerStateToDb(String name, ObjectId idVp)
+  M Void DeleteLayerState(String name)
+  M Void ExportLayerState(String nameToExport, String fileName)
+  M String GetLayerStateDescription(String name)
+  M ArrayList GetLayerStateLayers(String name, Boolean bInvert)
+  M LayerStateMasks GetLayerStateMask(String name)
+  M ArrayList GetLayerStateNames(Boolean bIncludeHidden, Boolean bIncludeXref)
+  M Boolean HasLayerState(String name)
+  M Void ImportLayerState(String fileName)
+  M Void ImportLayerStateFromDb(String name, Database database)
+  M Boolean LayerStateHasViewportData(String name)
+  M ObjectId LayerStatesDictionaryId(Boolean createIfNotPresent)
+  M Void RenameLayerState(String name, String newName)
+  M Void RestoreLayerState(String name, ObjectId id, Int32 undefinedLayerStatePolicy, LayerStateMasks clientMask)
+  M Void SaveLayerState(String name, LayerStateMasks mask, ObjectId id)
+  M Void SetLayerStateDescription(String name, String description)
+  M Void SetLayerStateMask(String name, LayerStateMasks mask)
+  P String LastRestoredLayerState {get;}
+== Autodesk.AutoCAD.DatabaseServices.LayoutManager : Autodesk.AutoCAD.Runtime.RXObject
+  M Void CloneLayout(String copyName, String newName, Int32 newTabOrder)
+  M Void CopyLayout(String copyName, String newName)
+  M ObjectId CreateLayout(String newName)
+  M Void DeleteLayout(String deleteName)
+  M ObjectId GetLayoutId(String name)
+  M ObjectId GetNonRectangularViewportIdFromClipId(ObjectId clipId)
+  M Boolean LayoutExists(String name)
+  M Void RenameLayout(String oldName, String newName)
+  M Void SetCurrentLayoutId(ObjectId layoutId)
+  P static LayoutManager Current {get;}
+  P String CurrentLayout {get;set;}
+  P Int32 LayoutCount {get;}
+== Autodesk.AutoCAD.DatabaseServices.PlotSettingsValidator : Autodesk.AutoCAD.Runtime.DisposableWrapper
+  M StringCollection GetCanonicalMediaNameList(PlotSettings plotSet)
+  M String GetLocaleMediaName(PlotSettings plotSet, Int32 index)
+  M String GetLocaleMediaName(PlotSettings plotSet, String canonicalName)
+  M StringCollection GetPlotDeviceList()
+  M StringCollection GetPlotStyleSheetList()
+  M Void RefreshLists(PlotSettings plotSet)
+  M Void SetCanonicalMediaName(PlotSettings plotSet, String mediaName)
+  M Void SetClosestMediaName(PlotSettings plotSet, Double paperWidth, Double paperHeight, PlotPaperUnit units, Boolean matchPrintableArea)
+  M Void SetCurrentStyleSheet(PlotSettings plotSet, String styleSheetName)
+  M Void SetCustomPrintScale(PlotSettings plotSet, CustomScale scale)
+  M Void SetDefaultPlotConfig(PlotSettings plotSet)
+  M Void SetPlotCentered(PlotSettings plotSet, Boolean isCentered)
+  M Void SetPlotConfigurationName(PlotSettings plotSet, String plotDeviceName, String mediaName)
+  M Void SetPlotOrigin(PlotSettings plotSet, Point2d origin)
+  M Void SetPlotPaperUnits(PlotSettings plotSet, PlotPaperUnit units)
+  M Void SetPlotRotation(PlotSettings plotSet, PlotRotation rotationType)
+  M Void SetPlotType(PlotSettings plotSet, PlotType plotAreaType)
+  M Void SetPlotViewName(PlotSettings plotSet, String viewName)
+  M Void SetPlotWindowArea(PlotSettings plotSet, Extents2d windowArea)
+  M Void SetStdScale(PlotSettings plotSet, Double standardScale)
+  M Void SetStdScaleType(PlotSettings plotSet, StdScaleType scaleType)
+  M Void SetUseStandardScale(PlotSettings plotSet, Boolean useStandard)
+  M Void SetZoomToPaperOnUpdate(PlotSettings plotSet, Boolean doZoom)
+  P static PlotSettingsValidator Current {get;}
+== Autodesk.AutoCAD.DatabaseServices.ObjectContextManager : Autodesk.AutoCAD.Runtime.RXObject
+  C ()
+  M ObjectContextCollection GetContextCollection(String collectionName)
+  M Void RegisterContextCollection(String collectionName, ObjectContextCollection collection)
+  M Void UnregisterContextCollection(String collectionName)
+== Autodesk.AutoCAD.DatabaseServices.ObjectContextCollection : Autodesk.AutoCAD.Runtime.RXObject
+  M Void AddContext(ObjectContext ctxt)
+  M ObjectContext GetContext(String contextName)
+  M ObjectContextCollectionEnumerator GetEnumerator()
+  M Boolean HasContext(String contextName)
+  M IEnumerator IEnumerable.GetEnumerator()
+  M Void RemoveContext(String contextName)
+  P ObjectContext CurrentContext {get;set;}
+  P String Name {get;}
+== Autodesk.AutoCAD.DatabaseServices.AnnotationScale : Autodesk.AutoCAD.DatabaseServices.ObjectContext
+  C ()
+  P String CollectionName {get;}
+  P Double DrawingUnits {get;set;}
+  P Boolean IsTemporaryScale {get;}
+  P String Name {get;set;}
+  P Double PaperUnits {get;set;}
+  P Double Scale {get;}
+  P IntPtr UniqueIdentifier {get;}
+== Autodesk.AutoCAD.DatabaseServices.DynamicBlockReferenceProperty : System.Object
+  M Object[] GetAllowedValues()
+  P ObjectId BlockId {get;}
+  P String Description {get;}
+  P String PropertyName {get;}
+  P Int16 PropertyTypeCode {get;}
+  P Boolean ReadOnly {get;}
+  P Boolean Show {get;}
+  P DynamicBlockReferencePropertyUnitsType UnitsType {get;}
+  P Object Value {get;set;}
+  P Boolean VisibleInCurrentVisibilityState {get;}
+== Autodesk.AutoCAD.DatabaseServices.XrefGraphNode : Autodesk.AutoCAD.DatabaseServices.GraphNode
+  P ObjectId BlockTableRecordId {get;}
+  P Database Database {get;}
+  P Boolean IsNested {get;}
+  P String Name {get;}
+  P XrefNotificationStatus XrefNotificationStatus {get;}
+  P XrefStatus XrefStatus {get;}

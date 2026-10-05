@@ -1,0 +1,161 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.TinSurface : Autodesk.Civil.DatabaseServices.Surface
+  M SurfaceOperationAddLine AddLine(TinSurfaceVertex vertex1, TinSurfaceVertex vertex2)
+  M SurfaceOperationAddTinVertex AddVertex(Point2d location)
+  M SurfaceOperationAddTinVertex AddVertex(Point3d location)
+  M SurfaceOperationAddTinMultipleVertices AddVertices(Point2dCollection locations)
+  M SurfaceOperationAddTinMultipleVertices AddVertices(Point3dCollection locations)
+  M static ObjectId Create(String surfaceName, ObjectId styleId)
+  M static ObjectId Create(Database database, String surfaceName)
+  M static ObjectId CreateByCropping(Database destDatabase, String surfaceName, ObjectId srcSurfaceId, ObjectIdCollection objects, Point2d location)
+  M static ObjectId CreateByCropping(Database destDatabase, String surfaceName, ObjectId srcSurfaceId, Point3dCollection points)
+  M static ObjectId CreateByCropping(Database destDatabase, String surfaceName, ObjectId srcSurfaceId, Point2dCollection points)
+  M static ObjectId CreateFromCorridorSurface(String surfaceName, CorridorSurface corridorSurface)
+  M static ObjectId CreateFromIMX(Database database, ObjectId styleId, String imxFileName, String surfaceName, String gitHash, String query, Boolean doCoordSysConversion)
+  M static ObjectId CreateFromLandXML(Database database, String newSurfaceName, String landXMLfileName, String landXMLSurfaceName)
+  M static ObjectId CreateFromLandXML(Database database, String surfaceName, String landXMLfileName)
+  M static ObjectId CreateFromTin(Database database, String tinFileName)
+  M ObjectIdCollection CreateSolidsAtDepth(Double depth, String layer, UInt16 penIndex)
+  M ObjectIdCollection CreateSolidsAtDepthToFile(Double depth, String layer, UInt16 penIndex, String& fileName)
+  M ObjectIdCollection CreateSolidsAtFixedElevation(Double elevation, String layer, UInt16 penIndex)
+  M ObjectIdCollection CreateSolidsAtFixedElevationToFile(Double elevation, String layer, UInt16 penIndex, String& fileName)
+  M ObjectIdCollection CreateSolidsAtSurface(ObjectId bottomSurfaceId, String layer, UInt16 penIndex)
+  M ObjectIdCollection CreateSolidsAtSurfaceToFile(ObjectId bottomSurfaceId, String layer, UInt16 penIndex, String& fileName)
+  M SurfaceOperationDeleteLine DeleteLine(TinSurfaceEdge tinTriangleEdge)
+  M SurfaceOperationDeleteMultipleLines DeleteLines(IEnumerable<TinSurfaceEdge> tinTriangleEdges)
+  M SurfaceOperationDeleteTinVertex DeleteVertex(TinSurfaceVertex vertex)
+  M SurfaceOperationDeleteMultipleTinVertices DeleteVertices(IEnumerable<TinSurfaceVertex> vertices)
+  M ObjectIdCollection ExtractBorder(SurfaceExtractionSettingsType settingsType)
+  M ObjectIdCollection ExtractContours(Double interval, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractContours(Double interval)
+  M ObjectIdCollection ExtractContours(Double lowElev, Double highElev, Double interval, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractContours(Double lowElev, Double highElev, Double interval)
+  M ObjectIdCollection ExtractContoursAt(Double elevation, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractContoursAt(Double elevation)
+  M ObjectIdCollection ExtractGridded(SurfaceExtractionSettingsType settingsType)
+  M ObjectIdCollection ExtractMajorContours(SurfaceExtractionSettingsType settingsType, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractMajorContours(SurfaceExtractionSettingsType settingsType)
+  M ObjectIdCollection ExtractMinorContours(SurfaceExtractionSettingsType settingsType, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractMinorContours(SurfaceExtractionSettingsType settingsType)
+  M ObjectIdCollection ExtractWatershed(SurfaceExtractionSettingsType settingsType)
+  M TinSurfaceEdge FindEdgeAtXY(Double x, Double y)
+  M TinSurfaceTriangle FindTriangleAtXY(Double x, Double y)
+  M TinSurfaceVertex FindVertexAtXY(Double x, Double y)
+  M TerrainSurfaceProperties GetTerrainProperties()
+  M TinSurfaceProperties GetTinProperties()
+  M TinSurfaceTriangleCollection GetTriangles(Boolean includeInvisible)
+  M TinSurfaceVertex[] GetVerticesInsideBorder(Point3dCollection border)
+  M TinSurfaceVertex[] GetVerticesInsideBorderRandom(Point3dCollection border, Int32 randomNumber)
+  M TinSurfaceVertex[] GetVerticesInsidePolylines(ObjectIdCollection polylineIds)
+  M TinSurfaceVertex[] GetVerticesInsidePolylinesRandom(ObjectIdCollection polylineIds, Int32 randomNumber)
+  M Type IdentifyFeatureTypeAtXY(Double x, Double y)
+  M SurfaceOperationMinimizeFlatAreas MinimizeFlatAreas(SurfaceMinimizeFlatAreaOptions minimizeOptions)
+  M SurfaceOperationMoveTinVertex MoveVertex(TinSurfaceVertex vertex, Point2d newLocation)
+  M SurfaceOperationPasteSurface PasteSurface(ObjectId surfaceId)
+  M SurfaceOperationRaise RaiseSurface(Double deltaElevation)
+  M SurfaceOperationModifyMultipleTinVerticesElevation RaiseVertices(IEnumerable<TinSurfaceVertex> vertices, Double deltaElevation)
+  M Point3dCollection SampleElevations(Point3d pt1, Point3d pt2)
+  M Point3dCollection SampleElevations(ObjectId curveId)
+  M SurfaceOperationModifyTinVertexElevation SetVertexElevation(TinSurfaceVertex vertex, Double newElevation)
+  M SurfaceOperationModifyMultipleTinVerticesElevation SetVerticesElevation(IEnumerable<TinSurfaceVertex> vertices, Double newElevation)
+  M SurfaceOperationSimplify SimplifySurface(SurfaceSimplifyOptions simplifyOptions)
+  M SurfaceOperationSmooth SmoothSurfaceByKriging(KrigingMethodOptions krigingOptions, SurfacePointOutputOptions pointOutputOptions)
+  M SurfaceOperationSmooth SmoothSurfaceByNNI(SurfacePointOutputOptions pointOutputOptions)
+  M SurfaceOperationSwapEdge SwapEdge(TinSurfaceEdge tinTriangleEdge)
+  P SurfaceDefinitionBreaklines BreaklinesDefinition {get;}
+  P SurfaceDefinitionContours ContoursDefinition {get;}
+  P SurfaceDefinitionDEMFiles DEMFilesDefinition {get;}
+  P SurfaceDefinitionDrawingObjects DrawingObjectsDefinition {get;}
+  P SurfaceDefinitionPointFiles PointFilesDefinition {get;}
+  P SurfaceDefinitionPointGroups PointGroupsDefinition {get;}
+  P SurfaceDefinitionAddFigureSurveyQueries SurveyQueriesAddFigureDefinition {get;}
+  P SurfaceDefinitionAddPointSurveyQueries SurveyQueriesAddPointDefinition {get;}
+  P TinSurfaceTriangleCollection Triangles {get;}
+  P TinSurfaceVertexCollection Vertices {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceDefinitionBreaklines : Autodesk.Civil.DatabaseServices.SurfaceDefinitionBase`1[[Autodesk.Civil.DatabaseServices.SurfaceOperationAddBreakline, AeccDbMgd, Version=13.7.0.145, Culture=neutral, PublicKeyToken=null]]
+  M SurfaceOperationAddBreaklineFromFile AddBreaklinesFromFile(String filename)
+  M SurfaceOperationAddBreakline AddNonDestructiveBreaklines(Point3dCollection points, Double midOrdinateDistance)
+  M SurfaceOperationAddBreakline AddNonDestructiveBreaklines(Point2dCollection points, Double midOrdinateDistance)
+  M SurfaceOperationAddBreakline AddNonDestructiveBreaklines(ObjectIdCollection breaklineEntities, Double midOrdinateDistance)
+  M SurfaceOperationAddBreakline AddProximityBreaklines(Point3dCollection points, Double midOrdinateDistance)
+  M SurfaceOperationAddBreakline AddProximityBreaklines(Point2dCollection points, Double midOrdinateDistance)
+  M SurfaceOperationAddBreakline AddProximityBreaklines(ObjectIdCollection breaklineEntities, Double midOrdinateDistance)
+  M SurfaceOperationAddBreakline AddStandardBreaklines(Point3dCollection points, Double midOrdinateDistance, Double maximumDistance, Double weedingDistance, Double weedingAngle)
+  M SurfaceOperationAddBreakline AddStandardBreaklines(Point2dCollection points, Double midOrdinateDistance, Double maximumDistance, Double weedingDistance, Double weedingAngle)
+  M SurfaceOperationAddBreakline AddStandardBreaklines(ObjectIdCollection breaklineEntities, Double midOrdinateDistance, Double maximumDistance, Double weedingDistance, Double weedingAngle)
+  M SurfaceOperationAddBreakline AddWallBreaklines(WallBreaklineCreationData[] creationData, Double midOrdinateDistance, Double maximumDistance, Double weedingDistance, Double weedingAngle)
+  M SurfaceOperationAddBreakline AddWallBreaklines(WallBreaklineCreationDataEx[] creationData, Double midOrdinateDistance, Double maximumDistance, Double weedingDistance, Double weedingAngle)
+  M SurfaceOperationAddBreakline[] ImportBreaklinesFromFile(String filename)
+== Autodesk.Civil.DatabaseServices.SurfaceDefinitionBoundaries : Autodesk.Civil.DatabaseServices.SurfaceDefinitionBase`1[[Autodesk.Civil.DatabaseServices.SurfaceOperationAddBoundary, AeccDbMgd, Version=13.7.0.145, Culture=neutral, PublicKeyToken=null]]
+  M SurfaceOperationAddBoundary AddBoundaries(Point3dCollection points, Double midOrdinateDistance, SurfaceBoundaryType boundaryType, Boolean useNonDestructiveBreakline)
+  M SurfaceOperationAddBoundary AddBoundaries(Point2dCollection points, Double midOrdinateDistance, SurfaceBoundaryType boundaryType, Boolean useNonDestructiveBreakline)
+  M SurfaceOperationAddBoundary AddBoundaries(ObjectIdCollection boundaryEntities, Double midOrdinateDistance, SurfaceBoundaryType boundaryType, Boolean useNonDestructiveBreakline)
+== Autodesk.Civil.DatabaseServices.SurfaceDefinitionBase`1 : System.Object
+  C (Surface surface)
+  M Void RemoveAt(Int32 index)
+  P Int32 Count {get;}
+  P T Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceOperationCollection : System.Object
+  M Void DisableOperations(Type operationClassType)
+  M Void EnableOperations(Type operationClassType)
+  M SurfaceOpeartionStatusType GetOperationStatus(Type operationClassType)
+  M Void Remove(SurfaceOperation operation)
+  M Void RemoveAt(Int32 index)
+  M Void Swap(SurfaceOperation firstOperation, SurfaceOperation secondOperation)
+  M Void SwapAt(Int32 firstIndex, Int32 secondIndex)
+  P Int32 Count {get;}
+  P SurfaceOperation Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceOperation : System.Object
+  M Void Dispose()
+  M Void MoveDown()
+  M Void MoveToBottom()
+  M Void MoveToTop()
+  M Void MoveUp()
+  P Boolean Enabled {get;set;}
+== Autodesk.Civil.DatabaseServices.SurfaceOperationAddBreakline : Autodesk.Civil.DatabaseServices.SurfaceOperation
+  M IEnumerator<SurfaceBreakline> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M ObjectIdCollection InsertIntoDrawing()
+  P SurfaceBreaklineType BreaklineType {get;}
+  P Int32 Count {get;}
+  P String Description {get;set;}
+  P SurfaceBreakline Item[Int32 index] {get;}
+  P Double MaximumDistance {get;}
+  P Double MidOrdinateDistance {get;}
+  P Double WeedingAngle {get;}
+  P Double WeedingDistance {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceBreakline : System.Object
+  M ObjectId InsertIntoDrawing()
+  P SurfaceBreaklineType BreaklineType {get;}
+  P String Description {get;}
+  P Point3dCollection Vertices {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceOperationAddBoundary : Autodesk.Civil.DatabaseServices.SurfaceOperation
+  M IEnumerator<SurfaceBoundary> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M ObjectIdCollection InsertIntoDrawing()
+  P SurfaceBoundaryType BoundaryType {get;}
+  P Int32 Count {get;}
+  P Boolean IsTrimmed {get;}
+  P SurfaceBoundary Item[Int32 index] {get;}
+  P Double MidOrdinateDistance {get;}
+  P String Name {get;set;}
+== Autodesk.Civil.DatabaseServices.SurfaceBoundary : System.Object
+  P SurfaceBoundaryType BoundaryType {get;}
+  P Point3dCollection Vertices {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceOperationPasteSurface : Autodesk.Civil.DatabaseServices.SurfaceOperation
+  P ObjectId SurfaceId {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceOperationAddTinMultipleVertices : Autodesk.Civil.DatabaseServices.SurfaceOperation
+  P Point3dCollection Locations {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceOperationAddTinVertex : Autodesk.Civil.DatabaseServices.SurfaceOperation
+  P Point3d Location {get;}
+== Autodesk.Civil.SurfaceBoundaryType : System.Enum
+  E DataClip
+  E Hide
+  E Outer
+  E Show
+  F Int32 value__
+== Autodesk.Civil.SurfaceBreaklineType : System.Enum
+  E NonDestructive
+  E Standard
+  F Int32 value__
+  E Wall

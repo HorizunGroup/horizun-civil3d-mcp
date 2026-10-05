@@ -1,0 +1,523 @@
+# acdbmgd.dll 25.0.0.0 (Civil 3D 2025)
+== Autodesk.AutoCAD.DatabaseServices.RotatedDimension : Autodesk.AutoCAD.DatabaseServices.Dimension
+  C (Double rotation, Point3d line1Point, Point3d line2Point, Point3d dimensionLinePoint, String dimensionText, ObjectId dimensionStyle)
+  C ()
+  P Point3d DimLinePoint {get;set;}
+  P Double Oblique {get;set;}
+  P Double Rotation {get;set;}
+  P Point3d XLine1Point {get;set;}
+  P Point3d XLine2Point {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.AlignedDimension : Autodesk.AutoCAD.DatabaseServices.Dimension
+  C (Point3d line1Point, Point3d line2Point, Point3d dimensionLinePoint, String dimensionText, ObjectId dimensionStyle)
+  C ()
+  P Point3d DimLinePoint {get;set;}
+  P Double Oblique {get;set;}
+  P Point3d XLine1Point {get;set;}
+  P Point3d XLine2Point {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.MText : Autodesk.AutoCAD.DatabaseServices.Entity
+  C ()
+  M Void ConvertFieldToText()
+  M Int32 CorrectSpelling()
+  M Void ExplodeFragments(MTextFragmentCallback enumerator)
+  M Void ExplodeFragments(MTextFragmentCallback enumerator, Object userData)
+  M Void ExplodeFragments(MTextFragmentCallback enumerator, Object userData, WorldDraw context)
+  M Point3dCollection GetBoundingPoints()
+  M Double GetColumnHeight(Int32 index)
+  M String getMTextWithFieldCodes()
+  M Void SetAttachmentMovingLocation(AttachmentPoint value)
+  M Void SetColumnHeight(Int32 index, Double height)
+  M Int32 SetContentsRtf(String value)
+  M Void SetDynamicColumns(Double width, Double gutter, Boolean auto_height)
+  M Void SetStaticColumns(Double width, Double gutter, Int32 count)
+  P Double ActualHeight {get;}
+  P Double ActualWidth {get;}
+  P static String AlignChange {get;}
+  P Double Ascent {get;}
+  P AttachmentPoint Attachment {get;set;}
+  P Boolean BackgroundFill {get;set;}
+  P Color BackgroundFillColor {get;set;}
+  P Double BackgroundScaleFactor {get;set;}
+  P Transparency BackgroundTransparency {get;set;}
+  P static String BlockBegin {get;}
+  P static String BlockEnd {get;}
+  P static String ColorChange {get;}
+  P Boolean ColumnAutoHeight {get;set;}
+  P Int32 ColumnCount {get;set;}
+  P Boolean ColumnFlowReversed {get;set;}
+  P Double ColumnGutterWidth {get;set;}
+  P ColumnType ColumnType {get;set;}
+  P Double ColumnWidth {get;set;}
+  P String Contents {get;set;}
+  P String ContentsRTF {get;set;}
+  P Double Descent {get;}
+  P Vector3d Direction {get;set;}
+  P FlowDirection FlowDirection {get;set;}
+  P static String FontChange {get;}
+  P Double Height {get;set;}
+  P static String HeightChange {get;}
+  P static String LineBreak {get;}
+  P Double LineSpaceDistance {get;set;}
+  P Double LineSpacingFactor {get;set;}
+  P LineSpacingStyle LineSpacingStyle {get;set;}
+  P Point3d Location {get;set;}
+  P static String NonBreakSpace {get;}
+  P Vector3d Normal {get;set;}
+  P static String ObliqueChange {get;}
+  P static String OverlineOff {get;}
+  P static String OverlineOn {get;}
+  P static String ParagraphBreak {get;}
+  P Double Rotation {get;set;}
+  P Boolean ShowBorders {get;set;}
+  P static String StackStart {get;}
+  P static String StrikethroughOff {get;}
+  P static String StrikethroughOn {get;}
+  P String Text {get;}
+  P Double TextHeight {get;set;}
+  P ObjectId TextStyleId {get;set;}
+  P String TextStyleName {get;}
+  P static String TrackChange {get;}
+  P static String UnderlineOff {get;}
+  P static String UnderlineOn {get;}
+  P Boolean UseBackgroundColor {get;set;}
+  P Double Width {get;set;}
+  P static String WidthChange {get;}
+== Autodesk.AutoCAD.DatabaseServices.MLeader : Autodesk.AutoCAD.DatabaseServices.Entity
+  C ()
+  M Void AddFirstVertex(Int32 leaderLineIndex, Point3d point)
+  M Void AddLastVertex(Int32 leaderLineIndex, Point3d point)
+  M Int32 AddLeader()
+  M Int32 AddLeaderLine(Point3d point)
+  M Int32 AddLeaderLine(Int32 leaderIndex)
+  M Point3d ConnectionPoint(Vector3d direction, TextAttachmentDirection textAttachmentDirection)
+  M Point3d ConnectionPoint(Vector3d direction)
+  M Double GetArrowSize(Int32 leaderLineIndex)
+  M ObjectId GetArrowSymbolId(Int32 leaderLineIndex)
+  M AttributeReference GetBlockAttribute(ObjectId attDefId)
+  M Extents3d GetContentGeomExtents()
+  M IntPtr getContextDataManager()
+  M Vector3d GetDogleg(Int32 leaderIndex)
+  M Double GetDoglegLength(Int32 leaderIndex)
+  M Point3d GetFirstVertex(Int32 leaderLineIndex)
+  M Point3d GetLastVertex(Int32 leaderLineIndex)
+  M Int32 GetLeaderIndex(Int32 leaderLineIndex)
+  M ArrayList GetLeaderIndexes()
+  M Color GetLeaderLineColor(Int32 leaderLineIndex)
+  M ArrayList GetLeaderLineIndexes(Int32 leaderIndex)
+  M LeaderType GetLeaderLineType(Int32 leaderLineIndex)
+  M ObjectId GetLeaderLineTypeId(Int32 leaderLineIndex)
+  M LineWeight GetLeaderLineWeight(Int32 leaderLineIndex)
+  M Void getOverridedMLeaderStyle(MLeaderStyle mleaderStyle)
+  M Plane GetPlane()
+  M TextAttachmentType GetTextAttachmentType(LeaderDirectionType leaderDirection)
+  M Point3d GetVertex(Int32 leaderLineIndex, Int32 index)
+  M Boolean HasContent()
+  M Void MoveMLeader(Vector3d vec, MoveType type)
+  M Void PostMLeaderToDb(Database db)
+  M Void recomputeBreakPoints()
+  M Void RemoveFirstVertex(Int32 leaderLineIndex)
+  M Void RemoveLastVertex(Int32 leaderLineIndex)
+  M Void RemoveLeader(Int32 index)
+  M Void RemoveLeaderLine(Int32 leaderLineIndex)
+  M Void SetArrowSize(Int32 leaderLineIndex, Double arrowSize)
+  M Void SetArrowSymbolId(Int32 leaderLineIndex, ObjectId id)
+  M Void SetBlockAttribute(ObjectId attDefId, AttributeReference attributeValue)
+  M Void SetContextDataManager(IntPtr contextDataManager)
+  M Void SetDogleg(Int32 leaderIndex, Vector3d vector)
+  M Void SetDoglegLength(Int32 leaderIndex, Double doglegLength)
+  M Void SetFirstVertex(Int32 leaderLineIndex, Point3d point)
+  M Void SetLastVertex(Int32 leaderLineIndex, Point3d point)
+  M Void SetLeaderLineColor(Int32 leaderLineIndex, Color leaderLineTypeId)
+  M Void SetLeaderLineType(Int32 leaderLineIndex, LeaderType leaderLineType)
+  M Void SetLeaderLineTypeId(Int32 leaderLineIndex, ObjectId leaderLineTypeId)
+  M Void SetLeaderLineWeight(Int32 leaderLineIndex, LineWeight leaderLineWeight)
+  M Void SetPlane(Plane value)
+  M Void SetTextAttachmentType(TextAttachmentType textAttachmentType, LeaderDirectionType leaderDirection)
+  M Void SetVertex(Int32 leaderLineIndex, Int32 index, Point3d point)
+  M Int32 VerticesCount(Int32 leaderLineIndex)
+  P Double ArrowSize {get;set;}
+  P ObjectId ArrowSymbolId {get;set;}
+  P Color BlockColor {get;set;}
+  P BlockConnectionType BlockConnectionType {get;set;}
+  P ObjectId BlockContentId {get;set;}
+  P Point3d BlockPosition {get;set;}
+  P Double BlockRotation {get;set;}
+  P Scale3d BlockScale {get;set;}
+  P ContentType ContentType {get;set;}
+  P Double DoglegLength {get;set;}
+  P Boolean EnableAnnotationScale {get;set;}
+  P Boolean EnableDogleg {get;set;}
+  P Boolean EnableFrameText {get;set;}
+  P Boolean EnableLanding {get;set;}
+  P Boolean ExtendLeaderToText {get;set;}
+  P Double LandingGap {get;set;}
+  P Int32 LeaderCount {get;}
+  P Color LeaderLineColor {get;set;}
+  P Int32 LeaderLineCount {get;}
+  P LeaderType LeaderLineType {get;set;}
+  P ObjectId LeaderLineTypeId {get;set;}
+  P LineWeight LeaderLineWeight {get;set;}
+  P ObjectId MLeaderStyle {get;set;}
+  P MText MText {get;set;}
+  P Vector3d Normal {get;}
+  P Double Scale {get;set;}
+  P TextAlignmentType TextAlignmentType {get;set;}
+  P TextAngleType TextAngleType {get;set;}
+  P TextAttachmentDirection TextAttachmentDirection {get;set;}
+  P TextAttachmentType TextAttachmentType {get;set;}
+  P Color TextColor {get;set;}
+  P Double TextHeight {get;set;}
+  P Point3d TextLocation {get;set;}
+  P ObjectId TextStyleId {get;set;}
+  P Point3d ToleranceLocation {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.Table : Autodesk.AutoCAD.DatabaseServices.BlockReference
+  C ()
+  M CellAlignment Alignment(Int32 row, Int32 col)
+  M CellAlignment Alignment(RowType type)
+  M Point3d AttachmentPoint(Int32 row, Int32 col)
+  M Color BackgroundColor(Int32 row, Int32 col)
+  M Color BackgroundColor(RowType type)
+  M Double BlockRotation(Int32 row, Int32 col)
+  M Double BlockScale(Int32 row, Int32 col)
+  M ObjectId BlockTableRecordId(Int32 row, Int32 col)
+  M Boolean CanDeleteColumns(Int32 index, Int32 nCount)
+  M Boolean CanDeleteRows(Int32 index, Int32 nCount)
+  M Boolean CanInsertColumn(Int32 index)
+  M Boolean CanInsertRow(Int32 index)
+  M TableStyleOverride[] CellStyleOverrides(Int32 row, Int32 col)
+  M TableCellType CellType(Int32 row, Int32 col)
+  M Void ClearSubSelection()
+  M Void ClearTableStyleOverrides(Int32 options)
+  M Double ColumnWidth(Int32 col)
+  M Color ContentColor(Int32 row, Int32 col)
+  M Color ContentColor(RowType type)
+  M CellRange CopyFrom(Table source, TableCopyOptions options, CellRange sourceRange, CellRange targetRange)
+  M CellRange CopyFrom(LinkedTableData source, TableCopyOptions options, CellRange sourceRange, CellRange targetRange)
+  M Void CopyFrom(LinkedTableData source, TableCopyOptions options)
+  M Int32 CreateContent(Int32 row, Int32 column, Int32 contentIndex)
+  M DataType DataType(Int32 row, Int32 col)
+  M DataType DataType(RowType type)
+  M Void DeleteCellContent(Int32 row, Int32 col)
+  M Void DeleteColumns(Int32 col, Int32 columns)
+  M Void DeleteContent(CellRange A_0)
+  M Void DeleteContent(Int32 row, Int32 column, Int32 contentIndex)
+  M Void DeleteContent(Int32 row, Int32 column)
+  M Void DeleteRows(Int32 row, Int32 rows)
+  M ObjectId FieldId(Int32 row, Int32 col)
+  M Void Fill(CellRange fillRange, CellRange sourceRange, TableFillOptions options)
+  M String Format(Int32 row, Int32 col)
+  M String Format(RowType type)
+  M Void GenerateLayout()
+  M String GetBlockAttributeValue(Int32 row, Int32 column, Int32 contentIndex, ObjectId attDefId)
+  M String GetBlockAttributeValue(Int32 row, Int32 col, ObjectId attributeDefinitionId)
+  M ObjectId GetBlockTableRecordId(Int32 row, Int32 column, Int32 contentIndex)
+  M Double GetBreakHeight(Int32 index)
+  M Vector3d GetBreakOffset(Int32 index)
+  M Double GetBreakSpacing()
+  M Void GetCellExtents(Int32 row, Int32 col, Boolean isOuterCell, Point3dCollection pts)
+  M CellStates GetCellState(Int32 row, Int32 column)
+  M String GetCellStyle(Int32 row, Int32 column)
+  M String GetColumnName(Int32 index)
+  M Color GetContentColor(Int32 row, Int32 column, Int32 contentIndex)
+  M CellContentLayout GetContentLayout(Int32 row, Int32 column)
+  M CellContentTypes GetContentTypes(Int32 row, Int32 column, Int32 contentIndex)
+  M CellContentTypes GetContentTypes(Int32 row, Int32 column)
+  M Object GetCustomData(Int32 row, Int32 column, String key)
+  M Int32 GetCustomData(Int32 row, Int32 column)
+  M String GetDataFormat(Int32 row, Int32 column, Int32 contentIndex)
+  M String GetDataFormat(Int32 row, Int32 column)
+  M ObjectIdCollection GetDataLink(CellRange range)
+  M ObjectIdCollection GetDataLink()
+  M ObjectId GetDataLink(Int32 row, Int32 column)
+  M CellRange GetDataLinkRange(Int32 row, Int32 column)
+  M DataTypeParameter GetDataType(Int32 row, Int32 column, Int32 contentIndex)
+  M TableEnumerator GetEnumerator(CellRange range, TableEnumeratorOption option)
+  M TableEnumerator GetEnumerator()
+  M ObjectId GetFieldId(Int32 row, Int32 column, Int32 contentIndex)
+  M String GetFormula(Int32 row, Int32 column, Int32 contentIndex)
+  M Color GetGridColor(Int32 row, Int32 column, GridLineType gridLineType)
+  M Double GetGridDoubleLineSpacing(Int32 row, Int32 column, GridLineType gridLineType)
+  M GridLineStyle GetGridLineStyle(Int32 row, Int32 column, GridLineType gridLineType)
+  M ObjectId GetGridLinetype(Int32 row, Int32 column, GridLineType gridLineType)
+  M LineWeight GetGridLineWeight(Int32 row, Int32 column, GridLineType gridLineType)
+  M GridPropertyParameter GetGridProperty(Int32 row, Int32 column, GridLineType gridLineType)
+  M Visibility GetGridVisibility(Int32 row, Int32 column, GridLineType gridLineType)
+  M Boolean GetIsAutoScale(Int32 row, Int32 column, Int32 contentIndex)
+  M Double GetMargin(Int32 row, Int32 column, CellMargins margin)
+  M Boolean GetMergeAllEnabled(Int32 row, Int32 column)
+  M CellRange GetMergeRange(Int32 row, Int32 column)
+  M Int32 GetNumberOfContents(Int32 row, Int32 column)
+  M CellProperties GetOverrides(Int32 row, Int32 column, GridLineType gridLineType)
+  M CellProperties GetOverrides(Int32 row, Int32 column, Int32 contentIndex)
+  M Double GetRotation(Int32 row, Int32 column, Int32 contentIndex)
+  M Double GetScale(Int32 row, Int32 column, Int32 contentIndex)
+  M Double GetTextHeight(Int32 row, Int32 column, Int32 contentIndex)
+  M String GetTextString(Int32 row, Int32 column, Int32 contentIndex, FormatOption formatOption)
+  M String GetTextString(Int32 row, Int32 column, Int32 contentIndex)
+  M ObjectId GetTextStyleId(Int32 row, Int32 column, Int32 contentIndex)
+  M String GetToolTip(Int32 row, Int32 column)
+  M Object GetValue(Int32 row, Int32 column, Int32 contentIndex, FormatOption formatOption)
+  M Object GetValue(Int32 row, Int32 column, Int32 contentIndex)
+  M Color GridColor(Int32 row, Int32 col, CellEdgeMasks edge)
+  M Color GridColor(GridLineType gridlineType, RowType type)
+  M LineWeight GridLineWeight(Int32 row, Int32 col, CellEdgeMasks edge)
+  M LineWeight GridLineWeight(GridLineType gridlineType, RowType type)
+  M Boolean GridVisibility(Int32 row, Int32 col, CellEdgeMasks edge)
+  M Boolean GridVisibility(GridLineType gridlineType, RowType type)
+  M Boolean HasFormula(Int32 row, Int32 column, Int32 contentIndex)
+  M TableHitTestInfo HitTest(Point3d point, Vector3d viewVector)
+  M IEnumerator IEnumerable.GetEnumerator()
+  M Void InsertColumns(Int32 col, Double width, Int32 columns)
+  M Void InsertColumnsAndInherit(Int32 col, Int32 inheritFrom, Int32 numCols)
+  M Void InsertRows(Int32 row, Double height, Int32 rows)
+  M Void InsertRowsAndInherit(Int32 index, Int32 inheritFrom, Int32 numRows)
+  M Boolean IsAutoScale(Int32 row, Int32 col)
+  M Boolean IsBackgroundColorNone(Int32 row, Int32 col)
+  M Boolean IsBackgroundColorNone(RowType type)
+  M Boolean IsContentEditable(Int32 row, Int32 column)
+  M Boolean IsEmpty(Int32 row, Int32 column)
+  M Boolean IsFormatEditable(Int32 row, Int32 column)
+  M Boolean IsLinked(Int32 row, Int32 column)
+  M Boolean IsMergedCell(Int32 row, Int32 col, CellRange& range)
+  M Void MergeCells(CellRange range)
+  M Double MinimumColumnWidth(Int32 col)
+  M Double MinimumRowHeight(Int32 row)
+  M Void MoveContent(Int32 row, Int32 column, Int32 fromIndex, Int32 toIndex)
+  M Void RecomputeTableBlock(Boolean forceUpdate)
+  M Void RemoveAllOverrides(Int32 row, Int32 column)
+  M Void RemoveDataLink()
+  M Void RemoveDataLink(Int32 row, Int32 column)
+  M Void ReselectSubRegion(FullSubentityPath[] paths)
+  M Void ResetValue(Int32 row, Int32 col)
+  M Double RowHeight(Int32 row)
+  M RowType RowType(Int32 row)
+  M TableHitTestInfo Select(Point3d pickingPoint, Vector3d hitTestViewDirection, Vector3d hitTestViewOrientation, Boolean allowOutside, Boolean inPickFirst, FullSubentityPath[] paths)
+  M CellRange SelectSubRegion(Point3d cornerPoint1, Point3d cornerPoint2, Vector3d selectionViewDirection, Vector3d hitTestViewDirection, SelectType selectionType, Boolean includeCurrentSelection, Boolean inPickFirst, FullSubentityPath[] paths)
+  M Void SetAlignment(Int32 row, Int32 col, CellAlignment align)
+  M Void SetAlignment(CellAlignment align, Int32 rowTypes)
+  M Void SetAutoScale(Int32 row, Int32 col, Boolean autoFit)
+  M Void SetBackgroundColor(Int32 row, Int32 col, Color color)
+  M Void SetBackgroundColor(Color color, Int32 rowTypes)
+  M Void SetBackgroundColorNone(Int32 row, Int32 col, Boolean value)
+  M Void SetBackgroundColorNone(Boolean value, Int32 rowTypes)
+  M Void SetBlockAttributeValue(Int32 row, Int32 column, Int32 contentIndex, ObjectId attDefId, String value)
+  M Void SetBlockAttributeValue(Int32 row, Int32 col, ObjectId attributeDefinitionId, String value)
+  M Void SetBlockRotation(Int32 row, Int32 col, Double rotationalAngle)
+  M Void SetBlockScale(Int32 row, Int32 col, Double scale)
+  M Void SetBlockTableRecordId(Int32 row, Int32 column, Int32 contentIndex, ObjectId blockId, Boolean autoFit)
+  M Void SetBlockTableRecordId(Int32 row, Int32 col, ObjectId blockId, Boolean autoFit)
+  M Void SetBreakHeight(Int32 index, Double height)
+  M Void SetBreakOffset(Int32 index, Vector3d offset)
+  M Void SetBreakSpacing(Double spacing)
+  M Void SetCellState(Int32 row, Int32 column, CellStates cellState)
+  M Void SetCellStyle(Int32 row, Int32 column, String styleName)
+  M Void SetCellType(Int32 row, Int32 col, TableCellType type)
+  M Void SetColumnName(Int32 index, String name)
+  M Void SetColumnWidth(Double width)
+  M Void SetColumnWidth(Int32 col, Double width)
+  M Void SetContentColor(Int32 row, Int32 column, Int32 contentIndex, Color color)
+  M Void SetContentColor(Int32 row, Int32 col, Color color)
+  M Void SetContentColor(Color color, Int32 rowType)
+  M Void SetContentLayout(Int32 row, Int32 column, CellContentLayout layout)
+  M Void SetCustomData(Int32 row, Int32 column, String key, Object value)
+  M Void SetCustomData(Int32 row, Int32 column, Int32 data)
+  M Void SetDataFormat(Int32 row, Int32 column, Int32 contentIndex, String format)
+  M Void SetDataFormat(Int32 row, Int32 column, String format)
+  M Void SetDataLink(CellRange range, ObjectId dataLinkId, Boolean bUpdate)
+  M Void SetDataLink(Int32 row, Int32 column, ObjectId dataLinkId, Boolean bUpdate)
+  M Void SetDataType(Int32 row, Int32 column, Int32 contentIndex, DataTypeParameter dataType)
+  M Void SetDataType(Int32 row, Int32 col, DataType nDataType, UnitType nUnitType)
+  M Void SetDataType(DataType nDataType, UnitType nUnitType, Int32 rowTypes)
+  M Void SetFieldId(Int32 row, Int32 column, Int32 contentIndex, ObjectId fieldId, CellOption option)
+  M Void SetFieldId(Int32 row, Int32 col, ObjectId fieldId)
+  M Void SetFormat(Int32 row, Int32 col, String pFormat)
+  M Void SetFormat(String pFormat, Int32 rowTypes)
+  M Void SetFormula(Int32 row, Int32 column, Int32 contentIndex, String formula)
+  M Void SetGridColor(Int32 row, Int32 column, GridLineType gridLineType, Color color)
+  M Void SetGridColor(Int32 row, Int32 col, Int16 edges, Color color)
+  M Void SetGridColor(Color color, Int32 borders, Int32 rows)
+  M Void SetGridDoubleLineSpacing(Int32 row, Int32 column, GridLineType gridLineType, Double spacing)
+  M Void SetGridLineStyle(Int32 row, Int32 column, GridLineType gridLineType, GridLineStyle lineStyle)
+  M Void SetGridLinetype(Int32 row, Int32 column, GridLineType gridLineType, ObjectId linetype)
+  M Void SetGridLineWeight(Int32 row, Int32 column, GridLineType gridLineType, LineWeight lineWeight)
+  M Void SetGridLineWeight(Int32 row, Int32 col, Int16 edges, LineWeight value)
+  M Void SetGridLineWeight(LineWeight lineWeight, Int32 borders, Int32 rows)
+  M Void SetGridProperty(CellRange rangeIn, GridLineType gridLineTypes, GridPropertyParameter gridProp)
+  M Void SetGridProperty(Int32 row, Int32 column, GridLineType gridLineType, GridPropertyParameter gridProperty)
+  M Void SetGridVisibility(Int32 row, Int32 column, GridLineType gridLineType, Visibility visibility)
+  M Void SetGridVisibility(Int32 row, Int32 col, Int16 edges, Boolean value)
+  M Void SetGridVisibility(Boolean visible, Int32 borders, Int32 rows)
+  M Void SetIsAutoScale(Int32 row, Int32 column, Int32 contentIndex, Boolean autoFit)
+  M Void SetMargin(Int32 row, Int32 column, CellMargins margin, Double value)
+  M Void SetMergeAllEnabled(Int32 row, Int32 column, Boolean enable)
+  M Void SetOverrides(Int32 row, Int32 column, GridLineType gridLineType, CellProperties override)
+  M Void SetOverrides(Int32 row, Int32 column, Int32 contentIndex, CellProperties override)
+  M Void SetRotation(Int32 row, Int32 column, Int32 contentIndex, Double angle)
+  M Void SetRowHeight(Double height)
+  M Void SetRowHeight(Int32 row, Double height)
+  M Void SetScale(Int32 row, Int32 column, Int32 contentIndex, Double scale)
+  M Void SetSize(Int32 numRows, Int32 numCols)
+  M Void SetTextHeight(Int32 row, Int32 column, Int32 contentIndex, Double height)
+  M Void SetTextHeight(Int32 row, Int32 col, Double height)
+  M Void SetTextHeight(Double height, Int32 rowTypes)
+  M Void SetTextRotation(Int32 row, Int32 col, RotationAngle rot)
+  M Void SetTextString(Int32 row, Int32 column, Int32 contentIndex, String text)
+  M Void SetTextString(Int32 row, Int32 col, String value)
+  M Void SetTextStyle(Int32 row, Int32 col, ObjectId id)
+  M Void SetTextStyle(ObjectId id, Int32 rowTypes)
+  M Void SetTextStyleId(Int32 row, Int32 column, Int32 contentIndex, ObjectId id)
+  M Void SetToolTip(Int32 row, Int32 column, String toolTip)
+  M Void SetValue(Int32 row, Int32 column, Int32 contentIndex, String value, ParseOption parseOption)
+  M Void SetValue(Int32 row, Int32 column, Int32 contentIndex, Object value, ParseOption parseOption)
+  M Void SetValue(Int32 row, Int32 column, Int32 contentIndex, Object value)
+  M Void SetValue(Int32 row, Int32 col, String pText, ParseOption nOption)
+  M Void SetValue(Int32 row, Int32 col, Object pValue)
+  M Void SuppressRegenerateTable(Boolean suppress)
+  M TableStyleOverride[] TableStyleOverrides()
+  M Double TextHeight(Int32 row, Int32 col)
+  M Double TextHeight(RowType type)
+  M RotationAngle TextRotation(Int32 row, Int32 col)
+  M String TextString(Int32 row, Int32 col, FormatOption nOption)
+  M String TextString(Int32 row, Int32 col)
+  M String TextStringConst(Int32 row, Int32 col)
+  M ObjectId TextStyle(Int32 row, Int32 col)
+  M ObjectId TextStyle(RowType type)
+  M UnitType UnitType(Int32 row, Int32 col)
+  M UnitType UnitType(RowType type)
+  M Void UnmergeCells(CellRange range)
+  M Void UpdateDataLink(UpdateDirection dir, UpdateOption option)
+  M Void UpdateDataLink(Int32 row, Int32 column, UpdateDirection dir, UpdateOption option)
+  M Object Value(Int32 row, Int32 col)
+  P Boolean BreakEnabled {get;set;}
+  P TableBreakFlowDirection BreakFlowDirection {get;set;}
+  P TableBreakOptions BreakOptions {get;set;}
+  P CellRange Cells {get;}
+  P ColumnsCollection Columns {get;}
+  P Vector3d Direction {get;set;}
+  P FlowDirection FlowDirection {get;set;}
+  P Boolean HasSubSelection {get;}
+  P Double Height {get;set;}
+  P Double HorizontalCellMargin {get;set;}
+  P Boolean IsHeaderSuppressed {get;set;}
+  P Boolean IsTitleSuppressed {get;set;}
+  P Double MinimumTableHeight {get;}
+  P Double MinimumTableWidth {get;}
+  P Int32 NumColumns {get;set;}
+  P Int32 NumRows {get;set;}
+  P RowsCollection Rows {get;}
+  P CellRange SubSelection {get;set;}
+  P ObjectId TableStyle {get;set;}
+  P String TableStyleName {get;}
+  P Double VerticalCellMargin {get;set;}
+  P Double Width {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.DimStyleTableRecord : Autodesk.AutoCAD.DatabaseServices.SymbolTableRecord
+  C ()
+  M ObjectId GetArrowId(DimArrowFlag whichArrow)
+  P Int32 Dimadec {get;set;}
+  P Boolean Dimalt {get;set;}
+  P Int32 Dimaltd {get;set;}
+  P Double Dimaltf {get;set;}
+  P Double Dimaltrnd {get;set;}
+  P Int32 Dimalttd {get;set;}
+  P Int32 Dimalttz {get;set;}
+  P Int32 Dimaltu {get;set;}
+  P Int32 Dimaltz {get;set;}
+  P String Dimapost {get;set;}
+  P Int32 Dimarcsym {get;set;}
+  P Double Dimasz {get;set;}
+  P Int32 Dimatfit {get;set;}
+  P Int32 Dimaunit {get;set;}
+  P Int32 Dimazin {get;set;}
+  P ObjectId Dimblk {get;set;}
+  P ObjectId Dimblk1 {get;set;}
+  P ObjectId Dimblk2 {get;set;}
+  P Double Dimcen {get;set;}
+  P Color Dimclrd {get;set;}
+  P Color Dimclre {get;set;}
+  P Color Dimclrt {get;set;}
+  P Int32 Dimdec {get;set;}
+  P Double Dimdle {get;set;}
+  P Double Dimdli {get;set;}
+  P Char Dimdsep {get;set;}
+  P Double Dimexe {get;set;}
+  P Double Dimexo {get;set;}
+  P Int32 Dimfrac {get;set;}
+  P Double Dimfxlen {get;set;}
+  P Boolean DimfxlenOn {get;set;}
+  P Double Dimgap {get;set;}
+  P Double Dimjogang {get;set;}
+  P Int32 Dimjust {get;set;}
+  P ObjectId Dimldrblk {get;set;}
+  P Double Dimlfac {get;set;}
+  P Boolean Dimlim {get;set;}
+  P ObjectId Dimltex1 {get;set;}
+  P ObjectId Dimltex2 {get;set;}
+  P ObjectId Dimltype {get;set;}
+  P Int32 Dimlunit {get;set;}
+  P LineWeight Dimlwd {get;set;}
+  P LineWeight Dimlwe {get;set;}
+  P String Dimpost {get;set;}
+  P Double Dimrnd {get;set;}
+  P Boolean Dimsah {get;set;}
+  P Double Dimscale {get;set;}
+  P Boolean Dimsd1 {get;set;}
+  P Boolean Dimsd2 {get;set;}
+  P Boolean Dimse1 {get;set;}
+  P Boolean Dimse2 {get;set;}
+  P Boolean Dimsoxd {get;set;}
+  P Int32 Dimtad {get;set;}
+  P Int32 Dimtdec {get;set;}
+  P Double Dimtfac {get;set;}
+  P Int32 Dimtfill {get;set;}
+  P Color Dimtfillclr {get;set;}
+  P Boolean Dimtih {get;set;}
+  P Boolean Dimtix {get;set;}
+  P Double Dimtm {get;set;}
+  P Int32 Dimtmove {get;set;}
+  P Boolean Dimtofl {get;set;}
+  P Boolean Dimtoh {get;set;}
+  P Boolean Dimtol {get;set;}
+  P Int32 Dimtolj {get;set;}
+  P Double Dimtp {get;set;}
+  P Double Dimtsz {get;set;}
+  P Double Dimtvp {get;set;}
+  P ObjectId Dimtxsty {get;set;}
+  P Double Dimtxt {get;set;}
+  P Boolean Dimtxtdirection {get;set;}
+  P Int32 Dimtzin {get;set;}
+  P Boolean Dimupt {get;set;}
+  P Int32 Dimzin {get;set;}
+  P Boolean IsModifiedForRecompute {get;}
+== Autodesk.AutoCAD.DatabaseServices.Leader : Autodesk.AutoCAD.DatabaseServices.Curve
+  C ()
+  M Boolean AppendVertex(Point3d pointToAdd)
+  M Void EvaluateLeader()
+  M DimStyleTableRecord GetDimstyleData()
+  M Void RemoveLastVertex()
+  M Void SetDimstyleData(DimStyleTableRecord style)
+  M Void SetPlane(Plane value)
+  M Boolean SetVertexAt(Int32 index, Point3d pointValue)
+  M Point3d VertexAt(Int32 value)
+  P Double AnnoHeight {get;}
+  P ObjectId Annotation {get;set;}
+  P Vector3d AnnotationOffset {get;set;}
+  P AnnotationType AnnoType {get;}
+  P Double AnnoWidth {get;}
+  P Double Dimasz {get;set;}
+  P Color Dimclrd {get;set;}
+  P ObjectId DimensionStyle {get;set;}
+  P String DimensionStyleName {get;set;}
+  P Double Dimgap {get;set;}
+  P ObjectId Dimldrblk {get;set;}
+  P LineWeight Dimlwd {get;set;}
+  P Boolean Dimsah {get;set;}
+  P Double Dimscale {get;set;}
+  P Int32 Dimtad {get;set;}
+  P Double Dimtxt {get;set;}
+  P Point3d FirstVertex {get;}
+  P Boolean HasArrowHead {get;set;}
+  P Boolean HasHookLine {get;}
+  P Boolean IsSplined {get;set;}
+  P Point3d LastVertex {get;}
+  P Vector3d Normal {get;}
+  P Int32 NumVertices {get;}
+  P ObjectId TextStyleId {get;set;}

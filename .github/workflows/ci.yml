@@ -1,0 +1,21 @@
+name: tests
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+
+jobs:
+  core-and-server:
+    # The plug-in needs the Autodesk DLLs and is built on a machine with Civil 3D (scripts/install.ps1);
+    # Core and Server - contract, permissions, validation, engines, exchange formats - are tested here.
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+      - name: Unit tests (no Civil 3D)
+        run: dotnet test tests/Horizun.Civil3D.Core.Tests -c Release --nologo

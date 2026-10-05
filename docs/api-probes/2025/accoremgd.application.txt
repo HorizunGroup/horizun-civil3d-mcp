@@ -1,0 +1,87 @@
+# accoremgd.dll 25.0.0.0 (Civil 3D 2025)
+== Autodesk.AutoCAD.ApplicationServices.Document : Autodesk.AutoCAD.Runtime.DisposableWrapper
+  M static Document Create(IntPtr unmanagedPointer)
+  M Void DowngradeDocOpen(Boolean bPromptForSave)
+  M Object GetLispSymbol(String name)
+  M DocumentLock LockDocument()
+  M DocumentLock LockDocument(DocumentLockMode lockMode, String globalCommandName, String localCommandName, Boolean promptIfFails)
+  M DocumentLockMode LockMode(Boolean bIncludeMyLocks)
+  M DocumentLockMode LockMode()
+  M Void PopDbmod()
+  M Void PushDbmod()
+  M Void SendStringToExecute(String command, Boolean activate, Boolean wrapUpInactiveDoc, Boolean echoCommand)
+  M Void SetLispSymbol(String name, Object value)
+  M Database TryGetDatabase()
+  M Void UpgradeDocOpen()
+  P String CommandInProgress {get;}
+  P Database Database {get;}
+  P Editor Editor {get;}
+  P DocumentSaveFormat FormatForSave {get;}
+  P Manager GraphicsManager {get;}
+  P Boolean IsActive {get;}
+  P Boolean IsNamedDrawing {get;}
+  P Boolean IsReadOnly {get;}
+  P String Name {get;}
+  P TransactionManager TransactionManager {get;}
+  P Hashtable UserData {get;}
+  P Window Window {get;}
+== Autodesk.AutoCAD.ApplicationServices.DocumentCollection : System.MarshalByRefObject
+  M Void AppContextNewDocument(String templateFileName)
+  M Void AppContextOpenDocument(String fileName)
+  M Void AppContextRecoverDocument(String fileName)
+  M Void CopyTo(Document[] array, Int32 index)
+  M Void ExecuteInApplicationContext(ExecuteInApplicationContextCallback callback, Object data)
+  M ExecutionResult ExecuteInCommandContextAsync(Func<Object,Task> callback, Object data)
+  M Document GetDocument(Database db)
+  M IEnumerator GetEnumerator()
+  M Tuple<Boolean,Document> GetPendingDocumentForSwitch()
+  P Int32 Count {get;}
+  P Document CurrentDocument {get;set;}
+  P DocumentSaveFormat DefaultFormatForSave {get;set;}
+  P Boolean DocumentActivationEnabled {get;set;}
+  P Boolean IsApplicationContext {get;}
+  P Document MdiActiveDocument {get;set;}
+== Autodesk.AutoCAD.ApplicationServices.Core.Application : System.Object
+  M static String EvaluateDiesel(String dieselCmd)
+  M static Object GetSystemVariable(String name)
+  M static WhoHasInfo GetWhoHasInfo(String pathname)
+  M static ResultBuffer Invoke(ResultBuffer args)
+  M static Boolean IsFileLocked(String pathname)
+  M static Void LoadJSScript(Uri urlJSFile)
+  M static Void Quit()
+  M static Void SetSystemVariable(String name, Object value)
+  M static Void ShowAlertDialog(String message)
+  M static Nullable<Boolean> ShowModalWindow(Window formToShow)
+  M static Nullable<Boolean> ShowModalWindow(Window owner, Window formToShow)
+  M static Nullable<Boolean> ShowModalWindow(IntPtr owner, Window formToShow)
+  M static Nullable<Boolean> ShowModalWindow(Window owner, Window formToShow, Boolean persistSizeAndPosition)
+  M static Nullable<Boolean> ShowModalWindow(IntPtr owner, Window formToShow, Boolean persistSizeAndPosition)
+  M static Void ShowModelessWindow(Window formToShow)
+  M static Void ShowModelessWindow(Window owner, Window formToShow)
+  M static Void ShowModelessWindow(IntPtr owner, Window formToShow)
+  M static Void ShowModelessWindow(Window owner, Window formToShow, Boolean persistSizeAndPosition)
+  M static Void ShowModelessWindow(IntPtr owner, Window formToShow, Boolean persistSizeAndPosition)
+  M static Object TryGetSystemVariable(String name)
+  M static Void UpdateScreen()
+  P static DocumentCollection DocumentManager {get;}
+  P static Boolean HasPickFirst {get;}
+  P static Boolean IsAdpDisabled {get;}
+  P static Boolean IsInBackgroundMode {get;}
+  P static Boolean IsInPlaceServer {get;}
+  P static Boolean IsQuiescent {get;}
+  P static LongTransactionManager LongTransactionManager {get;}
+  P static Window MainWindow {get;}
+  P static Publisher Publisher {get;}
+  P static RecentDocumentCollection RecentDocuments {get;}
+  P static UnmanagedResources UnmanagedResources {get;}
+  P static UserConfigurationManager UserConfigurationManager {get;}
+  P static Version Version {get;}
+== Autodesk.AutoCAD.ApplicationServices.DocumentLockMode : System.Enum
+  E AutoWrite
+  E ExclusiveWrite
+  E None
+  E NotLocked
+  E ProtectedAutoWrite
+  E Read
+  F Int32 value__
+  E Write

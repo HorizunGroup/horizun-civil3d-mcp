@@ -1,0 +1,82 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.Styles.SurfaceStyleCollection : Autodesk.Civil.DatabaseServices.Styles.StyleCollectionBase
+  M ObjectId Add(String name)
+== Autodesk.Civil.DatabaseServices.Styles.LabelStyleCollection : Autodesk.Civil.DatabaseServices.Styles.StyleCollectionBase
+  M ObjectId Add(String name)
+  M Void Remove(String styleName)
+  M Void Remove(Int32 index)
+  P LabelStyleDefault DefaultLabelStyle {get;}
+  P ExpressionCollection Expressions {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStylesSurfaceRoot : Autodesk.Civil.DatabaseServices.Styles.LabelStylesNode
+  P LabelStyleCollection ContourLabelStyles {get;}
+  P LabelStyleCollection SlopeLabelStyles {get;}
+  P LabelStyleCollection SpotElevationLabelStyles {get;}
+  P LabelStyleCollection WatershedLabelStyles {get;}
+NOTFOUND Autodesk.Civil.DrawingUnitType
+== Autodesk.Civil.AngleUnitType : System.Enum
+  E Degree
+  E Grad
+  E Radian
+  F Int32 value__
+NOTFOUND Autodesk.Civil.Settings.SettingsVolume
+NOTFOUND Autodesk.Civil.Settings.SettingsArea
+NOTFOUND Autodesk.Civil.Settings.SettingsDistance
+== Autodesk.Civil.Settings.SettingsAmbient+SettingsVolume : Autodesk.Civil.Settings.SettingsAmbient+SettingsUnitNumber`1[[Autodesk.Civil.VolumeUnitType, AeccDbMgd, Version=13.7.0.145, Culture=neutral, PublicKeyToken=null]]
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.Styles.StyleCollectionBase : Autodesk.Civil.DatabaseServices.TreeNodeCollectionBase
+  M ObjectId Add(String name)
+  M Void Remove(StyleBase style)
+  M Void Remove(String styleName)
+  M Void Remove(Int32 index)
+  P ObjectId Item[String styleName] {get;}
+  P ObjectId Item[Int32 index] {get;}
+== Autodesk.Civil.VolumeUnitType : System.Enum
+  E CubicFoot
+  E CubicMeter
+  E CubicYard
+  F Int32 value__
+== Autodesk.Civil.AreaUnitType : System.Enum
+  E Acre
+  E Hectare
+  E SquareFoot
+  E SquareKilometer
+  E SquareMeter
+  E SquareMile
+  E SquareYard
+  F Int32 value__
+== Autodesk.Civil.LinearUnitType : System.Enum
+  E Centimeter
+  E Decimeter
+  E Foot
+  E Inch
+  E Kilometer
+  E Meter
+  E Mile
+  E Millimeter
+  F Int32 value__
+  E Yard
+== Autodesk.Civil.Settings.SettingsAmbient+SettingsUnitNumber`1 : Autodesk.Civil.Settings.SettingsAmbient+SettingsUnitlessNumber
+  P PropertyEnum<TUnit> Unit {get;}
+NOTFOUND Autodesk.Civil.Settings.SettingsAmbient+SettingsUnit`1
+== Autodesk.Civil.Settings.SettingsAmbient+SettingsDistance : Autodesk.Civil.Settings.SettingsAmbient+SettingsUnitNumber`1[[Autodesk.Civil.LinearUnitType, AeccDbMgd, Version=13.7.0.145, Culture=neutral, PublicKeyToken=null]]
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.TreeNodeCollectionBase : Autodesk.Civil.TreeOidWrapper
+  M ObjectId Add(String name)
+  M Boolean Contains(String name)
+  M Boolean Contains(ObjectId item)
+  M IEnumerator<ObjectId> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M Void Remove(String name)
+  M Void Remove(Int32 index)
+  M ObjectIdCollection ToObjectIds()
+  P Int32 Count {get;}
+  P ObjectId Item[String name] {get;}
+  P ObjectId Item[Int32 index] {get;}
+== Autodesk.Civil.Settings.DrawingUnitType : System.Enum
+  E Feet
+  E Meters
+  F Int32 value__
+NOTFOUND Autodesk.Civil.DatabaseServices.PropertyEnum`1
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.PropertyEnum`1 : Autodesk.Civil.Property<int\,int\,Autodesk::Civil::CastOp<int\,int> >
+  P T Value {get;set;}

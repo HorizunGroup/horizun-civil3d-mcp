@@ -1,0 +1,23 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.Styles.DisplayStyle : Autodesk.Civil.CivilWrapper<AeccDbStyle>
+  P Color Color {get;set;}
+  P String Layer {get;set;}
+  P String Linetype {get;set;}
+  P Double LinetypeScale {get;set;}
+  P LineWeight Lineweight {get;set;}
+  P String PlotStyle {get;set;}
+  P Boolean Visible {get;set;}
+== Autodesk.Civil.DatabaseServices.Styles.SurfaceDisplayStyleType : System.Enum
+  E Boundary
+  E Directions
+  E Elevations
+  E Gridded
+  E MajorContour
+  E MinorContour
+  E Points
+  E SlopeArrows
+  E Slopes
+  E Triangles
+  E UserContours
+  F Int32 value__
+  E Watersheds

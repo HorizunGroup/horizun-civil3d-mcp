@@ -1,0 +1,170 @@
+# acdbmgd.dll 25.0.0.0 (Civil 3D 2025)
+== Autodesk.AutoCAD.DatabaseServices.DBObject : Autodesk.AutoCAD.GraphicsInterface.Drawable
+  V Cancelled(Object sender, EventArgs e)
+  V Copied(Object sender, ObjectEventArgs e)
+  V Erased(Object sender, ObjectErasedEventArgs e)
+  V Goodbye(Object sender, EventArgs e)
+  V Modified(Object sender, EventArgs e)
+  V ModifiedXData(Object sender, EventArgs e)
+  V ModifyUndone(Object sender, EventArgs e)
+  V ObjectClosed(Object sender, ObjectClosedEventArgs e)
+  V OpenedForModify(Object sender, EventArgs e)
+  V Reappended(Object sender, EventArgs e)
+  V SubObjectModified(Object sender, ObjectEventArgs e)
+  V Unappended(Object sender, EventArgs e)
+  M Void AddContext(ObjectContext context)
+  M Void ApplyPaperOrientationTransform(Viewport viewport)
+  M Void ApplyPartialUndo(DwgFiler undoFiler, RXClass classObj)
+  M Void Audit(AuditInfo auditInfo)
+  M Void Cancel()
+  M Void Close()
+  M Void CloseAndPage(Boolean onlyWhenClean)
+  M Void CreateExtensionDictionary()
+  M DecomposeForSaveReplacementRecord DecomposeForSave(DwgVersion version)
+  M DBObject DeepClone(DBObject ownerPointer, IdMapping idMap, Boolean isPrimary)
+  M Void DisableUndoRecording(Boolean disable)
+  M Void DowngradeOpen()
+  M Void DowngradeToNotify(Boolean wasWritable)
+  M Void DwgIn(DwgFiler filer)
+  M Void DwgOut(DwgFiler filer)
+  M Void DxfIn(DxfFiler filer)
+  M Void DxfOut(DxfFiler filer)
+  M Void Erase()
+  M Void Erase(Boolean erasing)
+  M static ObjectId FromAcadObject(Object acadObj)
+  M Byte[] GetBinaryDataForKey(String key)
+  M DBObjectEventExtender GetEventExtender(Boolean create)
+  M ObjectId GetField(String propertyName)
+  M ObjectId GetField()
+  M FullDwgVersion GetObjectSaveVersion(DxfFiler filer)
+  M FullDwgVersion GetObjectSaveVersion(DwgFiler filer)
+  M IParameter GetParameterInterface(String name, Boolean runtimeInterface)
+  M ObjectIdCollection GetPersistentReactorIds()
+  M List<RXObject> GetReactors()
+  M List<RXObject> GetTransientReactors()
+  M ResultBuffer GetXDataForApplication(String applicationName)
+  M Void HandOverTo(DBObject newPointer, Boolean keepXData, Boolean keepExtensionDictionary)
+  M Boolean HasContext(ObjectContext context)
+  M Boolean HasPersistentReactor(ObjectId objId)
+  M static Boolean IsCustomObject(ObjectId id)
+  M Void ReleaseExtensionDictionary()
+  M Void RemoveContext(ObjectContext context)
+  M Void RemoveField(ObjectId id)
+  M ObjectId RemoveField(String propertyName)
+  M ObjectId RemoveField()
+  M Void ResetScaleDependentProperties()
+  M Void SetBinaryDataForKey(String key, Byte[] chunk)
+  M ObjectId SetField(String propertyName, Field field)
+  M ObjectId SetField(Field field)
+  M Boolean SetFromStyle()
+  M Void SetObjectIdsInFlux()
+  M Void SetPaperOrientation(Boolean bPaperOrientation)
+  M Boolean SupportsCollection(String collectionName)
+  M Void SwapIdWith(ObjectId otherId, Boolean swapExtendedData, Boolean swapExtensionDictionary)
+  M Void SwapReferences(IdMapping idMap)
+  M Boolean UpgradeFromNotify()
+  M Void UpgradeOpen()
+  M DBObject WblockClone(RXObject ownerPointer, IdMapping idMap, Boolean isPrimary)
+  M Void XDataTransformBy(Matrix3d transform)
+  P Object AcadObject {get;}
+  P AnnotativeStates Annotative {get;set;}
+  P Guid ClassID {get;}
+  P Database Database {get;}
+  P Drawable Drawable {get;}
+  P ObjectId ExtensionDictionary {get;}
+  P Handle Handle {get;}
+  P Boolean HasFields {get;}
+  P Boolean HasSaveVersionOverride {get;set;}
+  P ObjectId Id {get;}
+  P Boolean IsAProxy {get;}
+  P Boolean IsCancelling {get;}
+  P Boolean IsErased {get;}
+  P Boolean IsEraseStatusToggled {get;}
+  P Boolean IsModified {get;}
+  P Boolean IsModifiedGraphics {get;}
+  P Boolean IsModifiedXData {get;}
+  P Boolean IsNewObject {get;}
+  P Boolean IsNotifyEnabled {get;}
+  P Boolean IsNotifying {get;}
+  P Boolean IsObjectIdsInFlux {get;}
+  P Boolean IsPersistent {get;}
+  P Boolean IsReadEnabled {get;}
+  P Boolean IsReallyClosing {get;}
+  P Boolean IsTransactionResident {get;}
+  P Boolean IsUndoing {get;}
+  P Boolean IsWriteEnabled {get;}
+  P DuplicateRecordCloning MergeStyle {get;set;}
+  P FullDwgVersion ObjectBirthVersion {get;}
+  P ObjectId ObjectId {get;}
+  P ObjectId OwnerId {get;set;}
+  P PaperOrientationStates PaperOrientation {get;}
+  P DwgFiler UndoFiler {get;}
+  P ResultBuffer XData {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.LayerTable : Autodesk.AutoCAD.DatabaseServices.SymbolTable
+  M Void GenerateUsageData()
+  M SymbolTableEnumerator GetEnumerator()
+  M ObjectIdCollection GetUnreconciledLayers()
+  P Boolean HasUnreconciledLayers {get;}
+  P LayerTable IncludingHidden {get;}
+  P LayerTable SkippingReconciled {get;}
+== Autodesk.AutoCAD.DatabaseServices.SymbolTable : Autodesk.AutoCAD.DatabaseServices.DBObject
+  M ObjectId Add(SymbolTableRecord value)
+  M SymbolTableEnumerator GetEnumerator()
+  M Boolean Has(ObjectId id)
+  M Boolean Has(String key)
+  P SymbolTable IncludingErased {get;}
+  P ObjectId Item[String key] {get;}
+== Autodesk.AutoCAD.DatabaseServices.LayerTableRecord : Autodesk.AutoCAD.DatabaseServices.SymbolTableRecord
+  C ()
+  M LayerViewportProperties GetViewportOverrides(ObjectId viewportId)
+  M Boolean HasViewportOverrides(ObjectId viewportId)
+  M Void RemoveAllOverrides()
+  P Color Color {get;set;}
+  P String Description {get;set;}
+  P EntityColor EntityColor {get;}
+  P Boolean HasOverrides {get;}
+  P Boolean IsFrozen {get;set;}
+  P Boolean IsHidden {get;set;}
+  P Boolean IsLocked {get;set;}
+  P Boolean IsOff {get;set;}
+  P Boolean IsPlottable {get;set;}
+  P Boolean IsReconciled {get;set;}
+  P Boolean IsUsed {get;}
+  P ObjectId LinetypeObjectId {get;set;}
+  P LineWeight LineWeight {get;set;}
+  P ObjectId MaterialId {get;set;}
+  P String PlotStyleName {get;set;}
+  P ObjectId PlotStyleNameId {get;set;}
+  P Transparency Transparency {get;set;}
+  P Boolean ViewportVisibilityDefault {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.ObjectId : System.ValueType
+  C (IntPtr oldId)
+  M Boolean Compare(ObjectId value1)
+  M Int32 CompareTo(ObjectId other)
+  M ObjectId ConvertToRedirectedId()
+  M Boolean Equals(Object obj)
+  M Int32 GetHashCode()
+  M DynamicMetaObject GetMetaObject(Expression parameter)
+  M DBObject GetObject(OpenMode mode, Boolean openErased, Boolean forceOpenOnLockedLayer)
+  M DBObject GetObject(OpenMode mode, Boolean openErased)
+  M DBObject GetObject(OpenMode mode)
+  M DBObject Open(OpenMode mode, Boolean openErased, Boolean forceOpenOnLockedLayer)
+  M DBObject Open(OpenMode mode, Boolean openErased)
+  M DBObject Open(OpenMode mode)
+  M String ToString(IFormatProvider provider)
+  M String ToString()
+  P Database Database {get;}
+  P Handle Handle {get;}
+  P Boolean IsEffectivelyErased {get;}
+  P Boolean IsErased {get;}
+  P Boolean IsNull {get;}
+  P Boolean IsResident {get;}
+  P Boolean IsValid {get;}
+  P Boolean IsWellBehaved {get;}
+  P Handle NonForwardedHandle {get;}
+  P static ObjectId Null {get;}
+  P RXClass ObjectClass {get;}
+  P Boolean ObjectLeftOnDisk {get;}
+  P Int64 OldId {get;}
+  P IntPtr OldIdPtr {get;}
+  P Database OriginalDatabase {get;}

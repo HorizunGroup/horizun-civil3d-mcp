@@ -1,0 +1,81 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.GeneralSurfaceProperties : System.Object
+  P Double MaximumCoordinateX {get;}
+  P Double MaximumCoordinateY {get;}
+  P Double MaximumElevation {get;}
+  P Double MeanElevation {get;}
+  P Double MinimumCoordinateX {get;}
+  P Double MinimumCoordinateY {get;}
+  P Double MinimumElevation {get;}
+  P Int32 NumberOfPoints {get;}
+  P Int32 RevisionNumber {get;}
+== Autodesk.Civil.DatabaseServices.TerrainSurfaceProperties : System.Object
+  P Double MaximumGradeOrSlope {get;}
+  P Double MeanGradeOrSlope {get;}
+  P Double MinimumGradeOrSlope {get;}
+  P Double SurfaceArea2D {get;}
+  P Double SurfaceArea3D {get;}
+== Autodesk.Civil.DatabaseServices.VolumeSurfaceProperties : System.Object
+  P Double AdjustedCutVolume {get;}
+  P Double AdjustedFillVolume {get;}
+  P Double AdjustedNetVolume {get;}
+  P ObjectId BaseSurface {get;}
+  P ObjectId ComparisonSurface {get;}
+  P Double CutFactor {get;}
+  P Double FillFactor {get;}
+  P Double UnadjustedCutVolume {get;}
+  P Double UnadjustedFillVolume {get;}
+  P Double UnadjustedNetVolume {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceVolumeInfo : System.ValueType
+  P Double Cut {get;}
+  P Double Fill {get;}
+  P Double Net {get;}
+== Autodesk.Civil.DatabaseServices.TinSurfaceProperties : System.Object
+  P Double MaximumTriangleArea {get;}
+  P Double MaximumTriangleLength {get;}
+  P Double MinimumTriangleArea {get;}
+  P Double MinimumTriangleLength {get;}
+  P Int32 NumberOfTriangles {get;}
+== Autodesk.Civil.DatabaseServices.GridVolumeSurface : Autodesk.Civil.DatabaseServices.Surface
+  M static ObjectId Create(String surfaceName, ObjectId baseSurfaceId, ObjectId comparisonSurfaceId, Double spacingX, Double spacingY, Double orientation, ObjectId styleId)
+  M static ObjectId Create(String surfaceName, ObjectId baseSurfaceId, ObjectId comparisonSurfaceId, Double spacingX, Double spacingY, Double orientation)
+  M GridSurfaceProperties GetGridProperties()
+  M VolumeSurfaceProperties GetVolumeProperties()
+  P Double CutFactor {get;set;}
+  P Double FillFactor {get;set;}
+== Autodesk.Civil.DatabaseServices.Entity : Autodesk.Aec.DatabaseServices.Entity
+  M UInt64 ComputeFingerPrint()
+  M DataShortcutKey GetReferenceInfo()
+  P Object Application {get;}
+  P String Description {get;set;}
+  P String DisplayName {get;}
+  P Object Document {get;}
+  P UInt64 FingerPrint {get;set;}
+  P ObjectId FolderId {get;}
+  P Boolean IsCWSReferenceObject {get;}
+  P Boolean IsCWSSourceObject {get;}
+  P Boolean IsReadOnlyReferenceObject {get;}
+  P Boolean IsReferencedSourceExisting {get;}
+  P Boolean IsReferenceObject {get;}
+  P Boolean IsReferenceStale {get;}
+  P Boolean IsReferenceSubObject {get;}
+  P Boolean IsReferenceValid {get;}
+  P Boolean IsUsed {get;}
+  P String Name {get;set;}
+  P Boolean ShowToolTip {get;set;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+== Autodesk.Civil.DatabaseServices.Styles.SurfaceStyle : Autodesk.Civil.DatabaseServices.Styles.StyleBase
+  M DisplayStyle GetDisplayStyleModel(SurfaceDisplayStyleType type)
+  M DisplayStyle GetDisplayStylePlan(SurfaceDisplayStyleType type)
+  M DisplayStyle GetDisplayStyleSection()
+  P SurfaceBoundaryStyle BoundaryStyle {get;}
+  P SurfaceContourStyle ContourStyle {get;}
+  P SurfaceDirectionStyle DirectionStyle {get;}
+  P SurfaceElevationStyle ElevationStyle {get;}
+  P SurfaceGridStyle GridStyle {get;}
+  P SurfacePointStyle PointStyle {get;}
+  P SurfaceSlopeArrowStyle SlopeArrowStyle {get;}
+  P SurfaceSlopeStyle SlopeStyle {get;}
+  P SurfaceTriangleStyle TriangleStyle {get;}
+  P SurfaceWatershedStyle WatershedStyle {get;}

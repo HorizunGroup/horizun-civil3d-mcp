@@ -1,0 +1,224 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.Network : Autodesk.Civil.DatabaseServices.GeoEntity
+  M ObjectId AddCurvePipe(ObjectId pipeFamilyId, ObjectId pipeSizeId, PipeCurveGeometry curveGeometry, Boolean applyRules)
+  M Void AddCurvePipe(ObjectId pipeFamilyId, ObjectId pipeSizeId, Curve3d curve, Boolean clockwise, ObjectId& newPipeId, Boolean applyRules)
+  M Void AddLinePipe(ObjectId pipeFamilyId, ObjectId pipeSizeId, LineSegment3d line, ObjectId& newPipeId, Boolean applyRules)
+  M Void AddStructure(ObjectId structureFamilyId, ObjectId structureSizeId, Point3d location, Double rotation, ObjectId& newStructureId, Boolean applyRules)
+  M Void AddStructure(ObjectId structureId)
+  M Void BreakPipe(ObjectId pipeIdToBreak, Point3d breakPoint, ObjectId existingStructureId, ObjectId& newPipeId)
+  M static ObjectId Create(CivilDocument document, String& networkName)
+  M static ObjectIdCollection FindShortestNetworkPath(ObjectId startPartId, ObjectId endPartId, Double& minLength)
+  M ObjectIdCollection GetPipeIds()
+  M ObjectIdCollection GetSpanningPipePlanLabelIds()
+  M ObjectIdCollection GetSpanningPipeProfileLabelIds()
+  M ObjectIdCollection GetStructureIds()
+  M Void MoveParts(ObjectIdCollection partIds, ObjectId dstNetworkId)
+  P String ModifiedPipeNetworkSectionLayerName {get;}
+  P String ModifiedPipePlanLayerName {get;}
+  P String ModifiedPipeProfileLayerName {get;}
+  P String ModifiedStructurePlanLayerName {get;}
+  P String ModifiedStructureProfileLayerName {get;}
+  P ObjectId PartsListId {get;set;}
+  P String PartsListName {get;set;}
+  P String PipeNameTemplate {get;set;}
+  P ObjectId PipeNetworkSectionLayerId {get;set;}
+  P String PipeNetworkSectionLayerName {get;set;}
+  P ObjectId PipePlanLabelStyleId {get;set;}
+  P String PipePlanLabelStyleName {get;set;}
+  P ObjectId PipePlanLayerId {get;set;}
+  P String PipePlanLayerName {get;set;}
+  P ObjectId PipeProfileLabelStyleId {get;set;}
+  P String PipeProfileLabelStyleName {get;set;}
+  P ObjectId PipeProfileLayerId {get;set;}
+  P String PipeProfileLayerName {get;set;}
+  P ObjectId ReferenceAlignmentId {get;set;}
+  P String ReferenceAlignmentName {get;set;}
+  P ObjectId ReferenceSurfaceId {get;set;}
+  P String ReferenceSurfaceName {get;set;}
+  P String StructureNameTemplate {get;set;}
+  P ObjectId StructurePlanLabelStyleId {get;set;}
+  P String StructurePlanLabelStyleName {get;set;}
+  P ObjectId StructurePlanLayerId {get;set;}
+  P String StructurePlanLayerName {get;set;}
+  P ObjectId StructureProfileLabelStyleId {get;set;}
+  P String StructureProfileLabelStyleName {get;set;}
+  P ObjectId StructureProfileLayerId {get;set;}
+  P String StructureProfileLayerName {get;set;}
+== Autodesk.Civil.DatabaseServices.Pipe : Autodesk.Civil.DatabaseServices.Part
+  M Boolean AdjustEndpoint(ConnectorPositionType endpointToAdjust, PipeEndLocation targetLocation, Double dOffset)
+  M Void ConnectToPipe(ConnectorPositionType sourceType, ObjectId destinationPipeId, ConnectorPositionType destinationType, ObjectId structureFamilyId, ObjectId structureSizeId, ObjectId& newStructureId, Boolean applyRules, Boolean force)
+  M Void ConnectToStructure(ConnectorPositionType sourcePosition, ObjectId destinationStructureId, Boolean force)
+  M Void Disconnect(ConnectorPositionType pos)
+  M ObjectIdCollection GetAvailablePipeLabelIds()
+  M ObjectIdCollection GetAvailableSpanningPipeLabelIds()
+  M Point3d GetClosestPointTo(Point3d sourcePoint)
+  M ObjectIdCollection GetLabelIds()
+  M Double GetParamAtPoint(Point3d point)
+  M ObjectIdCollection GetPipeLabelIds()
+  M Point3d GetPointAtParam(Double paramInterval)
+  M Boolean GetProject2dPointVertically(Point2d sourcePoint, Point3d& projectPoint)
+  M Boolean IsMaxCoverViolated(Double maxCover, Point3d[]& pointsViolated, Double[]& differences, Double[]& params)
+  M Boolean IsMinCoverViolated(Double minCover, Point3d[]& pointsViolated, Double[]& differences, Double[]& params)
+  M Void ResizeByInnerDiameterOrWidth(Double innerDiameterOrWidth, Boolean useClosestSize)
+  M Void SetSlopeHoldEnd(Double endValue)
+  M Void SetSlopeHoldStart(Double startValue)
+  P Double Bearing {get;}
+  P Double CoverOfEndpoint {get;}
+  P Double CoverOfStartPoint {get;}
+  P SweptShapeType CrossSectionalShape {get;}
+  P CircularArc2d Curve2d {get;}
+  P PipeCurveGeometry CurveGeometry {get;set;}
+  P Double EndOffset {get;}
+  P Point3d EndPoint {get;set;}
+  P Double EndStation {get;}
+  P ObjectId EndStructureId {get;}
+  P Double EnergyGradeLineDown {get;set;}
+  P Double EnergyGradeLineUp {get;set;}
+  P FlowDirectionType FlowDirection {get;}
+  P FlowDirectionMethodType FlowDirectionMethod {get;set;}
+  P Double FlowRate {get;set;}
+  P HoldOnResizeType HoldOnResizeType {get;set;}
+  P Double HydraulicGradeLineDown {get;set;}
+  P Double HydraulicGradeLineUp {get;set;}
+  P Double InnerDiameterOrWidth {get;}
+  P Double InnerHeight {get;}
+  P Double JunctionLoss {get;set;}
+  P Double Length2D {get;}
+  P Double Length2DCenterToCenter {get;}
+  P Double Length2DToInsideEdge {get;}
+  P Double Length3D {get;}
+  P Double Length3DCenterToCenter {get;}
+  P Double Length3DToInsideEdge {get;}
+  P Double MaximumCover {get;}
+  P Double MinimumCover {get;}
+  P Double OuterDiameterOrWidth {get;}
+  P Double OuterHeight {get;}
+  P Double Radius {get;}
+  P Int32 ReturnPeriod {get;set;}
+  P Double Slope {get;}
+  P Double StartOffset {get;}
+  P Point3d StartPoint {get;set;}
+  P Double StartStation {get;}
+  P ObjectId StartStructureId {get;}
+  P ObjectId StyleId {get;set;}
+  P PipeSubEntityType SubEntityType {get;}
+== Autodesk.Civil.DatabaseServices.Structure : Autodesk.Civil.DatabaseServices.Part
+  M Void ConnectToPipe(ObjectId pipeId, ConnectorPositionType positionType)
+  M Void Disconnect(ObjectId pipeId)
+  M ObjectIdCollection GetAvailableStructureLabelIds()
+  M ObjectIdCollection GetConnectedCatchmentIds()
+  M String[] GetConnectedPipeNames()
+  M ObjectIdCollection GetConnectedPressurePipeIds()
+  M ObjectIdCollection GetLabelIds()
+  M Boolean IsConnectedPipeFlowingIn(Int32 index)
+  M Boolean IsConnectedPipeFlowingOut(Int32 index)
+  M Boolean IsPointInsideStructureRegion(Point3d point)
+  M Boolean ResizeByPipeDepths()
+  M Void ResizeJunctionStructure(String partFamilyGuid, Double rimElevation, Double sumpElevation)
+  P Boolean AutomaticRimSurfaceAdjustment {get;set;}
+  P Double BarrelPipeClearance {get;}
+  P BoundingShapeType BoundingShape {get;}
+  P Double CatchmentsArea {get;set;}
+  P Double CatchmentsRunoffCoefficient {get;set;}
+  P Double CatchmentsTimeOfConcentration {get;set;}
+  P Double ConeHeight {get;}
+  P ObjectId ConnectedPipe[Int32 index] {get;}
+  P Int32 ConnectedPipesCount {get;}
+  P StructureControlSumpType ControlSumpBy {get;set;}
+  P String Cover {get;}
+  P Double DiameterOrWidth {get;}
+  P Double Easting {get;set;}
+  P Double EnergyGradeLine {get;set;}
+  P Double FloorThickness {get;}
+  P String Frame {get;}
+  P Double FrameDiameter {get;}
+  P Double FrameHeight {get;}
+  P String Grate {get;}
+  P Double HeadwallBaseThickness {get;}
+  P Double HeadwallBaseWidth {get;}
+  P Double Height {get;}
+  P Double HydraulicGradeLine {get;set;}
+  P Double InnerDiameterOrWidth {get;}
+  P Double InnerLength {get;}
+  P Double KnownCapacity {get;set;}
+  P Double Length {get;}
+  P Point3d Location {get;set;}
+  P Double Northing {get;set;}
+  P Double Offset {get;}
+  P Double PipeCenterDepth[Int32 index] {get;}
+  P Double PipeInnerDiameterOrWidth[Int32 index] {get;}
+  P Double PipeInvertDepth[Int32 index] {get;}
+  P Double PipeLowestBottomDepth {get;}
+  P Double PipeOuterBottomDepth[Int32 index] {get;}
+  P Double PipeOuterTopDepth[Int32 index] {get;}
+  P Double PipeUpperTopDepth {get;}
+  P Double PipeWallThickness[Int32 index] {get;}
+  P Double RimElevation {get;set;}
+  P Double RimToSumpHeight {get;set;}
+  P Double Rotation {get;set;}
+  P Double Station {get;}
+  P ObjectId StyleId {get;set;}
+  P Double SumpDepth {get;set;}
+  P Double SumpElevation {get;set;}
+  P Double SurfaceAdjustmentValue {get;set;}
+  P Double SurfaceElevationAtInsertionPoint {get;}
+  P Double VerticalPipeClearance {get;}
+NOTFOUND Autodesk.Civil.DatabaseServices.PartsList
+NOTFOUND Autodesk.Civil.DatabaseServices.PartFamily
+NOTFOUND Autodesk.Civil.DatabaseServices.PartSize
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.Styles.PartsList : Autodesk.Civil.DatabaseServices.Styles.StyleBase
+  M Void AddPartFamilyByDescription(DomainType domain, String description)
+  M Void AddPartFamilyByGuid(DomainType domain, String guid)
+  M static DataPartFamily[] GetAvailablePartFamilies(DomainType domain)
+  M ObjectIdCollection GetPartFamilyIdsByDomain(DomainType domain)
+  M Void RemovePartFamily(ObjectId partFamilyId)
+  M Void RemovePartFamily(String description)
+  P ObjectId Item[String description] {get;}
+  P ObjectId Item[Int32 index] {get;}
+  P Int32 PartFamilyCount {get;}
+== Autodesk.Civil.DatabaseServices.Styles.PartsListCollection : Autodesk.Civil.DatabaseServices.Styles.StyleCollectionBase
+  M ObjectId Add(String name)
+== Autodesk.Civil.DatabaseServices.Styles.PartFamily : Autodesk.Civil.DatabaseServices.DBObject
+  M Void AddPartSize(SizeFilterRecord partSizeFilter)
+  M Void RemovePartSize(ObjectId partSizeId)
+  M Void RemovePartSize(Int32 index)
+  P BoundingShapeType BoundingShape {get;}
+  P String Description {get;}
+  P DomainType Domain {get;}
+  P String GUID {get;}
+  P ObjectId Item[String description] {get;}
+  P ObjectId Item[Int32 index] {get;}
+  P Int32 PartSizeCount {get;}
+  P SizeFilterRecord PartSizeFilter {get;}
+  P PartType PartType {get;}
+  P SweptShapeType SweptShape {get;}
+== Autodesk.Civil.DatabaseServices.Styles.PartSize : Autodesk.Civil.DatabaseServices.DBObject
+  P ObjectId MaterialStyleId {get;set;}
+  P ObjectId PartStyleId {get;set;}
+  P String[] PayItems {get;set;}
+  P ObjectId RulesStyleId {get;set;}
+  P PartDataRecord SizeDataRecord {get;set;}
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.PartDataRecord : System.Object
+  M Void Dispose()
+  M PartDataField[] GetAllDataFields()
+  M PartDataField GetDataFieldBy(String name)
+  M PartDataField GetDataFieldBy(PartContextType context)
+  M PartDataField GetDataFieldBy(PartContextType context, Int32 index)
+  M Int32 GetMaxIndex(PartContextType context)
+  M PartContextType[] GetSupportedContexts()
+== Autodesk.Civil.DatabaseServices.PartDataField : System.Object
+  P PartContextType Context {get;}
+  P String ContextString {get;}
+  P PartCatalogDataType DataType {get;}
+  P String Description {get;}
+  P Int32 Index {get;}
+  P Boolean IsFromList {get;}
+  P Boolean IsFromRange {get;}
+  P Boolean IsReadOnly {get;}
+  P String Name {get;}
+  P String Units {get;}
+  P Object Value {get;set;}
+  P PartDataList ValueList {get;}
+  P PartDataRange ValueRange {get;}

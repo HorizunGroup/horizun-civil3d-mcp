@@ -1,0 +1,54 @@
+# accoremgd.dll 25.0.0.0 (Civil 3D 2025)
+== Autodesk.AutoCAD.PlottingServices.PlotFactory : System.Object
+  M static PlotEngine CreatePreviewEngine(Int32 previewFlags)
+  M static PlotEngine CreatePublishEngine()
+  P static ProcessPlotState ProcessPlotState {get;}
+== Autodesk.AutoCAD.PlottingServices.PlotEngine : Autodesk.AutoCAD.Runtime.DisposableWrapper
+  M Void BeginDocument(PlotInfo plotInfo, String documentName, Object parameters, Int32 copies, Boolean plotToFile, String fileName)
+  M Void BeginGenerateGraphics(Object parameters)
+  M Void BeginPage(PlotPageInfo pageInfo, PlotInfo plotInfo, Boolean lastPage, Object parameters)
+  M Void BeginPlot(PlotProgress plotProgress, Object parameters)
+  M Void Destroy()
+  M Void EndDocument(Object parameters)
+  M Void EndGenerateGraphics(Object parameters)
+  M Void EndPage(Object parameters)
+  M Void EndPlot(Object parameters)
+  P Boolean IsBackgroundPackaging {get;}
+== Autodesk.AutoCAD.PlottingServices.PlotInfo : Autodesk.AutoCAD.Runtime.RXObject
+  C ()
+  M Boolean IsCompatibleDocument(PlotInfo info)
+  P PlotConfig DeviceOverride {get;set;}
+  P Boolean IsValidated {get;}
+  P ObjectId Layout {get;set;}
+  P Int32 MergeStatus {get;}
+  P PlotSettings OverrideSettings {get;set;}
+  P PlotConfig ValidatedConfig {get;set;}
+  P PlotSettings ValidatedSettings {get;set;}
+== Autodesk.AutoCAD.PlottingServices.PlotInfoValidator : Autodesk.AutoCAD.Runtime.RXObject
+  C ()
+  M Int32 IsCustomPossible(PlotInfo info)
+  M Void Validate(PlotInfo info)
+  P Int32 DimensionalWeight {get;set;}
+  P Int32 MediaBoundsWeight {get;set;}
+  P Int32 MediaGroupWeight {get;set;}
+  P MatchingPolicy MediaMatchingPolicy {get;set;}
+  P Int32 MediaMatchingThreshold {get;set;}
+  P Int32 PrintableBoundsWeight {get;set;}
+  P Int32 SheetDimensionalWeight {get;set;}
+  P Int32 SheetMediaGroupWeight {get;set;}
+== Autodesk.AutoCAD.PlottingServices.PlotProgressDialog : Autodesk.AutoCAD.PlottingServices.PlotProgress
+  C (Boolean isPreview, Int32 sheetCount, Boolean showCancelSheetButton)
+  M Void Destroy()
+  M Void OnBeginPlot()
+  M Void OnBeginSheet()
+  M Void OnEndPlot()
+  M Void OnEndSheet()
+  P Boolean IsSingleSheetPlot {get;}
+  P String PlotMsgString[PlotMessageIndex index] {get;set;}
+== Autodesk.AutoCAD.PlottingServices.PlotPageInfo : Autodesk.AutoCAD.Runtime.RXObject
+  C ()
+  P Int32 EntityCount {get;}
+  P Int32 GradientCount {get;}
+  P Int32 OleObjectCount {get;}
+  P Int32 RasterCount {get;}
+  P Int32 ShadedViewportType {get;}

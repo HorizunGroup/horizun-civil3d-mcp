@@ -1,0 +1,13 @@
+<Project>
+  <PropertyGroup>
+    <Version>0.8.0</Version>
+    <Company>Horizun Group</Company>
+    <Product>Horizun Civil 3D MCP</Product>
+    <Copyright>Copyright 2026 Horizun Group</Copyright>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Deterministic>true</Deterministic>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+</Project>

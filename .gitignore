@@ -1,0 +1,13 @@
+bin/
+obj/
+.tools/
+.vs/
+*.user
+TestResults/
+artifacts/
+*.log
+
+# Local-only working notes, unsanitized originals and test outputs (never published)
+.local/
+__pycache__/
+*.pyc

@@ -1,0 +1,14 @@
+Horizun Civil 3D MCP
+Copyright 2026 Horizun Group
+
+Licensed under the Apache License, Version 2.0. See LICENSE.
+
+Architecture and safety contract derived from Horizun Revit MCP
+(Copyright 2026 Horizun Group, Apache License 2.0): bounded FIFO request gate,
+single-use confirmation tokens, post-commit re-read verification and
+permission profiles.
+
+The Autodesk AutoCAD and Civil 3D APIs are REFERENCED at build time and are
+NEVER redistributed by this project. AutoCAD, Civil 3D and Autodesk are
+trademarks of Autodesk, Inc. This project is not affiliated with, endorsed by,
+or sponsored by Autodesk, Inc.

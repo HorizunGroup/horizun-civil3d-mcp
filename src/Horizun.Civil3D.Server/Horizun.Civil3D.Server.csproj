@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Horizun Civil 3D MCP server: MCP over stdio for the client, local named
+       pipe to the Civil 3D plug-in. No network listener. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <AssemblyName>horizun-civil3d-mcp</AssemblyName>
+    <RootNamespace>Horizun.Civil3D.Server</RootNamespace>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Horizun.Civil3D.Core\Horizun.Civil3D.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Horizun.Civil3D.Core.Tests" />
+  </ItemGroup>
+</Project>

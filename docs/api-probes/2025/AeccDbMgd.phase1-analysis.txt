@@ -1,0 +1,77 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.SurfaceAnalysis : System.Object
+  M ObjectIdCollection CreateWaterdrop(Point2d location, WaterdropObjectType objectType)
+  M Void Dispose()
+  M SurfaceAnalysisContourData[] GetContourData()
+  M SurfaceAnalysisDirectionData[] GetDirectionData()
+  M SurfaceAnalysisElevationData[] GetElevationData()
+  M SurfaceAnalysisSlopeArrowData[] GetSlopeArrowData()
+  M SurfaceAnalysisSlopeData[] GetSlopeData()
+  M SurfaceAnalysisUserDefinedContourData[] GetUserDefinedContourData()
+  M SurfaceAnalysisWatershedDataCollection GetWatershedData()
+  M Void SetContourData(SurfaceAnalysisContourData[] analysisData)
+  M Void SetDirectionData(SurfaceAnalysisDirectionData[] analysisData)
+  M Void SetElevationData(SurfaceAnalysisElevationData[] analysisData)
+  M Void SetSlopeArrowData(SurfaceAnalysisSlopeArrowData[] analysisData)
+  M Void SetSlopeData(SurfaceAnalysisSlopeData[] analysisData)
+  M Void SetUserDefinedContourData(SurfaceAnalysisUserDefinedContourData[] analysisData)
+  M Void SetWatershedData(SurfaceAnalysisWatershedDataCollection analysisData)
+== Autodesk.Civil.DatabaseServices.SurfaceAnalysisElevationData : System.Object
+  C (Double minimumElevation, Double maximumElevation, Color scheme)
+  C ()
+  M Void Initialize(ColorValue* codeValue)
+  M Void Update(ColorValue* A_0)
+  P Double MaximumElevation {get;set;}
+  P Double MinimumElevation {get;set;}
+  P Color Scheme {get;set;}
+== Autodesk.Civil.DatabaseServices.SurfaceAnalysisSlopeData : System.Object
+  C (Double minimumSlope, Double maximumSlope, Color scheme)
+  C ()
+  M Void Initialize(ColorValue* codeValue)
+  M Void Update(ColorValue* A_0)
+  P Double MaximumSlope {get;set;}
+  P Double MinimumSlope {get;set;}
+  P Color Scheme {get;set;}
+== Autodesk.Civil.DatabaseServices.Styles.SurfaceStyle : Autodesk.Civil.DatabaseServices.Styles.StyleBase
+  M DisplayStyle GetDisplayStyleModel(SurfaceDisplayStyleType type)
+  M DisplayStyle GetDisplayStylePlan(SurfaceDisplayStyleType type)
+  M DisplayStyle GetDisplayStyleSection()
+  P SurfaceBoundaryStyle BoundaryStyle {get;}
+  P SurfaceContourStyle ContourStyle {get;}
+  P SurfaceDirectionStyle DirectionStyle {get;}
+  P SurfaceElevationStyle ElevationStyle {get;}
+  P SurfaceGridStyle GridStyle {get;}
+  P SurfacePointStyle PointStyle {get;}
+  P SurfaceSlopeArrowStyle SlopeArrowStyle {get;}
+  P SurfaceSlopeStyle SlopeStyle {get;}
+  P SurfaceTriangleStyle TriangleStyle {get;}
+  P SurfaceWatershedStyle WatershedStyle {get;}
+== Autodesk.Civil.DatabaseServices.Styles.SurfaceElevationStyle : Autodesk.Civil.DatabaseServices.Styles.SurfaceBaseStyle
+  P ColorSchemeType ColorScheme {get;set;}
+  P ColorSchemeType CutScheme {get;set;}
+  P DataBandingType DataBandingMode {get;set;}
+  P SurfaceDisplayType DisplayEntityMode {get;set;}
+  P ColorSchemeType FillScheme {get;set;}
+  P SurfaceGroupValuesByType GroupValuesBy {get;set;}
+  P Double IntervalLength {get;set;}
+  P ObjectId LegendStyleId {get;set;}
+  P String LegendStyleName {get;set;}
+  P Int32 NumberOfRanges {get;set;}
+  P PrecisionRangeType RangePrecision {get;set;}
+== Autodesk.Civil.DatabaseServices.Styles.SurfaceSlopeStyle : Autodesk.Civil.DatabaseServices.Styles.SurfaceBaseStyle
+  P ColorSchemeType ColorScheme {get;set;}
+  P SurfaceDisplayType DisplayEntityMode {get;set;}
+  P SurfaceGroupValuesByType GroupValuesBy {get;set;}
+  P ObjectId LegendStyleId {get;set;}
+  P String LegendStyleName {get;set;}
+  P Int32 NumberOfRanges {get;set;}
+  P PrecisionRangeType RangePrecision {get;set;}
+== Autodesk.Civil.DatabaseServices.Styles.DisplayStyle : Autodesk.Civil.CivilWrapper<AeccDbStyle>
+  P Color Color {get;set;}
+  P String Layer {get;set;}
+  P String Linetype {get;set;}
+  P Double LinetypeScale {get;set;}
+  P LineWeight Lineweight {get;set;}
+  P String PlotStyle {get;set;}
+  P Boolean Visible {get;set;}
+NOTFOUND Autodesk.Civil.DatabaseServices.Styles.SurfaceAnalysisStyle

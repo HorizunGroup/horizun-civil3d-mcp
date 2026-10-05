@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Host-agnostic rules shared by the MCP server and the Civil 3D plug-in.
+       NO Autodesk references here: everything in this assembly is tested
+       without Civil 3D. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Horizun.Civil3D.Core</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Horizun.Civil3D.Core.Tests" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,98 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.ProfileEntityCollection : Autodesk.Civil.CivilWrapper<AeccDbVAlignment>
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByEntityEndAndThroughPoint(UInt32 attachEntityId, Point3d passPoint)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByEntityEndAndThroughPoint(UInt32 attachEntityId, Point2d passPoint)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByThreePoints(Point3d point, Point3d point2, Point3d point3)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByThreePoints(Point2d point, Point2d point2, Point2d point3)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndEndGrade(Point3d point1, Point3d point2, Double endGrade)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndEndGrade(Point2d point1, Point2d point2, Double endGrade)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndK(Point3d point1, Point3d point2, VerticalCurveType curveType, Double k)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndK(Point2d point1, Point2d point2, VerticalCurveType curveType, Double k)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndRadius(Point3d point1, Point3d point2, VerticalCurveType curType, Double radius)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndRadius(Point2d point1, Point2d point2, VerticalCurveType curType, Double radius)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndStartGrade(Point3d point1, Point3d point2, Double startGrade)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndStartGrade(Point2d point1, Point2d point2, Double startGrade)
+  M ProfileTangent AddFixedTangent(Point3d startPoint, Point3d endPoint)
+  M ProfileTangent AddFixedTangent(Point2d startPoint, Point2d endPoint)
+  M ProfileTangent AddFixedTangentWithPreviousEntity(UInt32 previousEntityId, Point3d startPoint, Point3d endPoint)
+  M ProfileTangent AddFixedTangentWithPreviousEntity(UInt32 previousEntityId, Point2d startPoint, Point2d endPoint)
+  M ProfileParabolaSymmetric AddFloatingSymmetricParabolaByThroughPointAndGrade(UInt32 attachEntityId, Point3d passPoint, Double grade, EntityAttachType attachType)
+  M ProfileParabolaSymmetric AddFloatingSymmetricParabolaByThroughPointAndGrade(UInt32 attachEntityId, Point2d passPoint, Double grade, EntityAttachType attachType)
+  M ProfileParabolaSymmetric AddFloatingSymmetricParabolaByThroughPointAndK(UInt32 attachEntityId, Point3d passPoint, Double k, EntityAttachType attachType)
+  M ProfileParabolaSymmetric AddFloatingSymmetricParabolaByThroughPointAndK(UInt32 attachEntityId, Point2d passPoint, Double k, EntityAttachType attachType)
+  M ProfileParabolaSymmetric AddFloatingSymmetricParabolaByThroughPointAndRadius(UInt32 attachEntityId, Point3d passPoint, Double radius, EntityAttachType attachType)
+  M ProfileParabolaSymmetric AddFloatingSymmetricParabolaByThroughPointAndRadius(UInt32 attachEntityId, Point2d passPoint, Double radius, EntityAttachType attachType)
+  M ProfileTangent AddFloatingTangent(UInt32 entityId, Point3d passPoint, EntityAttachType attachType)
+  M ProfileTangent AddFloatingTangent(UInt32 entityId, Point2d passPoint, EntityAttachType attachType)
+  M ProfileParabolaAsymmetric AddFreeAsymmetricParabolaByPVIAndLengths(ProfilePVI attachProfilePVI, Double length1, Double length2)
+  M ProfileCircular AddFreeCircularCurveByPVIAndLength(ProfilePVI attachProfilePVI, Double length)
+  M ProfileCircular AddFreeCircularCurveByPVIAndRadius(ProfilePVI attachProfilePVI, Double radius)
+  M ProfileCircular AddFreeCircularCurveByPVIAndThroughPoint(ProfilePVI attachProfilePVI, Point3d passPoint)
+  M ProfileCircular AddFreeCircularCurveByPVIAndThroughPoint(ProfilePVI attachProfilePVI, Point2d passPoint)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByK(UInt32 previousEntityId, UInt32 nextEntityId, VerticalCurveType curveType, Double k)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByLength(UInt32 previousEntityId, UInt32 nextEntityId, VerticalCurveType curveType, Double length, Boolean preferFlat)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByPVIAndCurveLength(ProfilePVI attachProfilePVI, Double curveLength)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByPVIAndK(ProfilePVI attachProfilePVI, Double k)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByPVIAndThroughPoint(ProfilePVI attachProfilePVI, Point3d passPoint)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByPVIAndThroughPoint(ProfilePVI attachProfilePVI, Point2d passPoint)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByRadius(UInt32 previousEntityId, UInt32 nextEntityId, VerticalCurveType curveType, Double radius)
+  M ProfileTangent AddFreeTangent(UInt32 previousEntityId, UInt32 nextEntityId)
+  M Void Clear()
+  M ProfileEntity EntityAtId(UInt32 id)
+  M IEnumerator<ProfileEntity> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M Void Remove(ProfileEntity entity)
+  M Void RemoveAt(Int32 index)
+  P Int32 Count {get;}
+  P UInt32 FirstEntity {get;}
+  P ProfileEntity Item[Int32 index] {get;}
+  P UInt32 LastEntity {get;}
+== Autodesk.Civil.DatabaseServices.ProfileTangent : Autodesk.Civil.DatabaseServices.ProfileEntity
+  P ProfileEntityType EntityType {get;}
+  P Double Grade {get;}
+  P Double ThroughPoint1Elevation {get;set;}
+  P Double ThroughPoint1Station {get;set;}
+  P Double ThroughPoint2Elevation {get;set;}
+  P Double ThroughPoint2Station {get;set;}
+== Autodesk.Civil.DatabaseServices.ProfileParabolaSymmetric : Autodesk.Civil.DatabaseServices.ProfileEntity
+  M Double GetHeadlightSightDistance(Double maxAngle, Double headlightHeight)
+  M Double GetPassingSightDistance(Double eyeHeight, Double objectHeight)
+  M Double GetStoppingSightDistance(Double eyeHeight, Double objectHeight)
+  M Void SetHeadlightSightDistance(Double maxAngle, Double headlightHeight, Double distance)
+  M Void SetPassingSightDistance(Double eyeHeight, Double objectHeight, Double distance)
+  M Void SetStoppingSightDistance(Double eyeHeight, Double objectHeight, Double distance)
+  P VerticalCurveType CurveType {get;}
+  P ProfileEntityType EntityType {get;}
+  P Double GradeAtThroughPoint1 {get;set;}
+  P Double GradeAtThroughPoint2 {get;set;}
+  P Double GradeChange {get;}
+  P Double GradeIn {get;}
+  P Double GradeOut {get;}
+  P Double HighLowPointElevation {get;}
+  P Double HighLowPointStation {get;}
+  P Double K {get;set;}
+  P Double M {get;}
+  P Double PVIElevation {get;}
+  P Double PVIStation {get;}
+  P Double Radius {get;set;}
+  P Double TangentOffsetAtPVI {get;}
+  P Double ThroughPoint1Elevation {get;set;}
+  P Double ThroughPoint1Station {get;set;}
+  P Double ThroughPoint2Elevation {get;set;}
+  P Double ThroughPoint2Station {get;set;}
+  P Double ThroughPoint3Elevation {get;set;}
+  P Double ThroughPoint3Station {get;set;}
+== Autodesk.Civil.DatabaseServices.ProfileCircular : Autodesk.Civil.DatabaseServices.ProfileEntity
+  P VerticalCurveType CurveType {get;}
+  P ProfileEntityType EntityType {get;}
+  P Double GradeChange {get;}
+  P Double GradeIn {get;}
+  P Double GradeOut {get;}
+  P Double HighLowPointElevation {get;}
+  P Double HighLowPointStation {get;}
+  P Double K {get;set;}
+  P Double M {get;}
+  P Double PVIElevation {get;}
+  P Double PVIStation {get;}
+  P Double Radius {get;set;}
+  P Double TangentOffsetAtPVI {get;}

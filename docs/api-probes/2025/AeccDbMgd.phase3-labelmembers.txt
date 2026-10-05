@@ -1,0 +1,173 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.Label : Autodesk.Civil.DatabaseServices.LabelBase
+  M Void ClearAllTextComponentOverrides()
+  M ObjectId GetReferenceTextTarget(ObjectId referenceTextComponentId)
+  M ObjectIdCollection GetTextComponentIds()
+  M TextJustificationType GetTextComponentJustificationOverride(ObjectId labelStyleComponentId)
+  M String GetTextComponentOverride(ObjectId labelStyleComponentId)
+  M Boolean IsTextComponentOverriden(ObjectId labelStyleComponentId)
+  M Void Reset()
+  M Void ResetLocation()
+  M Void ResetProperties()
+  M Void SetReferenceTextTarget(ObjectId referenceTextComponentId, ObjectId referenceObjectId)
+  M Void SetTextComponentJustificationOverride(ObjectId labelStyleComponentId, TextJustificationType textJustificationType)
+  M Void SetTextComponentOverride(ObjectId labelStyleComponentId, String textOverride, TextJustificationType textJustificationType)
+  M Void SetTextComponentOverride(ObjectId labelStyleComponentId, String textOverride)
+  P AnchorInfo AnchorInfo {get;}
+  P Double AnchorMarkerRotationAngle {get;set;}
+  P ObjectId AnchorMarkerStyleId {get;set;}
+  P Boolean CanRotate {get;}
+  P AnchorInfo DimensionAnchorInfo {get;}
+  P DimensionAnchorOptionType DimensionAnchorOption {get;set;}
+  P Double DimensionAnchorValue {get;set;}
+  P Boolean Dragged {get;}
+  P Vector3d DraggedOffset {get;set;}
+  P Boolean Flipped {get;set;}
+  P Point3d LabelLocation {get;set;}
+  P LeaderAttachmentBehaviorType LeaderAttachment {get;set;}
+  P LeaderTailVisibilityType LeaderTailVisibility {get;set;}
+  P LeaderVisibilityType LeaderVisibility {get;set;}
+  P Boolean Pinned {get;set;}
+  P Boolean Reversed {get;set;}
+  P Double RotationAngle {get;set;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+== Autodesk.Civil.DatabaseServices.FeatureLabel : Autodesk.Civil.DatabaseServices.Label
+== Autodesk.Civil.DatabaseServices.LabelGroup : Autodesk.Civil.DatabaseServices.LabelBase
+  M LabelGroupSubEntity GetAt(UInt32 index)
+  M Void ResetAllSubCommonLabelLocations()
+  M Void ResetAllSubCommonLabelProperties()
+  M Void ResetAllSubCommonLabels()
+  P DimensionAnchorOptionType DefaultDimensionAnchorOption {get;set;}
+  P Double DefaultDimensionAnchorValue {get;set;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+  P IList<LabelGroupSubEntity> SubEntities {get;}
+  P UInt32 SubEntityCount {get;}
+== Autodesk.Civil.DatabaseServices.AlignmentLabelGroup : Autodesk.Civil.DatabaseServices.AutoFeatureLabelGroup
+  M static ObjectIdCollection GetAvailableLabelGroupIds(RXClass rxClass, ObjectId alignmentId, Boolean includeDerived)
+  M static ObjectIdCollection GetAvailableLabelGroups(RXClass rxClass, ObjectId alignmentId, Boolean includeDerived)
+== Autodesk.Civil.DatabaseServices.AutoFeatureLabelGroup : Autodesk.Civil.DatabaseServices.LabelGroup
+  M Void SetRange(Double rangeStart, Double rangeEnd)
+  P Double RangeEnd {get;set;}
+  P Boolean RangeEndFromFeature {get;set;}
+  P Double RangeStart {get;set;}
+  P Boolean RangeStartFromFeature {get;set;}
+== Autodesk.Civil.DatabaseServices.SurfaceElevationLabel : Autodesk.Civil.DatabaseServices.FeatureLabel
+  M static ObjectId Create(ObjectId surfaceId, Point2d location, ObjectId labelStyleId, ObjectId markerStyleId)
+  M static ObjectId Create(ObjectId surfaceId, Point2d location)
+  M static ObjectIdCollection GetAvailableSurfaceElevationLabelIds(ObjectId surfaceId)
+  M static ObjectIdCollection GetAvailableSurfaceElevationLabels(ObjectId surfaceId)
+  P Point2d Location {get;set;}
+== Autodesk.Civil.DatabaseServices.StationOffsetLabel : Autodesk.Civil.DatabaseServices.FeatureLabel
+  M static ObjectId Create(ObjectId alignmentId, ObjectId labelStyleId, ObjectId markerStyleId, Point2d location)
+  P Boolean AnchorAtXY {get;set;}
+  P Point2d Location {get;set;}
+== Autodesk.Civil.DatabaseServices.StationElevationLabel : Autodesk.Civil.DatabaseServices.FeatureLabel
+  M static ObjectId Create(ObjectId profileViewId, ObjectId labelStyleId, ObjectId markerStyleId, Double station, Double elevation)
+  P Double Elevation {get;}
+  P ObjectId Profile1Id {get;set;}
+  P ObjectId Profile2Id {get;set;}
+  P Double Station {get;}
+== Autodesk.Civil.DatabaseServices.NoteLabel : Autodesk.Civil.DatabaseServices.Label
+  M static ObjectId Create(Database database, Point3d location)
+  M static ObjectId Create(Point3d location, ObjectId labelStyleId, ObjectId markerStyleId)
+  M static ObjectIdCollection GetAvailableLabelIds(Database database)
+== Autodesk.Civil.DatabaseServices.GeneralSegmentLabel : Autodesk.Civil.DatabaseServices.Label
+  M static ObjectId Create(ObjectId featureId, Double ratio)
+  M static ObjectId Create(ObjectId featureId, Double ratio, ObjectId lineLabelStyleId, ObjectId curveLabelStyleId)
+  M static ObjectIdCollection GetAvailableLabelIds(ObjectId featureId)
+  P ObjectId CurveLabelStyleId {get;set;}
+  P ObjectId LineLabelStyleId {get;set;}
+  P Double Ratio {get;set;}
+  P String StyleName {get;set;}
+== Autodesk.Civil.DatabaseServices.SurfaceSlopeLabel : Autodesk.Civil.DatabaseServices.FeatureLabel
+  M static ObjectId Create(ObjectId surfaceId, Point2d point1, Point2d point2, ObjectId labelStyleId)
+  M static ObjectId Create(ObjectId surfaceId, Point2d point1, Point2d point2)
+  M static ObjectId Create(ObjectId surfaceId, Point2d location, ObjectId labelStyleId)
+  M static ObjectId Create(ObjectId surfaceId, Point2d location)
+  M static ObjectIdCollection GetAvailableSurfaceSlopeLabelIds(ObjectId surfaceId)
+  M static ObjectIdCollection GetAvailableSurfaceSlopeLabels(ObjectId surfaceId)
+  P Point2d Location {get;set;}
+  P Point2d Location2 {get;set;}
+  P SurfaceSlopeLabelType SlopeLabelType {get;}
+== Autodesk.Civil.DatabaseServices.ProfileLabelGroup : Autodesk.Civil.DatabaseServices.AutoFeatureLabelGroup
+  M static ObjectIdCollection GetAvailableLabelGroupIds(RXClass runtimeClass, ObjectId profileViewId, ObjectId profileId, Boolean includeDerived)
+  M static ObjectIdCollection GetAvailableLabelGroups(RXClass runtimeClass, ObjectId profileViewId, ObjectId profileId, Boolean includeDerived)
+== Autodesk.Civil.DatabaseServices.Styles.MarkerStyleCollection : Autodesk.Civil.DatabaseServices.Styles.StyleCollectionBase
+  M ObjectId Add(String name)
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.LabelBase : Autodesk.Civil.DatabaseServices.Entity
+  P Boolean AllowsAnchorMarker {get;}
+  P Boolean AllowsDimensionAnchors {get;}
+  P Boolean AllowsDragging {get;}
+  P Boolean AllowsFlipping {get;}
+  P Boolean AllowsLeaderAttachment {get;}
+  P Boolean AllowsPinning {get;}
+  P Boolean AllowsReversing {get;}
+  P StaggerLabelType AutoStagger {get;set;}
+  P DimensionAnchorOptionType DefaultDimensionAnchorOption {get;set;}
+  P Double DefaultDimensionAnchorValue {get;set;}
+  P ObjectId FeatureId {get;}
+  P LabelType LabelType {get;}
+  P LabelMaskType Mask {get;set;}
+  P LabelRotationType RotationType {get;}
+  P ObjectId ViewId {get;}
+== Autodesk.Civil.DatabaseServices.AnchorInfo : System.Object
+  C (Boolean isOnCurve, Point2d centerOfCurve, Vector3d directionAtLocation, Point3d location)
+  F Point2d CenterOfCurve
+  F Vector3d DirectionAtLocation
+  F Boolean IsOnCurve
+  F Point3d Location
+== Autodesk.Civil.DatabaseServices.LabelGroupSubEntity : System.Object
+  M Void ClearAllTextComponentOverrides()
+  M ObjectId GetReferenceTextTarget(ObjectId referenceTextComponentId)
+  M ObjectIdCollection GetTextComponentIds()
+  M TextJustificationType GetTextComponentJustificationOverride(ObjectId labelStyleComponentId)
+  M String GetTextComponentOverride(ObjectId labelStyleComponentId)
+  M Boolean IsTextComponentOverriden(ObjectId newVal)
+  M Void Reset()
+  M Void ResetLocation()
+  M Void ResetProperties()
+  M Void SetReferenceTextTarget(ObjectId referenceTextComponentId, ObjectId referenceObjectId)
+  M Void SetTextComponentJustificationOverride(ObjectId labelStyleComponentId, TextJustificationType textJustificationType)
+  M Void SetTextComponentOverride(ObjectId labelStyleComponentId, String textOverride, TextJustificationType textJustificationType)
+  M Void SetTextComponentOverride(ObjectId labelStyleComponentId, String textOverride)
+  P Boolean AllowsAnchorMarker {get;}
+  P Boolean AllowsDimensionAnchors {get;}
+  P Boolean AllowsDragging {get;}
+  P Boolean AllowsFlipping {get;}
+  P Boolean AllowsLeaderAttachment {get;}
+  P Boolean AllowsPinning {get;}
+  P Boolean AllowsReversing {get;}
+  P AnchorInfo AnchorInfo {get;}
+  P Double AnchorMarkerRotationAngle {get;set;}
+  P ObjectId AnchorMarkerStyleId {get;set;}
+  P Boolean CanRotate {get;}
+  P DimensionAnchorOptionType DefaultDimensionAnchorOption {get;set;}
+  P Double DefaultDimensionAnchorValue {get;set;}
+  P AnchorInfo DimensionAnchorInfo {get;}
+  P DimensionAnchorOptionType DimensionAnchorOption {get;set;}
+  P Double DimensionAnchorValue {get;set;}
+  P Boolean Dragged {get;}
+  P Vector3d DraggedOffset {get;set;}
+  P Boolean Flipped {get;set;}
+  P UInt32 Index {get;}
+  P Point3d LabelLocation {get;set;}
+  P LeaderAttachmentBehaviorType LeaderAttachment {get;set;}
+  P LeaderTailVisibilityType LeaderTailVisibility {get;set;}
+  P LeaderVisibilityType LeaderVisibility {get;set;}
+  P LabelGroup Parent {get;}
+  P Boolean Pinned {get;set;}
+  P Boolean Reversed {get;set;}
+  P Double RotationAngle {get;set;}
+  P LabelRotationType RotationType {get;}
+  P ObjectId StyleId {get;set;}
+  P Boolean Visibility {get;set;}
+== Autodesk.Civil.DatabaseServices.ProfilePVILabelGroup : Autodesk.Civil.DatabaseServices.ProfileLabelGroup
+  M static ObjectId Create(ObjectId profileViewId, ObjectId profileId, ObjectId styleId)
+  M static ObjectIdCollection GetAvailableLabelGroupIds(ObjectId profileViewId, ObjectId profileId)
+  M static ObjectIdCollection GetAvailableLabelGroups(ObjectId profileViewId, ObjectId profileId, Boolean includeDerived)
+  P Double StaggerLineHeight1 {get;set;}
+  P Double StaggerLineHeight2 {get;set;}
+  P Double Weeding {get;set;}

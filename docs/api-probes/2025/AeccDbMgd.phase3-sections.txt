@@ -1,0 +1,35 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.SampleLine : Autodesk.Civil.DatabaseServices.GeoEntity
+  M static ObjectId Create(String sampleLineName, ObjectId sampleLineGroupId, Point2dCollection points)
+  M static ObjectId Create(String sampleLineName, ObjectId sampleLineGroupId, Double station)
+  M ObjectId GetMaterialSectionId(Guid materialListGuid, Guid materialGuid)
+  M ObjectId GetSectionId(ObjectId sampledSourceId)
+  M ObjectIdCollection GetSectionIds()
+  M ObjectIdCollection GetSectionViewIds()
+  P ObjectId GroupId {get;}
+  P Boolean LockToStation {get;set;}
+  P Int32 Number {get;}
+  P Double Station {get;set;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+  P SampleLineVertexCollection Vertices {get;}
+== Autodesk.Civil.DatabaseServices.SectionViewGroup : System.Object
+  M ObjectIdCollection GetSectionViewIds()
+  M Void ImportLabelSetForSectionsInGroup(SectionSource sectionSource, ObjectId labelSetId)
+  M Void UpdateLayout()
+  P Boolean IsIndividual {get;}
+  P String LayoutName {get;}
+  P String Name {get;}
+  P ObjectId PlotStyleId {get;set;}
+  P ObjectId SampleLineGroupId {get;}
+  P String TemplateFilePath {get;}
+== Autodesk.Civil.DatabaseServices.SampleLineVertexCollection : Autodesk.Civil.CivilWrapper<AeccDbSampleLine>
+  M IEnumerator<SampleLineVertex> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  P Int32 Count {get;}
+  P SampleLineVertex Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.SectionPointCollection : Autodesk.Civil.CivilWrapper<AeccDbSection>
+  M IEnumerator<SectionPoint> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  P Int32 Count {get;}
+  P SectionPoint Item[Int32 index] {get;}

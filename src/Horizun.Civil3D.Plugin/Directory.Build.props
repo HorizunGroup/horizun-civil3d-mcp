@@ -1,0 +1,8 @@
+<Project>
+  <!-- Per-year intermediate folders so 2025/2026/2027 builds never share obj\. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)..'))" />
+  <PropertyGroup>
+    <Civil3DYear Condition="'$(Civil3DYear)' == ''">2025</Civil3DYear>
+    <BaseIntermediateOutputPath>obj\$(Civil3DYear)\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+</Project>

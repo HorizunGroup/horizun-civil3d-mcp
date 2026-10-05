@@ -1,0 +1,139 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.StationOffsetLabel : Autodesk.Civil.DatabaseServices.FeatureLabel
+  M static ObjectId Create(ObjectId alignmentId, ObjectId labelStyleId, ObjectId markerStyleId, Point2d location)
+  P Boolean AnchorAtXY {get;set;}
+  P Point2d Location {get;set;}
+== Autodesk.Civil.DatabaseServices.SurfaceElevationLabel : Autodesk.Civil.DatabaseServices.FeatureLabel
+  M static ObjectId Create(ObjectId surfaceId, Point2d location, ObjectId labelStyleId, ObjectId markerStyleId)
+  M static ObjectId Create(ObjectId surfaceId, Point2d location)
+  M static ObjectIdCollection GetAvailableSurfaceElevationLabelIds(ObjectId surfaceId)
+  M static ObjectIdCollection GetAvailableSurfaceElevationLabels(ObjectId surfaceId)
+  P Point2d Location {get;set;}
+== Autodesk.Civil.DatabaseServices.SurfaceSlopeLabel : Autodesk.Civil.DatabaseServices.FeatureLabel
+  M static ObjectId Create(ObjectId surfaceId, Point2d point1, Point2d point2, ObjectId labelStyleId)
+  M static ObjectId Create(ObjectId surfaceId, Point2d point1, Point2d point2)
+  M static ObjectId Create(ObjectId surfaceId, Point2d location, ObjectId labelStyleId)
+  M static ObjectId Create(ObjectId surfaceId, Point2d location)
+  M static ObjectIdCollection GetAvailableSurfaceSlopeLabelIds(ObjectId surfaceId)
+  M static ObjectIdCollection GetAvailableSurfaceSlopeLabels(ObjectId surfaceId)
+  P Point2d Location {get;set;}
+  P Point2d Location2 {get;set;}
+  P SurfaceSlopeLabelType SlopeLabelType {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceContourLabelGroup : Autodesk.Civil.DatabaseServices.AutoFeatureLabelGroup
+  M static ObjectId Create(ObjectId surfaceId, Point2dCollection labelLinePoints, ObjectId majorContourlabelStyleId, ObjectId minorContourlabelStyleId, ObjectId userContourlabelStyleId)
+  M static ObjectId Create(ObjectId surfaceId, Point2dCollection labelLinePoints)
+  M static Void CreateMultipleAtInterval(ObjectId surfaceId, Point2d labelLineStartPoint, Point2d labelLineEndPoint, Double interval, SurfaceContourLabelGroupCreateOption options)
+  M static Void CreateMultipleAtInterval(ObjectId surfaceId, Point2d labelLineStartPoint, Point2d labelLineEndPoint, Double interval)
+  M static ObjectIdCollection GetAvailableLabelGroupIds(ObjectId surfaceId)
+  M static ObjectIdCollection GetAvailableLabelGroups(ObjectId surfaceId)
+  M Point2d GetLabelLinePoint(Int32 index)
+  M Void SetLabelLinePoint(Int32 index, Point2d __unnamed001)
+  P Boolean IsLabelLineVisible {get;set;}
+  P Boolean IsMajorContourLabelVisible {get;set;}
+  P Boolean IsMinorContourLabelVisible {get;set;}
+  P Boolean IsUserContourLabelVisible {get;set;}
+  P Point2dCollection LabelLinePoints {get;set;}
+  P ObjectId MajorContourLabelStyleId {get;set;}
+  P ObjectId MinorContourLabelStyleId {get;set;}
+  P Double RangeEnd {get;set;}
+  P Boolean RangeEndFromFeature {get;set;}
+  P Double RangeStart {get;set;}
+  P Boolean RangeStartFromFeature {get;set;}
+  P ObjectId UserContourLabelStyleId {get;set;}
+== Autodesk.Civil.DatabaseServices.AlignmentStationLabelGroup : Autodesk.Civil.DatabaseServices.AlignmentLabelGroup
+  M static ObjectId Create(ObjectId styleId, ObjectId alignmentId, Double increment)
+  M static ObjectId CreateMajor(ObjectId styleId, ObjectId alignmentId, Double increment)
+  M static ObjectIdCollection GetAvailableLabelGroupIds(ObjectId alignmentId, Boolean includeDerived)
+  M static ObjectIdCollection GetAvailableLabelGroups(ObjectId alignmentId, Boolean includeDerived)
+  P Double Increment {get;set;}
+  P Double RangeEnd {get;set;}
+  P Double RangeStart {get;set;}
+== Autodesk.Civil.DatabaseServices.AlignmentCurveLabel : Autodesk.Civil.DatabaseServices.FeatureLabel
+  M static ObjectId Create(AlignmentSubEntityArc subEntityArc, ObjectId labelStyleId)
+  M static ObjectId Create(AlignmentArc entity, ObjectId labelStyleId)
+== Autodesk.Civil.DatabaseServices.AlignmentTangentLabel : Autodesk.Civil.DatabaseServices.FeatureLabel
+  M static ObjectId Create(AlignmentSubEntityLine subEntityLine, ObjectId labelStyleId)
+  M static ObjectId Create(AlignmentLine entityLine, ObjectId labelStyleId)
+== Autodesk.Civil.DatabaseServices.ProfilePVILabelGroup : Autodesk.Civil.DatabaseServices.ProfileLabelGroup
+  M static ObjectId Create(ObjectId profileViewId, ObjectId profileId, ObjectId styleId)
+  M static ObjectIdCollection GetAvailableLabelGroupIds(ObjectId profileViewId, ObjectId profileId)
+  M static ObjectIdCollection GetAvailableLabelGroups(ObjectId profileViewId, ObjectId profileId, Boolean includeDerived)
+  P Double StaggerLineHeight1 {get;set;}
+  P Double StaggerLineHeight2 {get;set;}
+  P Double Weeding {get;set;}
+== Autodesk.Civil.DatabaseServices.StationElevationLabel : Autodesk.Civil.DatabaseServices.FeatureLabel
+  M static ObjectId Create(ObjectId profileViewId, ObjectId labelStyleId, ObjectId markerStyleId, Double station, Double elevation)
+  P Double Elevation {get;}
+  P ObjectId Profile1Id {get;set;}
+  P ObjectId Profile2Id {get;set;}
+  P Double Station {get;}
+== Autodesk.Civil.DatabaseServices.NoteLabel : Autodesk.Civil.DatabaseServices.Label
+  M static ObjectId Create(Database database, Point3d location)
+  M static ObjectId Create(Point3d location, ObjectId labelStyleId, ObjectId markerStyleId)
+  M static ObjectIdCollection GetAvailableLabelIds(Database database)
+== Autodesk.Civil.DatabaseServices.GeneralSegmentLabel : Autodesk.Civil.DatabaseServices.Label
+  M static ObjectId Create(ObjectId featureId, Double ratio)
+  M static ObjectId Create(ObjectId featureId, Double ratio, ObjectId lineLabelStyleId, ObjectId curveLabelStyleId)
+  M static ObjectIdCollection GetAvailableLabelIds(ObjectId featureId)
+  P ObjectId CurveLabelStyleId {get;set;}
+  P ObjectId LineLabelStyleId {get;set;}
+  P Double Ratio {get;set;}
+  P String StyleName {get;set;}
+== Autodesk.Civil.DatabaseServices.PolylineOptions : System.ValueType
+  M Boolean Equals(PolylineOptions other)
+  M Boolean Equals(Object obj)
+  M Int32 GetHashCode()
+  P Boolean AddCurvesBetweenTangents {get;set;}
+  P Boolean EraseExistingEntities {get;set;}
+  P ObjectId PlineId {get;set;}
+== Autodesk.Civil.DatabaseServices.SubassemblyCollection : Autodesk.Civil.CivilWrapper<AcDbDatabase>
+  M ObjectId Add(String subassemblyName, ObjectId entityId, Double midOrdinateDist, LinkCreationType linkCreationOption)
+  M IEnumerator<ObjectId> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M ObjectIdCollection GetSubassemblyIdsByName(String subassemblyName)
+  M ObjectId ImportSACSubassembly(String subassemblyName, String pktFilePath, Point3d location)
+  M ObjectId ImportStockSubassembly(String subassemblyName, String className, Point3d location)
+  M ObjectId ImportSubassembly(String subassemblyName, String atcFilePath, String itemId, Point3d location)
+  M Boolean Remove(ObjectId subassemblyId)
+  M Void RemoveAt(Int32 index)
+  P Int32 Count {get;}
+  P ObjectId Item[String subassemblyName] {get;}
+  P ObjectId Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.CorridorSurfaceCollection : Autodesk.Civil.CivilWrapper<AeccDbCorridor>
+  M CorridorSurface Add(String corridorSurfaceName)
+  M CorridorSurface Add(String corridorSurfaceName, ObjectId styleId)
+  M IEnumerator<CorridorSurface> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M Boolean Remove(CorridorSurface corridorSurface)
+  M Boolean Remove(String corridorSurfaceName)
+  M Void RemoveAt(Int32 index)
+  M String[] SurfaceNames()
+  P ObjectId CorridorId {get;}
+  P Int32 Count {get;}
+  P CorridorSurface Item[String surfaceName] {get;}
+  P CorridorSurface Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.CorridorSurface : Autodesk.Civil.CivilWrapper<AeccDbCorridor>
+  M Void AddFeatureLineCode(String codeName)
+  M Void AddLinkCode(String codeName, Boolean addAsBreakLine)
+  M Boolean FeatureLineCodeIsBreak(String name)
+  M String[] FeatureLineCodes()
+  M Double FindElevationAtXY(Double x, Double y)
+  M Point3dCollection GetSampleElevations(Double startX, Double startY, Double endX, Double endY)
+  M Boolean IsLinkCodeAsBreakLine(String codeName)
+  M String[] LinkCodes()
+  M String[] PointCodes()
+  M Boolean RemoveFeatureLineCode(String codeName)
+  M Boolean RemoveLinkCode(String codeName)
+  M Void SetLinkCodeAsBreakLine(String codeName, Boolean asBreakLine)
+  P CorridorSurfaceBoundaryCollection Boundaries {get;}
+  P ObjectId CorridorId {get;}
+  P String Description {get;set;}
+  P Boolean IsBuild {get;set;}
+  P Boolean IsDraw {get;}
+  P CorridorSurfaceMaskCollection Masks {get;}
+  P String Name {get;set;}
+  P OverhangCorrectionType OverhangCorrection {get;set;}
+  P ObjectId RenderMaterialId {get;set;}
+  P ObjectId SectionStyleId {get;}
+  P ObjectId SurfaceId {get;}
+  P ObjectId SurfaceStyleId {get;set;}

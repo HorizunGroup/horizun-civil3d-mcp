@@ -1,0 +1,85 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.AlignmentCurve : Autodesk.Civil.DatabaseServices.AlignmentEntity
+  P Point2d EndPoint {get;}
+  P Double EndStation {get;}
+  P Double HighestDesignSpeed {get;}
+  P Double Length {get;set;}
+  P Point2d StartPoint {get;}
+  P Double StartStation {get;}
+== Autodesk.Civil.DatabaseServices.AlignmentEntityCollection : Autodesk.Civil.CivilWrapper<AeccDbAlignment>
+  M AlignmentArc AddFixedCurve(Int32 previousEntityId, Point3d passThroughPoint)
+  M AlignmentArc AddFixedCurve(Point3d passThroughPoint1, Vector3d directionAtPassThroughPoint1, Double radius, Boolean isClockwise)
+  M AlignmentArc AddFixedCurve(Int32 previousEntityId, Point3d passThroughPoint1, Point3d passThroughPoint2, Double radius, Boolean isClockwise, Boolean isGreaterThan180)
+  M AlignmentArc AddFixedCurve(Point3d passThroughPoint1, Point3d passThroughPoint2, Double radius, Boolean isClockwise)
+  M AlignmentArc AddFixedCurve(Point3d passThroughPoint1, Point3d passThroughPoint2, Vector3d directionAtPassThroughPoint2)
+  M AlignmentArc AddFixedCurve(Point3d passThroughPoint1, Vector3d directionAtPassThroughPoint1, Point3d passThroughPoint2)
+  M AlignmentArc AddFixedCurve(Point3d centerPoint, Point3d passThroughPoint, Boolean isClockwise)
+  M AlignmentArc AddFixedCurve(Point3d centerPoint, Double radius, Boolean isClockwise)
+  M AlignmentArc AddFixedCurve(Int32 previousEntityId, Point3d startPoint, Point3d middlePoint, Point3d endPoint)
+  M AlignmentLine AddFixedLine(Int32 previousEntityId, Double distance)
+  M AlignmentLine AddFixedLine(Point3d startPoint, Point3d endPoint)
+  M AlignmentLine AddFixedLine(Int32 previousEntityId, Point3d startPoint, Point3d endPoint)
+  M AlignmentSpiral AddFixedSpiral(Int32 previousEntityId, Double startRadius, Double endRadius, Double length, SpiralType spiralDefinition)
+  M AlignmentSpiral AddFixedSpiral(Int32 previousEntityId, Double radius, Double length, SpiralCurveType spiralCurveType, SpiralType spiralDefinition)
+  M AlignmentSpiral AddFixedSpiral(Int32 previousEntityId, Point3d startPoint, Point3d spiralPI, Point3d endPoint, SpiralType definitionType)
+  M AlignmentSpiral AddFixedSpiral(Int32 previousEntityId, Point3d startPoint, Point3d spiralPI, Double startRadius, Double endRadius, Double length, Boolean isClockwise, SpiralType spiralDefinition)
+  M AlignmentSpiral AddFixedSpiral(Int32 previousEntityId, Point3d startPoint, Point3d spiralPI, Double radius, Double length, SpiralCurveType spiralCurveType, Boolean isClockwise, SpiralType spiralDefinition)
+  M AlignmentSCS AddFloatingArcWithSpiral(Int32 attachEntityId, EntityAttachType attachType, Double spParam, SpiralParamType spType, Double radius, Double arcLength, Boolean isClockwise, SpiralType spiralDefinition)
+  M AlignmentSCS AddFloatingArcWithSpiral(Int32 attachEntityId, EntityAttachType attachType, Double spParam, SpiralParamType spType, Double radius, Point3d passThroughPoint, Boolean isGreaterThan180, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFloatingCSS(Int32 nextEntityId, Point3d passThroughPoint1, Point3d passThroughPoint2, Double sp3Param, Double sp4Param, SpiralParamType spType, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFloatingCSS(Int32 nextEntityId, Double radius, Point3d passThroughPoint, Double sp3Param, Double sp4Param, SpiralParamType spType, SpiralType spiralDefinition)
+  M AlignmentArc AddFloatingCurve(Double radius, Double paramValue, CurveParamType paramType, Boolean isClockwise, Int32 nextEntityId)
+  M AlignmentArc AddFloatingCurve(Int32 previousEntityId, Double radius, Double paramValue, CurveParamType paramType, Boolean isClockwise)
+  M AlignmentArc AddFloatingCurve(Int32 previousEntityId, Point3d passThroughPoint)
+  M AlignmentArc AddFloatingCurve(Int32 previousEntityId, Point3d passThroughPoint, Vector3d directionAtPassThroughPoint)
+  M AlignmentArc AddFloatingCurve(Point3d passThroughPoint, Double radius, Boolean isGreaterThan180, CurveType curveType, Int32 nextEntityId)
+  M AlignmentArc AddFloatingCurve(Point3d passThroughPoint, Int32 nextEntityId)
+  M AlignmentArc AddFloatingCurve(Point3d passThroughPoint, Vector3d directionAtPassThroughPoint, Int32 nextEntityId)
+  M AlignmentArc AddFloatingCurve(Int32 previousEntityId, Point3d passThroughPoint, Double radius, Boolean isGreaterThan180, CurveType curveType)
+  M AlignmentLine AddFloatingLine(Double length, Int32 nextEntityId)
+  M AlignmentLine AddFloatingLine(Point3d passThroughPoint, Int32 nextEntityId)
+  M AlignmentLine AddFloatingLine(Int32 previousEntityId, Double length)
+  M AlignmentLine AddFloatingLine(Int32 previousEntityId, Point3d passThroughPoint)
+  M AlignmentSTS AddFloatingLineWithSpiral(Int32 attachEntityId, EntityAttachType attachType, Double spParam, SpiralParamType spType, Double tanLength, SpiralType spiralDefinition)
+  M AlignmentSTS AddFloatingLineWithSpiral(Int32 attachEntityId, EntityAttachType attachType, Double spParam, SpiralParamType spType, Point3d passThroughPoint, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFloatingSSC(Int32 previousEntityId, Double sp1Param, Double sp2Param, SpiralParamType spType, Point3d passThroughPoint1, Point3d passThroughPoint2, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFloatingSSC(Int32 previousEntityId, Double sp1Param, Double sp2Param, SpiralParamType spType, Double radius, Point3d passThroughPoint, SpiralType spiralDefinition)
+  M AlignmentSpiral AddFloatSpiral(Double radius, Double length, Int32 nextEntityId, Boolean isClockwise, SpiralType spiralDefinition)
+  M AlignmentSpiral AddFloatSpiral(Int32 previousEntityId, Double radius, Double length, Boolean isClockwise, SpiralType spiralDefinition)
+  M AlignmentArc AddFreeCurve(Int32 previousEntityId, Int32 nextEntityId, Point3d passThroughPoint)
+  M AlignmentArc AddFreeCurve(Int32 previousEntityId, Int32 nextEntityId, Double paramValue, CurveParamType paramType, Boolean isGreaterThan180, CurveType curveType)
+  M AlignmentLine AddFreeLine(Int32 previousEntityId, Int32 nextEntityId)
+  M AlignmentSCS AddFreeSCS(Int32 previousEntityId, Int32 nextEntityId, Double spiral1Param, Double spiral2Param, SpiralParamType spType, Double radius, Boolean isGreaterThan180, SpiralType spiralDefinition)
+  M AlignmentSCSCS AddFreeSCSCS(Int32 previousEntityId, Int32 nextEntityId, SCSCSConstraints constraintValue, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFreeSCSS(Int32 previousEntityId, Int32 nextEntityId, Double sp1Param, Double radius, Double sp3Param, Double sp4Param, Boolean isGreaterThan180, SpiralType spiralDefinition)
+  M AlignmentSCSSCS AddFreeSCSSCS(Int32 previousEntityId, Int32 nextEntityId, SCSSCSConstraints constraintValue, SpiralType spiralDefinition)
+  M AlignmentSCS AddFreeSpiral(Int32 previousEntityId, Int32 nextEntityId, Double spParam, SpiralParamType spType, SpiralCurveType spiralCurveType, SpiralType spiralDefinition)
+  M AlignmentSTS AddFreeSSBetweenCurves(Int32 previousEntityId, Int32 nextEntityId, Double spRatio, SpiralParamType spType, SpiralType spiralDefinition)
+  M AlignmentSCS AddFreeSSBetweenTangents(Int32 previousEntityId, Int32 nextEntityId, Double spiral1Param, Double spiral2Param, SpiralParamType spType, Boolean isGreaterThan180, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFreeSSCS(Int32 previousEntityId, Int32 nextEntityId, Double sp1Param, Double sp2Param, Double radius, Double sp3Param, Boolean isGreaterThan180, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFreeSSCSS(Int32 previousEntityId, Int32 nextEntityId, Double sp1Param, Double sp2Param, Double radius, Double sp3Param, Double sp4Param, Boolean isGreaterThan180, SpiralType spiralDefinition)
+  M AlignmentSTS AddFreeSTS(Int32 previousEntityId, Int32 nextEntityId, Double tanLength, SpiralType spiralDefinition)
+  M AlignmentSTS AddFreeSTS(Int32 previousEntityId, Int32 nextEntityId, Double sp1Param, Double sp2Param, SpiralParamType spType, SpiralType spiralDefinition)
+  M Void Clear()
+  M AlignmentEntity EntityAtId(Int32 id)
+  M AlignmentEntity EntityAtStation(Double rawStation)
+  M AlignmentEntity GetEntityByOrder(Int32 index)
+  M IEnumerator<AlignmentEntity> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M Void Remove(AlignmentEntity entity)
+  M Void RemoveAt(Int32 index)
+  P Int32 Count {get;}
+  P Int32 FirstEntity {get;}
+  P AlignmentEntity Item[Int32 index] {get;}
+  P Int32 LastEntity {get;}
+NOTFOUND Autodesk.Civil.CurveParamType
+NOTFOUND Autodesk.Civil.AlignmentType
+== Autodesk.Civil.DatabaseServices.AssemblyType : System.Enum
+  E DividedCrownedRoad
+  E DividedPlanarRoad
+  E Other
+  E Railway
+  E UndividedCrownedRoad
+  E UndividedPlanarRoad
+  F Int32 value__
+NOTFOUND Autodesk.Civil.ProfileEntityType
