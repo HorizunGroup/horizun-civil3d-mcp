@@ -61,6 +61,12 @@ public static class RoadInputs
             a => V.First(OneTarget(a), V.Fin(a, "start_station"), V.Fin(a, "end_station"), Frequency(a),
                 Hz.Num(a, "end_station") <= Hz.Num(a, "start_station") ? "end_station must be greater than start_station." : null)),
         ["rebuild"] = new(Array.Empty<string>(), Sel, W, OneTarget),
+        ["get_targets"] = new(Array.Empty<string>(), new[] { "name", "handle", "baseline_index", "region_index" }, Extra: a => V.First(OneTarget(a), CorridorEngineeringInputs.Validate("get_targets",a))),
+        ["set_targets"] = new(new[] { "targets" }, new[] { "name", "handle", "baseline_index", "region_index", "rebuild" }, W, a => V.First(OneTarget(a), CorridorEngineeringInputs.Validate("set_targets",a))),
+        ["applied_geometry"] = new(Array.Empty<string>(), new[] { "name", "handle", "baseline_index", "region_index", "shape_codes", "start_station", "end_station", "max_stations" }, Extra: a => V.First(OneTarget(a), CorridorEngineeringInputs.Validate("applied_geometry",a))),
+        ["region_quantities"] = new(new[] { "shape_codes" }, new[] { "name", "handle", "baseline_index", "region_index", "start_station", "end_station", "max_stations", "material_map" }, Extra: a => V.First(OneTarget(a), CorridorEngineeringInputs.Validate("region_quantities",a))),
+        ["split_region"] = new(new[] { "split_station", "new_region_name" }, new[] { "name", "handle", "baseline_index", "region_index", "rebuild" }, W, a => V.First(OneTarget(a), CorridorEngineeringInputs.Validate("split_region",a))),
+        ["merge_regions"] = new(new[] { "last_region_index" }, new[] { "name", "handle", "baseline_index", "region_index", "rebuild" }, W, a => V.First(OneTarget(a), CorridorEngineeringInputs.Validate("merge_regions",a))),
         ["create_surface"] = new(new[] { "surface_name" }, new[] { "name", "handle", "link_codes", "feature_line_codes", "style", "breaklines" }, W,
             a => V.First(OneTarget(a), V.Strings(a, "link_codes", 100), V.Strings(a, "feature_line_codes", 100),
                 a["link_codes"] == null && a["feature_line_codes"] == null ? "Give link_codes and/or feature_line_codes (e.g. [\"Top\",\"Datum\"])." : null)),
@@ -70,7 +76,7 @@ public static class RoadInputs
     {
         if (a["stations"] == null) return null;
         if (a["stations"] is not JsonArray s || s.Count == 0 || s.Count > 10000) return "stations must list 1 to 10000 {station, offset}.";
-        return s.Any(n => n is not JsonObject o || Hz.Num(o, "station") is not { } st || !double.IsFinite(st) || (o["offset"] != null && (Hz.Num(o, "offset") is not { } of || !double.IsFinite(of))))
+        return s.Any(n => n is not JsonObject o || Hz.Num(o, "station") is not { } st || !Hz.IsFinite(st) || (o["offset"] != null && (Hz.Num(o, "offset") is not { } of || !Hz.IsFinite(of))))
             ? "Each station is {station, offset?} with finite numbers." : null;
     }
 
@@ -78,7 +84,7 @@ public static class RoadInputs
     {
         if (a[key] == null) return null;
         if (a[key] is not JsonArray s || s.Count == 0 || s.Count > max) return key + " must list 1 to " + max + " numbers.";
-        return s.Any(n => Hz.AsDouble(n) is not { } d || !double.IsFinite(d)) ? key + " must contain finite numbers." : null;
+        return s.Any(n => Hz.AsDouble(n) is not { } d || !Hz.IsFinite(d)) ? key + " must contain finite numbers." : null;
     }
 
     private static string? Radii(JsonObject a)
@@ -86,7 +92,7 @@ public static class RoadInputs
         if (a["radii"] == null) return null;
         var pis = (a["pis"] as JsonArray)?.Count ?? 0;
         if (a["radii"] is not JsonArray r || r.Count != Math.Max(0, pis - 2)) return "radii must give one radius per interior PI (" + Math.Max(0, pis - 2) + "); 0 = no curve.";
-        return r.Any(n => Hz.AsDouble(n) is not { } d || !double.IsFinite(d) || d < 0) ? "radii must be >= 0." : null;
+        return r.Any(n => Hz.AsDouble(n) is not { } d || !Hz.IsFinite(d) || d < 0) ? "radii must be >= 0." : null;
     }
 
     private static string? Pvis(JsonObject a)
@@ -96,13 +102,13 @@ public static class RoadInputs
         for (var i = 0; i < p.Count; i++)
         {
             if (p[i] is not JsonObject o || o.Any(kv => kv.Key is not ("station" or "elevation" or "curve_length"))) return "pvis[" + i + "] is {station, elevation, curve_length?}.";
-            if (Hz.Num(o, "station") is not { } st || !double.IsFinite(st) || Hz.Num(o, "elevation") is not { } el || !double.IsFinite(el)) return "pvis[" + i + "] needs finite station and elevation.";
+            if (Hz.Num(o, "station") is not { } st || !Hz.IsFinite(st) || Hz.Num(o, "elevation") is not { } el || !Hz.IsFinite(el)) return "pvis[" + i + "] needs finite station and elevation.";
             if (st <= prev) return "pvis must have strictly increasing stations.";
             prev = st;
             if (o["curve_length"] != null)
             {
                 if (i == 0 || i == p.Count - 1) return "The first and last PVI cannot have a vertical curve.";
-                if (Hz.Num(o, "curve_length") is not { } cl || !double.IsFinite(cl) || cl <= 0) return "pvis[" + i + "].curve_length must be > 0.";
+                if (Hz.Num(o, "curve_length") is not { } cl || !Hz.IsFinite(cl) || cl <= 0) return "pvis[" + i + "].curve_length must be > 0.";
             }
         }
         return null;

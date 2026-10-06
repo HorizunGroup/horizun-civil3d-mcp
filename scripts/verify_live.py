@@ -10,7 +10,7 @@ What it proves (each step PASS/FAIL, JSON report in %USERPROFILE%\\.horizun\\civ
   reads    : health, surface get stats vs analytic values, sample_elevation incl. outside point,
              volumes_report (existing volume surface AND transient base/comparison) vs analytic cut/fill,
              transient volume leaves no persistent surface
-  writes   : dry run changes nothing; apply with token -> verified=match; token reuse refused;
+  writes   : dry run changes nothing; confirmed apply is re-read and matches; confirmation replay refused;
              stale plan refused after the drawing moved; rename/duplicate_style/set_style/create_tin/
              add_data (vertices + standard breakline + outer boundary)/paste/create_volume/rebuild
   refusals : locked layer, existing name, missing name, wrong target drawing, open polyline as boundary

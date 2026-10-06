@@ -18,7 +18,7 @@ using AcApp = Autodesk.AutoCAD.ApplicationServices.Application;
 
 namespace Horizun.Civil3D.Plugin.Commands;
 
-internal sealed class LayoutsCommand : ICommand
+internal sealed partial class LayoutsCommand : ICommand
 {
     public string Name => "layouts";
     private const string PdfDevice = "DWG To PDF.pc3";
@@ -34,6 +34,8 @@ internal sealed class LayoutsCommand : ICommand
             "rename" => Rename(ctx),
             "delete" => Delete(ctx),
             "viewport" => ViewportCreate(ctx),
+            "alignment_viewport" => AlignmentViewport(ctx, false),
+            "refresh_alignment_viewport" => AlignmentViewport(ctx, true),
             "page_setup" => PageSetup(ctx),
             _ => PlotPdf(ctx),
         };
@@ -362,8 +364,17 @@ internal sealed class LayoutsCommand : ICommand
 
     internal static int PdfPages(string path)
     {
-        var text = Encoding.Latin1.GetString(File.ReadAllBytes(path));
+        var text = Encoding.GetEncoding(28591).GetString(File.ReadAllBytes(path));
         return Regex.Matches(text, @"/Type\s*/Page(?![a-zA-Z])").Count;
+    }
+
+    private static bool PdfLooksComplete(string path, int expectedPages)
+    {
+        using var fs = File.OpenRead(path);
+        if (fs.Length < 5) return false;
+        var header = new byte[5];
+        RuntimeCompat.ReadExactly(fs, header, 0, header.Length);
+        return Encoding.ASCII.GetString(header) == "%PDF-" && PdfPages(path) == expectedPages;
     }
 
     private static CommandResult PlotPdf(CommandContext ctx)
@@ -374,6 +385,8 @@ internal sealed class LayoutsCommand : ICommand
         var device = "";
         var ids = new List<ObjectId>();
         var notes = new JsonArray();
+        AtomicOutput.Result? promoted = null;
+        AtomicOutput.DestinationState? previousOutput = null;
         return WriteFlow.Run(ctx, "HZ_LAYOUTS",
             (doc, tr, plan) =>
             {
@@ -385,9 +398,11 @@ internal sealed class LayoutsCommand : ICommand
                 var dir = Path.GetDirectoryName(output);
                 if (string.IsNullOrEmpty(dir) || !Directory.Exists(dir)) throw new HzRefusal(ErrorCodes.NotFound, "The output folder does not exist: " + dir + ". Nothing ran.");
                 if (File.Exists(output) && !overwrite) throw new HzRefusal(ErrorCodes.InvalidInput, "The output file exists; pass overwrite=true to replace it. Nothing ran.");
+                previousOutput = AtomicOutput.Capture(output);
                 foreach (var n in names) ids.Add(LayoutId(doc, tr, n));
-                plan["layouts"] = Hz.Strings(names); plan["device"] = device; plan["output"] = output; plan["overwrite"] = overwrite && File.Exists(output);
-                plan["note"] = "Each layout keeps its page setup (area, scale, plot style); only the device is switched to the PDF device, with the closest media.";
+                plan["layouts"] = Hz.Strings(names); plan["device"] = device; plan["output"] = output; plan["overwrite"] = overwrite && previousOutput.Exists;
+                plan["previous_output_sha256"] = previousOutput.Sha256;
+                plan["note"] = "Each layout keeps its page setup (area, scale, plot style); only the device is switched to the PDF device, with the closest media. A verified PDF replaces an existing output atomically, preserving the old file as a named backup.";
             },
             (doc, tr) =>
             {
@@ -397,7 +412,8 @@ internal sealed class LayoutsCommand : ICommand
                 AcApp.SetSystemVariable("BACKGROUNDPLOT", (short)0);
                 try
                 {
-                    if (File.Exists(output)) File.Delete(output);
+                    promoted = AtomicOutput.Write(output, overwrite, stage =>
+                    {
                     var psv = PlotSettingsValidator.Current;
                     using var pe = PlotFactory.CreatePublishEngine();
                     using var progress = new PlotProgressDialog(false, ids.Count, true);
@@ -420,7 +436,7 @@ internal sealed class LayoutsCommand : ICommand
                         }
                         var pi = new PlotInfo { Layout = ids[i], OverrideSettings = ps };
                         new PlotInfoValidator { MediaMatchingPolicy = MatchingPolicy.MatchEnabled }.Validate(pi);
-                        if (i == 0) pe.BeginDocument(pi, doc.Name, null, 1, true, output);
+                        if (i == 0) pe.BeginDocument(pi, doc.Name, null, 1, true, stage);
                         progress.OnBeginSheet();
                         pe.BeginPage(new PlotPageInfo(), pi, i == ids.Count - 1, null);
                         pe.BeginGenerateGraphics(null);
@@ -431,6 +447,7 @@ internal sealed class LayoutsCommand : ICommand
                     pe.EndDocument(null);
                     pe.EndPlot(null);
                     progress.OnEndPlot();
+                    }, stage => PdfLooksComplete(stage, ids.Count), previousOutput);
                 }
                 finally
                 {
@@ -440,12 +457,13 @@ internal sealed class LayoutsCommand : ICommand
             },
             (doc, tr, v, after) =>
             {
+                after["previous_file_backup"] = promoted?.BackupPath;
                 var exists = File.Exists(output);
                 v.Flag("PDF written", true, exists);
                 if (!exists) return;
                 var fi = new FileInfo(output);
                 var head = new byte[5];
-                using (var fs = File.OpenRead(output)) fs.ReadExactly(head, 0, Math.Min(5, (int)fs.Length));
+                using (var fs = File.OpenRead(output)) RuntimeCompat.ReadExactly(fs, head, 0, Math.Min(5, (int)fs.Length));
                 v.Text("PDF header", "%PDF-", Encoding.ASCII.GetString(head), false);
                 var pages = PdfPages(output);
                 v.Check("pages", ids.Count, pages, pages == ids.Count, pages == 0 ? "No /Type /Page found (compressed object streams?); open the file to check." : null);

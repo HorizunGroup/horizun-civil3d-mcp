@@ -1,0 +1,8 @@
+# Offline managed metadata inspection, 2026-10-05
+# PEReader; no Autodesk assembly loaded or executed.
+Civil year: 2025
+AutoCAD assembly: acmgd 25.0.0.0
+Civil assembly: AeccDbMgd 13.7.0.1402
+TargetFrameworkAttribute on both: .NETCoreApp,Version=v8.0
+Selected add-in runtime: net8
+Other years: no 2024/2026 Autodesk assemblies available; no probes/build/live evidence.

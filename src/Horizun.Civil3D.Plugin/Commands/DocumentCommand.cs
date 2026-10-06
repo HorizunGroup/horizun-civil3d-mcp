@@ -30,62 +30,13 @@ internal sealed class DocumentCommand : ICommand
             _ => Save(ctx),
         };
 
-    /// <summary>
-    /// Undo the LAST Horizun write as one Civil 3D UNDO step - only while nothing has changed since that write
-    /// (no user edit, no other write), so the UNDO can never revert someone else's work. The bridge sends no other
-    /// command, ever; this one runs inside the bridge's own command context, only on an explicit, confirmed request.
-    /// </summary>
-    private static CommandResult UndoLast(CommandContext ctx)
-    {
-        var doc = ctx.Document(forWrite: true);
-        if (doc != AcApp.DocumentManager.MdiActiveDocument)
-            throw new HzRefusal(ErrorCodes.DocumentMismatch, "Only the active drawing can be undone. Nothing was changed.");
-        var last = DrawingRevision.GetLastWrite(doc)
-                   ?? throw new HzRefusal(ErrorCodes.NotFound, "There is no Horizun write to undo in this drawing during this Civil 3D session. Nothing was changed.");
-        var now = DrawingRevision.Capture(doc);
-        if (now != last.Revision)
-            throw new HzRefusal(ErrorCodes.InvalidInput,
-                "The drawing changed after Horizun's last write (" + last.Tool + " " + last.Action + "): a user edit, another write, a save or " +
-                "Civil 3D updating dependent objects. A UNDO now could revert that newer change, so it is refused. Use U in Civil 3D. Nothing was changed.");
-        var plan = new JsonObject
-        {
-            ["op"] = "undo_last",
-            ["drawing_revision"] = now,
-            ["undo"] = new JsonObject
-            {
-                ["tool"] = last.Tool, ["action"] = last.Action, ["undo_label"] = last.UndoLabel, ["written_utc"] = last.Utc.ToString("o"),
-                ["created_objects"] = last.Created.Count, ["modified_objects"] = last.Modified,
-            },
-            ["how"] = "One Civil 3D UNDO step (the write was committed as exactly one step).",
-        };
-        var data = new JsonObject
-        {
-            ["tool"] = ctx.Tool.Name,
-            ["action"] = "undo_last",
-            ["document"] = new JsonObject { ["name"] = Path.GetFileName(doc.Name) },
-        };
-        if (ctx.DryRun) return CommandResult.Ok(ctx.Rehearse(doc, data, plan));
-
-        ctx.RequireConfirmation(doc, plan);
-        doc.Editor.Command("_.UNDO", "1");
-        DrawingRevision.ClearLastWrite(doc); // one level only: the previous write's state is no longer known
-        DrawingRevision.Bump(doc);
-
-        var v = new VerificationSet();
-        v.Flag("Civil 3D UNDO ran (one step)", true, true);
-        if (last.Created.Count > 0)
-        {
-            var back = last.Created.Count(id => id.IsErased || !id.IsValid);
-            v.Check("objects created by that write are gone", last.Created.Count, back, back == last.Created.Count);
-        }
-        data["dry_run"] = false;
-        data["committed"] = true;
-        data["plan"] = plan;
-        data["verified"] = v.ToJson("Created objects re-checked after the UNDO; modified objects are reverted by Civil 3D's UNDO itself - re-read them with the typed tools if you need the values.");
-        data["undo"] = new JsonObject { ["instruction"] = "Civil 3D REDO brings the write back." };
-        return v.AllVerified ? CommandResult.Ok(data)
-            : CommandResult.Fail(ErrorCodes.VerificationFailed, "The UNDO ran but objects created by that write are still present. Inspect the drawing.", data);
-    }
+    /// <summary>Fail closed: native UNDO attribution/restoration is not production-verified.</summary>
+    private static CommandResult UndoLast(CommandContext ctx) =>
+        CommandResult.Fail(ErrorCodes.Unsupported,
+            "Automatic undo_last is disabled: native UNDO attribution and restoration are not reliably verified. " +
+            "Nothing was changed. Use Civil 3D's native UNDO manually and inspect the affected objects.",
+            new JsonObject { ["committed"] = false, ["undo"] = new JsonObject { ["available"] = false },
+                ["evidence_status"] = "refused_before_native_undo" });
 
     private static CommandResult Info(CommandContext ctx)
     {

@@ -1,0 +1,28 @@
+{
+  "name": "horizun-civil3d-mcp",
+  "version": "0.9.2",
+  "description": "Read and make verified writes in local Autodesk Civil 3D drawings through Horizun MCP.",
+  "author": {"name": "HorizunGroup", "url": "https://github.com/HorizunGroup"},
+  "homepage": "https://github.com/HorizunGroup/horizun-civil3d-mcp",
+  "repository": "https://github.com/HorizunGroup/horizun-civil3d-mcp",
+  "license": "Apache-2.0",
+  "keywords": ["civil-3d", "autodesk", "aec", "mcp", "bim"],
+  "skills": "./skills/",
+  "mcpServers": {
+    "horizun-civil3d": {
+      "command": "powershell.exe",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${CLAUDE_PLUGIN_ROOT}/scripts/plugin-launcher.ps1"]
+    }
+  },
+  "interface": {
+    "displayName": "Horizun Civil 3D MCP",
+    "shortDescription": "Verified Civil 3D reads and writes",
+    "longDescription": "Connect to a local Autodesk Civil 3D drawing. Inspect surfaces, alignments, corridors and CAD objects, then apply confirmed edits with post-commit verification.",
+    "developerName": "HorizunGroup",
+    "category": "Developer Tools",
+    "capabilities": ["Read", "Write", "Local MCP"],
+    "websiteURL": "https://github.com/HorizunGroup/horizun-civil3d-mcp",
+    "defaultPrompt": ["Check the Civil 3D bridge and the active drawing.", "Audit this drawing and list the main issues.", "Plan a surface edit, then verify the result."],
+    "brandColor": "#1F6FEB"
+  }
+}

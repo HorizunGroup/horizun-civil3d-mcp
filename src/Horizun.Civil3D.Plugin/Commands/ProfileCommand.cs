@@ -134,7 +134,7 @@ internal sealed class ProfileCommand : ICommand
                 ["grade_change_pct"] = Hz.Finite(a, 6), ["k"] = Hz.Finite(k, 6), ["min_k"] = min,
             };
             if (min == null) { row["result"] = "not_checked"; row["reason"] = "No criterion given for " + (isCrest ? "crest" : "sag") + " curves."; unknown++; }
-            else if (!double.IsFinite(k)) { row["result"] = "not_checked"; row["reason"] = "No grade change."; unknown++; }
+            else if (!Hz.IsFinite(k)) { row["result"] = "not_checked"; row["reason"] = "No grade change."; unknown++; }
             else { var ok = k >= min.Value; row["result"] = ok ? "pass" : "fail"; if (!ok) fails++; }
             rows.Add(row);
         }

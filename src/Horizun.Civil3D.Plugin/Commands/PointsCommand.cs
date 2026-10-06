@@ -18,7 +18,7 @@ using CivilSurface = Autodesk.Civil.DatabaseServices.Surface;
 
 namespace Horizun.Civil3D.Plugin.Commands;
 
-internal sealed class PointsCommand : ICommand
+internal sealed partial class PointsCommand : ICommand
 {
     public string Name => "points";
 
@@ -32,6 +32,8 @@ internal sealed class PointsCommand : ICommand
             "create" => Create(ctx, null),
             "import" => Create(ctx, ReadFile(ctx)),
             "export_csv" => ExportCsv(ctx),
+            "export_editable_csv" => ExportEditableCsv(ctx),
+            "apply_csv" => ApplyCsv(ctx),
             "elevations_from_surface" => FromSurface(ctx),
             "group_create" => GroupCreate(ctx),
             _ => Erase(ctx),
@@ -63,7 +65,7 @@ internal sealed class PointsCommand : ICommand
     private static List<CogoPoint> Select(CommandContext ctx, Document doc, Transaction tr)
     {
         var civ = Civ(doc);
-        if (Hz.Str(ctx.Args, "group") is { } g && ctx.Action is "list" or "elevations_from_surface" or "export_csv")
+        if (Hz.Str(ctx.Args, "group") is { } g && ctx.Action is "list" or "elevations_from_surface" or "export_csv" or "export_editable_csv" or "apply_csv")
         {
             var grp = (PointGroup)tr.GetObject(GroupId(doc, tr, g), OpenMode.ForRead);
             return grp.GetPointNumbers().Where(civ.CogoPoints.Contains).Select(n => (CogoPoint)tr.GetObject(civ.CogoPoints.GetPointByPointNumber(n), OpenMode.ForRead)).ToList();
@@ -190,6 +192,14 @@ internal sealed class PointsCommand : ICommand
         var output = Hz.Str(ctx.Args, "output")!;
         var format = Hz.Str(ctx.Args, "format") ?? "PNEZD";
         var rows = new List<PointFile.Row>();
+        bool ValidFile(string path)
+        {
+            var back = PointFile.Parse(File.ReadAllText(path), format, false, out var errors);
+            var worst = back.Zip(rows).Select(z => Math.Max(Math.Abs(z.First.X - z.Second.X),
+                Math.Max(Math.Abs(z.First.Y - z.Second.Y), Math.Abs(z.First.Z - z.Second.Z)))).DefaultIfEmpty(0).Max();
+            return errors.Count == 0 && back.Count == rows.Count && worst <= 0.00005 + 1e-12
+                   && back.Zip(rows).All(z => z.First.Number == z.Second.Number && z.First.Description == z.Second.Description);
+        }
         return WriteFlow.Run(ctx, "HZ_POINTS",
             (doc, tr, plan) =>
             {
@@ -199,7 +209,8 @@ internal sealed class PointsCommand : ICommand
                 if (rows.Count == 0) throw new HzRefusal(ErrorCodes.InvalidInput, "No points to export. Nothing written.");
                 plan["output"] = output; plan["format"] = format; plan["points"] = rows.Count;
             },
-            (doc, tr) => File.WriteAllText(output, PointFile.Write(rows, format), new UTF8Encoding(false)),
+            (doc, tr) => AtomicOutput.Write(output, false,
+                stage => File.WriteAllText(stage, PointFile.Write(rows, format), new UTF8Encoding(false)), ValidFile),
             (doc, tr, v, after) =>
             {
                 v.Flag("file written", true, File.Exists(output));
@@ -208,6 +219,9 @@ internal sealed class PointsCommand : ICommand
                 v.Check("rows read back", rows.Count, back.Count, back.Count == rows.Count && errors.Count == 0);
                 var worst = back.Zip(rows).Select(z => Math.Max(Math.Abs(z.First.X - z.Second.X), Math.Max(Math.Abs(z.First.Y - z.Second.Y), Math.Abs(z.First.Z - z.Second.Z)))).DefaultIfEmpty(0).Max();
                 v.Check("max coordinate difference (4 decimals written)", "<= 0.00005", Hz.Finite(worst, 8), worst <= 0.00005 + 1e-12);
+                v.Check("point numbers and descriptions", rows.Count,
+                    back.Zip(rows).Count(z => z.First.Number == z.Second.Number && z.First.Description == z.Second.Description),
+                    back.Count == rows.Count && back.Zip(rows).All(z => z.First.Number == z.Second.Number && z.First.Description == z.Second.Description));
                 after["file"] = new JsonObject { ["path"] = output, ["bytes"] = new FileInfo(output).Length, ["points"] = back.Count };
             });
     }
@@ -247,7 +261,7 @@ internal sealed class PointsCommand : ICommand
     }
 
     private static Regex Like(string patterns) =>
-        new("^(" + string.Join("|", patterns.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+        new("^(" + string.Join("|", RuntimeCompat.SplitTrimmed(patterns, ',', removeEmpty: true)
             .Select(p => Regex.Escape(p).Replace("\\*", ".*").Replace("\\?", "."))) + ")$", RegexOptions.IgnoreCase);
 
     private static CommandResult GroupCreate(CommandContext ctx)

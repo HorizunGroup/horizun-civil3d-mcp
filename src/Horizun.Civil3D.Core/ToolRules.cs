@@ -73,19 +73,19 @@ public static class V
     }
 
     public static string? Pos(JsonObject a, string key) =>
-        a[key] != null && (Hz.Num(a, key) is not { } v || !double.IsFinite(v) || v <= 0) ? key + " must be finite and > 0." : null;
+        a[key] != null && (Hz.Num(a, key) is not { } v || !Hz.IsFinite(v) || v <= 0) ? key + " must be finite and > 0." : null;
 
     public static string? NonNeg(JsonObject a, string key) =>
-        a[key] != null && (Hz.Num(a, key) is not { } v || !double.IsFinite(v) || v < 0) ? key + " must be finite and >= 0." : null;
+        a[key] != null && (Hz.Num(a, key) is not { } v || !Hz.IsFinite(v) || v < 0) ? key + " must be finite and >= 0." : null;
 
     public static string? Fin(JsonObject a, string key) =>
-        a[key] != null && (Hz.Num(a, key) is not { } v || !double.IsFinite(v)) ? key + " must be a finite number." : null;
+        a[key] != null && (Hz.Num(a, key) is not { } v || !Hz.IsFinite(v)) ? key + " must be a finite number." : null;
 
     public static string? Point(JsonObject a, string key, bool z = false)
     {
         if (a[key] == null) return null;
-        if (a[key] is not JsonObject p || Hz.Num(p, "x") is not { } x || Hz.Num(p, "y") is not { } y || !double.IsFinite(x) || !double.IsFinite(y)
-            || (z && p["z"] != null && (Hz.Num(p, "z") is not { } zz || !double.IsFinite(zz))))
+        if (a[key] is not JsonObject p || Hz.Num(p, "x") is not { } x || Hz.Num(p, "y") is not { } y || !Hz.IsFinite(x) || !Hz.IsFinite(y)
+            || (z && p["z"] != null && (Hz.Num(p, "z") is not { } zz || !Hz.IsFinite(zz))))
             return key + " must be {x, y" + (z ? "[, z]" : "") + "} with finite drawing coordinates.";
         return null;
     }
@@ -95,8 +95,8 @@ public static class V
         if (a[key] == null) return null;
         if (a[key] is not JsonArray arr || arr.Count < min || arr.Count > max) return key + " must contain " + min + " to " + max + " points.";
         for (var i = 0; i < arr.Count; i++)
-            if (arr[i] is not JsonObject p || Hz.Num(p, "x") is not { } x || Hz.Num(p, "y") is not { } y || !double.IsFinite(x) || !double.IsFinite(y)
-                || (p["z"] != null && (!z || Hz.Num(p, "z") is not { } zz || !double.IsFinite(zz))))
+            if (arr[i] is not JsonObject p || Hz.Num(p, "x") is not { } x || Hz.Num(p, "y") is not { } y || !Hz.IsFinite(x) || !Hz.IsFinite(y)
+                || (p["z"] != null && (!z || Hz.Num(p, "z") is not { } zz || !Hz.IsFinite(zz))))
                 return key + "[" + i + "] must be {x, y" + (z ? "[, z]" : "") + "} with finite coordinates.";
         return null;
     }

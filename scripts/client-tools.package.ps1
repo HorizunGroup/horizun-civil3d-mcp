@@ -10,7 +10,10 @@ $script:HorizunCivil3DClientTools = @(
     'process.lib.ps1',
     'client-tools.package.ps1',
     'install-tunnel-client.ps1',
-    'connect-chatgpt.ps1'
+    'connect-chatgpt.ps1',
+    'prepare-revit-terrain.ps1',
+    'register-plugin-trust.ps1',
+    'import-revit-terrain-mesh.py'
 )
 
 function Copy-HorizunCivil3DClientTools {

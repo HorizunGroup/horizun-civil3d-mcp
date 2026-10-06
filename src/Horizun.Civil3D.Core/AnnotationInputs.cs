@@ -62,7 +62,7 @@ public static class AnnotationInputs
     private static string? Items(JsonObject a)
     {
         if (a["items"] is not JsonArray s || s.Count == 0 || s.Count > 500) return "items must list 1 to 500 {station, elevation}.";
-        return s.Any(n => n is not JsonObject o || Hz.Num(o, "station") is not { } st || !double.IsFinite(st) || Hz.Num(o, "elevation") is not { } el || !double.IsFinite(el))
+        return s.Any(n => n is not JsonObject o || Hz.Num(o, "station") is not { } st || !Hz.IsFinite(st) || Hz.Num(o, "elevation") is not { } el || !Hz.IsFinite(el))
             ? "Each item is {station, elevation} with finite numbers." : null;
     }
 }

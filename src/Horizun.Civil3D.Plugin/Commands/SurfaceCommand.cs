@@ -15,6 +15,15 @@ namespace Horizun.Civil3D.Plugin.Commands;
 internal sealed partial class SurfaceCommand : ICommand
 {
     public string Name=>"surface";
+    private static bool IsRestrictedReference(Surface surface)
+    {
+#if C3D2024
+        // 2024 has no cloud-worksharing flags; all reference objects remain protected.
+        return surface.IsReferenceObject || surface.IsReferenceSubObject;
+#else
+        return surface.IsReadOnlyReferenceObject || surface.IsCWSReferenceObject || surface.IsReferenceSubObject;
+#endif
+    }
     public CommandResult Execute(CommandContext ctx)
     {
         if(SurfaceInputs.Validate(ctx.Args) is { } why) throw new HzRefusal(ErrorCodes.InvalidInput,why+" Nothing ran.");
@@ -42,7 +51,7 @@ internal sealed partial class SurfaceCommand : ICommand
         {
             data["surface_locked"]=surface.Lock;
             if(surface.Lock)reasons.Add(JsonValue.Create("Surface is locked."));
-            if(surface.IsReadOnlyReferenceObject || surface.IsCWSReferenceObject || surface.IsReferenceSubObject)reasons.Add(JsonValue.Create("Read-only, cloud-worksharing or subobject reference."));
+            if(IsRestrictedReference(surface))reasons.Add(JsonValue.Create("Read-only, cloud-worksharing or subobject reference."));
         }
         catch(Exception e) { reasons.Add(JsonValue.Create("Editability could not be verified: "+e.GetType().Name+": "+e.Message)); }
         data["editable"]=Hz.Bool(data,"editable")==true && reasons.Count==0;
@@ -58,6 +67,7 @@ internal sealed partial class SurfaceCommand : ICommand
 
     private static CommandResult Read(CommandContext ctx)
     {
+        if(ctx.Action=="compare_design") return CompareDesign(ctx);
         var doc=ctx.Document(false);
         var data=Data(ctx,doc);
         return ctx.Read(doc,tr=>
@@ -146,7 +156,7 @@ internal sealed partial class SurfaceCommand : ICommand
         };
         var cf=Hz.Num(args,"cut_factor")??v.CutFactor;var ff=Hz.Num(args,"fill_factor")??v.FillFactor;
         data["requested_factors"]=new JsonObject { ["cut_factor"]=Hz.Finite(cf),["fill_factor"]=Hz.Finite(ff),["cut"]=Hz.Finite(v.UnadjustedCutVolume*cf),["fill"]=Hz.Finite(v.UnadjustedFillVolume*ff),["net"]=Hz.Finite(v.UnadjustedFillVolume*ff-v.UnadjustedCutVolume*cf),["net_convention"]="fill_minus_cut",["applied_to_surface"]=false };
-        if(new[]{v.UnadjustedCutVolume,v.UnadjustedFillVolume,v.UnadjustedNetVolume,v.AdjustedCutVolume,v.AdjustedFillVolume,v.AdjustedNetVolume,cf,ff,v.UnadjustedCutVolume*cf,v.UnadjustedFillVolume*ff}.Any(x=>!double.IsFinite(x)))
+        if(new[]{v.UnadjustedCutVolume,v.UnadjustedFillVolume,v.UnadjustedNetVolume,v.AdjustedCutVolume,v.AdjustedFillVolume,v.AdjustedNetVolume,cf,ff,v.UnadjustedCutVolume*cf,v.UnadjustedFillVolume*ff}.Any(x=>!Hz.IsFinite(x)))
             data["unreadable_reason"]="One or more native values/factors are non-finite; those fields are null, not zero.";
         return data;
     }
@@ -165,7 +175,7 @@ internal sealed partial class SurfaceCommand : ICommand
         stats["unreadable_reasons"]=Hz.Strings(reasons);
         stats["max_cut_depth_native"]=Hz.Finite(Math.Max(0,-gp.MinimumElevation));stats["max_fill_height_native"]=Hz.Finite(Math.Max(0,gp.MaximumElevation));
         stats["extrema_source"]="Civil3D.GetGeneralProperties (volume elevation = comparison - base)";
-        if(!double.IsFinite(gp.MinimumElevation) || !double.IsFinite(gp.MaximumElevation)) stats["native_extrema_unreadable_reason"]="Civil 3D returned non-finite minimum/maximum elevations.";
+        if(!Hz.IsFinite(gp.MinimumElevation) || !Hz.IsFinite(gp.MaximumElevation)) stats["native_extrema_unreadable_reason"]="Civil 3D returned non-finite minimum/maximum elevations.";
         foreach(var side in new[]{"cut","fill"})
         {
             var area=Hz.Num(stats,side+"_area_estimated");var volume=Hz.Num(native,"unadjusted_"+side);
@@ -187,7 +197,7 @@ internal sealed partial class SurfaceCommand : ICommand
         foreach(var point in points)
         {
             var row=new JsonObject {["x"]=point.X,["y"]=point.Y};
-            try { var z=s.FindElevationAtXY(point.X,point.Y); row["elevation"]=Hz.Finite(z); if(!double.IsFinite(z)){ row["status"]="unreadable";row["reason"]="Civil 3D returned a non-finite elevation.";unreadable++; }else row["status"]="measured"; }
+            try { var z=s.FindElevationAtXY(point.X,point.Y); row["elevation"]=Hz.Finite(z); if(!Hz.IsFinite(z)){ row["status"]="unreadable";row["reason"]="Civil 3D returned a non-finite elevation.";unreadable++; }else row["status"]="measured"; }
             catch(PointNotOnEntityException){row["elevation"]=null;row["status"]="outside_surface";row["reason"]="Point lies outside the surface or inside a hole.";outside++;}
             catch(Exception e){row["elevation"]=null;row["status"]="unreadable";row["reason"]=e.GetType().Name+": "+e.Message;unreadable++;}
             rows.Add(row);
@@ -210,13 +220,13 @@ internal sealed partial class SurfaceCommand : ICommand
     private static void Editable(Surface s,Transaction tr)
     {
         var layer=(LayerTableRecord)tr.GetObject(s.LayerId,OpenMode.ForRead);
-        if(s.IsReferenceObject || s.IsReadOnlyReferenceObject || s.IsCWSReferenceObject || s.IsReferenceSubObject || s.Lock || layer.IsLocked)
+        if(s.IsReferenceObject || IsRestrictedReference(s) || s.Lock || layer.IsLocked)
             throw new HzRefusal(ErrorCodes.NotEditable,"'"+s.Name+"' is a reference, locked surface or on a locked layer. Nothing changed.");
     }
     private static JsonObject DisplaySnapshot(SurfaceStyle style)
     {
         var settings=new JsonObject();
-        foreach(var component in Enum.GetValues<SurfaceDisplayStyleType>())
+        foreach(SurfaceDisplayStyleType component in Enum.GetValues(typeof(SurfaceDisplayStyleType)))
         {
             var views=new JsonObject();
             foreach(var view in new[]{"plan","model"})
@@ -225,7 +235,7 @@ internal sealed partial class SurfaceCommand : ICommand
                 var color=d.Color;var method=color.ColorMethod.ToString();
                 var c=new JsonObject {["method"]=method,["index"]=color.ColorIndex};
                 if(method=="ByColor") { c["red"]=color.Red;c["green"]=color.Green;c["blue"]=color.Blue; }
-                if(!double.IsFinite(d.LinetypeScale))throw new HzRefusal(ErrorCodes.NotEditable,"Source style has an unreadable linetype scale; no duplicate was created.");
+                if(!Hz.IsFinite(d.LinetypeScale))throw new HzRefusal(ErrorCodes.NotEditable,"Source style has an unreadable linetype scale; no duplicate was created.");
                 views[view]=new JsonObject{["visible"]=d.Visible,["color"]=c,["layer"]=d.Layer,["linetype"]=d.Linetype,["linetype_scale"]=d.LinetypeScale,["lineweight"]=d.Lineweight.ToString(),["plot_style"]=d.PlotStyle};
             }
             settings[component.ToString()]=views;
@@ -327,7 +337,7 @@ internal sealed partial class SurfaceCommand : ICommand
                             var volumes=Volume(s,tr,new JsonObject());row["volume"]=volumes;
                             checks.Text("base surface handle",baseId.Handle.ToString(),Hz.Str(volumes,"base_handle"),false);
                             checks.Text("comparison surface handle",compId.Handle.ToString(),Hz.Str(volumes,"comparison_handle"),false);
-                            checks.Flag("volumes readable",true,new[]{"unadjusted_cut","unadjusted_fill","unadjusted_net"}.All(k=>Hz.Num(volumes,k) is { } v && double.IsFinite(v)));
+                            checks.Flag("volumes readable",true,new[]{"unadjusted_cut","unadjusted_fill","unadjusted_net"}.All(k=>Hz.Num(volumes,k) is { } v && Hz.IsFinite(v)));
                         }
                     }
                     if(ctx.Action=="rebuild")checks.Flag(id.Handle+" is_out_of_date",false,s.IsOutOfDate);
@@ -338,7 +348,7 @@ internal sealed partial class SurfaceCommand : ICommand
         }
         catch(Exception e) { checks.Check("post-commit re-read",true,null,false,e.GetType().Name+": "+e.Message); }
         data["dry_run"]=false;data["committed"]=true;data["plan"]=plan;data["actual"]=actual;data["verified"]=checks.ToJson();
-        data["undo"]=new JsonObject {["label"]="HZ_SURFACE",["instruction"]="Use one UNDO step in Civil 3D to undo this committed batch; no drawing was saved."};
+        data["undo"]=new JsonObject {["available"]=false,["label"]="HZ_SURFACE",["instruction"]="Automatic undo_last is disabled. Use Civil 3D native UNDO manually and inspect the result; no drawing was saved."};
         return checks.AllVerified?CommandResult.Ok(data):CommandResult.Fail(ErrorCodes.VerificationFailed,"The transaction committed but the re-read did not verify every requested change. Inspect actual/verified before retrying.",data);
     }
 }

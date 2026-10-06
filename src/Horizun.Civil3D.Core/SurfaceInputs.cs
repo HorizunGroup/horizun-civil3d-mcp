@@ -5,7 +5,7 @@ namespace Horizun.Civil3D.Core;
 /// <summary>Action-specific validation shared by the MCP server and Civil host.</summary>
 public static class SurfaceInputs
 {
-    public static readonly string[] ReadActions = { "list", "get", "volumes_report", "sample_elevation" };
+    public static readonly string[] ReadActions = { "list", "get", "volumes_report", "sample_elevation", "compare_design" };
     public static readonly string[] WriteActions = { "rename", "set_style", "duplicate_style", "create_tin", "create_volume", "rebuild", "add_data", "paste",
                                                      "apply_elevation_analysis", "apply_slope_analysis", "style_display" };
     public static readonly string[] AnalysisActions = { "apply_elevation_analysis", "apply_slope_analysis" };
@@ -27,6 +27,7 @@ public static class SurfaceInputs
     public static string? Validate(JsonObject args)
     {
         var action = Hz.Str(args, "action");
+        if (action == "compare_design") return SurfaceComparison.Validate(args);
         if (action == null || !ReadActions.Concat(WriteActions).Contains(action)) return "Unknown surface action.";
         foreach (var key in new[] { "action", "name", "handle", "target_document", "new_name", "style", "layer", "description", "base", "comparison", "confirmation_token" })
             if (args[key] != null && (args[key] is not JsonValue v || !v.TryGetValue<string>(out _))) return key+" must be a string.";
@@ -90,9 +91,9 @@ public static class SurfaceInputs
         if (Has("base") && Has("comparison") && string.Equals(Hz.Str(args,"base"),Hz.Str(args,"comparison"),StringComparison.OrdinalIgnoreCase))
             return "base and comparison must be distinct surfaces.";
         foreach (var key in new[] { "grid_spacing", "step" })
-            if (args[key] != null && (Hz.Num(args,key) is not { } v || !double.IsFinite(v) || v <= 0)) return key + " must be finite and > 0.";
+            if (args[key] != null && (Hz.Num(args,key) is not { } v || !Hz.IsFinite(v) || v <= 0)) return key + " must be finite and > 0.";
         foreach (var key in new[] { "cut_factor", "fill_factor" })
-            if (args[key] != null && (Hz.Num(args,key) is not { } v || !double.IsFinite(v) || v <= 0)) return key + " must be finite and > 0.";
+            if (args[key] != null && (Hz.Num(args,key) is not { } v || !Hz.IsFinite(v) || v <= 0)) return key + " must be finite and > 0.";
         if (args["max_samples"] != null && (Hz.Int(args,"max_samples") is not { } count || count < 1 || count > MaxGridSamples))
             return "max_samples must be between 1 and 100000.";
         if (action == "sample_elevation")
@@ -109,7 +110,7 @@ public static class SurfaceInputs
             if (line != null)
             {
                 if (!ValidPoint(line["start"] as JsonObject) || !ValidPoint(line["end"] as JsonObject)) return "line requires finite start/end XY objects.";
-                if (Hz.Num(args,"step") is not { } step || !double.IsFinite(step) || step <= 0) return "line sampling requires step > 0.";
+                if (Hz.Num(args,"step") is not { } step || !Hz.IsFinite(step) || step <= 0) return "line sampling requires step > 0.";
                 try { if(SurfaceMath.AlongLine(line, step).Count*(names?.Count ?? 1)>MaxGridSamples) return "Batch line sampling exceeds 100000 evaluations."; } catch (HzRefusal e) { return e.Message; }
             }
         }
@@ -182,8 +183,8 @@ public static class SurfaceInputs
                 break;
             case "step":
                 if (Only("interval", "break_at") is { } e2) return e2;
-                if (Hz.Num(args, "interval") is not { } iv || !double.IsFinite(iv) || iv <= 0) return "mode=step needs interval > 0 (" + unit + ").";
-                if (Present("break_at") && (Hz.Num(args, "break_at") is not { } b || !double.IsFinite(b))) return "break_at must be a finite number.";
+                if (Hz.Num(args, "interval") is not { } iv || !Hz.IsFinite(iv) || iv <= 0) return "mode=step needs interval > 0 (" + unit + ").";
+                if (Present("break_at") && (Hz.Num(args, "break_at") is not { } b || !Hz.IsFinite(b))) return "break_at must be a finite number.";
                 break;
             case "ranges":
                 if (Only("ranges") is { } e3) return e3;
@@ -193,7 +194,7 @@ public static class SurfaceInputs
                 foreach (var node in rs)
                 {
                     if (node is not JsonObject r || r.Any(kv => kv.Key is not ("min" or "max" or "color"))) return "Each range is {min, max, color} and nothing else.";
-                    if (Hz.Num(r, "min") is not { } lo || Hz.Num(r, "max") is not { } hi || !double.IsFinite(lo) || !double.IsFinite(hi) || hi <= lo)
+                    if (Hz.Num(r, "min") is not { } lo || Hz.Num(r, "max") is not { } hi || !Hz.IsFinite(lo) || !Hz.IsFinite(hi) || hi <= lo)
                         return "Each range needs finite min < max.";
                     if (HzColor.Parse(r["color"]) == null) return "Each range needs a color: ACI 1-255 or \"#RRGGBB\".";
                     if (prev is { } p && lo < p - 1e-9) return "ranges must be ascending and must not overlap.";
@@ -215,7 +216,7 @@ public static class SurfaceInputs
         }
         if (Present("color_scheme") && (Hz.Str(args, "color_scheme") is not { } sch || !SurfaceAnalysisMath.Schemes.Contains(sch)))
             return "color_scheme must be one of " + string.Join(", ", SurfaceAnalysisMath.Schemes) + ".";
-        if (args["grid_spacing"] != null && (Hz.Num(args, "grid_spacing") is not { } g || !double.IsFinite(g) || g <= 0)) return "grid_spacing must be finite and > 0.";
+        if (args["grid_spacing"] != null && (Hz.Num(args, "grid_spacing") is not { } g || !Hz.IsFinite(g) || g <= 0)) return "grid_spacing must be finite and > 0.";
         if (args["max_samples"] != null && (Hz.Int(args, "max_samples") is not { } m || m < 1 || m > MaxGridSamples)) return "max_samples must be between 1 and 100000.";
         return null;
     }
@@ -268,13 +269,13 @@ public static class SurfaceInputs
     private static string? NonNegative(JsonObject o, string key, bool strict)
     {
         if (o[key] == null) return null;
-        if (Hz.Num(o, key) is not { } v || !double.IsFinite(v) || (strict ? v <= 0 : v < 0))
+        if (Hz.Num(o, key) is not { } v || !Hz.IsFinite(v) || (strict ? v <= 0 : v < 0))
             return key + (strict ? " must be finite and > 0." : " must be finite and >= 0.");
         return null;
     }
 
     private static bool ValidPoint3(JsonObject? p) =>
-        p != null && p.Count == 3 && ValidPoint(p) && Hz.Num(p, "z") is { } z && double.IsFinite(z);
+        p != null && p.Count == 3 && ValidPoint(p) && Hz.Num(p, "z") is { } z && Hz.IsFinite(z);
 
-    private static bool ValidPoint(JsonObject? p) => p != null && Hz.Num(p,"x") is { } x && double.IsFinite(x) && Hz.Num(p,"y") is { } y && double.IsFinite(y);
+    private static bool ValidPoint(JsonObject? p) => p != null && Hz.Num(p,"x") is { } x && Hz.IsFinite(x) && Hz.Num(p,"y") is { } y && Hz.IsFinite(y);
 }

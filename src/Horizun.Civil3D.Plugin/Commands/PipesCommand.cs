@@ -26,6 +26,7 @@ internal sealed class PipesCommand : ICommand
     public CommandResult Execute(CommandContext ctx)
     {
         if (ToolRules.Validate(ctx.Tool.Name, ctx.Args) is { } why) throw new HzRefusal(ErrorCodes.InvalidInput, why + " Nothing ran.");
+        if (ctx.Action?.StartsWith("pressure_", StringComparison.Ordinal) == true) return PressureNetworks.Execute(ctx);
         _units = ctx.Document(forWrite: false).Database.Insunits;
         return ctx.Action switch
         {

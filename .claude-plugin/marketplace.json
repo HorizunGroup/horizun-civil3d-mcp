@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "horizun",
+  "description": "Open source plugins by HorizunGroup",
+  "owner": {"name": "HorizunGroup"},
+  "plugins": [
+    {
+      "name": "horizun-civil3d-mcp",
+      "description": "Read and make verified writes in local Autodesk Civil 3D drawings.",
+      "author": {"name": "HorizunGroup"},
+      "category": "development",
+      "source": {"source": "url", "url": "https://github.com/HorizunGroup/horizun-civil3d-mcp.git"},
+      "homepage": "https://github.com/HorizunGroup/horizun-civil3d-mcp"
+    }
+  ]
+}

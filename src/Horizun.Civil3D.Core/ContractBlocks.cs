@@ -44,6 +44,7 @@ public static partial class Contract
     private static IEnumerable<ToolContract> BlockTools()
     {
         EnsureRules();
+        yield return AuditTool();
         foreach (var t in RoadTools()) yield return t;
         yield return LabelTool();
         foreach (var t in CadTools()) yield return t;
@@ -106,9 +107,15 @@ public static partial class Contract
             "assembly_list. Writes: assembly_create (empty assembly at a point), assembly_import (copy an assembly from another DWG - " +
             "the way to bring catalogue/stock assemblies; stock subassembly creation has no public API in 2025 and is refused), " +
             "create (alignment + profile + assembly, station range, frequencies; rebuilds), add_region, rebuild (reports " +
-            "out-of-date after), create_surface (link codes and/or feature-line codes). Every change is re-read.",
+            "out-of-date after), create_surface (link codes and/or feature-line codes). get_targets/set_targets expose region targets. " +
+            "applied_geometry reads built sections; region_quantities integrates shape areas by station with traceable region/code/material mapping (estimated, not native QTO). " +
+            "split_region/merge_regions preserve supported definitions and refuse overrides or incompatible parameters. Every change is re-read.",
             "\"name\":{\"type\":\"string\"},\"handle\":{\"type\":\"string\"},\"new_name\":{\"type\":\"string\"},\"alignment\":{\"type\":\"string\"},\"profile\":{\"type\":\"string\"},\"assembly\":{\"type\":\"string\"}," +
             "\"start_station\":{\"type\":\"number\"},\"end_station\":{\"type\":\"number\"},\"baseline_index\":{\"type\":\"integer\",\"minimum\":0}," +
+            "\"region_index\":{\"type\":\"integer\",\"minimum\":0},\"last_region_index\":{\"type\":\"integer\",\"minimum\":0},\"max_stations\":{\"type\":\"integer\",\"minimum\":1,\"maximum\":2000}," +
+            "\"split_station\":{\"type\":\"number\"},\"new_region_name\":{\"type\":\"string\"},\"shape_codes\":{\"type\":\"array\",\"minItems\":1,\"maxItems\":100,\"items\":{\"type\":\"string\"}}," +
+            "\"material_map\":{\"type\":\"object\",\"additionalProperties\":{\"type\":\"string\"}}," +
+            "\"targets\":{\"type\":\"array\",\"minItems\":1,\"maxItems\":100,\"items\":{\"type\":\"object\",\"properties\":{\"target_index\":{\"type\":\"integer\",\"minimum\":0},\"handles\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"target_to_option\":{\"type\":\"string\",\"enum\":[\"Farthest\",\"Flattest\",\"Nearest\",\"Steepest\"]},\"use_same_side_target\":{\"type\":\"boolean\"}},\"required\":[\"target_index\",\"handles\"],\"additionalProperties\":false}}," +
             "\"frequency\":{\"type\":\"object\",\"properties\":{\"tangents\":{\"type\":\"number\"},\"curves\":{\"type\":\"number\"},\"spirals\":{\"type\":\"number\"},\"profile_curves\":{\"type\":\"number\"}},\"additionalProperties\":false}," +
             "\"rebuild\":{\"type\":\"boolean\",\"default\":true},\"insert\":" + Pt + ",\"assembly_type\":{\"type\":\"string\"}," +
             "\"source_dwg\":{\"type\":\"string\"},\"source_assembly\":{\"type\":\"string\"},\"surface_name\":{\"type\":\"string\"}," +

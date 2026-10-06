@@ -11,6 +11,8 @@ using System.Runtime.InteropServices;
 
 var year = "2025";
 var asmName = "AeccDbMgd.dll";
+string? acadRoot = null;
+string? runtimeRoot = null;
 string? find = null;
 var types = new List<string>();
 for (var i = 0; i < args.Length; i++)
@@ -19,12 +21,14 @@ for (var i = 0; i < args.Length; i++)
     {
         case "--year": year = args[++i]; break;
         case "--asm": asmName = args[++i]; break;
+        case "--acad-dir": acadRoot = args[++i]; break;
+        case "--runtime-dir": runtimeRoot = args[++i]; break;
         case "--find": find = args[++i]; break;
         default: types.Add(args[i]); break;
     }
 }
 
-var acad = $@"C:\Program Files\Autodesk\AutoCAD {year}";
+var acad = acadRoot ?? $@"C:\Program Files\Autodesk\AutoCAD {year}";
 var c3d = Path.Combine(acad, "C3D");
 if (!File.Exists(Path.Combine(c3d, "AeccDbMgd.dll")))
 {
@@ -33,19 +37,26 @@ if (!File.Exists(Path.Combine(c3d, "AeccDbMgd.dll")))
 }
 
 var paths = new List<string>();
+// Match metadata references to the real host framework, including Framework's mscorlib.
+var host = Horizun.Civil3D.Server.HostInspection.Inspect(acad, int.Parse(year));
+var hostRuntime = host["runtime"]!.GetValue<string>();
+var sharedRoot = new DirectoryInfo(RuntimeEnvironment.GetRuntimeDirectory()).Parent!.Parent!.FullName;
+string LatestRuntime(string name, int major) => Directory.GetDirectories(Path.Combine(sharedRoot, name))
+    .Select(p => (Path: p, Version: Version.TryParse(Path.GetFileName(p), out var v) ? v : null))
+    .Where(p => p.Version?.Major == major).OrderByDescending(p => p.Version).First().Path;
+runtimeRoot ??= hostRuntime == "net48"
+    ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Microsoft.NET", "Framework64", "v4.0.30319")
+    : LatestRuntime("Microsoft.NETCore.App", hostRuntime == "net10" ? 10 : 8);
 paths.AddRange(Directory.GetFiles(acad, "*.dll"));
 paths.AddRange(Directory.GetFiles(c3d, "*.dll"));
 var aca = Path.Combine(acad, "ACA");
 if (Directory.Exists(aca)) paths.AddRange(Directory.GetFiles(aca, "*.dll"));
-paths.AddRange(Directory.GetFiles(RuntimeEnvironment.GetRuntimeDirectory(), "*.dll"));
-var desktopRoot = @"C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App";
-if (Directory.Exists(desktopRoot))
-{
-    var wd = Directory.GetDirectories(desktopRoot).OrderBy(x => x).LastOrDefault();
-    if (wd != null) paths.AddRange(Directory.GetFiles(wd, "*.dll"));
-}
+paths.AddRange(Directory.GetFiles(runtimeRoot, "*.dll"));
+var desktopRoot = hostRuntime == "net48" ? Path.Combine(runtimeRoot, "WPF")
+    : LatestRuntime("Microsoft.WindowsDesktop.App", hostRuntime == "net10" ? 10 : 8);
+if (Directory.Exists(desktopRoot)) paths.AddRange(Directory.GetFiles(desktopRoot, "*.dll"));
 var unique = paths.GroupBy(p => Path.GetFileName(p), StringComparer.OrdinalIgnoreCase).Select(g => g.First());
-using var mlc = new MetadataLoadContext(new PathAssemblyResolver(unique));
+using var mlc = new MetadataLoadContext(new PathAssemblyResolver(unique), hostRuntime == "net48" ? "mscorlib" : "System.Private.CoreLib");
 
 var asmPath = new[] { c3d, Path.Combine(acad, "ACA"), acad }.Select(d => Path.Combine(d, asmName)).FirstOrDefault(File.Exists) ?? Path.Combine(acad, asmName);
 var asm = mlc.LoadFromAssemblyPath(asmPath);

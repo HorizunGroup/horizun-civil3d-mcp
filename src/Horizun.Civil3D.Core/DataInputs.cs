@@ -23,7 +23,17 @@ public static class DataInputs
         ["add_pipes"] = new(new[] { "network", "pipes" }, Array.Empty<string>(), W, PipeItems),
         ["validate"] = new(new[] { "network" }, new[] { "min_cover", "max_cover", "min_slope_pct", "max_slope_pct" }, Extra: a => V.First(
             V.NonNeg(a, "min_cover"), V.Pos(a, "max_cover"), V.NonNeg(a, "min_slope_pct"), V.Pos(a, "max_slope_pct"))),
+        ["pressure_list"] = new(Array.Empty<string>(), new[] { "limit", "offset" }, Extra: PressurePage),
+        ["pressure_get"] = new(new[] { "network" }, new[] { "limit", "offset" }, Extra: PressurePage),
+        ["pressure_create_network"] = new(new[] { "new_name" }, new[] { "surface", "layer" }, W),
+        ["pressure_rename"] = new(new[] { "network", "new_name" }, Array.Empty<string>(), W),
     });
+
+    private static string? PressurePage(JsonObject a) => V.First(
+        a["limit"] == null || Hz.Num(a, "limit") is { } l && l >= 1 && l <= 500 && l == Math.Truncate(l)
+            ? null : "limit must be an integer from 1 to 500.",
+        a["offset"] == null || Hz.Num(a, "offset") is { } o && o >= 0 && o <= 1_000_000 && o == Math.Truncate(o)
+            ? null : "offset must be an integer from 0 to 1000000.");
 
     private static string? Structures(JsonObject a)
     {
@@ -68,8 +78,10 @@ public static class DataInputs
         ["create"] = new(new[] { "points" }, new[] { "group" }, W, PointItems),
         ["import"] = new(new[] { "file", "format" }, new[] { "group", "skip_header" }, W, a => V.First(V.OneOf(a, "format", PointFormats),
             Hz.Str(a, "file") is { } f && Path.IsPathRooted(f) ? null : "file must be an absolute path.")),
-        ["export_csv"] = new(new[] { "output" }, new[] { "group", "numbers", "format" }, W, a => V.First(V.OneOf(a, "format", PointFormats),
+        ["export_csv"] = new(new[] { "output" }, new[] { "group", "numbers", "format" }, F, a => V.First(V.OneOf(a, "format", PointFormats),
             Hz.Str(a, "output") is { } f && Path.IsPathRooted(f) ? null : "output must be an absolute path.")),
+        ["export_editable_csv"] = new(new[] { "output" }, new[] { "group", "numbers" }, F, a => V.First(NumberRanges(a), EditableCsvPath(a,"output"))),
+        ["apply_csv"] = new(new[] { "file" }, new[] { "group", "numbers" }, W, a => V.First(NumberRanges(a), EditableCsvPath(a,"file"))),
         ["elevations_from_surface"] = new(new[] { "surface" }, new[] { "group", "numbers" }, W, a => V.First(V.Exactly1(a, "group", "numbers"), NumberRanges(a))),
         ["groups"] = new(Array.Empty<string>(), Array.Empty<string>()),
         ["group_create"] = new(new[] { "new_name" }, new[] { "include_numbers", "include_raw_descriptions", "include_full_descriptions", "include_names", "exclude_numbers", "description" }, W,
@@ -81,6 +93,9 @@ public static class DataInputs
     private static string? RangeText(JsonObject a, string key) =>
         Hz.Str(a, key) is { } s && NumberSet.Parse(s) == null ? key + " must look like \"1-100,205,300-310\"." : null;
 
+    private static string? EditableCsvPath(JsonObject a,string field) => Hz.Str(a,field) is {} path && RuntimeCompat.IsPathFullyQualified(path) && path.EndsWith(".csv",StringComparison.OrdinalIgnoreCase)
+        ? null : field+" must be an absolute .csv path.";
+
     private static string? NumberRanges(JsonObject a) =>
         a["numbers"] != null && (Hz.Str(a, "numbers") is not { } s || NumberSet.Parse(s) == null) ? "numbers must look like \"1-100,205,300-310\"." : null;
 
@@ -91,7 +106,7 @@ public static class DataInputs
         {
             if (p[i] is not JsonObject o) return "points[" + i + "] must be an object.";
             if (o.FirstOrDefault(kv => kv.Key is not ("x" or "y" or "z" or "description" or "name" or "number")) is { Key: { } x }) return "points[" + i + "]." + x + " is not recognised.";
-            if (Hz.Num(o, "x") is not { } px || Hz.Num(o, "y") is not { } py || !double.IsFinite(px) || !double.IsFinite(py) || (o["z"] != null && V.Fin(o, "z") is { }))
+            if (Hz.Num(o, "x") is not { } px || Hz.Num(o, "y") is not { } py || !Hz.IsFinite(px) || !Hz.IsFinite(py) || (o["z"] != null && V.Fin(o, "z") is { }))
                 return "points[" + i + "] needs finite x, y (and optional z).";
             if (o["number"] != null && (Hz.Num(o, "number") is not { } n || n < 1 || n != Math.Floor(n) || n > uint.MaxValue)) return "points[" + i + "].number must be a positive integer.";
         }
@@ -111,7 +126,13 @@ public static class DataInputs
         ["shortcuts_publish"] = new(new[] { "names" }, Array.Empty<string>(), F, a => V.Strings(a, "names", 500)),
         ["shortcuts_reference"] = new(new[] { "name", "type" }, new[] { "source_dwg" }, W, a => V.First(V.OneOf(a, "type", ShortcutTypes),
             a["source_dwg"] != null && !(Hz.Str(a, "source_dwg") is { } s && Path.IsPathRooted(s)) ? "source_dwg must be an absolute path." : null)),
-        ["export_landxml"] = new(new[] { "output" }, new[] { "surfaces", "alignments", "include_profiles" }, W, a => V.First(
+        ["export_dwg"] = new(new[] { "output" }, Array.Empty<string>(), F, a =>
+            Hz.Str(a, "output") is { } o && RuntimeCompat.IsPathFullyQualified(o) && o.EndsWith(".dwg", StringComparison.OrdinalIgnoreCase)
+                ? null : "output must be a fully qualified .dwg path."),
+        ["export_revit"] = new(new[] { "output", "surface" }, Array.Empty<string>(), F, a =>
+            Hz.Str(a, "output") is { } o && RuntimeCompat.IsPathFullyQualified(o) && o.EndsWith(".zip", StringComparison.OrdinalIgnoreCase)
+                ? null : "output must be a fully qualified .zip path."),
+        ["export_landxml"] = new(new[] { "output" }, new[] { "surfaces", "alignments", "include_profiles" }, F, a => V.First(
             Hz.Str(a, "output") is { } o && Path.IsPathRooted(o) && o.EndsWith(".xml", StringComparison.OrdinalIgnoreCase) ? null : "output must be an absolute .xml path.",
             V.Strings(a, "surfaces", 100), V.Strings(a, "alignments", 500),
             a["surfaces"] == null && a["alignments"] == null ? "Give surfaces and/or alignments to export." : null)),
@@ -124,9 +145,9 @@ public static class NumberSet
     public static List<(uint From, uint To)>? Parse(string text)
     {
         var list = new List<(uint, uint)>();
-        foreach (var part in text.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+        foreach (var part in RuntimeCompat.SplitTrimmed(text, ',', removeEmpty: true))
         {
-            var ends = part.Split('-', StringSplitOptions.TrimEntries);
+            var ends = RuntimeCompat.SplitTrimmed(part, '-');
             if (ends.Length is < 1 or > 2 || !uint.TryParse(ends[0], out var a)) return null;
             var b = a;
             if (ends.Length == 2 && !uint.TryParse(ends[1], out b)) return null;

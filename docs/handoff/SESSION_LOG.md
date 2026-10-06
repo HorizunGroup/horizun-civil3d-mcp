@@ -459,3 +459,236 @@
 - Al final se restauró la carpeta de trabajo original de Civil 3D y el perfil quedó en `safe_write`.
 
 **Qué sigue:** instalar la v0.7.4 y re-ejecutar la publicación en vivo (por ejemplo HZ_FG desde hz-fuente.dwg); probar a mano los botones Canal C# y Escritura completa; GitHub (privado en HorizunGroup) cuando el dueño lo autorice.
+
+---
+
+## 2026-10-05 - Codex - Revisión multiagente de paridad con Revit, Navisworks, Power BI y Project
+**Estado**: TERMINADO EN CÓDIGO; DESPLIEGUE Y REGRESIÓN EN VIVO PENDIENTES
+
+**Objetivo autorizado:** comparar la estructura, instalación, seguridad y experiencia de uso de los cuatro MCP locales con Civil 3D; corregir los fallos confirmados y completar las piezas comunes que falten.
+
+**Alcance:** cambios en este repositorio, rama `phase-0/cross-product-parity-review`. Los repositorios de referencia se consultan solo para lectura. No se instala ni se modifica la configuración real de clientes o permisos; la prueba en vivo y el despliegue se preparan después de las verificaciones locales.
+
+**Trabajo paralelo:** transporte/servidor frente a Revit; flujo de escrituras/UNDO frente a Navisworks y Project; instalación/CI frente a Power BI y Project. El agente principal integra alcance de permisos, contrato, empaquetado de plugins y documentación.
+
+**Base comprobada:** v0.8.0 (`131b142`), 435/435 pruebas .NET, suite PowerShell correcta y plugin 2025 compilado sin errores ni advertencias en la revisión inicial.
+
+**Hecho:**
+- Comparación documentada con Revit `e204f310`, NavisCoord 1.1.1 (`e19e49d`), Power BI 2.1.2 (`9c64386`) y Project (`af99478`). Los repos de referencia y sus cambios ajenos no se modificaron.
+- Retirado el hallazgo inicial que clasificaba los permisos globales como un defecto: Revit usa el mismo alcance. Ahora botones y guías lo explican.
+- Corregidos límites de transporte, entrada MCP y concurrencia, dibujos homónimos, promesas falsas del C# query, registro de UNDO para efectos externos y verificación incompleta de modificados.
+- PDF/CSV/LandXML generan y validan staging. PDF conserva respaldo al reemplazar e invalida confirmación/promoción si el destino cambió.
+- Instalador valida y registra Claude bajo rollback; evita cliente abierto y cambios concurrentes; conserva manifiesto previo; informa `rollback_incomplete` si una restauración falla.
+- Plugin Codex/Claude, marketplace, dos skills, launcher diagnóstico/instalación, builder ZIP/MCPB y hashes de distribución. Runtime preparado `0.8.1`, contrato `a9b1dd257fd965fa8893bde3`.
+
+**Evidencia local:**
+- 445/445 tests Core/Server. Plugin 2025 release: cero errores y advertencias; quedan dos advertencias históricas xUnit1031 en tests.
+- Registro Claude, rollback y bootstrap: pruebas aisladas aprobadas en PowerShell 5.1 y 7; forwarding stdio al servidor publicado probado. Enlaces simbólicos se prueban solo si Windows permite crearlos.
+- 111 checks del túnel ChatGPT en PowerShell 5.1 aprobados, sin credenciales reales ni configuración de cuenta nueva.
+- Builder y prueba de ZIP/MCPB aprobados: versión, scripts, skills, payload y SHA-256 correctos; prueba de metadatos disponible en CI sin Autodesk.
+- Ambas skills validadas con el validador de `skill-creator`. Esquema oficial MCPB v0.4 revisado; falta importación en el cliente real.
+- Paquetes preparados en `artifacts/` (ignorado): ZIP precompilado para 2025, ZIP plugin, MCPB y `SHA256SUMS`. No son una release publicada.
+
+**Límites:** no se instaló, no se cambiaron settings/configuración real, no se ejecutaron escrituras de dibujos y no hubo commit/push/publicación. El ejecutable instalado no se encontró en la ruta estándar en esta máquina. Pruebas históricas L no se atribuyen a v0.8.1. `undo_last` de valores modificados aún necesita snapshots previos para una verificación completa.
+
+**Qué sigue:** revisar los cambios; guardar dibujos y confirmar cierre de Civil 3D antes de desplegar servidor/add-in juntos; reiniciar cliente y probar en fixture dibujos homónimos, UNDO, canal C#, exportaciones y PDF existente + fallo. Probar importación/reinicio de plugin/MCPB y, con instrucción del dueño, publicar v0.8.1.
+
+## 2026-10-05 - Codex - Ampliación de capacidades y revisión de mejoras aplicables
+**Estado**: TERMINADO EN CÓDIGO; INSTALACIÓN Y REGRESIÓN EN VIVO PENDIENTES
+
+**Objetivo autorizado:** revisar la cobertura real de herramientas y acciones contra los otros MCP y la hoja de ruta; ampliar capacidades que puedan implementarse con evidencia local y preparar su verificación en Civil 3D.
+
+**Distribución multiagente:** catálogo consultable del contrato y permisos; auditoría de dibujos mediante API sondeada; inventario comparativo y priorización. El principal integra exportación DWG, documentación, pruebas y paquetes.
+
+**Alcance:** mismo árbol de trabajo y cambios anteriores preservados; sin instalación, configuración real, escrituras de cliente, commit ni publicación. Las capacidades nuevas no se marcan L sin prueba en vivo.
+
+**Hecho:**
+- Catálogo derivado del contrato: **28 herramientas y 151 acciones**, seis herramientas sin enum de acción. 157 filas: 51 Read, 93 SafeWrite, 11 FullWrite, una HostState y una UnsafeCode.
+- Nueva herramienta server-side `horizun_c3d_capabilities`: búsqueda por herramienta/efecto/texto, schemas y permisos; no atribuye prueba al anfitrión ni soporte L.
+- `horizun_c3d_audit`: unidades, coordenadas, xrefs, referencias stale/invalid y superficies/corredores fuera de fecha. Conteos desconocidos/ilegibles y resumen parcial explícitos.
+- `exchange export_dwg`: clona el estado actual, genera staging, lo reabre y compara unidades/conteos estructurales antes de promover; nunca sobrescribe ni guarda el origen. No agrupa referencias externas ni demuestra cada valor de diseño.
+- Cuatro acciones de presión: listado y lectura paginada de redes/piezas/conexiones, creación de red vacía con superficie/capa opcionales y renombrado con rechazo de referencias. API sondeada, carga diferida de DLL y relectura tras commit; quedan pendientes catálogo/piezas/conexiones editables/hidráulica.
+- CSV/LandXML pasan a FullWrite de acuerdo con efectos de archivos. LandXML usa las unidades de diseño Civil y distingue pie internacional de US survey foot; no presupone metros por INSUNITS sin unidades.
+- Fixture actualizado para permisos de exportación, DWG, presión y auditoría; solo se comprobó su sintaxis. Informe `CAPABILITY_REVIEW.md`, catálogo reproducible, hoja de ruta, README, changelog y matriz de evidencia actualizados.
+
+**Integración multiagente:** servidor entregó catálogo/pruebas; plugin entregó auditoría/sonda; instalación entregó el generador de inventario. Los agentes auxiliares alcanzaron su límite de uso antes del cierre; el principal completó la revisión de gaps, presión, DWG e integración y verificó el conjunto. No se presenta una revisión independiente posterior de todo el código añadido por el principal.
+
+**Evidencia:**
+- **473/473 Core/Server**, cero fallos. Build Release 2025 con cero errores/advertencias; quedan las advertencias históricas de xUnit en tests cuando se recompilan.
+- Firmas nuevas en `docs/api-probes/2025/AcDbMgd.dwg-export.txt`, `AeccDbMgd.audit-2025.txt`, `AeccDbMgd.export-units.txt` y `AeccPressurePipesMgd.audit-network.txt`.
+- Bootstrap PowerShell 5.1 y 7: aprobado contra el servidor recién publicado a staging, incluyendo stdio y `capabilities` con conteos iguales a tools/list. En 5.1 el fixture de symlink no estaba disponible; el resto pasó. La suite 7 sí completó ese fixture.
+- Builder y gate ZIP/MCPB: aprobados con la nueva release ZIP; skill de workflow actualizada y validada; sintaxis de `verify_blocks.py` correcta.
+- Artefactos actuales regenerados en `artifacts/`: ZIP 2025, plugin ZIP, MCPB y SHA256SUMS. Contrato **`60ab4ce4eb7756190fa7f4bf`**, versión preparada 0.8.1. Sustituyen los paquetes de la preparación anterior, no una release publicada.
+
+**Pendientes y qué sigue:** guardar dibujos y confirmar cierre antes de instalar servidor/add-in juntos, según WORKFLOW; reiniciar cliente y ejecutar regresión sobre fixture. Validar unidades metric/international/US foot, copia DWG con cambios no guardados, exportación denegada bajo safe_write, auditoría y presión. Después: snapshots de UNDO, adaptadores transaccionales de execute_plan, catálogo/conexiones de presión y cómputos de materiales. Sin prueba en vivo nueva, sin soporte declarado para 2026/2027, sin instalación/configuración real, commit, push ni publicación.
+
+## 2026-10-05 - Codex - Benchmark externo de herramientas Civil 3D
+**Estado**: TERMINADO — BENCHMARK DOCUMENTAL/DE CÓDIGO
+
+**Objetivo autorizado:** comparar Horizun contra MCP públicos, Dynamo/Camber y automatización especializada de Civil 3D; identificar brechas reales con fuentes primarias actuales y priorizar mejoras. El benchmark es documental/de código; no se presentan tiempos ni tasas de éxito de competidores que no se hayan medido.
+
+**Alcance:** lectura de repositorios/documentación públicos y del contrato local; informe reproducible `docs/BENCHMARK.md`. Sin instalación de competidores, cambios de dibujo, configuración real, commit ni publicación. Se mantienen los cambios del bloque anterior.
+
+**Hecho:** informe con siete referencias: Sacred-G, DaniGhosy, xuantinhnbs-rgb, Dynamo 2026/2026.2, Camber, CTC CIM Project Suite y Grading Optimization. Tres MCP y Camber fijados por SHA; fuentes cacheadas solo para lectura en `.local/benchmark/`, ignorado. Matriz por flujo, prioridades y protocolo de 14 tareas con resultados analíticos/relecturas esperadas; protocolo no ejecutado.
+
+**Hallazgos:** faltan targets/geometría aplicada de corredores, cantidades por material/estación, construcción completa de presión, drenaje/hidráulica, espirales/peraltes, planos dinámicos y reportes as-built/Excel/Power BI. Los volúmenes de superficies, consultas genéricas, layouts/PDF y CSV/LandXML existentes se reconocen como cobertura parcial pertinente. Los stubs QTO de Sacred-G, operaciones planned de Dani y su búsqueda de sheet sets por reflexión no se presentan como ventajas ejecutadas. Camber tiene aviso de fin de mantenimiento activo; los nodos de drenaje 2026 no prueban disponibilidad 2025.
+
+**Evidencia/límites:** revisión de código público fijado y documentación primaria Autodesk/CTC; ningún competidor instalado/compilado/ejecutado. No hay tiempos, tasas de éxito, ranking de exactitud ni pruebas L nuevas. El gate previo de 473 tests/build 2025 sigue registrado, no fue reejecutado por cambios exclusivamente documentales. Se actualizaron STATUS, CAPABILITY_REVIEW, CHANGELOG y CIVIL3D.
+
+**Qué sigue:** validar/desplegar la v0.8.1 preparada por el proceso existente; completar recuperación/UNDO y planes transaccionales. Primer paquete de ingeniería recomendado: targets de corredores + geometría aplicada + cantidades trazables (P1); luego catálogo/piezas/conexiones de presión. Sondear las APIs antes de implementar y usar fixtures analíticos. La siguiente fase de benchmark medido requiere ejecutar los productos sobre fixtures equivalentes y años comparables.
+
+## 2026-10-05 - Codex - Interoperabilidad de topografía Civil 3D → Revit
+**Estado**: TERMINADO EN CÓDIGO — TRANSFERENCIA REAL Y VALIDACIÓN ESPACIAL PENDIENTES
+
+**Objetivo autorizado:** priorizar exportación/interoperabilidad y preparar un flujo ejecutable para enviar una superficie TIN de Civil 3D a Revit, junto con los requisitos de corredores, cantidades, planos y comparación construido/diseñado seleccionados por el dueño.
+
+**Plan:** aprovechar el importador tipado existente de Revit (`horizun_create_elements`, `kind=toposolid`, `landxml_path`), preparar exportación/paquete validado con unidades, caras visibles, coordenadas y procedencia; generar petición dry-run sin adivinar modelo/tipo/nivel ni modificar coordenadas compartidas. Registrar límites de retriangulación y contraste espacial. Sondear cualquier API nueva y probar sin anfitrión primero.
+
+**Estado del anfitrión:** health de Revit rechazado por diálogo modal persistente; la llamada no comenzó. Sin operación sobre modelos. Se continúa con desarrollo/pruebas locales, sin instalar ni cerrar diálogos. Revit permanece solo como referencia de código en este bloque.
+
+**Hecho:**
+- `exchange export_revit` FullWrite: una TIN visible → ZIP nuevo con terrain.xml y manifest; sin guardar el origen ni adelgazar automáticamente. Conserva XYZ/caras en el archivo, unidades Civil exactas, origen/revisión/handle/contrato, controles, bounds, área y elevación min/max/promedio. El importador nativo por puntos vuelve a triangular y no promete breaklines/huecos/bordes.
+- Plan atado a hashes de toda la geometría y manifest; escritura atómica y reapertura/comparación de todos los bytes antes/después. Refusa TIN inválida, coordenadas XY conflictivas, caras repetidas/degen/índices inválidos, bordes no manifold y límites 20000 vértices/40000 caras.
+- `prepare-revit-terrain.ps1`: extracción acotada, hash/nombres/counts/unidades/DTD, destino nuevo y petición de ensayo para el receptor tipado existente. Tipo/nivel/modelo explícitos; no cambia coordenadas ni llama al anfitrión. Cobertura no convexa requiere revisión explícita. Helper incluido en runtime y plugin/MCPB; gate añadido a CI.
+- LandXML pasa a precisión round-trip. Catálogo actual: **28 herramientas / 152 acciones**, 158 filas (51 Read, 93 SafeWrite, 12 FullWrite, una HostState, una UnsafeCode), contrato **`b5cfe04b65b9b303d9241d4b`**.
+- Documentación INTEROPERABILITY, README, benchmark/roadmap/capacidades, matriz y skill actualizadas. Regresión futura de export_revit añadida a verify_blocks.py; sintaxis validada, no ejecución en Civil.
+
+**Evidencia:** 490/490 Core/Server; plugin 2025 cero errores/advertencias. PS 5.1: 21 checks de helper; PS 7: 29, incluyendo Core real → preparador → lector LandXML real del repo Revit, sin ejecutar su API. Bootstrap 5.1/7 aprobado contra servidor publicado a staging (symlink omitido en 5.1 por falta de fixture). Suite ChatGPT 5.1 aprobada; paquete ZIP/plugin/MCPB y SHA-256 aprobados. Skill validada; PyYAML se añadió solo a `.local/skill-validation` ignorado por falta de dependencia en el Python local.
+
+**Problemas resueltos:** build inicial falló por Array.Reverse devolviendo void; se usó Enumerable.Reverse. Eliminada comprobación redundante TinVolumeSurface incompatible con TinSurface. Builder plugin falló en PS 5.1 sin OutDirectory por evaluar PSScriptRoot al enlazar parámetros; cálculo trasladado al cuerpo y ejecución por defecto probada.
+
+**Artefactos actuales** (reemplazan las preparaciones anteriores, no publicados/instalados):
+- Release ZIP: `1930953b6bccdc5538a52fdebd78c7fa4b0d2c3d177bbbf91ade28850a0cce3f`.
+- Plugin ZIP: `5784169254d88c9155ca77d12fd572b83eb8e4658f923d2e625cf84fe4a8a3b0`.
+- MCPB: `45b2ce442f12d131b4ca24dc802be7e5ffa1165b2abf5e928a6081dc1979ab84`.
+
+**Límites y qué sigue:** servidor Civil instalado sigue ausente en ruta estándar; Revit health bloqueado por modal. No modificación de dibujos/modelos, configuración real, instalación, commit/push ni prueba L nueva. Se pidió asincrónicamente DWG/superficie y modelo destino para prueba real; falta respuesta. Desplegar por WORKFLOW (guardar/cerrar Civil y confirmar primero), usar fixture y resolver el modal por la persona. Comprobar origen/rotación/cota/nivel y puntos interiores de Revit con controles independientes; el lector tiene límites de rotación/Z aún sin medición en anfitrión. Siguiente código: malla exacta/3DFACE/DirectShape, luego geometría aplicada/targets/cómputos. Los reportes RMSE, división/unión, planos dinámicos y edición por hojas de cálculo seleccionados siguen pendientes; no se atribuyen a este bloque.
+
+## 2026-10-05 - Codex - Compatibilidad Civil 3D 2024 y 2026
+
+**Estado:** TERMINADO el bloque de preparación; compatibilidad del add-in completo en 2024/2026 pendiente de sus DLL y pruebas en vivo.
+
+**Objetivo:** adaptar Core/add-in/selección de runtime e instalador para 2024 (.NET Framework 4.8) y 2026 (.NET 8 hasta 2026.2.1; .NET 10 desde 2026.2.2), conservando 2025 y el contrato. El dueño confirma que no tiene 2024/2026 y pide asumirlas: preparar rutas de compilación y pruebas sin atribuir evidencia de sus DLL ni prueba en vivo.
+
+**Plan:** portar APIs BCL incompatibles; probar Core en net48 y .NET moderno; comprobar que instalador/compilación rechazan referencias ausentes o runtime incorrecto; registrar requisitos de compilación y validación por año. Las DLL Autodesk disponibles son únicamente 2025. No instalación ni modificación de configuración/dibujos.
+
+**Hecho:**
+- Core `net48;net8.0;net10.0`: finitud, SHA/token/comparación, rutas absolutas, reemplazo de discovery, epoch, split y lecturas exactas compatibles; marcadores/compiler polyfills solo Framework. El servidor continúa net8 autocontenido.
+- Add-in preparado para net48 2024 y variantes net8/net10 2026. Constructor de pipe ACL compatible con Framework; guard de año/CLR antes de publicar discovery o resetear sesión C#. `health` informa `build_runtime`. No API Autodesk nueva inventada ni sustitución de DLL de otro año.
+- Inspector PE offline del servidor: lee identidad/TargetFrameworkAttribute de acmgd/AeccDbMgd sin cargar código Autodesk. Instalador lo usa para selección automática; host-builds.json vincula paquete a versiones exactas. R24.3 añadido; raíces de referencias explícitas; prebuilt incompatible rechazado antes de copia.
+- Probe offline acepta `--acad-dir`/`--runtime-dir` y selecciona mscorlib Framework o BCL moderno correspondiente. Solo probado contra DLL 2025; registro host-runtime.txt añadido.
+- Runtime.Tests enlaza pruebas existentes y el transporte/logging real del plugin, reemplazando únicamente Dispatcher por un double sin Autodesk. CI, solución, guía COMPATIBILITY, README, skill y matriz actualizados.
+
+**Evidencia:** 492/492 Core/Server; **335/335 en cada net48/net8/net10** (suites solapadas, no 1497 casos distintos). Incluye contrato idéntico `b5cfe04b65b9b303d9241d4b`, autenticación del pipe real y exportación TIN. Add-in 2025 compila cero errores/advertencias. Ocho gates PS 5.1 de selección/metadata/año aprobados. 2024/2026 fallan correctamente por DLL ausentes; 2024 con referencias 2025 se rechaza por 25.0 frente a 24.3 antes de binding. Suite completa del instalador en modo PackageOut aprobada, incluyendo registro/rollback y ChatGPT; no instalación. Paquete extraído: DryRun acepta coincidencia y rechaza fixture con runtime cambiado. Plugin ZIP/MCPB, hashes y skill validados; git diff --check sin errores.
+
+**Problemas/decisiones:** se corrigieron marcadores C# ausentes, BCL moderna, casing de identidad AcMgd, raíz del resolver con separador final y `$host` reservado de PowerShell (ahora `$hostInfo`). Los tests Framework requieren fijar el switch STJ desde el módulo de pruebas porque el test host no aplica runtimeconfig; no se alteró el AppContext global del producto. El lector web falló inicialmente en la guía 2026; contenido directo HTTP Autodesk confirma 2026.2.1/net8 y 2026.2.2/net10. Revisión automática rechazó un comando de fixture que incluía limpieza recursiva, solo con motivo "blocked by policy"; se ejecutó la comprobación sin borrado. Fixture temporal conservado bajo `%TEMP%/hz-c3d-compat-package-f360c3acf1224518914d53408d7d5aa7` (datos sintéticos, no instalación).
+
+**Artefactos actuales** (solo 2025, sustituyen los hashes preparados anteriores; no publicados ni instalados):
+- Release ZIP: `aecf6638f481d1ea15b443ffbba1cb972efddbb28f7957d1fbee9bff3aacf2e7`.
+- Plugin ZIP: `a323368366220f3d88d4866e4ca51393c4049aa11c794c214f0b92ab4c58cc9c`.
+- MCPB: `07cf47361c7803cb33c3cb343a90a98b28f9e78a0ecf413b8cc5ad2d3b2c9569`.
+
+**Qué sigue:** obtener DLL Autodesk de 2024 y 2026 en sus dos familias de runtime; sondear todas las APIs utilizadas, compilar el add-in completo, resolver diferencias y generar paquetes correspondientes. Después guardar/cerrar/confirmar por WORKFLOW, desplegar y correr el fixture por año/actualización. El dueño ya confirmó que no las tiene: no pedir otra vez su instalación. Continuar en paralelo la ruta Civil → Revit seleccionada, con ubicación y fidelidad medidas antes de afirmar transferencia verificada. Sin commit/push, configuración real ni prueba L nueva.
+
+## 2026-10-05 - Codex - Finalización de compilaciones 2024/2026
+
+**Estado:** CERRADO: compilaciones y paquetes terminados; aceptación en anfitriones reales pendiente.
+
+**Objetivo:** completar el add-in/paquetes 2024 y 2026 tras "termínalo", obteniendo referencias verificables sin instalar Autodesk ni asumir prueba L. Examinar fuentes oficiales y distribuciones de referencias; verificar identidad/framework/firma antes de usar archivos. Corregir diferencias solo con sondeo de APIs reales. La ausencia de 2024/2026 confirmada por el dueño permanece vigente.
+
+**Resultado:** DLL Autodesk auténticas verificadas con Authenticode válido. Civil3D.NET oficial 13.6.1781/13.8.1516, Speckle.AutoCAD.API 2024.0.0/2026.0.0 (DLL firmadas Autodesk), AutoCAD.NET/Core/Model oficiales 25.1.1 para net10. Descargas ignoradas en `.local`; firmas/hashes de DLL en `docs/api-probes/reference-provenance-20261005.json`. Sondeos offline por año guardados. Ningún paquete NuGet de Autodesk fue ejecutado ni redistribuido.
+
+**Correcciones:** exclusión explícita de todos los obj/bin al compilar años distintos; enums no genéricos, encoding Latin1 por código 28591, Zip/Contains/FirstOrDefault compatibles con Framework. Superficies 2024 protegen referencias usando propiedades existentes, sin inventar flags cloud-worksharing. Inspector acepta SDK Framework 4.7 para net48 y bibliotecas Civil net8 con AutoCAD net10.
+
+**Pruebas:** 496 Core/Server; 335 pruebas en cada net48/net8/net10; registro Claude, rollback instalador y túnel PowerShell 5.1 pasan. Compilación add-in 2024: cero errores, cinco advertencias nullable; 2025 y 2026 net8/net10: cero errores/advertencias. ZIP reabiertos: metadatos correctos y ninguna DLL Autodesk. El build net10 usa Civil3D.NET/net8: aún se deben medir las bibliotecas Civil de la actualización de destino y comprobar coincidencia exigida por el instalador.
+
+**Artefactos:** canónico `artifacts/horizun-civil3d-mcp-0.8.1.zip` incluye 2024/2025/2026 net8, SHA-256 `6e7d33076f52e30c4cb5778827824f85adef12a1fa2d6e88eb22086b8dfb3a8e`; separado `horizun-civil3d-mcp-0.8.1-2026-net10.zip`, SHA `cb09a910e50a62b439e27628af06a1fec3188bc5752d6a6579a094dbee9581b2`. Plugin ZIP regenerado SHA `30ba7497f658e0d39a79480d7f9b30be7703a26d1b3d9d6fff50914e7e21312c`; MCPB SHA `4bbbfe1c23de5e14d8439e7183a34265108d8d8d690025ca346ef3db0b4dcb22`. No instalación, configuración real, publicación, commit ni push.
+
+**Qué sigue:** ejecutar aceptación en Civil 2024/2026 con referencias de su actualización; instalar solo después de guardar/cerrar confirmado según WORKFLOW. Luego ensayar Toposolid Revit con coordenadas y fidelidad verificadas. Las ampliaciones de corredores/RMSE/QTO/hojas siguen en el backlog; este bloque termina la preparación binaria por año.
+
+## 2026-10-05 - Codex - Ampliaciones de ingeniería e interoperabilidad
+
+**Estado:** TERMINADO código, revisión y paquetes; despliegue/ensayo nativo pendientes de confirmación de guardar/cerrar.
+
+**Objetivo:** registrado EN CURSO antes de implementar: comparación construido/diseñado, targets/geometría/split-merge/cantidades de corredores, CSV editable, viewports vinculados y fidelidad TIN hacia Revit. El dueño pidió hacerlo de una vez y después eligió ensayo con archivos nuevos. Esta entrada inicialmente estaba al inicio; se mueve al final conservando su objetivo y evidencia.
+
+**Hecho:** v0.9.0 preparada, 28 tools/163 acciones/169 filas, contrato `171049b89c39afc5120da6ff`. Tres agentes (comparison, corridor_engineering, interop) implementaron y auditaron sus bloques; root integró contratos, permisos, viewports, fixture, compilaciones y paquetes. Compare_design: muestras explícitas, desviación construido-diseñado, tolerancias, min/max/media/MAE/RMSE y cobertura nula con motivo. Corredores: get/set_targets, applied_geometry, region_quantities por integración estimada de áreas, split/merge nativos con snapshot completo de las definiciones soportadas; offsets/overrides/incompatibilidades se rechazan. COGO CSV: fuente/unidades/identidad de filas ligadas, ediciones verificadas; guardas de bloqueo/levantamiento/proyecto y export sin UNDO DWG. Viewports: referencia persistente al alineamiento, cámara con transform WCS/DCS y refresh explícito; cordón local estimado declarado.
+
+**Interoperabilidad:** paquete agrega OBJ preservando triángulos/huecos con hash. Receptor Python de Revit crea DirectShape separado de Toposolid, transforma shared→internal, reread postcommit y rollback por defecto; apply liga hash de plan/paquete/documento/ubicación. API Revit 2025 sondeada, canal nunca autoactivado. Helper `-ExactMesh` prepara petición sin exigir type/level de Toposolid. Guías nuevas y CI pruebas Python incluidos. `.local/engineering-fixture-20261005` contiene plano sintético 100m², XML/OBJ/ZIP/CSV y comparación esperada RMSE0.02m; peticiones dry-run Civil/new_project Revit. No DWG/RVT nativos creados sin anfitrión.
+
+**Evidencia:** 544 Core/Server y 383 pruebas solapadas por net48/net8/net10; siete guardas Python; helper terreno 21 PS5.1 y 35 PS7 con lector Revit real; instalador registro/rollback/túnel pasan. Builds completos 2024/net48 (cero errores, advertencias nullable previas), 2025/net8 y 2026/net8/net10 (cero errores/advertencias). Probe revela 2024 sin UseSameSideTarget: omitido/nullable en lectura, opción explícita rechazada antes de escribir. Plugin bootstrap pasa, ocho runtime gates pasan, plugin ZIP/MCPB con payload/hash coincidentes pasa. ZIP reabiertos: ninguna DLL Autodesk y receptor incluido. Instalador prebuilt DryRun2025 verifica coincidencia sin instalar. `git diff --check` limpio (avisos LF/CRLF existentes).
+
+**Artefactos:** release 2024/2025/2026 net8 SHA `891c7291f31215ba76b05510fdaa173db04b57dc6f2a0c39e8a008ab59866c76`; 2026 net10 `1b14059ddb750b4eefca70758c2fcbf3ec8d412314a41bdebce71650ad00b221`; plugin ZIP `5c219d22cd86e9a1b1358b50cf70926c41ebaf5fed157dd18afeac1568e67a3c`; MCPB `9392c4c22af14ddbbf7d46797af79e7ccabbfe91bceaf93f14a356beff8352ae`. Todos en artifacts/, no publicados. Stage prebuilt listo `.local/install-090`.
+
+**Límites/qué sigue:** health Civil falla por servidor estándar ausente; Revit responde no reachable. Procesos acad/Revit cerrados, no control de pantalla. Se solicitó confirmación requerida por WORKFLOW de trabajo guardado/Civil cerrado antes de instalar; pendiente. No configuración real, commit/push, publicación ni L nueva. Tras confirmar: instalar2025, abrir anfitriones, fixture DWG/modelo nuevo autorizados por API, ensayar geometría/CSV/targets/split-merge/viewports/UNDO y transferencia Toposolid/DirectShape con controles independientes. 2024/2026 y runtime/patch de destino todavía requieren aceptación real; QTO es estimado y viewports se refrescan explícitamente, no son viewframes nativos automáticos.
+
+## 2026-10-05 - Codex - Instalación y revisión v0.9.0
+
+**Estado:** TERMINADA instalación/revisión de archivos y servidor; arranque del add-in y aceptación en dibujo pendientes de intervención de inicio.
+**Objetivo:** el dueño respondió "instálalo y revísalo" a la confirmación solicitada. No se detectan acad/Revit abiertos. Instalar paquete verificado para 2025 disponible, verificar hashes/versión/contrato/herramientas y health; intentar comprobación del anfitrión mediante API cuando esté disponible. Sin configurar canales inseguros ni modificar datos de cliente.
+
+**Hecho/evidencia:** hash ZIP canónico coincide `891c7291f31215ba76b05510fdaa173db04b57dc6f2a0c39e8a008ab59866c76`. Instalación prebuilt `.local/install-090/install.ps1 -Years 2025` completada: 44 bundle+15 servidor. Revisión independiente de cada SHA contra manifiesto instalado pasa59/59. Exe v0.9.0, contrato `171049b89c39afc5120da6ff`; catálogo por stdio instalado confirma28tools/163acciones/169operaciones. Tolerancia negativa y handle inválido rechazados invalid_input; export_editable_csv denegado permission_denied bajo safe_write. No settings.json creado, ninguna config de clientes editada.
+
+**Arranque:** se inició Civil2025 con argumentos reales del acceso directo Metric, Start-Process WindowStyleHidden (sin control de pantalla/teclado). Procesoacad50600 carga módulos Civil y CLR; no discovery/logplugin tras dos esperas espaciadas. health sigue no_civil3d_instance; COM AutoCAD.Application.25 no está en ROT (Operation unavailable). AdskLicensingService Running; sin evento Application erroracad detectado. No se atribuye licencia/modal como causa sin evidencia. No proceso terminado/cancelado ni dibujo modificado. Se pidió al dueño completar inicio, abrir dibujo nuevo, HZ_STATUS y HZ_BUILD_FIXTURE si publicado.
+
+**Qué sigue:** resolver inicio/carga con el mensaje HZ_STATUS; cuando publique ejecutar fixture autorizado y aceptación de nuevas acciones, más Toposolid/DirectShape Revit. Reiniciar cliente MCP para contrato actualizado si mantiene sesión previa. No prueba L nueva, commit/push ni publicación. 2024/2026 no están instalados aquí; sus paquetes siguen preparados.
+
+## 2026-10-05 - Codex - Corrección del alcance del autoloader
+
+**Estado:** TERMINADA; puente e inicio verificados en nueva instancia2025.
+**Objetivo:** tras la observación del dueño, revisar carga real. Fuente primaria Autodesk Developer Blog confirma RuntimeRequirements por ComponentEntry para .NET2025; nuestro XML los situaba solo en Components. Corregir generador, gate de paquetes y manifiesto instalado con respaldo/relectura, sin tocar DLL mientras acad esté abierto. Probar nuevo arranque/API; no declarar resuelta la carga antes de health.
+
+**Hecho:** generador install.ps1 ahora anida RuntimeRequirements en ComponentEntry y usa AppType .Net. Gate build-plugin.ps1 valida alcance/año/plataforma/tipo; pruebas modifican ZIP reales para parent_scope/wrong_year/wrong_app_type y las tres son rechazadas. Paquete antiguo rechazado antes de reparar. XML instalado respaldado en _backup/autoloader-20261005-220929, corregido y manifest.json actualizado con hash/fecha; relectura59/59 coincide. No DLL instalada sobrescrita con acad abierto. ZIPs release/net10 reparados conservando binarios, instalador actualizado y plugin/MCPB regenerados; gate completo pasa.
+
+**Arranque real:** se inició otra instancia con argumentos Civil Metric y /t plantilla oficial métrica, visible porque el dueño pide lanzarlo, sin control de pantalla/teclado. Publica discovery/log v0.9.0, runtime net8 y contrato171049b89c39afc5120da6ff. Health responde desde el hilo principal, un dibujo nuevo en metros, busy=false. La instancia previa sin ventana sigue abierta: no fue terminada. El defecto XML queda corregido y la nueva carga funciona; no se demuestra por separado que fuese la única causa de la instancia previa.
+
+**L2025:** sesión MCP fijada a la instancia nueva, dibujo sin guardar y generado por este arranque. Dos TINs Fixture_Terrain/Fixture_Built; cuatro aplicaciones create_tin/add_data con token y verificación status=match en transacción nueva. Plano de 100m2, Built+0.02m; compare_design 3/3 muestras válidas, mínimo/máximo/media/RMSE0.02m, dentro0.05m. Auxiliar local inicialmente esperaba verified booleano y detuvo tras primer create verificado; corregido para esquema objeto status=match y reanudado sin duplicarlo. Evidencia JSON local install-live-090.json. Dibujos de cliente intactos; fixture permanece sin guardar. No L Revit ni otros bloques todavía.
+
+**Hashes nuevos (sustituyen artefactos anteriores):** canónico fed9115c66da9c2e286bf657c90a3e01c6e53f6cbdb8db814939fbec8e434031; net10 ab7fc7611fc4c051c3021b5708787f1120676901e3286adf12bc4ab8724f7236; plugin c5bb307bdc0a068d60a46fa4959f7811a5c08d30b2abbe296424d3c8d9dbf328; MCPB 083e9e113c5fce1d56f4a9d3e65e84ff328692409018c99376be0b63ea118798. SHA256SUMS actualizado, sin publicar/commit/push ni config cliente.
+
+**Qué sigue:** guardar fixture si se quiere conservar; aceptación corredores/CSV/viewports/UNDO y transferencia real a modelo Revit nuevo. Los años2024/2026 requieren L en equipos con esos anfitriones. No repetir instalación2025 ni atribuir carga fallida al dueño.
+
+## 2026-10-05 - Codex - Aceptación completa en archivos nuevos
+
+**Estado:** TERMINADO; instalación y aceptación nativa Civil2025/Revit2025 completadas.
+**Objetivo:** el dueño autoriza todas las pruebas necesarias sin más preguntas. Completar ensayos Civil2025 y transferencia Revit por API sobre archivos nuevos; corregir fallos, verificar builds2024/2026 y paquetes si cambia código. Dos agentes apoyan preparación de aceptación corredores/viewports y revisión del receptor. Root ejecuta CSV/export/arranque Revit y coordina escrituras secuenciales. No configuración de canales inseguros ni pantalla/teclado; cerrar solo nuestros documentos mediante API tras guardarlos si hace falta desplegar correcciones. No cerrar dibujos ajenos ni terminar procesos por fuerza.
+
+**Ampliación del diagnóstico antes del registro nativo:** tras guardar/cerrar nuestros tres dibujos por API y reinstalar v0.9.1 con hashes correctos, dos arranques no alcanzan el primer log del add-in. DLL/runtime/dependencias y Zone.Identifier descartados mediante lecturas independientes. Documentación Autodesk vigente confirma confianza explícita para bundles AppData; los perfiles Civil existentes carecen de nuestra carpeta en TRUSTEDPATHS. Se prepara auxiliar de registro limitado a Contents/año, con respaldo/CAS/relectura/rollback, opción explícita del instalador y plan visible del bootstrap. La autorización del dueño para instalar y reparar este MCP cubre su carga nativa; SECURELOAD y canales C#/Python se preservan. Primero pruebas sin registro real; luego registro y aceptación en nueva instancia. No se dismissan avisos ni se matan instancias anteriores.
+
+**Resultado final:** v0.9.1 operativa en Civil2025, generación inmutable `0.9.1-20261005-230202`; health y relectura del DWG guardado pasan. Registro nativo en los dos perfiles2025 existentes con respaldo, CAS y rollback; SECURELOAD=1 conservado. Codex registrado con CLI oficial, configuración respaldada y comparación semántica de todos los ajustes anteriores correcta. Ningún dibujo de cliente editado ni DLL cargada sobrescrita. Dos arranques anteriores sin puente permanecen sin forzar su cierre; los demás ensayos propios se guardaron/cerraron por API.
+
+**Correcciones obtenidas del ensayo:** getters de targets que fallan por tipo/cantidad devuelven null con motivo; planos cambian/restauran layout mediante API para crear viewport en paperspace. Export DWG usa SaveAs completo en archivo temporal para conservar bloques sin referencias, hash de origen con lectura compartida y PushDbmod/PopDbmod balanceados a través del commit. Receptor Revit selecciona transformación por controles nativos, empareja triángulos con tolerancia explícita y rechaza paquetes duplicados; evidencia e IDs numéricos permiten relectura independiente.
+
+**Evidencia nativa:** 64 controles de corredores (targets, geometría, seis códigos de cantidades estimadas, split/merge conservando parámetros); 22 en fase planos/UNDO; export DWG final8/8, origen conservado y copia reabierta con elevaciones independientes. CSV COGO editado/releído y archivo cambiado rechazado antes de escribir; comparación RMSE0.02m y fuera de dominio reportado con cobertura. UNDO elimina la superficie, pero respuesta conserva verificación parcial por snapshots de contenedores ausentes. Fallos anteriores se conservan en los JSON; el resultado final no reescribe su historia.
+
+**Transferencia real:** Toposolid editable y malla DirectShape en `RevitTerrainFixture.rvt`, con rotación37° y controles compartidos. Segundo modelo nuevo `RevitTerrainClean091.rvt`: malla2triángulos, cero advertencias, error máximo0.002713mm frente a tolerancia explícita0.01mm; bounding box comprobada por herramienta tipada y archivo guardado. No afirmar fidelidad volumétrica del Toposolid, conservación de su triangulación ni CRS de proyecto desconocido. Revit Python utilizó autorización preexistente. Permisos Civil temporales restaurados; settings.json ausente y C# deshabilitado.
+
+**Pruebas/entrega:** 552 Core/Server, 391 por net48/net8/net10; receptor14/14; registro de confianza34 controles tanto PS5.1 como PS7; preparador de terreno30 PS7 con Core y21 PS5.1. Compilaciones2024/net48 y2025/2026 net8/net10 sin errores;2024 conserva cinco advertencias nullable. Paquetes canónico,2026net10,pluginZIP yMCPB en artifacts/ con SHA256SUMS; gate rechaza tres ZIP de autoload defectuoso. Informe `docs/ACCEPTANCE_20261005.md`; evidencia y DWG/RVT generados en `.local/acceptance-20261005-221756/`, ignorados. Sin commit/push/publicación.
+
+**Qué sigue:** snapshots completos para UNDO y aceptación nativa2024/2026 cuando estén disponibles; publicar los artefactos solo por instrucción del dueño. El bloque solicitado de instalación, reparación y pruebas sobre archivos nuevos queda terminado.
+
+**Cierre independiente:** manifiesto instalado144/144 archivos coincide por SHA-256; registro Codex conserva ajustes previos; gate final pluginZIP/MCPB pasa y rechaza tres autoloaders defectuosos; git diff --check sin errores. SHA256SUMS final contiene los cuatro artefactos: canónico `af2d9647b02719eb11ffc3f13da08f23abea1cc5a997e67df2fee053b3102db3`; net10 `d52a45453abe925d36d005224aeb2053f91b0a3fe95d6cb5be6421e91cd00a15`; plugin `072712f565b64d0d68c3280f74f8dabf5de4929ed430244ac279901c50ca9836`; MCPB `fdc0e7f396763ad11d838c6ddf27c5349ee2732e986b5c2220f2b574e456f63c`.
+
+## 2026-10-06 - Codex - Preparación para repositorio público
+
+**Estado:** TERMINADO preparación local; publicación pendiente de autorización por bloqueo automático.
+**Objetivo:** registrado antes de implementar. El dueño pide continuar hasta poder hacer público GitHub. Revisar UNDO, privacidad de código/historial/releases, documentación, CI y distribución. No inventar L2024/2026.
+
+**Corrección de alcance:** snapshot experimental de campos nativos compiló, pero UNDO no retiró una línea y la cobertura de contenedores Civil fue incompleta. No se reintentó el resultado confirmado. Código experimental retirado; v0.9.2 rechaza undo_last antes de emitir comando, committed=false/unsupported, y todas las escrituras dejan de prometer inversa automática. La compatibilidad conserva el enum reservado. Contrato nuevo `e36ee390efbb5d34ee0fe86c`.
+
+**Evidencia:** payload final instalado en generación inmutable `0.9.2-20261006-085000`, servidor aislado registrado en Codex;262 hashes pasan. Native2025:78/78 controles de ingeniería, tres variantes de UNDO rechazadas con relecturas idénticas. Fixture propio guardado; settings.json restaurado a ausencia y C# deshabilitado. Se guardaron/cerraron todos los anfitriones antiguos propios por COM con comprobaciones de PID/ruta/Saved/CMDACTIVE; ninguno terminado por fuerza ni pantalla usada. Revit2025 conserva aceptación previa y modelos guardados.
+
+**Privacidad/pruebas:** 552 Core,391 en cada runtime,14 receptor y8 cliente pasan. Builds2024/net48,2025/net8,2026/net8/net10 completos. Gitleaks oficial8.30.1 con checksum verifica historial y árbol publicable; excepción exacta para una frase histórica, sin credenciales. PathMap elimina rutas en DLL/EXE, y PDB se excluyen porque retenían entradas del compilador. Cuatro paquetes pasan gate de privacidad y payload/plugin/MCPB; tres autoloaders malformados rechazados. Antiguo ZIP GitHub0.8.0 respaldado con SHA `71c3d58c8b48ab30700761ede256eb395d56b7ee2d206635690075f911334460`; falla privacidad por ruta privada en Core.dll, por lo que se retira el asset antes de abrir visibilidad, conservando tag/fuente.
+
+**Artefactos finales:** canónico `7682d2caed7ff04a3255fe1344f21328fee93932e90d4d922418a3d0281b004a`; net10 `8a4209412edad97000b84c8d1af02e7858232b697abf23bd33a3324f0aab23a0`; plugin `1c4396a13d3af5dae38b6bcfa2872213b86a966af3e03c8de5beb200417fd849`; MCPB `126b7738a6658bf1821b9634dd3765c528374e2cfae3c4e0522fb32a1fd13049`. SHA256SUMS y runtime-release enlazan el payload final. Documentación pública explicita UNDO desactivado, cantidades estimadas, refresh explícito y evidencia B/T2024/2026.
+
+**Qué sigue:** sincronizar fuente revisada por PR y CI, publicar release0.9.2 y abrir GitHub solo tras esas puertas. Después aceptar2024/2026 reales e investigar una inversa completamente verificada antes de reactivar UNDO.
+
+**Bloqueo de publicación:** fuente179 archivos/20k líneas preparada en rama `codex/public-readiness-092`, staged sin binarios ni datos privados. El intento agrupado commit/push/crearPR fue rechazado antes de ejecutarse por el control automático: `approval required by policy, but AskForApproval is set to Never`. No commit nuevo, push, PR, retirada del asset0.8.0, release nueva ni cambio de visibilidad. Se solicitó autorización explícita para esas acciones después de completar código/pruebas/paquetes. Repositorio continúa PRIVATE. Escaneos finales del árbol publicable y del historial pasan sin credenciales; git diff --check limpio.
+
+## 2026-10-06 - Codex - Publicación autorizada v0.9.2
+
+**Estado:** EN CURSO.
+**Autorización:** el dueño responde «te doy mi autorizacion» a la solicitud de commit/push/PR, integración tras CI, retirada del ZIP antiguo respaldado, release0.9.2 y cambio de visibilidad a público.
+**Plan:** publicar fuente revisada y esperar CI; conservar los cuatro paquetes sellados y probados, retirar exclusivamente el asset0.8.0 con rutas privadas, publicar0.9.2 y verificar visibilidad y hashes remotos. Actualizar estado con evidencia real.
+**Qué sigue:** ejecutar publicación autorizada; conservar los límites de evidencia2024/2026 y UNDO deshabilitado.

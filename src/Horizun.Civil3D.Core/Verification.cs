@@ -49,7 +49,7 @@ public sealed class VerificationSet
 
     public void Number(string what, double requested, double actual, double tolerance)
     {
-        var comparable = double.IsFinite(requested) && double.IsFinite(actual);
+        var comparable = Hz.IsFinite(requested) && Hz.IsFinite(actual);
         Check(what, Hz.Finite(requested), Hz.Finite(actual), comparable && Math.Abs(requested - actual) <= tolerance,
             comparable ? null : "UNMEASURED: a value is not a finite number; not comparable.");
     }
@@ -76,7 +76,7 @@ public static class Reconcile
     /// <summary>Compare two measurements of the same quantity (e.g. Civil 3D volume vs grid sampling).</summary>
     public static JsonObject Compare(string what, double a, string aSource, double b, string bSource, double tolerancePct)
     {
-        var comparable = double.IsFinite(a) && double.IsFinite(b);
+        var comparable = Hz.IsFinite(a) && Hz.IsFinite(b);
         var diff = comparable ? a - b : double.NaN;
         var basis = Math.Max(Math.Abs(a), Math.Abs(b));
         var pct = comparable && basis > 0 ? Math.Abs(diff) / basis * 100.0 : (comparable ? 0.0 : double.NaN);

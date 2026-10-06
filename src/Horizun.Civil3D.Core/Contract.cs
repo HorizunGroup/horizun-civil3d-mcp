@@ -104,6 +104,25 @@ public static partial class Contract
         },
         new()
         {
+            Name = "horizun_c3d_capabilities",
+            Command = null,
+            Title = "Civil 3D capability catalog",
+            Effect = ToolEffect.Read,
+            Description =
+                "Lists the declared tools, actions, effect levels, schema fields and current permission decisions directly " +
+                "from this server's contract. This is contract metadata, not live Civil 3D verification. Filter by exact " +
+                "tool, effect or search text; include_schema=true adds the complete JSON input schemas.",
+            InputSchemaJson = """
+            {"type":"object","properties":{
+              "tool":{"type":"string","description":"Exact horizun_c3d_* tool name."},
+              "effect":{"type":"string","enum":["read","host_state","safe_write","full_write","unsafe_code"]},
+              "query":{"type":"string","description":"Case-insensitive text match in tool name, title, description or action name."},
+              "include_schema":{"type":"boolean","default":false,"description":"Include each tool's complete JSON input schema."}
+            },"additionalProperties":false}
+            """,
+        },
+        new()
+        {
             Name = "horizun_c3d_document",
             Command = "document",
             Title = "Drawing information, census and save",
@@ -118,9 +137,8 @@ public static partial class Contract
                 "the active drawing to its own path; dry_run defaults to true and returns the plan plus a single-use " +
                 "confirmation_token; apply with dry_run=false and that token. Any subsequent drawing edit, variable " +
                 "or view change invalidates the save plan, even when DBMOD flags are unchanged. Save requires the full_write profile. " +
-                "action=undo_last: undoes the LAST Horizun write as one Civil 3D UNDO step, only while the drawing has not changed " +
-                "since that write (any user edit, other write or save makes it refuse - use U in Civil 3D then); dry run + token; " +
-                "re-checks that objects the write created are gone.",
+                "action=undo_last: reserved for compatibility but disabled in this release; returns unsupported with committed=false " +
+                "before native UNDO. Reliable attribution and full restoration are not verified. Use Civil 3D native UNDO manually.",
             InputSchemaJson = """
             {"type":"object","properties":{
               "action":{"type":"string","enum":["info","list_open","object_census","save","undo_last"]},
@@ -209,7 +227,10 @@ public static partial class Contract
                 "all current users. No drawing is saved by these actions.",
             InputSchemaJson = """
             {"type":"object","properties":{
-              "action":{"type":"string","enum":["list","get","volumes_report","sample_elevation","rename","set_style","duplicate_style","create_tin","create_volume","rebuild","add_data","paste","apply_elevation_analysis","apply_slope_analysis","style_display"]},
+              "action":{"type":"string","enum":["list","get","volumes_report","sample_elevation","compare_design","rename","set_style","duplicate_style","create_tin","create_volume","rebuild","add_data","paste","apply_elevation_analysis","apply_slope_analysis","style_display"]},
+              "design":{"type":"string","description":"compare_design: exact designed surface name."},
+              "built":{"type":"string","description":"compare_design: exact constructed surface name; different from design."},
+              "tolerance":{"type":"number","minimum":0,"description":"compare_design: inclusive absolute vertical tolerance in drawing units. Explicit XY points only; reports signed built-minus-design deviations, min/max/mean/MAE/RMSE and missing coverage."},
               "name":{"type":"string","description":"list: wildcard. Other reads/edits: one exact surface name."},
               "handle":{"type":"string","description":"One exact surface handle; mutually exclusive with name/names."},
               "names":{"type":"array","items":{"type":"string"},"minItems":1,"maxItems":100,"description":"Exact batch selection; all names resolve before work. No duplicates."},
@@ -348,8 +369,10 @@ public static partial class Contract
             Description =
                 "ESCAPE HATCH - prefer a typed tool whenever one covers the job. Compiles and runs C# (Roslyn script) inside " +
                 "Civil 3D. OFF by default: needs \"permission_profile\": \"unsafe_code\" AND \"enable_execute_csharp\": true " +
-                "in the owner's settings.json. mode=query (default): the transaction is ALWAYS aborted - nothing persists. " +
-                "mode=execute: the transaction commits as one UNDO step. Globals: doc, civilDoc, db, tr (open " +
+                "in the owner's settings.json. Both modes run arbitrary code with the owner's permissions; neither is a sandbox. " +
+                "mode=query (default): only the supplied transaction is aborted; a script can still write files, commit its own " +
+                "transactions or affect application state. mode=execute: the supplied transaction commits. Only edits made " +
+                "through it are covered by its rollback; no guarantee covers other script effects. Globals: doc, civilDoc, db, tr (open " +
                 "transaction), args (JsonObject), Print(object), Surface(name), Open<T>(ObjectId). The script's return " +
                 "value is serialised to JSON. There is NO dry run and NO host verification: results are SELF-REPORTED - " +
                 "re-read with typed tools (horizun_c3d_query / horizun_c3d_surface) before trusting a write.",

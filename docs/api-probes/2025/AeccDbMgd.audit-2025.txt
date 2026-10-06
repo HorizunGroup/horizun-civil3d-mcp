@@ -1,0 +1,112 @@
+# AeccDbMgd.dll 13.7.0.1402 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.Entity : Autodesk.Aec.DatabaseServices.Entity
+  M UInt64 ComputeFingerPrint()
+  M DataShortcutKey GetReferenceInfo()
+  P Object Application {get;}
+  P String Description {get;set;}
+  P String DisplayName {get;}
+  P Object Document {get;}
+  P UInt64 FingerPrint {get;set;}
+  P ObjectId FolderId {get;}
+  P Boolean IsCWSReferenceObject {get;}
+  P Boolean IsCWSSourceObject {get;}
+  P Boolean IsReadOnlyReferenceObject {get;}
+  P Boolean IsReferencedSourceExisting {get;}
+  P Boolean IsReferenceObject {get;}
+  P Boolean IsReferenceStale {get;}
+  P Boolean IsReferenceSubObject {get;}
+  P Boolean IsReferenceValid {get;}
+  P Boolean IsUsed {get;}
+  P String Name {get;set;}
+  P Boolean ShowToolTip {get;set;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+== Autodesk.Civil.DatabaseServices.Surface : Autodesk.Civil.DatabaseServices.Entity
+  M Void CreateSnapshot()
+  M Void ExportToDEM(String fileName, String coordinateSystemCode, Double gridSpacing, ExportDetermineElevationType deteElevBy)
+  M Void ExportToDEM(String fileName, String coordinateSystemCode, Double gridSpacing, ExportDetermineElevationType deteElevBy, Boolean useCustomNullElevationation, Single customNullElevation)
+  M Double FindDirectionAtXY(Double x, Double y)
+  M Double FindElevationAtXY(Double x, Double y)
+  M Point3dCollection FindPointsAlongLine(LineSegment3d lineSeg3d)
+  M Double FindSlopeAtXY(Double x, Double y)
+  M SurfaceVolumeInfo GetBoundedVolumes(Point3dCollection polygon, Double datumElevation)
+  M SurfaceVolumeInfo GetBoundedVolumes(Point3dCollection polygon)
+  M GeneralSurfaceProperties GetGeneralProperties()
+  M Point3d GetIntersectionPoint(Point3d startPoint, Vector3d dir)
+  M Void Rebuild()
+  M Void RebuildSnapshot()
+  M Void RemoveSnapshot()
+  P SurfaceAnalysis Analysis {get;}
+  P Boolean AutoRebuild {get;set;}
+  P SurfaceDefinitionBoundaries BoundariesDefinition {get;}
+  P SurfaceBuildOptions BuildOptions {get;}
+  P Boolean HasSnapshot {get;}
+  P Boolean IsLevelOfDetailEnabled {get;set;}
+  P Boolean IsOutOfDate {get;}
+  P Boolean IsSnapshotOutOfDate {get;}
+  P Boolean IsVolumeSurface {get;}
+  P Boolean Lock {get;set;}
+  P SurfaceMaskCollection Masks {get;}
+  P SurfaceOperationCollection Operations {get;}
+  P ObjectId StyleId {get;set;}
+== Autodesk.Civil.DatabaseServices.Corridor : Autodesk.Civil.DatabaseServices.Entity
+  M ObjectId ExportFeatureLinesAsCogoPoints(String pointGroupName, CorridorPointCodeSelector codes, ValueType baseLineRange)
+  M ObjectId ExportFeatureLinesAsCogoPoints(String pointGroupName, CorridorPointCodeSelector codes)
+  M ObjectIdCollection ExportSolids(ExportCorridorSolidsParams params, Database targetDatabase)
+  M String[] GetLinkCodes()
+  M String[] GetPointCodes()
+  M String[] GetShapeCodes()
+  M SubassemblyTargetInfoCollection GetTargets()
+  M Void Rebuild()
+  M Void SetTargets(SubassemblyTargetInfoCollection updatedTargets)
+  P BaselineCollection Baselines {get;}
+  P ObjectId CodeSetStyleId {get;set;}
+  P String CodeSetStyleName {get;set;}
+  P CorridorSurfaceCollection CorridorSurfaces {get;}
+  P FeatureLineCodeInfoCollection FeatureLineCodeInfos {get;}
+  P Boolean IsOutOfDate {get;}
+  P Double MaximumTriangleSideLength {get;set;}
+  P Boolean RebuildAutomatic {get;set;}
+  P CorridorRegionLockType RegionLockMode {get;set;}
+  P CorridorSlopePatternCollection SlopePatterns {get;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+== Autodesk.Civil.DatabaseServices.FeatureLine : Autodesk.Civil.DatabaseServices.Feature
+  M Void AssignElevationsFromSurface(ObjectId surfaceId, Boolean bIncIntermediate)
+  M static ObjectId Create(String featurelineName, ObjectId idCreatedFrom)
+  M static ObjectId Create(String featurelineName, ObjectId idCreatedFrom, ObjectId siteId)
+  M Void DeleteElevationPoint(Point3d pt)
+  M Void DeleteElevationPoints(Point3dCollection cliPoints)
+  M Void DeletePIPoint(Point3d pt)
+  M Double Get3dDistanceAtPoint(Point3d pt)
+  M Double GetBulge(Int32 index)
+  M Double GetCurveRadius(Int32 index)
+  M Double GetDeflectionAngleAtPoint(Point3d pt)
+  M Double GetGradeInAtPoint(Point3d pt)
+  M Double GetGradeOutAtPoint(Point3d pt)
+  M Double GetPointRelativeElevation(Point3d pt)
+  M Point3dCollection GetPoints(FeatureLinePointType type)
+  M Void InsertElevationPoint(Point3d pt)
+  M Void InsertElevationPoints(Point3dCollection cliPoints)
+  M Void InsertPIPoint(Point3d pt)
+  M Boolean IsElevationRelativeToSurface(Point3d pt)
+  M static Void MoveToNoneSite(ObjectId featureLineId)
+  M static Void MoveToSite(ObjectId featureLineId, ObjectId destinationSiteId)
+  M Void SetBulge(Int32 index, Double bugle)
+  M Void SetCurveRadius(Int32 index, Double radius)
+  M Void SetPointElevation(Int32 index, Double elevation)
+  M Void SetPointRelativeElevation(Point3d pt, Boolean relative, Double elevation)
+  P Int32 CurvesCount {get;}
+  P Int32 ElevationPointsCount {get;}
+  P Double Length2D {get;}
+  P Double Length3D {get;}
+  P Double MaxElevation {get;}
+  P Double MaxGrade {get;}
+  P Double MinElevation {get;}
+  P Double MinGrade {get;}
+  P Int32 PIPointsCount {get;}
+  P Int32 PointsCount {get;}
+  P ObjectId RelativeSurfaceId {get;set;}
+  P ObjectId SiteId {get;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}

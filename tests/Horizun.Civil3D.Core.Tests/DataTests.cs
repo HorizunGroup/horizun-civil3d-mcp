@@ -140,7 +140,9 @@ public class DataTests
     {
         Assert.Equal(ToolEffect.FullWrite, Contract.Find("horizun_c3d_exchange")!.EffectFor(new JsonObject { ["action"] = "shortcuts_publish" }));
         Assert.Equal(ToolEffect.FullWrite, Contract.Find("horizun_c3d_points")!.EffectFor(new JsonObject { ["action"] = "erase" }));
-        Assert.Equal(ToolEffect.SafeWrite, Contract.Find("horizun_c3d_exchange")!.EffectFor(new JsonObject { ["action"] = "export_landxml" }));
+        Assert.Equal(ToolEffect.FullWrite, Contract.Find("horizun_c3d_exchange")!.EffectFor(new JsonObject { ["action"] = "export_landxml" }));
+        Assert.Equal(ToolEffect.FullWrite, Contract.Find("horizun_c3d_exchange")!.EffectFor(new JsonObject { ["action"] = "export_dwg" }));
+        Assert.Equal(ToolEffect.FullWrite, Contract.Find("horizun_c3d_points")!.EffectFor(new JsonObject { ["action"] = "export_csv" }));
     }
 
     [Fact]

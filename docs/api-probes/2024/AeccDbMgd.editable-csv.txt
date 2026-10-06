@@ -1,0 +1,139 @@
+# AeccDbMgd.dll 13.6.1781.0 (Civil 3D 2024)
+== Autodesk.Civil.DatabaseServices.CogoPoint : Autodesk.AutoCAD.DatabaseServices.Entity
+  M Void ApplyDescriptionKeys()
+  M Void ClearAllLabelTextComponentOverrides()
+  M Void ClearLabelTextComponentOverrides(ObjectId labelComponentId)
+  M ObjectIdCollection GetLabelTextComponentIds()
+  M TextJustificationType GetLabelTextComponentJustificationOverride(ObjectId labelComponentId)
+  M String GetLabelTextComponentOverride(ObjectId labelComponentId)
+  M String GetUDPValue(UDPEnumeration udp)
+  M Boolean GetUDPValue(UDPBoolean udp)
+  M Int32 GetUDPValue(UDPInteger udp)
+  M String GetUDPValue(UDPString udp)
+  M Double GetUDPValue(UDPDouble udp)
+  M Boolean IsLabelTextComponentOverriden(ObjectId labelComponentId)
+  M UInt32 Renumber(UInt32 newPointNumber, PointNumberResolveType resolveType)
+  M UInt32 Renumber(UInt32 newPointNumber)
+  M Void ResetLabel()
+  M Void ResetLabelLocation()
+  M Void ResetLabelRotation()
+  M Void SetLabelTextComponentJustificationOverride(ObjectId labelComponentId, TextJustificationType textJustificationType)
+  M Void SetLabelTextComponentOverride(ObjectId labelComponentId, String textOverride)
+  M Void SetUDPValue(UDPEnumeration udp, String value)
+  M Void SetUDPValue(UDPBoolean udp, Boolean value)
+  M Void SetUDPValue(UDPInteger udp, Int32 value)
+  M Void SetUDPValue(UDPString udp, String value)
+  M Void SetUDPValue(UDPDouble udp, Double value)
+  P Double Convergence {get;}
+  P String DescriptionFormat {get;set;}
+  P Double Easting {get;set;}
+  P Double Elevation {get;set;}
+  P Double ElevationOverride {get;}
+  P String FullDescription {get;}
+  P String FullDescriptionOverride {get;}
+  P Double GridEasting {get;set;}
+  P Double GridNorthing {get;set;}
+  P Boolean IsCheckedOut {get;}
+  P Boolean IsLabelDragged {get;}
+  P Boolean IsLabelPinned {get;set;}
+  P Boolean IsLabelVisible {get;set;}
+  P Boolean IsLocked {get;set;}
+  P Boolean IsMovable {get;}
+  P Boolean IsProjectPoint {get;}
+  P Boolean IsSurveyPoint {get;}
+  P Point3d LabelLocation {get;set;}
+  P Double LabelRotation {get;set;}
+  P ObjectId LabelStyleId {get;set;}
+  P ObjectId LabelStyleIdOverride {get;}
+  P Double Latitude {get;set;}
+  P LeaderAttachmentBehaviorType LeaderAttachment {get;set;}
+  P LeaderTailVisibilityType LeaderTailVisibility {get;set;}
+  P LeaderVisibilityType LeaderVisibility {get;set;}
+  P Point3d Location {get;}
+  P Double Longitude {get;set;}
+  P Double MarkerRotation {get;set;}
+  P Double Northing {get;set;}
+  P String PointName {get;set;}
+  P UInt32 PointNumber {get;set;}
+  P ObjectId PrimaryPointGroupId {get;}
+  P Int32 ProjectVersion {get;}
+  P String RawDescription {get;set;}
+  P String RawDescriptionOverride {get;}
+  P Double Scale {get;}
+  P Double ScaleXY {get;set;}
+  P Double ScaleZ {get;set;}
+  P Boolean ShowToolTip {get;set;}
+  P ObjectId StyleId {get;set;}
+  P ObjectId StyleIdOverride {get;}
+== Autodesk.Civil.DatabaseServices.CogoPointCollection : System.Object
+  M ObjectIdCollection Add(Point3dCollection locations, String desc, Boolean useDescriptionKey, Boolean matchOnParams, Boolean useNextPointNumSetting)
+  M ObjectIdCollection Add(Point3dCollection locations, String desc, Boolean useNextPointNumSetting)
+  M ObjectIdCollection Add(Point3dCollection locations, Boolean useNextPointNumSetting)
+  M ObjectId Add(Point3d location, String desc, Boolean useDescriptionKey, Boolean matchOnParams, Boolean useNextPointNumSetting)
+  M ObjectId Add(Point3d location, String desc, Boolean useNextPointNumSetting)
+  M ObjectId Add(Point3d location, Boolean useNextPointNumSetting)
+  M Void Clear()
+  M Boolean Contains(UInt32 pointNumber)
+  M static UInt32 ExportPoints(String pointFileFullName, PointFileFormat fileFormat, Boolean useAdjustedElevation, Boolean shouldTransformCoordinate, Boolean shouldExpandCoordinateData, ObjectId pointGroupId)
+  M static UInt32 ExportPoints(String pointFileFullName, PointFileFormat fileFormat, Boolean useAdjustedElevation, Boolean shouldTransformCoordinate, Boolean shouldExpandCoordinateData)
+  M static UInt32 ExportPoints(String pointFileFullName, PointFileFormat fileFormat, ObjectId pointGroupId)
+  M static UInt32 ExportPoints(String pointFileFullName, PointFileFormat fileFormat)
+  M static CogoPointCollection GetCogoPoints(Database pDatabase)
+  M IEnumerator<ObjectId> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M ObjectId GetPointByPointNumber(UInt32 pointNumber)
+  M static UInt32 ImportPoints(String pointFileFullName, PointFileFormat fileFormat, Boolean useAdjustedElevation, Boolean shouldTransformCoordinate, Boolean shouldExpandCoordinateData, ObjectId pointGroupId)
+  M static UInt32 ImportPoints(String pointFileFullName, PointFileFormat fileFormat, Boolean useAdjustedElevation, Boolean shouldTransformCoordinate, Boolean shouldExpandCoordinateData)
+  M static UInt32 ImportPoints(String pointFileFullName, PointFileFormat fileFormat, ObjectId pointGroupId)
+  M static UInt32 ImportPoints(String pointFileFullName, PointFileFormat fileFormat)
+  M Void Remove(ObjectId pointId)
+  M Void Remove(UInt32 pointNumber)
+  M ObjectIdCollection SetDescriptionFormat(IEnumerable<ObjectId> pointIds, IEnumerable<String> values)
+  M ObjectIdCollection SetDescriptionFormat(IEnumerable<ObjectId> pointIds, String descFormat)
+  M ObjectId SetDescriptionFormat(ObjectId pointId, String descFormat)
+  M ObjectIdCollection SetEasting(IEnumerable<ObjectId> pointIds, IEnumerable<Double> values)
+  M ObjectIdCollection SetEasting(IEnumerable<ObjectId> pointIds, Double easting)
+  M ObjectId SetEasting(ObjectId pointId, Double easting)
+  M ObjectIdCollection SetElevation(IEnumerable<ObjectId> pointIds, IEnumerable<Double> elevations)
+  M ObjectIdCollection SetElevation(IEnumerable<ObjectId> pointIds, Double elevation)
+  M ObjectId SetElevation(ObjectId pointId, Double elevation)
+  M ObjectIdCollection SetElevationByOffset(IEnumerable<ObjectId> pointIds, IEnumerable<Double> offsets)
+  M ObjectIdCollection SetElevationByOffset(IEnumerable<ObjectId> pointIds, Double offset)
+  M ObjectId SetElevationByOffset(ObjectId pointId, Double offset)
+  M ObjectIdCollection SetElevationBySurface(IEnumerable<ObjectId> pointIds, ObjectId surfaceId)
+  M ObjectId SetElevationBySurface(ObjectId pointId, ObjectId surfaceId)
+  M ObjectIdCollection SetIsLocked(IEnumerable<ObjectId> pointIds, IEnumerable<Boolean> values)
+  M ObjectIdCollection SetIsLocked(IEnumerable<ObjectId> pointIds, Boolean isLocked)
+  M ObjectId SetIsLocked(ObjectId pointId, Boolean isLocked)
+  M ObjectIdCollection SetLabelRotation(IEnumerable<ObjectId> pointIds, IEnumerable<Double> values)
+  M ObjectIdCollection SetLabelRotation(IEnumerable<ObjectId> pointIds, Double rotation)
+  M ObjectId SetLabelRotation(ObjectId pointId, Double rotation)
+  M ObjectIdCollection SetLabelStyleId(IEnumerable<ObjectId> pointIds, IEnumerable<ObjectId> styleIds)
+  M ObjectIdCollection SetLabelStyleId(IEnumerable<ObjectId> pointIds, ObjectId styleId)
+  M ObjectId SetLabelStyleId(ObjectId pointId, ObjectId styleId)
+  M ObjectIdCollection SetMarkerRotation(IEnumerable<ObjectId> pointIds, IEnumerable<Double> values)
+  M ObjectIdCollection SetMarkerRotation(IEnumerable<ObjectId> pointIds, Double rotation)
+  M ObjectId SetMarkerRotation(ObjectId pointId, Double rotation)
+  M ObjectIdCollection SetNorthing(IEnumerable<ObjectId> pointIds, IEnumerable<Double> values)
+  M ObjectIdCollection SetNorthing(IEnumerable<ObjectId> pointIds, Double northing)
+  M ObjectId SetNorthing(ObjectId pointId, Double northing)
+  M ObjectIdCollection SetPointName(IEnumerable<ObjectId> pointIds, IEnumerable<String> values)
+  M ObjectId SetPointName(ObjectId pointId, String name)
+  M ObjectIdCollection SetPointNumber(IEnumerable<ObjectId> pointIds, Int32 additiveFactor)
+  M ObjectId SetPointNumber(ObjectId pointId, UInt32 pointNumber)
+  M ObjectIdCollection SetRawDescription(IEnumerable<ObjectId> pointIds, IEnumerable<String> rawDescs)
+  M ObjectIdCollection SetRawDescription(IEnumerable<ObjectId> pointIds, String rawDesc)
+  M ObjectId SetRawDescription(ObjectId pointId, String rawDesc)
+  M ObjectIdCollection SetScaleXY(IEnumerable<ObjectId> pointIds, IEnumerable<Double> values)
+  M ObjectIdCollection SetScaleXY(IEnumerable<ObjectId> pointIds, Double scale)
+  M ObjectId SetScaleXY(ObjectId pointId, Double scale)
+  M ObjectIdCollection SetScaleZ(IEnumerable<ObjectId> pointIds, IEnumerable<Double> values)
+  M ObjectIdCollection SetScaleZ(IEnumerable<ObjectId> pointIds, Double scale)
+  M ObjectId SetScaleZ(ObjectId pointId, Double scale)
+  M ObjectIdCollection SetShowTooltips(IEnumerable<ObjectId> pointIds, IEnumerable<Boolean> values)
+  M ObjectIdCollection SetShowTooltips(IEnumerable<ObjectId> pointIds, Boolean showTooltips)
+  M ObjectId SetShowTooltips(ObjectId pointId, Boolean showTooltips)
+  M ObjectIdCollection SetStyleId(IEnumerable<ObjectId> pointIds, IEnumerable<ObjectId> styleIds)
+  M ObjectIdCollection SetStyleId(IEnumerable<ObjectId> pointIds, ObjectId styleId)
+  M ObjectId SetStyleId(ObjectId pointId, ObjectId styleId)
+  P UInt32 Count {get;}

@@ -1,19 +1,20 @@
 # STATUS - estado actual y QUÉ SIGUE
 
 > Documento VIVO. Toda sesión que termine un bloque de trabajo lo **actualiza** (ver `WORKFLOW.md`).
-> Última actualización: **2026-10-02 12:35**, por Claude Code, al cierre de la sesión de pruebas en vivo: **v0.6.9 instalada, 284/284 en vivo**. Incluye el trabajo previo de Codex.
+> Última actualización: **2026-10-06**, por Codex. **v0.9.2 instalada; 78/78 controles de ingeniería2025 pasan**. Automatic undo_last deshabilitado antes de actuar tras un fallo de atribución nativa; tres variantes de rechazo mantienen entidades intactas. Paquetes sin PDB/rutas privadas,262 hashes instalados correctos. 552 Core,391 por runtime,14 receptor y8 cliente pasan. Preparación local terminada; commit/push/PR bloqueados por aprobación automática, pendiente autorización explícita. GitHub sigue privado. Ver [PUBLIC_READINESS.md](../PUBLIC_READINESS.md).
 
 ## Versión
 
 | Qué | Valor |
 |---|---|
-| Código en el repo | **v0.8.0**: 26 herramientas, contrato `550ff5cb0f7cdce48d7194d5`, 435 tests. Verificado en vivo: 294/294 con FULL WRITE aplicado + accesos directos + 2 instancias. Pendiente en vivo: `undo_last` y la publicación que asocia el dibujo |
-| Instalado en la máquina del dueño | **v0.8.0, edición de desarrollo**, registrada como `horizun-civil3d`. El conector anterior (`civil3d-mcp`) fue **retirado** el 2026-10-04 (respaldo en `Desarrollos\Civil3D MCP\_archivo\`) |
-| Civil 3D disponible | Solo **2025** (ACADVER 25.0s, AeccDbMgd 13.7.0.145) |
+| Código en el repo | **v0.9.2**: 28 herramientas / 163 acciones / 169 operaciones, contrato `e36ee390efbb5d34ee0fe86c`. 552 Core/Server,391 por net48/net8/net10,14 receptor y8 cliente. Builds2024/net48,2025/net8,2026/net8/net10 completos; undo_last reservado pero rechazado sin ejecutar |
+| Instalación | **v0.9.2 operativa2025**. Generación `0.9.2-20261006-085000`, servidor aislado `server-releases/0.9.2-final` registrado en Codex;262 archivos verificados. SECURELOAD y perfil safe_write conservados. Ensayo de78 controles con el payload final y rechazo de UNDO sin cambios |
+| Civil 3D disponible | **2025**: aceptación nativa de corredores, CSV, comparación, planos, copia DWG y exportación de terreno. Revit2025: Toposolid y DirectShape creados, controles independientes y modelos guardados. 2024/2026 no instalados; solo build/pruebas sin anfitrión |
 | Git / GitHub | `HorizunGroup/horizun-civil3d-mcp` (privado). Ramas `develop` (trabajo) y `main` (versiones estables, cada una con Release e instalable `.zip`). Las notas personales van en `.local/` (ignorado) |
 | Perfil de permisos activo | `safe_write`. `settings.json` no existe: se borró tras la prueba de guardado |
 | Integración ChatGPT | Auxiliares instalados, cliente oficial 0.0.15; 111 checks pasan en PowerShell 5.1 y 7.6.5. **pending_user_action**: faltan túnel/clave de cuenta y llamada real. Ver docs/CHATGPT.md |
 | Registro en Claude Desktop | Hecho, como `horizun-civil3d`. Los otros conectores siguen intactos |
+| Registro en Codex | `horizun-civil3d` habilitado por CLI oficial, stdio apunta al EXE instalado. Configuración respaldada y comparación semántica de ajustes previos pasa; catálogo del servidor instalado comprobado |
 
 ## Herramientas existentes (fase 0 y primer bloque de fase 1)
 
@@ -44,10 +45,10 @@ Detalle de la evidencia: `docs/CIVIL3D.md`.
 
 ## Pendientes conocidos (pequeños)
 
-1. Superficies v0.3.4: verificadas en vivo (46/46). Lo pendiente en vivo es v0.4.0+ (ver QUÉ SIGUE).
+1. Automatic undo_last deshabilitado: ensayo nuevo no retiró una línea; snapshots experimentales no cubrieron toda la topología. Se rechaza antes de ejecutar y no se anuncia una inversa automática. UNDO manual requiere inspección.
 2. **Probar "busy" con un diálogo modal** abierto (Opciones). Solo está probado con un comando (`LINE`).
 3. **Investigar los objetos `AeccDbVAlignment` sin alineamientos** (79 en un dibujo real de cliente, probablemente internos de gradings) antes de contarlos como perfiles.
-4. Las versiones de Civil 3D 2026 y 2027 compilan, pero no se pueden probar en esta máquina. 2023 y 2024 (net48) no están soportadas.
+4. 2024/2026 compilan contra referencias reales firmadas. Falta L y coincidencia de actualizaciones instaladas; 2024 rechaza UseSameSideTarget no disponible. 2026 necesita net8 o net10 según actualización. 2023 no es target; 2027 no tiene nueva evidencia.
 
 ## Correcciones de la revisión (Codex, 2026-10-01)
 
@@ -82,15 +83,41 @@ Detalle de la evidencia: `docs/CIVIL3D.md`.
 
 ## ▶ QUÉ SIGUE (siguiente bloque de trabajo)
 
+**Preparación pública local terminada:** v0.9.2 instalada y78 controles pasan. Configuración temporal restaurada, settings.json ausente y C# deshabilitado. Historial/fuente y cuatro paquetes revisados; ZIP0.8.0 con rutas privadas respaldado, retirada de GitHub todavía pendiente. El control automático rechazó commit/push/PR por aprobación requerida con AskForApproval=Never; ninguna de esas acciones se ejecutó. No CI remota nueva, publicación ni cambio de visibilidad.
+
+1. Tras autorización explícita solicitada por el bloqueo automático: commit/push/PR, CI remota, retirada del asset antiguo respaldado, publicación0.9.2 y cambio a público. Fuente staged en codex/public-readiness-092; no afirmar soporte nativo2024/2026 ni restauración automática.
+2. Ejecutar aceptación en anfitriones 2024 y 2026 cuando existan, usando el runtime y referencias de su actualización. El dueño confirmó que no están instalados: no volver a pedir rutas ni declarar L para esos años.
+3. Bloque futuro: investigar atribución nativa y snapshots completos antes de reactivar undo_last. Mantener cantidades estimadas y refresco explícito documentados.
+
+## Plan histórico anterior (sustituido por la aceptación de v0.9.1)
+
+**Inicio resuelto en nueva instancia2025:** health y comparación de superficies ya pasan. El dibujo de ensayo nuevo permanece abierto y sin guardar; guardar si se quiere conservar. Una instancia anterior sin ventana sigue abierta y no fue terminada. **Qué sigue:** aceptación de corredores/CSV/viewports/UNDO en fixture y abrir Revit para ensayar transferencia real, con controles independientes. 2024/2026 requieren L en sus equipos.
+
+**Prioridad actual tras la comparación con Revit/Navisworks/Power BI/Project:**
+
+**Compatibilidad pedida por el dueño:** compilaciones completas terminadas para 2024 y ambas familias 2026; sondeos offline reales y diferencias corregidas. Paquete canónico 2024/2025/2026 net8 y ZIP separado 2026 net10. El dueño confirma que no las tiene: no volver a pedir su ruta. **Qué sigue:** medir versiones de DLL en el equipo de destino, respetar `host-builds.json`, instalar después de guardar/cerrar y ejecutar fixture; Toposolid Revit y ubicación/fidelidad siguen pendientes de L. Ver `docs/COMPATIBILITY.md`.
+
+**Prioridad del dueño:** probar los bloques ya implementados. Autorizó **ensayo con archivos nuevos**. `.local/engineering-fixture-20261005` contiene TIN XML/OBJ/ZIP de 100 m², CSV de ejemplo, RMSE esperado 0.02 m y peticiones de creación nativa. No equivale a DWG/RVT creados. **Qué sigue:** instalar servidor+addin juntos después de confirmar guardar/cerrar según WORKFLOW; abrir Civil/Revit, crear fixture y modelo nuevo por API, ensayar Toposolid y/o DirectShape, medir controles e interiores, y comprobar targets/split-merge/CSV/viewports/UNDO. Python de Revit requiere su autorización existente, nunca se autoactiva.
+
+1. Revisar `docs/BENCHMARK.md`, `docs/CAPABILITY_REVIEW.md` y `docs/CAPABILITY_CATALOG.md`. Se compararon tres MCP públicos, Dynamo, Camber, CTC CIM Project Suite y Grading Optimization. El catálogo ya puede consultarse sin Civil 3D con `horizun_c3d_capabilities`; su disponibilidad no prueba al anfitrión.
+2. Desplegar el ZIP preparado servidor + add-in juntos: pedir **guardar dibujos y cerrar Civil 3D**, esperar confirmación, instalar y reiniciar el cliente MCP. No se hizo esta instalación durante la revisión.
+3. Probar en el fixture: auditoría; presión (list/get/red vacía/rename); copia DWG sin guardar el origen; LandXML métrico/pie internacional/pie US con INSUNITS distinto; CSV/XML/DWG denegados bajo safe_write. Mantener regresiones de dibujos homónimos, C# query, UNDO, PDF existente + fallo y carga del plugin/MCPB.
+   Añadir `export_revit` con hash/conectividad/coordenadas y rechazo bajo safe_write. Con el DWG/superficie y modelo destino identificados por el dueño, ejecutar ensayo Toposolid y contrastar controles/rotación/cota/nivel e interiores. Revit tiene un modal que debe resolver la persona; no fue cerrado automáticamente.
+4. Completar snapshots anteriores para verificar UNDO de modificaciones. Actualmente se informa honestamente verificación incompleta, sin reintentar el UNDO ya ejecutado.
+5. Con instrucción del dueño: commit/push y publicación de v0.8.1 con ZIP, plugin ZIP, MCPB y hashes. Los artefactos locales no son una release publicada.
+6. Siguiente bloque de interoperabilidad: probar transferencia y sondear malla exacta/3DFACE/DirectShape para preservar TIN/huecos, separado del Toposolid editable. Mantener snapshots de UNDO, planes transaccionales y estado de operaciones; después targets/geometría aplicada + cantidades trazables y presión. Los criterios están en `docs/INTEROPERABILITY.md` y `docs/BENCHMARK.md`; una secuencia de commits no equivale a todo-o-nada.
+
+**Hoja de ruta histórica que continúa pendiente:**
+
 1. ~~Probar el camino aplicado de FULL WRITE~~: **HECHO 2026-10-02** (294/294). Falta solo publicar y referenciar accesos directos, que necesitan un proyecto.
 2. ~~Accesos directos~~: **HECHO 2026-10-04** (publicar y referenciar con asociación automática, dos instancias). Falta re-ejecutar en vivo la publicación de la v0.7.4 (ahora asocia el dibujo).
 3. **Probar los botones "Canal C#" y "Escritura completa"** pulsados a mano (encender, `execute_csharp`, apagar, apagado automático al reiniciar) y `shortcuts_publish`/`shortcuts_reference` con un proyecto de accesos directos real.
 3. **Probar en dibujos reales** (con permiso del dueño, nunca sin él): etiquetas sobre referencias de accesos directos, corredores con ensamblajes importados (`assembly_import`) y redes con el catálogo del cliente.
-4. **Siguientes funciones:** `execute_plan` todo-o-nada; espirales en alineaciones y en el LandXML; redes de presión; Excel y Power BI.
+4. **Siguientes funciones:** `execute_plan` todo-o-nada; espirales; piezas y conexiones de redes de presión (la red vacía y sus consultas ya están compiladas); cómputos, Excel y Power BI.
 5. **Pendientes menores:** busy con diálogo modal, breakline proximity, `AeccDbVAlignment` y el índice de `SetPointElevation`.
 
 **Ciclo de despliegue** (cada versión nueva):
-1. El dueño cierra Civil 3D sin guardar el dibujo de ensayo.
+1. El dueño **guarda su trabajo antes de cerrar Civil 3D** y confirma el cierre. La regresión se hace después sobre un fixture nuevo.
 2. Correr `scripts/install.ps1 -Years 2025`.
 3. El dueño abre Civil 3D, ejecuta `NEW` y pulsa "Dibujo de ensayo".
 4. Correr `python scripts/verify_live.py`.

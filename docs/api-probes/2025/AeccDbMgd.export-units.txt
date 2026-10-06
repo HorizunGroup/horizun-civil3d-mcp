@@ -1,0 +1,19 @@
+# AeccDbMgd.dll 13.7.0.1402 (Civil 3D 2025)
+== Autodesk.Civil.Settings.SettingsUnitZone : Autodesk.Civil.TreeOidWrapper
+  M static String[] GetAllCodes()
+  M static SettingsCoordinateSystem GetCoordinateSystemByCode(String code)
+  P AngleUnitType AngularUnits {get;set;}
+  P String CoordinateSystemCode {get;set;}
+  P Double DrawingScale {get;set;}
+  P DrawingUnitType DrawingUnits {get;set;}
+  P ImperialToMetricConversionType ImperialToMetricConversion {get;set;}
+  P Boolean MatchAutoCADVariables {get;set;}
+  P Boolean ScaleObjectsFromOtherDrawings {get;set;}
+== Autodesk.Civil.Settings.ImperialToMetricConversionType : System.Enum
+  E InternationalFoot
+  E UsSurveyFoot
+  F Int32 value__
+== Autodesk.Civil.Settings.DrawingUnitType : System.Enum
+  E Feet
+  E Meters
+  F Int32 value__

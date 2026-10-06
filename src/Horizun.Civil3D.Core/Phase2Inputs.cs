@@ -28,7 +28,7 @@ public static class GradingInputs
         var needsSurface = outer?.Any(s => Hz.Str(s as JsonObject, "type") == "grade_to_surface") == true;
         if (needsSurface && string.IsNullOrWhiteSpace(Hz.Str(args, "surface"))) return "grade_to_surface needs surface (the target terrain name).";
         if (!needsSurface && args["surface"] != null) return "surface is only used by grade_to_surface steps.";
-        if (args["densify"] != null && (Hz.Num(args, "densify") is not { } d || !double.IsFinite(d) || d < 0.05 || d > 10)) return "densify must be between 0.05 and 10 drawing units.";
+        if (args["densify"] != null && (Hz.Num(args, "densify") is not { } d || !Hz.IsFinite(d) || d < 0.05 || d > 10)) return "densify must be between 0.05 and 10 drawing units.";
         foreach (var k in new[] { "layer", "style", "volume_against", "surface", "name" })
             if (args[k] != null && string.IsNullOrWhiteSpace(Hz.Str(args, k))) return k + " must be a non-empty string.";
         return null;
@@ -84,11 +84,11 @@ public static class FeatureLineInputs
             if (mode != "points" && args["points"] != null) return "points apply to mode=points only.";
             if (mode == "from_surface" && string.IsNullOrWhiteSpace(Hz.Str(args, "surface"))) return "mode=from_surface needs surface.";
             if (args["insert_intermediate"] != null && Hz.Bool(args, "insert_intermediate") == null) return "insert_intermediate must be true or false.";
-            if (mode == "constant" && (Hz.Num(args, "elevation") is not { } e || !double.IsFinite(e))) return "mode=constant needs a finite elevation.";
+            if (mode == "constant" && (Hz.Num(args, "elevation") is not { } e || !Hz.IsFinite(e))) return "mode=constant needs a finite elevation.";
             if (mode == "points")
             {
                 if (args["points"] is not JsonArray ps || ps.Count == 0 || ps.Count > 10000) return "mode=points needs points: 1 to 10000 {index, z}.";
-                if (ps.Any(p => p is not JsonObject o || o.Count != 2 || Hz.Int(o, "index") is not { } i || i < 0 || Hz.Num(o, "z") is not { } z || !double.IsFinite(z)))
+                if (ps.Any(p => p is not JsonObject o || o.Count != 2 || Hz.Int(o, "index") is not { } i || i < 0 || Hz.Num(o, "z") is not { } z || !Hz.IsFinite(z)))
                     return "Each point is {index (>= 0, position in the feature line's points), z (finite)}.";
                 if (ps.Select(p => Hz.Int((JsonObject)p!, "index")).Distinct().Count() != ps.Count) return "point indices must not repeat.";
             }

@@ -13,6 +13,7 @@
 using System.IO.Pipes;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using System.Text;
 using System.Text.Json.Nodes;
 using Horizun.Civil3D.Core;
 
@@ -60,7 +61,11 @@ internal sealed class PipeServer
         var rules = new PipeSecurity();
         var me = WindowsIdentity.GetCurrent().User!;
         rules.AddAccessRule(new PipeAccessRule(me, PipeAccessRights.FullControl, AccessControlType.Allow));
+#if NET48
+        return new NamedPipeServerStream(_pipeName, PipeDirection.InOut, NamedPipeServerStream.MaxAllowedServerInstances,
+#else
         return NamedPipeServerStreamAcl.Create(_pipeName, PipeDirection.InOut, NamedPipeServerStream.MaxAllowedServerInstances,
+#endif
             PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 64 * 1024, 64 * 1024, rules);
     }
 
@@ -150,7 +155,7 @@ internal sealed class PipeServer
                 }
 
                 var text = reply.ToJsonString(Hz.Compact);
-                if (text.Length > Contract.MaxReplyBytes)
+                if (Encoding.UTF8.GetByteCount(text) > Contract.MaxReplyBytes)
                     reply = Wire.Reply(id, CommandResult.Fail(ErrorCodes.Internal,
                         "THE COMMAND RAN but its reply exceeds " + Contract.MaxReplyBytes + " bytes and was not sent. " +
                         "Re-run with a narrower filter or a smaller limit; check the drawing before repeating a write."));

@@ -292,7 +292,7 @@ public static class GradingEngine
         {
             var a = poly[i]; var b = poly[(i + 1) % poly.Count];
             var dx = b.X - a.X; var dy = b.Y - a.Y; var len2 = dx * dx + dy * dy;
-            var t = len2 < 1e-24 ? 0 : Math.Clamp(((p.X - a.X) * dx + (p.Y - a.Y) * dy) / len2, 0, 1);
+            var t = len2 < 1e-24 ? 0 : RuntimeCompat.Clamp(((p.X - a.X) * dx + (p.Y - a.Y) * dy) / len2, 0, 1);
             var cx = a.X + t * dx - p.X; var cy = a.Y + t * dy - p.Y;
             best = Math.Min(best, Math.Sqrt(cx * cx + cy * cy));
         }
@@ -319,8 +319,8 @@ public static class GradingEngine
                 _ => new[] { "type", "elevation", "slope" },
             };
             if (s.FirstOrDefault(kv => !keys.Contains(kv.Key)) is { Key: { } extra }) return w + "." + extra + " does not apply to " + type + ".";
-            bool Pos(string k, bool required) => Hz.Num(s, k) is { } v ? double.IsFinite(v) && v > 0 : !required && s[k] == null;
-            bool Fin(string k, bool required) => Hz.Num(s, k) is { } v ? double.IsFinite(v) : !required && s[k] == null;
+            bool Pos(string k, bool required) => Hz.Num(s, k) is { } v ? Hz.IsFinite(v) && v > 0 : !required && s[k] == null;
+            bool Fin(string k, bool required) => Hz.Num(s, k) is { } v ? Hz.IsFinite(v) : !required && s[k] == null;
             switch (type)
             {
                 case "offset":
@@ -332,7 +332,7 @@ public static class GradingEngine
                     break;
                 case "grade_to_depth":
                     if (!Pos("depth", true)) return w + ".depth must be > 0.";
-                    if (Hz.Num(s, "slope") is { } sl && (!double.IsFinite(sl) || sl < 0)) return w + ".slope must be >= 0.";
+                    if (Hz.Num(s, "slope") is { } sl && (!Hz.IsFinite(sl) || sl < 0)) return w + ".slope must be >= 0.";
                     break;
                 default:
                     if (!Fin("elevation", true)) return w + ".elevation must be a finite number.";
