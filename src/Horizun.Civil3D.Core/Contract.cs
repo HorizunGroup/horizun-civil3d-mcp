@@ -22,7 +22,7 @@ public enum ToolEffect
     Read,
     /// <summary>Changes bridge/session state only (which Civil 3D is targeted).</summary>
     HostState,
-    /// <summary>Typed, reversible drawing edits (one UNDO step each).</summary>
+    /// <summary>Typed drawing edits, each one undo group in Civil 3D's native UNDO. The bridge does not undo them (undo_last is disabled).</summary>
     SafeWrite,
     /// <summary>Saving, exporting, opening documents, data shortcuts.</summary>
     FullWrite,

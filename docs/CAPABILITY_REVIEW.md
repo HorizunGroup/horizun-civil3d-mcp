@@ -1,6 +1,6 @@
 # Capability review and next executable improvements
 
-Updated v0.9.0, 2026-10-05. Contract `171049b89c39afc5120da6ff`.
+Updated v0.9.2, 2026-10-06 (inventory counts and contract only; the narrative below is the v0.9.0 review). Contract `e36ee390efbb5d34ee0fe86c`.
 The selected engineering additions are implemented with offline tests and real
 reference builds: surface tolerance/RMSE reports, corridor targets/applied
 geometry/estimated quantities/guarded split-merge, editable COGO CSV and
@@ -23,17 +23,17 @@ geometry/targets, quantities, sheets and spreadsheet write-back remain pending.
 
 ## Actual inventory
 
-The compiled contract declares **28 tools and 152 named actions**. Six tools do
-not use an `action` enum, giving 158 catalog rows. These counts describe the
-contract, not 158 independently live-verified workflows. Other parameter modes
+The compiled contract declares **28 tools and 163 named actions**. Six tools do
+not use an `action` enum, giving 169 catalog rows. These counts describe the
+contract, not 169 independently live-verified workflows. Other parameter modes
 and combinations are not inflated into separate actions.
 
 | Effect | Catalog rows | Execution requirement |
 |---|---:|---|
-| Read | 51 | Most need an available, idle Civil 3D drawing; capabilities is server-side |
+| Read | 55 | Most need an available, idle Civil 3D drawing; capabilities is server-side |
 | Host state | 1 | Instance selection only |
-| Safe write | 93 | Explicit active target, dry run, token and post-commit re-read |
-| Full write | 12 | Full-write permission plus the typed confirmation workflow |
+| Safe write | 99 | Explicit active target, dry run, token and post-commit re-read |
+| Full write | 13 | Full-write permission plus the typed confirmation workflow |
 | Unsafe code | 1 | Unsafe-code permission and separate C# enable flag; self-reported results |
 
 The full generated list is [CAPABILITY_CATALOG.md](CAPABILITY_CATALOG.md).

@@ -1,4 +1,5 @@
 using System.IO.Pipes;
+using System.Text;
 using System.Text.Json.Nodes;
 using Horizun.Civil3D.Core;
 using Horizun.Civil3D.Server;
@@ -45,9 +46,10 @@ public class SchemaCheckTests
 [Collection("pipe")]
 public class WireEndToEndTests
 {
-    private static DiscoveryRecord FakeRecord(string pipe, string token, string? hash = null, int pid = 4242, int year = 2025) => new()
+    // The fake plug-in's pipe is served by this test process, so its pid is the one the client must find.
+    private static DiscoveryRecord FakeRecord(string pipe, string token, string? hash = null, int? pid = null, int year = 2025) => new()
     {
-        Year = year, Pid = pid, PipeName = pipe, AuthToken = token, StartedUtc = DateTime.UtcNow,
+        Year = year, Pid = pid ?? Environment.ProcessId, PipeName = pipe, AuthToken = token, StartedUtc = DateTime.UtcNow,
         ProtocolVersion = Contract.ProtocolVersion, ContractHash = hash ?? Contract.Hash, PluginVersion = "test",
         Commands = Contract.PluginCommands.ToList(),
     };
@@ -108,6 +110,53 @@ public class WireEndToEndTests
         Assert.True(r["isError"]!.GetValue<bool>());
         Assert.Equal("busy", r["structuredContent"]!["code"]!.GetValue<string>());
         Assert.Equal(1, r["structuredContent"]!["cmdactive"]!.GetValue<int>());
+    }
+
+    [Fact]
+    public void Pipe_served_by_another_process_never_receives_the_token()
+    {
+        var pipe = "hz-test-" + Guid.NewGuid().ToString("N");
+        string? received = null;
+        var server = new NamedPipeServerStream(pipe, PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
+        var squatter = Task.Run(() =>
+        {
+            using (server)
+            {
+                server.WaitForConnection();
+                try { received = Wire.ReadLine(server, Contract.MaxRequestBytes); } catch (IOException) { }
+            }
+        });
+        var mcp = WithInstances(FakeRecord(pipe, "secret-token", pid: Environment.ProcessId + 1));
+
+        var r = mcp.ToolsCall("pid", new JsonObject { ["name"] = "horizun_c3d_health", ["arguments"] = new JsonObject() });
+        squatter.Wait(5000);
+        Assert.True(r["isError"]!.GetValue<bool>());
+        Assert.Equal(ErrorCodes.Transport, r["structuredContent"]!["code"]!.GetValue<string>());
+        Assert.True(received == null || !received.Contains("secret-token"));
+    }
+
+    [Fact]
+    public void Truncated_reply_is_a_transport_error_with_the_check_the_drawing_warning()
+    {
+        var pipe = "hz-test-" + Guid.NewGuid().ToString("N");
+        var server = new NamedPipeServerStream(pipe, PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
+        var fake = Task.Run(() =>
+        {
+            using (server)
+            {
+                server.WaitForConnection();
+                Wire.ReadLine(server, Contract.MaxRequestBytes);
+                var partial = Encoding.UTF8.GetBytes("{\"id\":\"x\",\"ok\":tr");
+                server.Write(partial, 0, partial.Length);
+            }
+        });
+        var mcp = WithInstances(FakeRecord(pipe, "tok"));
+
+        var r = mcp.ToolsCall("cut", new JsonObject { ["name"] = "horizun_c3d_health", ["arguments"] = new JsonObject() });
+        fake.Wait(5000);
+        Assert.True(r["isError"]!.GetValue<bool>());
+        Assert.Equal(ErrorCodes.Transport, r["structuredContent"]!["code"]!.GetValue<string>());
+        Assert.Contains("check the drawing", r["structuredContent"]!["error"]!.GetValue<string>());
     }
 
     [Fact]

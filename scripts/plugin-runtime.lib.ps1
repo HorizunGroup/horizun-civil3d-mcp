@@ -120,6 +120,8 @@ function Install-C3DPluginRuntime {
     $lock = $null
     try { $lock = [IO.File]::Open((Join-Path $cache 'install.lock'), [IO.FileMode]::OpenOrCreate, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None) }
     catch { return [pscustomobject]@{state='installing'; ready=$false; message='Another installation holds the runtime lock. Query status and retry when it finishes.'} }
+    $stage = $null
+    $succeeded = $false
     try {
         $stage = Join-Path $cache ([Guid]::NewGuid().ToString('N'))
         New-Item -ItemType Directory -Path $stage | Out-Null
@@ -150,8 +152,21 @@ function Install-C3DPluginRuntime {
         if ($LASTEXITCODE -ne 0) { throw "Installer failed with exit code $LASTEXITCODE. Inspect $log; the previous installation is retained or its rollback status is recorded there." }
         $after = Get-C3DRuntimeStatus $PluginRoot
         if (-not $after.ready) { throw ('Installation completed but runtime verification failed: ' + $after.message) }
+        $succeeded = $true
         return $after
     } catch {
         return [pscustomobject]@{state='failed'; ready=$false; version=$r.version; message=$_.Exception.Message}
-    } finally { $lock.Dispose() }
+    } finally {
+        # The archive and its extraction are not needed after the attempt. A failed attempt keeps only its
+        # install.log (the failure message points to it), and only the three newest attempts are kept.
+        try {
+            if ($stage -and (Test-Path -LiteralPath $stage)) {
+                if ($succeeded) { Remove-Item -LiteralPath $stage -Recurse -Force }
+                else { Get-ChildItem -LiteralPath $stage -Force | Where-Object { $_.Name -ne 'install.log' } | Remove-Item -Recurse -Force }
+            }
+            Get-ChildItem -LiteralPath $cache -Directory -Force | Sort-Object LastWriteTimeUtc -Descending |
+                Select-Object -Skip 3 | Remove-Item -Recurse -Force
+        } catch { }
+        $lock.Dispose()
+    }
 }

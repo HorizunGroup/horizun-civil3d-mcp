@@ -383,3 +383,21 @@ Release0.9.2 is published, all five asset digests match local files, and reposit
 visibility is PUBLIC. The backed-up0.8.0 installer was withdrawn. These publication
 checks add no Autodesk native certification: existing native2025 results and
 build-only2024/2026 evidence remain as documented; automatic UNDO remains disabled.
+
+## Review fixes (branch `phase-10/review-fixes`, 2026-10-06): B + T, live gates pending
+
+Contract unchanged (`e36ee390efbb5d34ee0fe86c`). No Civil 3D host was contacted; nothing below is **L** yet.
+
+| Change | Grade | Live gate (fixture, Civil 3D 2025) |
+|---|---|---|
+| points create/import into a group | B | Group with a custom query (raw description `TN*`): refused by name, group unchanged. Standard group: previous members kept, new points added, verify `previous members kept` passes. Mixed request `[{x,y}, {number:<next>,x,y}]`: applies, numbers as requested |
+| sections reads/plan/verify open for write with locked-layer override | B | Group and lines on a locked layer: `list` and `get_section` return data; `create_sample_lines` into that group refused in the plan. Group with pending sections: `create_sample_lines` dry run does not abort acad.exe |
+| pipe name with random part, FirstPipeInstance, server pid check | B (plug-in), T (server) | `horizun_c3d_health` after reinstall; discovery file shows the new pipe name; HZ_STATUS shows the channel |
+| layouts / pressure rename case-sensitive verify | B | Case-only layout rename verifies `match` only if the case changed |
+| structure sump unreadable = failed check | B | Regression: add_pipes fixture still `match` |
+| add_data rebuild=false skips breakline elevation check | B | add_data breakline with rebuild=false: `match`, `after.breakline_elevations` note present |
+| split_region at an additional station refused | B | Fixture region with additional station at the split: refused, nothing changed |
+| blocks define with mixed owners refused in plan | B | handles from Model and Layout1: refused before token |
+| shortcuts publish manager disposed on failure | B | Regression: publish_shortcuts fixture still passes |
+| editability fails closed on unreadable inputs | B | Regression: write fixtures still pass |
+| Hz.Like, settings tool names, tokens, absolute paths, set_cells duplicates, transport errors | T | none needed beyond regression |

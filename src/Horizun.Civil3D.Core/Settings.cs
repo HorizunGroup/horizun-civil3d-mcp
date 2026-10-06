@@ -135,8 +135,14 @@ public sealed class Settings
                     if (field.Value.ValueKind != JsonValueKind.Array)
                         return field.Name + " must be an array of non-empty strings";
                     foreach (var item in field.Value.EnumerateArray())
+                    {
                         if (item.ValueKind != JsonValueKind.String || string.IsNullOrWhiteSpace(item.GetString()))
                             return field.Name + " must contain only non-empty strings";
+                        // A misspelled denied_tools entry would block nothing, so unknown names are refused.
+                        var tool = item.GetString()!.Trim();
+                        if (!Contract.All.Any(c => string.Equals(c.Name, tool, StringComparison.Ordinal)))
+                            return field.Name + " names '" + tool + "', which is not a tool (names are exact and lower-case, e.g. horizun_c3d_cleanup)";
+                    }
                     break;
                 default:
                     return "contains unknown field '" + field.Name + "'";

@@ -157,6 +157,8 @@ internal sealed class BlocksCommand : ICommand
                     if (erase) Cad.Editable(e, tr);
                     else if (tr.GetObject(e.OwnerId, OpenMode.ForRead) is not BlockTableRecord { IsLayout: true })
                         throw new HzRefusal(ErrorCodes.InvalidInput, Cad.Dxf(e) + " " + e.Handle + " is not in model or paper space. Nothing changed.");
+                    if (src.Count > 0 && tr.GetObject(src[0], OpenMode.ForRead).OwnerId != e.OwnerId)
+                        throw new HzRefusal(ErrorCodes.InvalidInput, "All source entities must be in the same space (model space or one layout); " + e.Handle + " is not. Nothing changed.");
                     src.Add(e.ObjectId);
                 }
                 plan["new_name"] = name; plan["base_point"] = Resolve.Json(basePt); plan["entities"] = src.Count; plan["attributes"] = atts.Count;
@@ -399,7 +401,7 @@ internal sealed class BlocksCommand : ICommand
         return WriteFlow.Run(ctx, "HZ_BLOCKS",
             (doc, tr, plan) =>
             {
-                if (!Path.IsPathRooted(path) || !File.Exists(path)) throw new HzRefusal(ErrorCodes.NotFound, "source_dwg must be an existing absolute .dwg path. Nothing changed.");
+                if (!RuntimeCompat.IsPathFullyQualified(path) || !File.Exists(path)) throw new HzRefusal(ErrorCodes.NotFound, "source_dwg must be an existing absolute .dwg path. Nothing changed.");
                 var bt = (BlockTable)tr.GetObject(doc.Database.BlockTableId, OpenMode.ForRead);
                 var clash = names.Where(n => bt.Has(n)).ToList();
                 if (clash.Count > 0) throw new HzRefusal(ErrorCodes.InvalidInput, "The drawing already has block(s) " + string.Join(", ", clash) + "; existing definitions are never overwritten. Nothing changed.");

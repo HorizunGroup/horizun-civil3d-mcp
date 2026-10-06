@@ -8,7 +8,8 @@ public class ContractTests
     [Fact]
     public void Hash_is_stable_and_hex()
     {
-        Assert.Equal(Contract.Hash, Contract.Hash);
+        // Pinned: a schema or effect change must be a deliberate joint server + plug-in release.
+        Assert.Equal("e36ee390efbb5d34ee0fe86c", Contract.Hash);
         Assert.Matches("^[0-9a-f]{24}$", Contract.Hash);
     }
 
@@ -106,6 +107,18 @@ public class SettingsTests
         Assert.Null(s.Refusal("horizun_c3d_health", ToolEffect.Read));
         Assert.NotNull(s.Refusal("horizun_c3d_styles", ToolEffect.Read));
     }
+
+    [Theory]
+    [InlineData("{\"permission_profile\":\"full_write\",\"denied_tools\":[\"horizun_c3d_Cleanup\"]}")]
+    [InlineData("{\"permission_profile\":\"full_write\",\"denied_tools\":[\"horizun_c3d_cleanups\"]}")]
+    [InlineData("{\"allowed_tools\":[\"horizun_c3d_qery\"]}")]
+    public void Misspelled_tool_lists_fail_closed(string json)
+    {
+        var s = Settings.Parse(json);
+        Assert.True(s.FailedClosed);
+        Assert.Equal(PermissionProfile.ReadOnly, s.Profile);
+        Assert.NotNull(s.Refusal("horizun_c3d_cleanup", ToolEffect.FullWrite));
+    }
 }
 
 public class RequestGateTests
@@ -191,6 +204,22 @@ public class ConfirmationTests
     }
 
     [Fact]
+    public void Replay_after_another_dry_run_is_still_reported_as_already_used()
+    {
+        var now = new DateTime(2026, 10, 6, 12, 0, 0, DateTimeKind.Utc);
+        var store = new ConfirmationStore(() => now);
+        var h = ConfirmationStore.RequestHash(Req);
+        var (token, _) = store.Issue("doc:save", "k", h, "p1");
+        Assert.True(store.Validate(token, "doc:save", "k", h, "p1").Ok);
+        store.Issue("doc:save", "k", h, "p1");
+        Assert.Equal(1, store.OutstandingCount);
+        Assert.Equal(ConfirmationState.AlreadyUsed, store.Validate(token, "doc:save", "k", h, "p1").State);
+        now = now.AddMinutes(11);
+        store.Issue("doc:save", "k", h, "p1");
+        Assert.Equal(ConfirmationState.Unknown, store.Validate(token, "doc:save", "k", h, "p1").State);
+    }
+
+    [Fact]
     public void Each_binding_is_named_when_it_breaks()
     {
         var store = new ConfirmationStore();
@@ -267,7 +296,24 @@ public class HzTests
     [InlineData("EG", "FG", false)]
     [InlineData("anything", null, true)]
     [InlineData("", "*", true)]
+    [InlineData("", "?", false)]
+    [InlineData("abc", "a*c*", true)]
+    [InlineData("abc", "*b", false)]
+    [InlineData("aXbXc", "a*b*c", true)]
+    [InlineData("mississippi", "m*iss*pi", true)]
+    [InlineData("mississippi", "m*iss*px", false)]
+    [InlineData("C-ROAD", "c-road", true)]
     public void Wildcards(string text, string? pattern, bool expected) => Assert.Equal(expected, Hz.Like(text, pattern));
+
+    [Fact]
+    public void Wildcards_do_not_backtrack_exponentially()
+    {
+        var text = string.Concat(Enumerable.Repeat("-A", 200));
+        var pattern = string.Concat(Enumerable.Repeat("*-", 30)) + "Z";
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        Assert.False(Hz.Like(text, pattern));
+        Assert.True(sw.ElapsedMilliseconds < 1000, "Hz.Like took " + sw.ElapsedMilliseconds + " ms");
+    }
 
     [Fact]
     public void Finite_never_turns_nan_into_zero()

@@ -226,7 +226,10 @@ internal sealed partial class SurfaceCommand
                     checks.Check("paste operations in requested order", Hz.Strings(g.Sources.Select(x => x.Handle.ToString())), actual, ok);
                 }
                 ElevationCheck(checks, tin, "requested vertices", g.Vertices, bnd != null);
-                ElevationCheck(checks, tin, "standard breakline vertices", g.BreaklineChecks, bnd != null);
+                // Breaklines reach the triangulation only on rebuild; without one, the TIN read back is the old one.
+                if (rebuild) ElevationCheck(checks, tin, "standard breakline vertices", g.BreaklineChecks, bnd != null);
+                else if (g.BreaklineChecks.Count > 0)
+                    after["breakline_elevations"] = "not checked: rebuild=false leaves the surface out of date; rebuild it, then sample_elevation.";
                 if (rebuild) checks.Flag("is_out_of_date after rebuild", false, tin.IsOutOfDate);
                 after["counts"] = TinCounts(tin);
                 after["surface"] = Describe(tin, tr, false);

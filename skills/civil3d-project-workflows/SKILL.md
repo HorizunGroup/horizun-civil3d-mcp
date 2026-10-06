@@ -32,10 +32,11 @@ aplicación del plan. Comprueba `committed`, `after` y cada elemento de
 
 Antes de repetir una llamada que terminó en timeout, error de transporte o
 resultado desconocido, reconsulta el estado. La operación podría haberse
-aplicado. `undo_last` cubre solo la última edición DWG elegible: archivos,
-configuración de proyectos y scripts no son reversibles por ese mecanismo.
-Si un UNDO ya corrió pero la verificación fue parcial, reconsulta los objetos;
-no envíes otro UNDO por la misma operación.
+aplicado. El deshacer automático (`undo_last`) está desactivado: siempre
+responde `unsupported` con `committed=false` y no ejecuta nada. Para revertir
+una escritura, el usuario usa el UNDO nativo de Civil 3D y después reconsultas
+los objetos. Archivos, configuración de proyectos y scripts no se revierten
+con UNDO.
 
 ## Criterio por disciplina
 

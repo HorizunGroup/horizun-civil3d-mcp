@@ -1,0 +1,45 @@
+# AeccDbMgd.dll 13.7.0.1402 (Civil 3D 2025)
+== Autodesk.Civil.DatabaseServices.Part : Autodesk.Civil.DatabaseServices.GeoEntity
+  M Void AddToProfileView(ObjectId profileViewId)
+  M Void AddToSectionView(ObjectId sectionViewId)
+  M Boolean ApplyRules()
+  M ObjectIdCollection GetOverriddenRuleIds()
+  M ObjectIdCollection GetProfileViewsDisplayingMe()
+  M ObjectIdCollection GetSectionViewsDisplayingMe()
+  M Void RemoveFromAllProfileViews()
+  M Void RemoveFromAllSectionViews()
+  M Void RemoveFromProfileView(ObjectId profileViewId)
+  M Void RemoveFromSectionView(ObjectId sectionViewId)
+  M Void SwapPartFamilyAndSize(ObjectId partFamilyId, ObjectId partSizeId)
+  P Int32 ConnectedPartCount {get;}
+  P DomainType Domain {get;}
+  P Double KnownFlow {get;set;}
+  P String Material {get;}
+  P String Name {get;}
+  P ObjectId NetworkId {get;}
+  P String NetworkName {get;}
+  P Boolean OverrideRuleSet {get;set;}
+  P ParamBoolCollection ParamsBool {get;}
+  P ParamDoubleCollection ParamsDouble {get;}
+  P ParamLongCollection ParamsLong {get;}
+  P ParamStringCollection ParamsString {get;}
+  P PartDataRecord PartData {get;set;}
+  P ObjectId PartDefId {get;}
+  P String PartDescription {get;}
+  P ObjectId PartFamilyId {get;}
+  P String PartFamilyName {get;}
+  P String PartSizeName {get;}
+  P String PartSubType {get;}
+  P PartType PartType {get;}
+  P Point3d Position {get;set;}
+  P ObjectId ProfileViewPartId {get;}
+  P ObjectId RefAlignmentId {get;set;}
+  P String RefAlignmentName {get;}
+  P ObjectId RefSurfaceId {get;set;}
+  P String RefSurfaceName {get;}
+  P ObjectId RuleSetStyleId {get;set;}
+  P String RuleSetStyleName {get;set;}
+  P ObjectId SectionViewPartId {get;}
+  P Solid3d Solid3dBody {get;}
+  P ObjectId SurfaceId {get;set;}
+  P Double WallThickness {get;}

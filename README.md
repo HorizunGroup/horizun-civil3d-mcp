@@ -28,7 +28,7 @@ these additions have native fixture evidence on Civil 3D 2025. See the
 Claude / MCP client
       |  MCP over stdio
 horizun-civil3d-mcp.exe          (src/Horizun.Civil3D.Server)
-      |  named pipe "Horizun.Civil3D-<pid>" + token
+      |  named pipe "Horizun.Civil3D-<pid>-<random>" + token (server pid checked before sending)
 Horizun.Civil3D.dll in acad.exe  (src/Horizun.Civil3D.Plugin)
       |  RequestGate (FIFO, 16) -> main thread, application context -> DocumentLock -> Transaction
 Civil 3D .NET API (AeccDbMgd) + AutoCAD .NET API
@@ -47,10 +47,10 @@ do not establish live support; see [the evidence matrix](docs/CIVIL3D.md).
 | `horizun_c3d_target` | list / select instance | session |
 | `horizun_c3d_capabilities` | declared tools, actions, schemas and permission checks; filters by tool/effect/text | read, server only |
 | `horizun_c3d_audit` | units, coordinate system, xrefs, stale/invalid references, out-of-date surfaces/corridors | read |
-| `horizun_c3d_document` | `info`, `list_open`, `object_census`, `save`, `undo_last` | read; `save` = full_write; `undo_last` = safe_write |
+| `horizun_c3d_document` | `info`, `list_open`, `object_census`, `save`, `undo_last` | read; `save` = full_write; `undo_last` reserved and disabled (always `unsupported`, runs nothing) |
 | `horizun_c3d_query` | `list`, `get` over 15 Civil 3D object types | read |
 | `horizun_c3d_styles` | `list`, `get` (with the objects using each style) | read |
-| `horizun_c3d_surface` | 15 actions: reads, sampling, volumes, edits, add_data, paste, elevation/slope analysis, style_display | read / safe_write |
+| `horizun_c3d_surface` | 16 actions: reads, sampling, volumes, compare_design, edits, add_data, paste, elevation/slope analysis, style_display | read / safe_write |
 | `horizun_c3d_grading` | `create_geometric`: geometric grading engine (native gradings have no API) | safe_write |
 | `horizun_c3d_feature_line` | create from polylines, set elevations, rename, export 3D polyline | safe_write |
 | `horizun_c3d_execute_csharp` | Roslyn escape hatch, off by default, self-reported | unsafe_code |
@@ -128,9 +128,15 @@ for those years remains pending.** See [COMPATIBILITY.md](docs/COMPATIBILITY.md)
 - AI assistants: start with `CLAUDE.md` / `AGENTS.md` and `docs/handoff/00_START_HERE.md`. Personal working notes go
   in `.local/`, which git ignores.
 
-## Surface tool (live-verified, v0.3.4)
+## Surface tool
 
-`horizun_c3d_surface` has twelve actions for reads, sampling, volumes and confirmed, verified surface edits, including add_data and paste. All of them are live-verified on Civil 3D 2025 against the deterministic fixture (`HZ_BUILD_FIXTURE` + `scripts/verify_live.py`: 46/46, UNDO included). See [surface operations](docs/SURFACES.md).
+`horizun_c3d_surface` has 16 actions for reads, sampling, volumes, design comparison and confirmed, verified
+surface edits. Live-verified on Civil 3D 2025 against the deterministic fixture (`HZ_BUILD_FIXTURE` +
+`scripts/verify_live.py`): list, get, sample_elevation, volumes_report, compare_design, rename, duplicate_style,
+set_style, create_tin, create_volume, rebuild, add_data and paste. `apply_elevation_analysis`,
+`apply_slope_analysis` and `style_display` are built and unit-tested only (B + T) until their live gate runs.
+The bridge does not undo writes (`undo_last` is disabled); use native Civil 3D UNDO. See
+[surface operations](docs/SURFACES.md) and [the evidence matrix](docs/CIVIL3D.md).
 
 ## ChatGPT
 
@@ -151,11 +157,12 @@ Selecting an instance does not isolate its permissions:
 | Profile | What it allows |
 |---|---|
 | `read_only` | Reading only |
-| `safe_write` | Default. Typed, undoable drawing edits |
+| `safe_write` | Default. Typed drawing edits, each one undo group for native Civil 3D UNDO (the bridge does not undo them) |
 | `full_write` | Also save, export and data shortcuts |
 | `unsafe_code` | Also the C# escape hatch, together with `enable_execute_csharp` |
 
-A settings file that cannot be parsed, or that names an unknown profile, fails closed to `read_only`.
+A settings file that cannot be parsed, or that names an unknown profile or an unknown tool in `allowed_tools` /
+`denied_tools` (names are exact, e.g. `horizun_c3d_cleanup`), fails closed to `read_only`.
 
 The C# escape hatch is arbitrary code, not a sandbox. `mode=query` aborts only
 the supplied transaction; a script can still commit its own transaction or write

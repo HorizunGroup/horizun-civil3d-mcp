@@ -203,6 +203,9 @@ internal sealed partial class CorridorCommand
             if (!merge)
             {
                 if (split <= start + 1e-6 || split >= end - 1e-6) throw new HzRefusal(ErrorCodes.InvalidInput, "split_station must lie strictly inside the region.");
+                // Both new regions include the split station, so an additional station there would be duplicated.
+                if (additional.OfType<JsonObject>().Any(x => Hz.Num(x, "station") is { } s && Math.Abs(s - split) <= 1e-6))
+                    throw new HzRefusal(ErrorCodes.InvalidInput, "split_station " + split + " coincides with an additional applied station; both new regions would get it. Split at another station. Nothing changed.");
                 foreach (BaselineRegion other in regions) if (string.Equals(other.Name, newName, StringComparison.OrdinalIgnoreCase)) throw new HzRefusal(ErrorCodes.InvalidInput, "new_region_name already exists.");
             }
             else

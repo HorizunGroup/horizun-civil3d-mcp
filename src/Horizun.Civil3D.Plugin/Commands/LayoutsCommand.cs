@@ -161,7 +161,7 @@ internal sealed partial class LayoutsCommand : ICommand
                 if (copy != null) LayoutId(doc, tr, copy);
                 if (tdwg != null)
                 {
-                    if (!Path.IsPathRooted(tdwg) || !File.Exists(tdwg)) throw new HzRefusal(ErrorCodes.NotFound, "template_dwg must be an existing absolute path. Nothing changed.");
+                    if (!RuntimeCompat.IsPathFullyQualified(tdwg) || !File.Exists(tdwg)) throw new HzRefusal(ErrorCodes.NotFound, "template_dwg must be an existing absolute path. Nothing changed.");
                     using var src = new Database(false, true);
                     src.ReadDwgFile(tdwg, FileOpenMode.OpenForReadAndAllShare, true, null);
                     using var str = src.TransactionManager.StartTransaction();
@@ -222,7 +222,7 @@ internal sealed partial class LayoutsCommand : ICommand
                 plan["name"] = name; plan["new_name"] = newName;
             },
             (doc, tr) => Lm(doc).RenameLayout(((Layout)tr.GetObject(id, OpenMode.ForRead)).LayoutName, newName),
-            (doc, tr, v, after) => { v.Text("layout name", newName, ((Layout)tr.GetObject(id, OpenMode.ForRead)).LayoutName); after["name"] = newName; });
+            (doc, tr, v, after) => { v.Text("layout name", newName, ((Layout)tr.GetObject(id, OpenMode.ForRead)).LayoutName, ignoreCase: false); after["name"] = newName; });
     }
 
     private static CommandResult Delete(CommandContext ctx)

@@ -90,7 +90,7 @@ public sealed class App : IExtensionApplication
 
             var pid = Horizun.Civil3D.Core.RuntimeCompat.ProcessId;
             var token = Hz.NewToken(32);
-            var pipeName = Wire.PipeName(pid);
+            var pipeName = Wire.PipeName(pid, Hz.NewToken(16));
             Pipe = new PipeServer(pipeName, token, d);
             Pipe.Start();
 
