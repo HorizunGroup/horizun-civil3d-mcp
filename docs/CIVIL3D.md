@@ -375,3 +375,9 @@ Test project `HZ_PRUEBA` on the owner's Desktop, created with `shortcuts_project
 - **restore:** the original working folder was restored afterwards.
 
 Publish verification after a restart needs the drawing associated; v0.7.4 associates it, and that path is not yet re-run live.
+
+## Publication status2026-10-06
+
+Owner-authorized source commit `bc09308` was created locally. Automatic approval
+refused the subsequent push; no remote CI or GitHub publication evidence was added.
+Existing native2025 results and build-only2024/2026 evidence remain as documented.

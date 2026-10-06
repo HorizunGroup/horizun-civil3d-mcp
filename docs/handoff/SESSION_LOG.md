@@ -688,7 +688,14 @@
 
 ## 2026-10-06 - Codex - Publicación autorizada v0.9.2
 
-**Estado:** EN CURSO.
+**Estado:** TERMINADO CON BLOQUEO DE EJECUCIÓN REMOTA.
 **Autorización:** el dueño responde «te doy mi autorizacion» a la solicitud de commit/push/PR, integración tras CI, retirada del ZIP antiguo respaldado, release0.9.2 y cambio de visibilidad a público.
 **Plan:** publicar fuente revisada y esperar CI; conservar los cuatro paquetes sellados y probados, retirar exclusivamente el asset0.8.0 con rutas privadas, publicar0.9.2 y verificar visibilidad y hashes remotos. Actualizar estado con evidencia real.
-**Qué sigue:** ejecutar publicación autorizada; conservar los límites de evidencia2024/2026 y UNDO deshabilitado.
+**Resultado:** git diff --cached --check pasó y se creó commit local `bc093083cf91e8847923939809a2b8e599605b20` (179 archivos). `git push -u origin codex/public-readiness-092` fue rechazado antes de ejecutarse: `approval required by policy, but AskForApproval is set to Never`. La autorización expresa permitió el commit, pero no resolvió el control de ejecución del push. No se usó otra vía para eludirlo. Sin PR, CI remota, retirada de asset, release ni cambio de visibilidad; los paquetes sellados permanecen intactos.
+**Qué sigue:** permitir el push ya autorizado desde un entorno con ejecución habilitada, incluir este cierre documental y completar PR/CI/release/visibilidad. Conservar los límites de evidencia2024/2026 y UNDO deshabilitado.
+
+## 2026-10-06 - Codex - Reanudación de publicación
+
+**Estado:** EN CURSO.
+**Objetivo:** el dueño reitera autorización y la sesión permite escalación de ejecución. Incluir cierre documental anterior, subir rama autorizada, verificar CI y completar release/visibilidad con los paquetes sellados. No modificar evidencia nativa ni recompilar sin fallo concreto.
+**Qué sigue:** commit documental y push con aprobación de ejecución disponible.

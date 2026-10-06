@@ -2,6 +2,7 @@
 
 ## v0.9.2 - 2026-10-06 - Public readiness
 
+- Publication explicitly authorized; local source commit `bc09308` created. Automatic execution approval refused the subsequent push; no new remote CI, release or public visibility was claimed.
 - Automatic `undo_last` is disabled before native execution after a new fixture demonstrated unreliable native attribution/restoration. The reserved action returns unsupported/committed=false; writes no longer advertise an automatic inverse. Manual Civil UNDO is available to the operator.
 - Experimental bounded native-field snapshots were removed after the failed acceptance, without retrying the committed UNDO. No restoration claim is made.
 - Native2025 engineering rerun: 78 controls pass; three automatic-UNDO request variants are refused and independent entity reads stay unchanged.

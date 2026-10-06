@@ -60,7 +60,10 @@ source and history scans must be clean, documentation must describe current limi
 and the reviewed source/CI must be synchronized with GitHub. Public source availability
 does not certify every declared action or uninstalled Autodesk year.
 
-Local preparation passed. The commit/push/PR attempt was rejected before execution
-by the automatic approval control (approval required with AskForApproval=Never).
+Local preparation passed. The owner explicitly authorized publication on2026-10-06.
+Local source commit `bc093083cf91e8847923939809a2b8e599605b20` was created.
+The subsequent `git push` was rejected before execution by the automatic approval
+control (approval required with AskForApproval=Never), despite owner authorization.
 The repository is still private; remote CI, withdrawal of the backed-up old asset,
-release publication and visibility change remain pending explicit authorization.
+release publication and visibility change remain pending an execution environment
+that permits the authorized push. No alternative channel was used to bypass refusal.

@@ -1,7 +1,7 @@
 # STATUS - estado actual y QUÉ SIGUE
 
 > Documento VIVO. Toda sesión que termine un bloque de trabajo lo **actualiza** (ver `WORKFLOW.md`).
-> Última actualización: **2026-10-06**, por Codex. **v0.9.2 instalada; 78/78 controles de ingeniería2025 pasan**. Automatic undo_last deshabilitado antes de actuar tras un fallo de atribución nativa; tres variantes de rechazo mantienen entidades intactas. Paquetes sin PDB/rutas privadas,262 hashes instalados correctos. 552 Core,391 por runtime,14 receptor y8 cliente pasan. Preparación local terminada; commit/push/PR bloqueados por aprobación automática, pendiente autorización explícita. GitHub sigue privado. Ver [PUBLIC_READINESS.md](../PUBLIC_READINESS.md).
+> Última actualización: **2026-10-06**, por Codex. **v0.9.2 instalada; 78/78 controles de ingeniería2025 pasan**. Automatic undo_last deshabilitado antes de actuar tras un fallo de atribución nativa; tres variantes de rechazo mantienen entidades intactas. Paquetes sin PDB/rutas privadas,262 hashes instalados correctos. 552 Core,391 por runtime,14 receptor y8 cliente pasan. Dueño autoriza publicación; commit local `bc09308` creado. Push rechazado por aprobación automática incluso tras autorización. GitHub sigue privado. Ver [PUBLIC_READINESS.md](../PUBLIC_READINESS.md).
 
 ## Versión
 
@@ -83,9 +83,9 @@ Detalle de la evidencia: `docs/CIVIL3D.md`.
 
 ## ▶ QUÉ SIGUE (siguiente bloque de trabajo)
 
-**Preparación pública local terminada:** v0.9.2 instalada y78 controles pasan. Configuración temporal restaurada, settings.json ausente y C# deshabilitado. Historial/fuente y cuatro paquetes revisados; ZIP0.8.0 con rutas privadas respaldado, retirada de GitHub todavía pendiente. El control automático rechazó commit/push/PR por aprobación requerida con AskForApproval=Never; ninguna de esas acciones se ejecutó. No CI remota nueva, publicación ni cambio de visibilidad.
+**Preparación pública local terminada y autorizada:** v0.9.2 instalada y78 controles pasan. Configuración temporal restaurada, settings.json ausente y C# deshabilitado. Historial/fuente y cuatro paquetes revisados; ZIP0.8.0 con rutas privadas respaldado, retirada de GitHub todavía pendiente. Commit local `bc093083cf91e8847923939809a2b8e599605b20` creado. El control automático rechazó el posterior git push por aprobación requerida con AskForApproval=Never incluso tras autorización del dueño. No push, PR, CI remota nueva, publicación ni cambio de visibilidad.
 
-1. Tras autorización explícita solicitada por el bloqueo automático: commit/push/PR, CI remota, retirada del asset antiguo respaldado, publicación0.9.2 y cambio a público. Fuente staged en codex/public-readiness-092; no afirmar soporte nativo2024/2026 ni restauración automática.
+1. Habilitar ejecución del push ya autorizado en la sesión o ejecutar ese push desde un entorno permitido. Rama `codex/public-readiness-092`, commit `bc09308`; incluir también la documentación de este rechazo antes de publicar. Después PR, CI remota, retirada del asset antiguo respaldado, publicación0.9.2 y cambio a público. No falta autorización del dueño; no afirmar soporte nativo2024/2026 ni restauración automática.
 2. Ejecutar aceptación en anfitriones 2024 y 2026 cuando existan, usando el runtime y referencias de su actualización. El dueño confirmó que no están instalados: no volver a pedir rutas ni declarar L para esos años.
 3. Bloque futuro: investigar atribución nativa y snapshots completos antes de reactivar undo_last. Mantener cantidades estimadas y refresco explícito documentados.
 
