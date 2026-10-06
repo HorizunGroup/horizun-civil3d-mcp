@@ -378,6 +378,8 @@ Publish verification after a restart needs the drawing associated; v0.7.4 associ
 
 ## Publication status2026-10-06
 
-Owner-authorized source commit `bc09308` was created locally. Automatic approval
-refused the subsequent push; no remote CI or GitHub publication evidence was added.
-Existing native2025 results and build-only2024/2026 evidence remain as documented.
+Owner-authorized PR#1 passed remote CI run37476925655 and merged at `2c02c2d`.
+Release0.9.2 is published, all five asset digests match local files, and repository
+visibility is PUBLIC. The backed-up0.8.0 installer was withdrawn. These publication
+checks add no Autodesk native certification: existing native2025 results and
+build-only2024/2026 evidence remain as documented; automatic UNDO remains disabled.

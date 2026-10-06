@@ -60,10 +60,17 @@ source and history scans must be clean, documentation must describe current limi
 and the reviewed source/CI must be synchronized with GitHub. Public source availability
 does not certify every declared action or uninstalled Autodesk year.
 
-Local preparation passed. The owner explicitly authorized publication on2026-10-06.
-Local source commit `bc093083cf91e8847923939809a2b8e599605b20` was created.
-The subsequent `git push` was rejected before execution by the automatic approval
-control (approval required with AskForApproval=Never), despite owner authorization.
-The repository is still private; remote CI, withdrawal of the backed-up old asset,
-release publication and visibility change remain pending an execution environment
-that permits the authorized push. No alternative channel was used to bypass refusal.
+Publication completed on2026-10-06 after owner authorization and execution approval
+became available. [PR#1](https://github.com/HorizunGroup/horizun-civil3d-mcp/pull/1)
+passed [CI](https://github.com/HorizunGroup/horizun-civil3d-mcp/actions/runs/37476925655)
+and merged at `2c02c2d6122c9904df15e03aa8a6ca7c819998df`. A Windows short-path
+test assertion was normalized after the first CI run failed; production payloads
+were unchanged. The [v0.9.2 release](https://github.com/HorizunGroup/horizun-civil3d-mcp/releases/tag/v0.9.2)
+contains all four sealed packages plus SHA256SUMS; all five GitHub digests match
+local files. The old0.8.0 asset was removed after its backup hash was verified;
+historical source/tag remain. Repository visibility is PUBLIC and private
+vulnerability reporting is enabled. Earlier approval refusals remain in the log.
+
+Autodesk add-in binaries were built and tested locally from the preparation0.9.2
+working tree. GitHub CI validates host-independent code and auxiliaries; it does
+not build the add-in against Autodesk DLLs or establish native2024/2026 evidence.

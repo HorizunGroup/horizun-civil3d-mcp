@@ -2,7 +2,8 @@
 
 ## v0.9.2 - 2026-10-06 - Public readiness
 
-- Publication explicitly authorized; local source commit `bc09308` created. Automatic execution approval refused the subsequent push; no new remote CI, release or public visibility was claimed.
+- Published v0.9.2 and made the repository public after explicit authorization and successful PR#1 CI. Four packages plus SHA256SUMS match GitHub digests. Withdrew the backed-up0.8.0 installer containing private build paths and enabled private vulnerability reporting.
+- Normalized a Windows short-path assertion in the acceptance-client test after CI exposed runner path aliases; eight local client tests and subsequent remote CI pass. Production packages remain unchanged.
 - Automatic `undo_last` is disabled before native execution after a new fixture demonstrated unreliable native attribution/restoration. The reserved action returns unsupported/committed=false; writes no longer advertise an automatic inverse. Manual Civil UNDO is available to the operator.
 - Experimental bounded native-field snapshots were removed after the failed acceptance, without retrying the committed UNDO. No restoration claim is made.
 - Native2025 engineering rerun: 78 controls pass; three automatic-UNDO request variants are refused and independent entity reads stay unchanged.

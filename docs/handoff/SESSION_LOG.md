@@ -696,6 +696,8 @@
 
 ## 2026-10-06 - Codex - Reanudación de publicación
 
-**Estado:** EN CURSO.
+**Estado:** TERMINADO; release0.9.2 y repositorio público verificados.
 **Objetivo:** el dueño reitera autorización y la sesión permite escalación de ejecución. Incluir cierre documental anterior, subir rama autorizada, verificar CI y completar release/visibilidad con los paquetes sellados. No modificar evidencia nativa ni recompilar sin fallo concreto.
-**Qué sigue:** commit documental y push con aprobación de ejecución disponible.
+**Resultado:** push permitido mediante aprobación de ejecución; PR#1 creado y adjunto a este chat. Primera CI falló únicamente al comparar nombre corto Windows RUNNER~1 frente a nombre completo. Se normaliza expectativa con Path.resolve, ocho pruebas locales pasan y CI37476925655 pasa secretos/Core/Server/receptor/cliente/runtime/instalador. Commit de prueba `ef70256`, merge `2c02c2d6122c9904df15e03aa8a6ca7c819998df`; paquetes sellados conservados, no recompilados.
+**Publicación:** respaldo0.8.0 verificado antes de retirar exclusivamente su ZIP; assets antiguos ahora0, tag/fuente conservados y aviso actualizado. Releasev0.9.2 publicada con cuatro paquetes más SHA256SUMS; cinco digests GitHub coinciden con archivos locales. Repositorio PUBLIC verificado por API, reportes privados de seguridad habilitados. URLs: https://github.com/HorizunGroup/horizun-civil3d-mcp/pull/1 y https://github.com/HorizunGroup/horizun-civil3d-mcp/releases/tag/v0.9.2 . Binarios probados localmente durante preparación0.9.2, no atribuidos a compilación CI de Autodesk.
+**Qué sigue:** piloto controlado2025; aceptación nativa2024/2026 cuando existan esos anfitriones; investigar atribución/restauración antes de reactivar UNDO automático. El objetivo de publicación pública solicitado queda completado.
