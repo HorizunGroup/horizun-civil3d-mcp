@@ -99,7 +99,7 @@ internal sealed class McpServer
                     ["readOnlyHint"] = max <= ToolEffect.HostState,
                     ["destructiveHint"] = c.Destructive,
                     ["idempotentHint"] = max <= ToolEffect.HostState,
-                    ["openWorldHint"] = false,
+                    ["openWorldHint"] = max == ToolEffect.UnsafeCode,
                 },
             });
         }
@@ -176,6 +176,7 @@ internal sealed class McpServer
     private JsonObject ServerTool(string name, JsonObject args) => name switch
     {
         "horizun_c3d_target" => TargetTool.Run(_target, args),
+        "horizun_c3d_capabilities" => ToolOk(ContractCapabilities.Build(Settings.Load(), args)),
         _ => ToolError(ErrorCodes.Unsupported, "Server tool '" + name + "' is not implemented."),
     };
 

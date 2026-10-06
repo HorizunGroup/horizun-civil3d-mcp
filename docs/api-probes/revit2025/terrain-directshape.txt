@@ -1,0 +1,544 @@
+# RevitAPI.dll 25.4.40.0 (Civil 3D 2025)
+== Autodesk.Revit.DB.TessellatedShapeBuilder : Autodesk.Revit.DB.ShapeBuilder
+  C ()
+  M Void AddFace(TessellatedFace face)
+  M Boolean AreTargetAndFallbackCompatible(TessellatedShapeBuilderTarget target, TessellatedShapeBuilderFallback fallback)
+  M Void Build()
+  M Void CancelConnectedFaceSet()
+  M Void Clear()
+  M Void CloseConnectedFaceSet()
+  M static MeshFromGeometryOperationResult CreateMeshByExtrusion(IList<CurveLoop> profileLoops, XYZ extrusionDirection, Double extrusionDistance, ElementId materialId)
+  M Boolean DoesFaceHaveEnoughLoopsAndVertices(TessellatedFace face)
+  M TessellatedShapeBuilderResult GetBuildResult()
+  M Void OpenConnectedFaceSet(Boolean isSolid)
+  P TessellatedShapeBuilderFallback Fallback {get;set;}
+  P ElementId GraphicsStyleId {get;set;}
+  P Boolean IsFaceSetOpen {get;}
+  P Int32 LogInteger {get;set;}
+  P String LogString {get;set;}
+  P Int32 NumberOfCompletedFaceSets {get;}
+  P String OwnerInfo {get;set;}
+  P TessellatedShapeBuilderTarget Target {get;set;}
+== Autodesk.Revit.DB.TessellatedFace : System.Object
+  C (IList<IList<XYZ>> allLoopVertices, ElementId materialId)
+  C (IList<XYZ> outerLoopVertices, ElementId materialId)
+  M Void Dispose()
+  M IList<IList<XYZ>> GetBoundaryLoops()
+  P Boolean IsValidObject {get;}
+  P ElementId MaterialId {get;set;}
+== Autodesk.Revit.DB.DirectShape : Autodesk.Revit.DB.Element
+  M Void AddExternallyTaggedGeometry(ExternallyTaggedGeometryObject externallyTaggedGeometry)
+  M Void AddReferenceCurve(Curve refCurve, DirectShapeReferenceOptions options)
+  M Void AddReferenceCurve(Curve refCurve)
+  M Void AddReferencePlane(Plane refPlane, BoundingBoxUV boundingBoxUV, DirectShapeReferenceOptions options)
+  M Void AddReferencePlane(Plane refPlane, DirectShapeReferenceOptions options)
+  M Void AddReferencePlane(Plane refPlane, BoundingBoxUV boundingBoxUV)
+  M Void AddReferencePlane(Plane refPlane)
+  M Void AddReferencePoint(XYZ refPoint, DirectShapeReferenceOptions options)
+  M Void AddReferencePoint(XYZ refPoint)
+  M Void AppendShape(ShapeBuilder ShapeBuilder)
+  M Void AppendShape(IList<GeometryObject> pGeomArr, DirectShapeTargetViewType viewType)
+  M Void AppendShape(IList<GeometryObject> pGeomArr)
+  M Boolean AreOptionsValid(DirectShapeOptions options)
+  M Boolean AreOptionsValidForTransientDirectShape(DirectShapeOptions options)
+  M Boolean AreValidDirectShapeReferenceOptions(DirectShapeReferenceOptions options)
+  M Boolean CanCreateParts()
+  M static DirectShape CreateElement(Document document, ElementId categoryId)
+  M static DirectShape CreateElementInstance(Document document, ElementId typeId, ElementId categoryId, String definitionId, Transform trf)
+  M static IList<GeometryObject> CreateGeometryInstance(Document document, String definition_id, Transform trf)
+  M ExternallyTaggedGeometryObject GetExternallyTaggedGeometry(ExternalGeometryId externalId)
+  M Reference GetExternallyTaggedReference(ExternalGeometryId externalId)
+  M DirectShapeOptions GetOptions()
+  M Boolean HasExternalGeometry(ExternalGeometryId externalId)
+  M Boolean HasExternallyTaggedReference(ExternalGeometryId externalId)
+  M static Boolean IsSupportedDocument(Document document)
+  M static Boolean IsValidCategoryId(ElementId categoryId, Document doc)
+  M Boolean IsValidGeometry(Solid Geom)
+  M static Boolean IsValidReferenceCurve(Curve curve)
+  M static Boolean IsValidReferencePlaneBoundingBoxUV(BoundingBoxUV boundingBoxUV)
+  M Boolean IsValidShape(IList<GeometryObject> shape, DirectShapeTargetViewType viewType)
+  M Boolean IsValidShape(IList<GeometryObject> shape)
+  M Boolean IsValidShape(ExternallyTaggedGeometryObject externallyTaggedGeometry)
+  M Boolean IsValidTypeId(ElementId typeId)
+  M Boolean IsValidUsage(ExternallyTaggedGeometryObject externallyTaggedGeometry)
+  M Void RemoveAllReferenceObjects()
+  M Void RemoveExternallyTaggedGeometry(ExternalGeometryId externalId)
+  M Void RemoveReferenceObject(ExternalGeometryId externalId)
+  M Void RemoveReferenceObject(String refName)
+  M Void ResetExternallyTaggedGeometry()
+  M Void SetName(String name)
+  M Void SetOptions(DirectShapeOptions options)
+  M Void SetShape(ShapeBuilder pBuilder)
+  M Void SetShape(IList<GeometryObject> pGeomArr, DirectShapeTargetViewType viewType)
+  M Void SetShape(IList<GeometryObject> pGeomArr)
+  M Void SetTypeId(ElementId typeId)
+  M Void UpdateExternallyTaggedGeometry(ExternallyTaggedGeometryObject externallyTaggedGeometry)
+  P String ApplicationDataId {get;set;}
+  P String ApplicationId {get;set;}
+  P ElementId TypeId {get;}
+== Autodesk.Revit.DB.Mesh : Autodesk.Revit.DB.GeometryObject
+  M Double ComputeSurfaceArea()
+  M XYZ GetNormal(Int32 idx)
+  M IList<XYZ> GetNormals()
+  P DistributionOfNormals DistributionOfNormals {get;}
+  P Boolean IsClosed {get;}
+  P ElementId MaterialElementId {get;}
+  P Int32 NumberOfNormals {get;}
+  P Int32 NumTriangles {get;}
+  P Mesh Transformed[Transform transform] {get;}
+  P MeshTriangle Triangle[Int32 idx] {get;}
+  P IList<XYZ> Vertices {get;}
+== Autodesk.Revit.DB.Transform : Autodesk.Revit.DB.APIObject
+  C (Transform source)
+  M Boolean AlmostEqual(Transform right)
+  M static Transform CreateReflection(Plane plane)
+  M static Transform CreateRotation(XYZ axis, Double angle)
+  M static Transform CreateRotationAtPoint(XYZ axis, Double angle, XYZ origin)
+  M static Transform CreateTranslation(XYZ vector)
+  M Transform Multiply(Transform right)
+  M XYZ OfPoint(XYZ point)
+  M XYZ OfVector(XYZ vec)
+  M Transform ScaleBasis(Double scale)
+  M Transform ScaleBasisAndOrigin(Double scale)
+  P XYZ Basis[Int32 idx] {get;set;}
+  P XYZ BasisX {get;set;}
+  P XYZ BasisY {get;set;}
+  P XYZ BasisZ {get;set;}
+  P Double Determinant {get;}
+  P Boolean HasReflection {get;}
+  P static Transform Identity {get;}
+  P Transform Inverse {get;}
+  P Boolean IsConformal {get;}
+  P Boolean IsIdentity {get;}
+  P Boolean IsTranslation {get;}
+  P XYZ Origin {get;set;}
+  P Double Scale {get;}
+== Autodesk.Revit.DB.Transaction : System.Object
+  C (Document document, String name)
+  C (Document document)
+  M TransactionStatus Commit(FailureHandlingOptions options)
+  M TransactionStatus Commit()
+  M Void Dispose()
+  M FailureHandlingOptions GetFailureHandlingOptions()
+  M String GetName()
+  M TransactionStatus GetStatus()
+  M Boolean HasEnded()
+  M Boolean HasStarted()
+  M TransactionStatus RollBack(FailureHandlingOptions options)
+  M TransactionStatus RollBack()
+  M Void SetFailureHandlingOptions(FailureHandlingOptions options)
+  M Void SetName(String name)
+  M TransactionStatus Start(String name)
+  M TransactionStatus Start()
+  P Boolean IsValidObject {get;}
+== Autodesk.Revit.DB.ProjectLocation : Autodesk.Revit.DB.Instance
+  M static ProjectLocation Create(Document document, ElementId siteLocationId, String name)
+  M ProjectLocation Duplicate(String name)
+  M ProjectPosition GetProjectPosition(XYZ point)
+  M SiteLocation GetSiteLocation()
+  M static Boolean IsProjectLocationNameUnique(Document document, String name, ElementId siteLocationId)
+  M Void SetProjectPosition(XYZ point, ProjectPosition position)
+== Autodesk.Revit.DB.Document : System.Object
+  V DocumentClosing(Object sender, DocumentClosingEventArgs e)
+  V DocumentPrinted(Object sender, DocumentPrintedEventArgs e)
+  V DocumentPrinting(Object sender, DocumentPrintingEventArgs e)
+  V DocumentSaved(Object sender, DocumentSavedEventArgs e)
+  V DocumentSavedAs(Object sender, DocumentSavedAsEventArgs e)
+  V DocumentSaving(Object sender, DocumentSavingEventArgs e)
+  V DocumentSavingAs(Object sender, DocumentSavingAsEventArgs e)
+  V ViewPrinted(Object sender, ViewPrintedEventArgs e)
+  V ViewPrinting(Object sender, ViewPrintingEventArgs e)
+  M Void AcquireCoordinates(ElementId linkInstanceId)
+  M Void AutoJoinElements()
+  M Boolean CanEnableCloudWorksharing()
+  M Boolean CanEnableWorksharing()
+  M Boolean Close()
+  M Boolean Close(Boolean saveModified)
+  M GeomCombination CombineElements(CombinableElementArray members)
+  M ModelCurveArray ConvertDetailToModelCurves(View view, DetailCurveArray detailCurves)
+  M DetailCurveArray ConvertModelToDetailCurves(View view, ModelCurveArray modelCurves)
+  M SymbolicCurveArray ConvertModelToSymbolicCurves(View view, ModelCurveArray modelCurves)
+  M ModelCurveArray ConvertSymbolicToModelCurves(View view, SymbolicCurveArray symbolicCurve)
+  M ICollection<ElementId> Delete(ICollection<ElementId> elementIds)
+  M ICollection<ElementId> Delete(ElementId elementId)
+  M Void Dispose()
+  M Document EditFamily(Family loadedFamily)
+  M Void EnableCloudWorksharing()
+  M Void EnableWorksharing(String worksetNameGridLevel, String worksetName)
+  M Boolean Equals(Object obj)
+  M Void EraseSchemaAndAllEntities(Schema schema)
+  M Boolean Export(String folder, String name, GBXMLExportOptions options)
+  M Boolean Export(String folder, IList<ElementId> viewIds, PDFExportOptions options)
+  M Void Export(String folder, String name, NavisworksExportOptions options)
+  M Boolean Export(String folder, String name, OBJExportOptions options)
+  M Boolean Export(String folder, String name, STEPExportOptions options)
+  M Boolean Export(String folder, String name, STLExportOptions options)
+  M Boolean Export(String folder, String name, IFCExportOptions options)
+  M Boolean Export(String folder, String name, ICollection<ElementId> views, SATExportOptions options)
+  M Boolean Export(String folder, String name, ICollection<ElementId> views, DGNExportOptions options)
+  M Boolean Export(String folder, String name, ICollection<ElementId> views, DXFExportOptions options)
+  M Boolean Export(String folder, String name, ICollection<ElementId> views, DWGExportOptions options)
+  M Boolean Export(String folder, String name, ViewSet views, FBXExportOptions options)
+  M Boolean Export(String folder, String name, ViewSet views, DWFXExportOptions options)
+  M Boolean Export(String folder, String name, ViewSet views, DWFExportOptions options)
+  M Void ExportImage(ImageExportOptions options)
+  M ISet<ElementId> GetAllUnusedElements(ISet<ElementId> categories)
+  M DocumentDifference GetChangedElements(Guid baseVersionGUID)
+  M String GetCloudFolderId(Boolean forceRefresh)
+  M ModelPath GetCloudModelPath()
+  M String GetCloudModelUrn()
+  M ElementId GetDefaultElementTypeId(ElementTypeGroup defaultTypeId)
+  M ElementId GetDefaultFamilyTypeId(ElementId familyCategoryId)
+  M DocumentPreviewSettings GetDocumentPreviewSettings()
+  M static DocumentVersion GetDocumentVersion(Document doc)
+  M Element GetElement(ElementId id)
+  M Element GetElement(String uniqueId)
+  M Element GetElement(Reference reference)
+  M Int32 GetHashCode()
+  M String GetHubId()
+  M ElementId GetPaintedMaterial(ElementId elementId, Face face)
+  M ICollection<ElementId> GetPrintSettingIds()
+  M String GetProjectId()
+  M Room GetRoomAtPoint(XYZ point)
+  M Room GetRoomAtPoint(XYZ point, Phase phase)
+  M Space GetSpaceAtPoint(XYZ point)
+  M Space GetSpaceAtPoint(XYZ point, Phase phase)
+  M Subelement GetSubelement(ElementId id, Int32 subId)
+  M Subelement GetSubelement(String uniqueId)
+  M Subelement GetSubelement(Reference reference)
+  M StorageType GetTypeOfStorage(ForgeTypeId parameterTypeId)
+  M Units GetUnits()
+  M ISet<ElementId> GetUnusedElements(ISet<ElementId> categories)
+  M IList<FailureMessage> GetWarnings()
+  M WorksetId GetWorksetId(ElementId id)
+  M WorksetTable GetWorksetTable()
+  M ModelPath GetWorksharingCentralModelPath()
+  M Boolean HasAllChangesFromCentral()
+  M ElementId Import(String file, AXMImportOptions options, View pDBView)
+  M Boolean Import(String file, DGNImportOptions options, View pDBView, ElementId& elementId)
+  M ElementId Import(String file, ImportOptions3DM options, View pDBView)
+  M ElementId Import(String file, STLImportOptions options, View pDBView)
+  M ElementId Import(String file, STEPImportOptions options, View pDBView)
+  M ElementId Import(String file, OBJImportOptions options, View pDBView)
+  M ElementId Import(String file, SKPImportOptions options, View pDBView)
+  M ElementId Import(String file, SATImportOptions options, View pDBView)
+  M Boolean Import(String file, DWGImportOptions options, View pDBView, ElementId& elementId)
+  M Boolean Import(String file, GBXMLImportOptions options)
+  M Boolean IsBackgroundCalculationInProgress()
+  M Boolean IsDefaultElementTypeIdValid(ElementTypeGroup defaultTypeId, ElementId typeId)
+  M Boolean IsDefaultFamilyTypeIdValid(ElementId familyCategoryId, ElementId familyTypeId)
+  M Boolean IsInEditMode()
+  M Boolean IsPainted(ElementId elementId, Face face)
+  M static Boolean IsValidVersionGUID(Document document, Guid versionGUID)
+  M IList<ElementId> Link(String file, DWFImportOptions options)
+  M Boolean Link(String file, DGNImportOptions options, View pDBView, ElementId& elementId)
+  M ElementId Link(String file, ImportOptions3DM options, View pDBView)
+  M ElementId Link(String file, STLImportOptions options, View pDBView)
+  M ElementId Link(String file, STEPImportOptions options, View pDBView)
+  M ElementId Link(String file, OBJImportOptions options, View pDBView)
+  M ElementId Link(String file, SKPImportOptions options, View pDBView)
+  M ElementId Link(String file, SATImportOptions options, View pDBView)
+  M Boolean Link(String file, DWGImportOptions options, View pDBView, ElementId& elementId)
+  M Family LoadFamily(Document targetDocument, IFamilyLoadOptions familyLoadOptions)
+  M Family LoadFamily(Document targetDocument)
+  M Boolean LoadFamily(String filename, IFamilyLoadOptions familyLoadOptions, Family& family)
+  M Boolean LoadFamily(String filename, Family& family)
+  M Boolean LoadFamily(String filename)
+  M Boolean LoadFamilySymbol(String filename, String name, IFamilyLoadOptions familyLoadOptions, FamilySymbol& symbol)
+  M Boolean LoadFamilySymbol(String filename, String name, FamilySymbol& symbol)
+  M Boolean LoadFamilySymbol(String filename, String name)
+  M Void MakeTransientElements(ITransientElementMaker maker)
+  M Void Paint(ElementId elementId, Face face, ElementId materialId)
+  M Void Paint(ElementId elementId, Face face, FamilyParameter familyParameter)
+  M FailureMessageKey PostFailure(FailureMessage failure)
+  M Void Print(ViewSet views, View viewTemplate, Boolean useCurrentPrintSettings)
+  M Void Print(ViewSet views, View viewTemplate)
+  M Void Print(ViewSet views, Boolean useCurrentPrintSettings)
+  M Void Print(ViewSet views)
+  M Void PublishCoordinates(LinkElementId locationId)
+  M Void Regenerate()
+  M Void ReloadLatest(ReloadLatestOptions reloadOptions)
+  M Void RemovePaint(ElementId elementId, Face face)
+  M Void ResetSharedCoordinates()
+  M Void Save(SaveOptions options)
+  M Void Save()
+  M Void SaveAs(ModelPath path, SaveAsOptions options)
+  M Void SaveAs(String filepath, SaveAsOptions options)
+  M Void SaveAs(String filepath)
+  M Void SaveAsCloudModel(Guid accountId, Guid projectId, String folderId, String modelName)
+  M Void SaveCloudModel()
+  M ElementId SaveToProjectAsImage(ImageExportOptions options)
+  M Void SeparateElements(CombinableElementArray members)
+  M Void SetDefaultElementTypeId(ElementTypeGroup defaultTypeId, ElementId typeId)
+  M Void SetDefaultFamilyTypeId(ElementId familyCategoryId, ElementId familyTypeId)
+  M Void SetUnits(Units units)
+  M Void SynchronizeWithCentral(TransactWithCentralOptions transactOptions, SynchronizeWithCentralOptions syncOptions)
+  M Void UnpostFailure(FailureMessageKey messageKey)
+  P ProjectLocation ActiveProjectLocation {get;set;}
+  P View ActiveView {get;}
+  P Application Application {get;}
+  P Document Create {get;}
+  P Guid CreationGUID {get;}
+  P DisplayUnit DisplayUnitSystem {get;}
+  P FamilyItemFactory FamilyCreate {get;}
+  P FamilyManager FamilyManager {get;}
+  P Boolean IsDetached {get;}
+  P Boolean IsFamilyDocument {get;}
+  P Boolean IsLinked {get;}
+  P Boolean IsModelInCloud {get;}
+  P Boolean IsModifiable {get;}
+  P Boolean IsModified {get;}
+  P Boolean IsReadOnly {get;}
+  P Boolean IsReadOnlyFile {get;}
+  P Boolean IsValidObject {get;}
+  P Boolean IsWorkshared {get;}
+  P MassDisplayTemporaryOverrideType MassDisplayTemporaryOverride {get;set;}
+  P MullionTypeSet MullionTypes {get;}
+  P Family OwnerFamily {get;}
+  P PanelTypeSet PanelTypes {get;}
+  P BindingMap ParameterBindings {get;}
+  P String PathName {get;}
+  P PhaseArray Phases {get;}
+  P PlanTopologySet PlanTopologies[Phase phase] {get;}
+  P PlanTopologySet PlanTopologies {get;}
+  P PlanTopology PlanTopology[Level level, Phase phase] {get;}
+  P PlanTopology PlanTopology[Level level] {get;}
+  P PrintManager PrintManager {get;}
+  P ProjectInfo ProjectInformation {get;}
+  P ProjectLocationSet ProjectLocations {get;}
+  P Boolean ReactionsAreUpToDate {get;}
+  P Settings Settings {get;}
+  P SiteLocation SiteLocation {get;}
+  P String Title {get;}
+  P StorageType TypeOfStorage[BuiltInParameter A_0] {get;}
+  P Guid WorksharingCentralGUID {get;}
+# RevitAPI.dll 25.4.40.0 (Civil 3D 2025)
+== Autodesk.Revit.DB.TessellatedShapeBuilderResult : System.Object
+  M Void Dispose()
+  M IList<GeometryObject> GetGeometricalObjects()
+  M IList<TessellatedBuildIssue> GetIssuesForFaceSet(Int32 setIndex)
+  M Int32 GetNumberOfFaceSets()
+  P Boolean AreObjectsAvailable {get;}
+  P Boolean HasInvalidData {get;}
+  P Boolean IsValidObject {get;}
+  P TessellatedShapeBuilderOutcome Outcome {get;}
+== Autodesk.Revit.DB.MeshTriangle : System.Object
+  P UInt32 Index[Int32 idx] {get;}
+  P XYZ Vertex[Int32 idx] {get;}
+== Autodesk.Revit.DB.Element : System.Object
+  M Boolean ArePhasesModifiable()
+  M Boolean CanBeHidden(View pView)
+  M Boolean CanBeLocked()
+  M Boolean CanDeleteSubelement(Subelement subelem)
+  M static Boolean CanHaveTypeAssigned(Document document, ICollection<ElementId> elementIds)
+  M Boolean CanHaveTypeAssigned()
+  M static IDictionary<ElementId,ElementId> ChangeTypeId(Document document, ICollection<ElementId> elementIds, ElementId typeId)
+  M ElementId ChangeTypeId(ElementId typeId)
+  M Boolean DeleteEntity(Schema schema)
+  M Boolean DeleteSubelement(Subelement subelem)
+  M Boolean DeleteSubelements(IList<Subelement> subelems)
+  M Void Dispose()
+  M IList<EvaluatedParameter> EvaluateAllParameterValues()
+  M IList<EvaluatedParameter> EvaluateParameterValues(ISet<ElementId> parameterIds)
+  M static ChangeType GetChangeTypeAny()
+  M static ChangeType GetChangeTypeElementAddition()
+  M static ChangeType GetChangeTypeElementDeletion()
+  M static ChangeType GetChangeTypeGeometry()
+  M static ChangeType GetChangeTypeParameter(ElementId parameterId)
+  M static ChangeType GetChangeTypeParameter(Parameter param)
+  M IList<ElementId> GetDependentElements(ElementFilter filter)
+  M Entity GetEntity(Schema schema)
+  M IList<Guid> GetEntitySchemaGuids()
+  M ExternalFileReference GetExternalFileReference()
+  M ExternalResourceReference GetExternalResourceReference(ExternalResourceType resourceType)
+  M IList<ExternalResourceReference> GetExternalResourceReferenceExpanded(ExternalResourceType resourceType)
+  M IDictionary<ExternalResourceType,ExternalResourceReference> GetExternalResourceReferences()
+  M IDictionary<ExternalResourceType,IList<ExternalResourceReference>> GetExternalResourceReferencesExpanded()
+  M ICollection<ElementId> GetGeneratingElementIds(GeometryObject geometryObject)
+  M GeometryObject GetGeometryObjectFromReference(Reference reference)
+  M Double GetMaterialArea(ElementId materialId, Boolean usePaintMaterial)
+  M ICollection<ElementId> GetMaterialIds(Boolean returnPaintMaterials)
+  M Double GetMaterialVolume(ElementId materialId)
+  M IList<ElementId> GetMonitoredLinkElementIds()
+  M IList<ElementId> GetMonitoredLocalElementIds()
+  M IList<Parameter> GetOrderedParameters()
+  M Parameter GetParameter(ForgeTypeId parameterTypeId)
+  M FormatOptions GetParameterFormatOptions(ElementId parameterId)
+  M IList<Parameter> GetParameters(String name)
+  M ElementOnPhaseStatus GetPhaseStatus(ElementId phaseId)
+  M IList<Subelement> GetSubelements()
+  M ElementId GetTypeId()
+  M static ICollection<ElementId> GetValidTypes(Document document, ICollection<ElementId> elementIds)
+  M ICollection<ElementId> GetValidTypes()
+  M Boolean HasPhases()
+  M Boolean IsCreatedPhaseOrderValid(ElementId createdPhaseId)
+  M Boolean IsDemolishedPhaseOrderValid(ElementId demolishedPhaseId)
+  M Boolean IsExternalFileReference()
+  M Boolean IsHidden(View pView)
+  M Boolean IsMonitoringLinkElement()
+  M Boolean IsMonitoringLocalElement()
+  M Boolean IsPhaseCreatedValid(ElementId createdPhaseId)
+  M Boolean IsPhaseDemolishedValid(ElementId demolishedPhaseId)
+  M static Boolean IsValidType(Document document, ICollection<ElementId> elementIds, ElementId typeId)
+  M Boolean IsValidType(ElementId typeId)
+  M Parameter LookupParameter(String name)
+  M Boolean RefersToExternalResourceReference(ExternalResourceType resourceType)
+  M Boolean RefersToExternalResourceReferences()
+  M Void SetEntity(Entity entity)
+  P ElementId AssemblyInstanceId {get;}
+  P BoundingBoxXYZ BoundingBox[View A_0] {get;}
+  P Category Category {get;}
+  P ElementId CreatedPhaseId {get;set;}
+  P ElementId DemolishedPhaseId {get;set;}
+  P DesignOption DesignOption {get;}
+  P Document Document {get;}
+  P GeometryElement Geometry[Options options] {get;}
+  P ElementId GroupId {get;}
+  P ElementId Id {get;}
+  P Boolean IsModifiable {get;}
+  P Boolean IsTransient {get;}
+  P Boolean IsValidObject {get;}
+  P ElementId LevelId {get;}
+  P Location Location {get;}
+  P String Name {get;set;}
+  P ElementId OwnerViewId {get;}
+  P Parameter Parameter[BuiltInParameter parameterId] {get;}
+  P Parameter Parameter[Definition definition] {get;}
+  P Parameter Parameter[Guid guid] {get;}
+  P ParameterSet Parameters {get;}
+  P ParameterMap ParametersMap {get;}
+  P Boolean Pinned {get;set;}
+  P String UniqueId {get;}
+  P Guid VersionGuid {get;}
+  P Boolean ViewSpecific {get;}
+  P WorksetId WorksetId {get;}
+== Autodesk.Revit.DB.Options : Autodesk.Revit.DB.APIObject
+  C (Options pOptions)
+  C ()
+  P Boolean ComputeReferences {get;set;}
+  P ViewDetailLevel DetailLevel {get;set;}
+  P Boolean IncludeNonVisibleObjects {get;set;}
+  P View View {get;set;}
+== Autodesk.Revit.DB.ElementId : System.Object
+  C (BuiltInParameter parameterId)
+  C (BuiltInCategory categoryId)
+  C (Int64 id)
+  C (Int32 id)
+  M Int32 Compare(ElementId id)
+  M Boolean Equals(Object obj)
+  M Int32 GetHashCode()
+  M static ElementId Parse(String idStr)
+  M String ToString()
+  M static Boolean TryParse(String idStr, ElementId& id)
+  P Int32 IntegerValue {get;}
+  P static ElementId InvalidElementId {get;}
+  P Int64 Value {get;}
+== Autodesk.Revit.DB.XYZ : System.Object
+  C (Double x, Double y, Double z)
+  C ()
+  M XYZ Add(XYZ source)
+  M Double AngleOnPlaneTo(XYZ right, XYZ normal)
+  M Double AngleTo(XYZ source)
+  M XYZ CrossProduct(XYZ source)
+  M Double DistanceTo(XYZ source)
+  M XYZ Divide(Double value)
+  M Double DotProduct(XYZ source)
+  M Double GetLength()
+  M Boolean IsAlmostEqualTo(XYZ source, Double tolerance)
+  M Boolean IsAlmostEqualTo(XYZ source)
+  M Boolean IsUnitLength()
+  M static Boolean IsWithinLengthLimits(XYZ point)
+  M Boolean IsZeroLength()
+  M XYZ Multiply(Double value)
+  M XYZ Negate()
+  M XYZ Normalize()
+  M XYZ Subtract(XYZ source)
+  M String ToString()
+  M Double TripleProduct(XYZ middle, XYZ right)
+  P static XYZ BasisX {get;}
+  P static XYZ BasisY {get;}
+  P static XYZ BasisZ {get;}
+  P Double Item[Int32 idx] {get;}
+  P Double X {get;}
+  P Double Y {get;}
+  P Double Z {get;}
+  P static XYZ Zero {get;}
+== Autodesk.Revit.DB.TessellatedShapeBuilderTarget : System.Enum
+  E AnyGeometry
+  E Mesh
+  E Solid
+  F Int32 value__
+== Autodesk.Revit.DB.TessellatedShapeBuilderFallback : System.Enum
+  E Abort
+  E Mesh
+  E Salvage
+  F Int32 value__
+# RevitAPI.dll 25.4.40.0 (Civil 3D 2025)
+== Autodesk.Revit.DB.Instance : Autodesk.Revit.DB.Element
+  M Transform GetTotalTransform()
+  M Transform GetTransform()
+== Autodesk.Revit.DB.GeometryInstance : Autodesk.Revit.DB.GeometryObject
+  M Document GetDocument()
+  M GeometryElement GetInstanceGeometry(Transform transform)
+  M GeometryElement GetInstanceGeometry()
+  M GeometryElement GetSymbolGeometry(Transform transform)
+  M GeometryElement GetSymbolGeometry()
+  M SymbolGeometryId GetSymbolGeometryId()
+  P GeometryElement SymbolGeometry {get;}
+  P Transform Transform {get;}
+== Autodesk.Revit.DB.TransactionGroup : System.Object
+  C (Document document, String transGroupName)
+  C (Document document)
+  M TransactionStatus Assimilate()
+  M TransactionStatus Commit()
+  M Void Dispose()
+  M String GetName()
+  M TransactionStatus GetStatus()
+  M Boolean HasEnded()
+  M Boolean HasStarted()
+  M TransactionStatus RollBack()
+  M Void SetName(String name)
+  M TransactionStatus Start(String transGroupName)
+  M TransactionStatus Start()
+  P Boolean IsFailureHandlingForcedModal {get;set;}
+  P Boolean IsValidObject {get;}
+# RevitAPI.dll 25.4.40.0 (Civil 3D 2025)
+== Autodesk.Revit.DB.FilteredElementCollector : System.Object
+  C (Document hostDocument, ElementId viewId, ElementId linkId)
+  C (Document document, ElementId viewId)
+  C (Document document, ICollection<ElementId> elementIds)
+  C (Document document)
+  M FilteredElementCollector ContainedInDesignOption(ElementId designOptionId)
+  M Void Dispose()
+  M FilteredElementCollector Excluding(ICollection<ElementId> idsToExclude)
+  M Element FirstElement()
+  M ElementId FirstElementId()
+  M Int32 GetElementCount()
+  M FilteredElementIdIterator GetElementIdIterator()
+  M FilteredElementIterator GetElementIterator()
+  M IEnumerator<Element> GetEnumerator()
+  M FilteredElementCollector IntersectWith(FilteredElementCollector other)
+  M static Boolean IsViewValidForElementIteration(Document document, ElementId viewId)
+  M FilteredElementCollector OfCategory(BuiltInCategory category)
+  M FilteredElementCollector OfCategoryId(ElementId categoryId)
+  M FilteredElementCollector OfClass(Type type)
+  M FilteredElementCollector OwnedByView(ElementId viewId)
+  M ICollection<ElementId> ToElementIds()
+  M IList<Element> ToElements()
+  M FilteredElementCollector UnionWith(FilteredElementCollector other)
+  M FilteredElementCollector WhereElementIsCurveDriven()
+  M FilteredElementCollector WhereElementIsElementType()
+  M FilteredElementCollector WhereElementIsNotElementType()
+  M FilteredElementCollector WhereElementIsViewIndependent()
+  M FilteredElementCollector WherePasses(ElementFilter filter)
+  P Boolean IsValidObject {get;}
+# RevitAPI.dll 25.4.40.0 (Civil 3D 2025)
+== Autodesk.Revit.DB.ProjectPosition : System.Object
+  C (Double ew, Double ns, Double elevation, Double angle)
+  C (ProjectPosition other)
+  M Void Dispose()
+  P Double Angle {get;set;}
+  P Double EastWest {get;set;}
+  P Double Elevation {get;set;}
+  P Boolean IsValidObject {get;}
+  P Double NorthSouth {get;set;}

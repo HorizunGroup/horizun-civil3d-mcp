@@ -5,11 +5,138 @@ Evidence grades:
 | Grade | Meaning |
 |---|---|
 | **L** | Verified live in that Civil 3D year |
-| **B** | Compiled against that year's installed DLLs, so every API member exists with that signature |
+| **B** | Compiled against that year's actual Autodesk DLLs (installed or signed reference packages), so every API member exists with that signature; provenance must be recorded |
 | **T** | Unit or end-to-end tests without Civil 3D |
 | **S** | Source only |
 
 A capability is "supported" only with **L** for that year.
+
+## v0.9.1 native acceptance — 2026-10-05
+
+**Current v0.9.2 update (2026-10-06):** engineering rerun passes78/78 on Civil2025.
+Automatic `undo_last` is disabled and returns unsupported/committed=false before
+native execution; three request variants and independent unchanged-entity reads
+pass. The historical UNDO results below do not certify the current automatic action.
+See [public readiness](PUBLIC_READINESS.md). Native2024/2026 evidence remains absent.
+
+Installed and automatically loaded on Civil 2025 after the explicit, backed-up
+registration of the plugin directory in existing Civil trusted paths. Native
+security and scripting permissions remain unchanged. Codex stdio registration
+points to the verified installed executable. See [the acceptance report](ACCEPTANCE_20261005.md).
+
+| Scope | Current evidence | Remaining gate |
+|---|---|---|
+| Surface comparison | L2025: known 0.02 m deviation/RMSE, passing full coverage and explicit partial-domain/tolerance failure | Other host years and project-specific survey controls |
+| Corridor targets/geometry/estimated quantities/split/merge | L2025: 64 generated-fixture checks with real imported assembly and independent section integration | Offset/Elevation multi-target option setters and additional real geometries; other years |
+| Editable COGO CSV | L2025: export/edit/apply/reread, stale file and changed-source refusal | Additional project data and other years |
+| Alignment viewport/refresh | L2025: 22 final acceptance checks; original layout/TileMode restored; saved DWG reopened with locked/on viewport | Automatic event-driven refresh is not implemented |
+| Full DWG copy | L2025: 8/8 final controls, unchanged source SHA/GUID/dirty state, copy reopened read-only with independent elevations | External dependencies and exhaustive individual design values |
+| Terrain to Revit | L: Revit 2025.4 rollback/apply/save, rotated shared controls, typed reread and clean-project receiver | Other Revit versions and actual project CRS; Toposolid thickness/volume is not transferred |
+| UNDO created surface | L2025: one undo, independent not_found afterward | Generic modified-container restoration remains explicitly partial |
+
+552 Core tests; 391 overlapping runtime tests per net48/net8/net10; 14 Python
+receiver tests. Full builds pass for 2024/net48, 2025/net8 and 2026/net8/net10.
+Absent 2024/2026 hosts have B/T only. The sections below retain earlier evidence
+and preparation history; they do not supersede this acceptance.
+
+## Engineering expansion — v0.9.0 prepared, 2026-10-05
+
+Deployment update: v0.9.0 release installed for the available 2025 host. All 59
+installed files match the staged SHA-256 manifest. Installed server reports the
+expected contract and 28 tools/163 actions. Invalid tolerance/handle and FullWrite
+under safe_write refusals verified over actual installed stdio. Fixed autoloader
+RuntimeRequirements scope inside each ComponentEntry, with backup and 59-file
+hash reread. A fresh Civil2025 instance now publishes the v0.9.0 bridge; live
+health and four surface writes pass with postcommit verification. Paired 100m2
+TIN planes give 3/3 valid samples, signed deviation/RMSE 0.02m and tolerance
+0.05m. Evidence is limited to this fixture; no Revit transfer has run.
+
+| Scope | Evidence | Remaining gate |
+|---|---|---|
+| Surface `compare_design`: signed deviations, inclusive tolerance, min/max/mean/MAE/RMSE, sample coverage | L2025: paired planar TIN fixture, 3/3 samples, deviation/RMSE 0.02m within 0.05m; T: seven analytic cases | Missing domain/stale reference fixtures and other target years |
+| Corridor targets, applied geometry, estimated region/code/material quantities, guarded native split/merge | T: 15 validation/integration cases; probes 2024/2025/2026 | Real assemblies, targets, parameter preservation and UNDO |
+| COGO export_editable_csv/apply_csv | T: 13 parser/snapshot cases; guarded writes compiled | Rehearsal/apply/reread/UNDO in generated DWG |
+| Alignment-linked paper viewport and explicit refresh | T: nine camera/validation cases; sampled local chord orientation declared | Camera placement/scale and updated alignment in each host |
+| Exact OBJ in terrain ZIP, separate Revit DirectShape receiver | T: four OBJ cases and seven Python guard cases; Revit 2025 signatures | Actual rollback rehearsal, shared controls, face/position reread and apply |
+
+Contract `171049b89c39afc5120da6ff`: 28 tools, 163 actions. Core/Server 544 tests;
+runtime suite 383 overlapping cases per net48/net8/net10. No new L evidence.
+Civil 2024 lacks UseSameSideTarget: read returns null and explicit setting refuses.
+
+## Civil 3D 2024/2026 compatibility preparation — 2026-10-05
+
+| Scope | Evidence | Remaining gate |
+|---|---|---|
+| Core on Framework 4.8, .NET 8 and .NET 10 | T: 335 overlapping tests on each runtime; contract identical | Autodesk-dependent operations are outside this suite |
+| Actual add-in pipe/authentication/ACL construction | T on all three runtimes; production transport with test-only dispatcher | Real Civil main-thread dispatch in each target host |
+| 2024 add-in net48; 2026 net8/net10 selection | B against signed references; API dumps under docs/api-probes/2024 and 2026 | Actual matching host deployment and live fixture; net10 Civil reference library update matching |
+| Installer PE runtime/year detection and package metadata | T; measured signed 2024/2026 and installed 2025 references, 496 Core/Server tests | Actual deployment and startup |
+| Current 2025 add-in | B: zero warnings/errors | New prepared runtime guards and other v0.8.1 changes need L regression |
+
+The owner confirms neither 2024 nor 2026 is installed. Their B evidence comes
+from complete builds against signed Autodesk references, not Core tests. Packages
+include 2024/2025/2026 net8 and a separate 2026 net10 variant. [COMPATIBILITY.md](COMPATIBILITY.md) records both
+2026 runtime families, Autodesk sources and reproducible build/live acceptance.
+
+## Terrain interoperability — v0.8.1 prepared, 2026-10-05
+
+Current contract `b5cfe04b65b9b303d9241d4b`: 28 tools, 152 named actions.
+See [INTEROPERABILITY.md](INTEROPERABILITY.md) for format, coordinate and fidelity limits.
+
+| Change | Evidence | Pending live acceptance |
+|---|---|---|
+| `exchange export_revit`, FullWrite | T (validation, units, exact payload comparison, footprint flags, geometry hashing); B 2025 | Read actual visible TIN, stale-plan/no-overwrite/refusal paths, source unchanged and all exported coordinates/faces reread |
+| Package -> Revit request helper | T: PS 5.1 21 checks; PS 7 29 checks including actual Core writer and local Revit LandXML reader | Client invocation against an idle Revit model; exact model/type/level and native Toposolid creation |
+| LandXML round-trip double precision | T, B 2025 | Real fixture and third-party consumer acceptance |
+| Civil -> Revit physical placement/fidelity | No L; parser compatibility only | Independent survey controls, rotation/elevation/nonzero level, metric/foot variants and interior surface deviations |
+
+490 Core/Server tests pass; plugin 2025 compiles with zero errors/warnings.
+Revit health did not start because a modal dialog was open. No model was modified.
+The previous expansion below retains its historical 473-test evidence and contract.
+
+## External benchmark — 2026-10-05
+
+[BENCHMARK.md](BENCHMARK.md) compares seven automation references using pinned
+public source and primary documentation. Its S/C/D labels describe source,
+conditional implementations and publisher documentation, not this matrix's
+year-specific live support. No competitors were executed and no new T/B/L
+results were produced in this documentation block. It identifies workflow gaps
+and defines an unexecuted acceptance/performance protocol for generated fixtures.
+
+## Capability expansion — v0.8.1 prepared, 2026-10-05
+
+Current contract `60ab4ce4eb7756190fa7f4bf`: 28 tools and 151 declared actions.
+The full inventory and ordered gaps are in `CAPABILITY_CATALOG.md` and `CAPABILITY_REVIEW.md`.
+
+| Capability/change | 2025 evidence | Pending live verification |
+|---|---|---|
+| `horizun_c3d_capabilities` | T; server-side counts, action schemas, effect filters and permission checks | Client discovery; no host needed for the catalog |
+| `horizun_c3d_audit` | T (count semantics), B | Fixture units/xrefs/references and stale surface/corridor; preserve partial readings |
+| `exchange export_dwg` | T (path/permission and atomic file helper), B | Reopen actual DWG, check original unsaved state/name, local block/entity counts, destination conflict and failure cleanup |
+| Pressure list/get/create_network/rename | T (validation/permissions), B | Empty fixture network creation/rename, duplicate/reference refusal, existing-part connections and catalog-unit interpretation |
+| CSV/LandXML require FullWrite | T, B | Refuse under safe_write; confirm and apply under full_write |
+| LandXML Civil units and foot definition | T, B | Metric, international foot and US survey foot fixture exports with deliberate INSUNITS mismatch |
+
+473 Core/Server tests pass. Plugin 2025 builds with zero warnings/errors.
+The fixture script is updated but was not executed against a host. No new L
+evidence was produced, and no 2026/2027 support is inferred from the 2025 build.
+
+## Cross-product review — v0.8.1 prepared, 2026-10-05
+
+| Capability/change | Evidence | Remaining host check |
+|---|---|---|
+| Bounded transport and 32 concurrent server calls | T; 445-test Core/Server suite includes message-boundary regressions | Optional stress regression on fixture |
+| Codex/Claude bootstrap and prebuilt-runtime selection | T; PowerShell 5.1/7, temporary installation paths, native stdio forwarding to real published server | Actual client plugin installation/restart |
+| Portable plugin ZIP and MCPB | T; metadata, payload, version and SHA-256 gates | Import in Claude Desktop |
+| Atomic Claude registration and rollback | T; isolated configuration fixtures | Deploy with clients closed |
+| Duplicate drawing-name refusal | B (2025) | Two drawings with the same basename in different folders |
+| C# query/execute honest persistence reporting | B (2025) | Fixture-only script, re-read any effect |
+| External effects excluded from `undo_last`; incomplete modified-object verification | B (2025) | Create-only, modification and external-export cases |
+| Staged PDF/CSV/LandXML; backup on PDF replacement | T (file helper), B (2025) | Plot to an existing PDF, induce plot failure and verify previous bytes |
+
+No new **L** evidence was produced. That initial preparation used contract `a9b1dd257fd965fa8893bde3`;
+the current prepared contract is listed above. Server and add-in must be installed together. Historical live
+results below do not imply these new changes are live-verified.
 
 ## Phase 0 (v0.1.0)
 
@@ -26,7 +153,7 @@ A capability is "supported" only with **L** for that year.
 | `horizun_c3d_query` list / get (15 types) | L (surface, feature_line) | - | - | TIN stats (points, triangles, 2D/3D area); volume-surface depths; missing name refused with candidates. Other types: B |
 | `horizun_c3d_styles` list / get with usage | L | - | - | Usage computed for 11 style kinds; others report `null` (not 0) |
 | `horizun_c3d_probe` live API dump | L | - | - | Live: no managed GradingGroup type in 2025 |
-| Civil 3D 2023 / 2024 (net48) | n/a | | | Not built yet: the build refuses these years |
+| Civil 3D 2023 / 2024 (net48), phase 0 history | n/a | | | At phase 0 both were refused. Current 2024 platform port is described above; 2023 remains outside the targets |
 
 ## Live findings
 
@@ -38,19 +165,15 @@ A capability is "supported" only with **L** for that year.
 
 ## Threading decision (brief section 3.2)
 
-Work runs on Civil 3D's **main thread in application context** under `Document.LockDocument`. It is driven by a
+Work runs on Civil 3D's **main thread** under `Document.LockDocument`. It is driven by a
 hidden WinForms control (`BeginInvoke`), a 150 ms timer and `Application.Idle`. It never runs from the pipe
 thread.
 
-`ExecuteInCommandContextAsync` is **not** the primary path:
-
-- It only exists to run commands such as `Editor.Command`.
-- A command context interferes with the user's own command.
-- Locking the document from application context is the standard pattern for modeless writes and gives one
-  undo step per lock.
-
-Command-context execution will be added only for tools that must run native commands, and only after live
-evidence.
+Reads and dry runs execute in application context. Applied typed writes and
+arbitrary scripts enter `ExecuteInCommandContextAsync` only while the UI is
+quiescent. The v0.3.3 live finding showed that an application-context lock alone
+did not put edits on the UNDO stack; the earlier claim in this section was
+incorrect. External file/settings effects are not covered by DWG UNDO.
 
 ## Known limits (honest refusals)
 
@@ -252,3 +375,9 @@ Test project `HZ_PRUEBA` on the owner's Desktop, created with `shortcuts_project
 - **restore:** the original working folder was restored afterwards.
 
 Publish verification after a restart needs the drawing associated; v0.7.4 associates it, and that path is not yet re-run live.
+
+## Publication status2026-10-06
+
+Owner-authorized source commit `bc09308` was created locally. Automatic approval
+refused the subsequent push; no remote CI or GitHub publication evidence was added.
+Existing native2025 results and build-only2024/2026 evidence remain as documented.

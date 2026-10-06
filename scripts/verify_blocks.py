@@ -7,7 +7,7 @@ Called by verify_live.py (shares its call/check helpers and the fixture expectat
 Every write goes dry run -> token -> apply -> verified=match, exactly like verify_live.py, and every
 analytic value comes from the fixture geometry (EG plane z = 100 + 0.02x + 0.01y; road y = 50, x 5..95).
 """
-import json, os, sys, time
+import hashlib, json, os, sys, time, zipfile
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 H = {}  # call, check, sc, tgt, exp set by run_all
@@ -316,7 +316,7 @@ def data():
     pts = rd(PT, {"action": "list", "numbers": "9001"}).get("points") or [{}]
     check("point 9001 z = EG(30,70) = 101.3", close(pts[0].get("z"), 101.3, 1e-6), pts)
     csv = os.path.join(out_dir, "hz-points-" + stamp + ".csv")
-    wr(PT, {"action": "export_csv", "output": csv, "numbers": "9001-9003"}, "export points to CSV (read back)")
+    full_write_or_refused(PT, {"action": "export_csv", "output": csv, "numbers": "9001-9003"}, "export points to CSV (read back)")
     imp = os.path.join(out_dir, "hz-import-" + stamp + ".csv")
     with open(imp, "w", encoding="utf-8") as fh:
         fh.write("P,N,E,Z,D\n9101,80,20,100.5,\"MH, NEW\"\n9102,80,30,100.6,TREE ELM\n")
@@ -325,11 +325,42 @@ def data():
 
     # exchange
     xml = os.path.join(out_dir, "hz-export-" + stamp + ".xml")
-    r = wr(EX, {"action": "export_landxml", "output": xml, "surfaces": ["HZ_EG"], "alignments": ["HZ_ROAD"]}, "LandXML export EG + HZ_ROAD (file re-read)")
+    r = full_write_or_refused(EX, {"action": "export_landxml", "output": xml, "surfaces": ["HZ_EG"], "alignments": ["HZ_ROAD"]}, "LandXML export EG + HZ_ROAD (file re-read)")
     if r and os.path.exists(xml):
         txt = open(xml, encoding="utf-8").read()
         check("LandXML holds 121 EG points and the 90 m alignment", txt.count("<P id=") == 121 and 'length="90"' in txt, len(txt))
-    refused(EX, {"action": "export_landxml", "output": xml, "surfaces": ["HZ_EG"]}, "LandXML never overwrites", text="never overwrites")
+        refused(EX, {"action": "export_landxml", "output": xml, "surfaces": ["HZ_EG"]}, "LandXML never overwrites", text="never overwrites")
+    dwg = os.path.join(out_dir, "hz-copy-" + stamp + ".dwg")
+    copy = full_write_or_refused(EX, {"action": "export_dwg", "output": dwg}, "DWG copy of current drawing (reopened)")
+    if copy and os.path.exists(dwg):
+        check("DWG copy exists and is non-empty", os.path.getsize(dwg) > 0, after(copy, "file"))
+        refused(EX, {"action": "export_dwg", "output": dwg}, "DWG never overwrites", text="never overwrites")
+
+    terrain_zip = os.path.join(out_dir, "hz-revit-terrain-" + stamp + ".zip")
+    terrain = full_write_or_refused(EX, {"action": "export_revit", "output": terrain_zip, "surface": "HZ_EG"},
+                                   "Revit terrain package (complete payload reread)")
+    if terrain and os.path.exists(terrain_zip):
+        with zipfile.ZipFile(terrain_zip) as package:
+            manifest = json.loads(package.read("manifest.json"))
+            payload = package.read("terrain.xml")
+            check("Revit terrain ZIP has only expected payloads", sorted(package.namelist()) == ["manifest.json", "terrain.xml"], package.namelist())
+        check("Revit terrain payload hash matches", hashlib.sha256(payload).hexdigest() == manifest.get("landxml_sha256"), manifest.get("landxml_sha256"))
+        check("Revit terrain fixture geometry and native unit identified", manifest.get("vertices") == 121 and manifest.get("visible_faces", 0) > 0
+              and manifest.get("linear_unit") in ("meter", "foot", "USSurveyFoot"), manifest)
+        check("export does not claim Revit import or shared coordinate verification", manifest.get("revit_import_verified") is False
+              and manifest.get("shared_coordinates_verified") is False, manifest)
+        refused(EX, {"action": "export_revit", "output": terrain_zip, "surface": "HZ_EG"}, "Revit terrain package never overwrites", text="exists")
+
+    # A new, empty pressure network exercises creation without a catalog-specific
+    # part size. Existing part inspection needs an additional authorized fixture.
+    rd(PI, {"action": "pressure_list", "limit": 100})
+    wr(PI, {"action": "pressure_create_network", "new_name": "HZ_PRESSURE", "surface": "HZ_EG"}, "create empty pressure network")
+    net = rd(PI, {"action": "pressure_get", "network": "HZ_PRESSURE"})
+    check("empty pressure network reread", (net.get("network") or {}).get("pipes") == 0 and (net.get("network") or {}).get("fittings") == 0, net)
+    wr(PI, {"action": "pressure_rename", "network": "HZ_PRESSURE", "new_name": "HZ_PRESSURE_RENAMED"}, "rename pressure network")
+    refused(PI, {"action": "pressure_create_network", "new_name": "HZ_PRESSURE_RENAMED"}, "duplicate pressure network refused", text="already exists")
+    audit = rd("horizun_c3d_audit", {"sample_limit": 10})
+    check("audit reports currency and references without treating unknowns as healthy", isinstance(audit.get("types"), dict) and isinstance(audit.get("partial"), bool), audit.get("types"))
     st = H["call"](EX, {"action": "shortcuts_status"})
     check("shortcuts_status answers (status, or a clear refusal when no project is set)",
           not st["isError"] or H["sc"](st).get("code") in ("unsupported", "internal"), H["sc"](st))

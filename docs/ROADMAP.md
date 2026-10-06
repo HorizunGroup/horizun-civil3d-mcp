@@ -1,5 +1,15 @@
 # Roadmap
 
+## Owner priority — 2026-10-05
+
+Terrain export and placement in Revit now leads the interoperability work.
+The Civil ZIP/manifest exporter and Revit rehearsal preparer are implemented;
+see [INTEROPERABILITY.md](INTEROPERABILITY.md) for current fidelity, coordinate
+requirements and live acceptance. Next: prove the transfer, investigate an exact
+TIN mesh route, then applied corridor geometry/targets and material quantities.
+As-built deviations/RMSE, definition-preserving corridor split/merge, dynamic
+sheets and controlled spreadsheet write-back remain selected pending work.
+
 Each phase is done only when its capabilities have **live** evidence in `docs/CIVIL3D.md`.
 
 ## Phase 0 - foundation (v0.1.0, built)
@@ -32,8 +42,8 @@ Phase 1 ports the capabilities that were already validated in production with th
 | `horizun_c3d_surface` `rename` | renameSurface | |
 | `horizun_c3d_surface` `sample_elevation` | sampleSurfaceElevations, getSurfaceElevationsAlong | Points outside the surface return `null`, never 0 |
 | `horizun_c3d_surface` `rebuild` | Rebuild | Re-reads `IsOutOfDate` |
-| `horizun_c3d_audit` (basic) | (new) | Pass/fail checks: out-of-date surfaces, broken references, units and coordinate system |
-| `horizun_c3d_execute_csharp` | executeScript (Roslyn) | Off by default. Needs `unsafe_code` plus `enable_execute_csharp` and owner approval in Civil 3D. A `query` mode always aborts the transaction. Results are labelled self-reported |
+| `horizun_c3d_audit` (basic) | (new) | Built in prepared v0.8.1: out-of-date surfaces/corridors, stale/invalid references, xrefs, units and coordinate system; unreadable/unknown states explicit. Live pending |
+| `horizun_c3d_execute_csharp` | executeScript (Roslyn) | Off by default. Needs `unsafe_code` plus `enable_execute_csharp` and owner approval in Civil 3D. Query aborts only the supplied transaction; arbitrary scripts can persist other effects. Results are self-reported |
 
 Phase 1 also adds the `HZ_BUILD_FIXTURE` command: a deterministic test drawing (EG with known relief, FG
 platform, an alignment and a boundary) with analytically known volumes, and `scripts/verify-live.ps1`.
@@ -41,7 +51,7 @@ platform, an alignment and a boundary) with analytically known volumes, and `scr
 Acceptance case: build a volume surface between EG and FG and report cut, fill and net. Then apply slope
 analysis to FG with ranges 0-2, 2-5, 5-10, 10-30 and >30 %, and switch FG to a style that shows slopes.
 
-## Phase 2 - design objects (v0.5.0 grading, feature lines, C#; v0.6.0 alignments, profiles, sections, corridors built - live run pending; execute_plan next)
+## Phase 2 - design objects (historical 2025 live evidence through v0.7.3; execute_plan pending)
 
 - `horizun_c3d_feature_line`: create from a polyline (with an explicit site), set elevations per vertex or from
   a surface, rename, move to a site, export as a 3D polyline.
@@ -56,11 +66,12 @@ analysis to FG with ranges 0-2, 2-5, 5-10, 10-30 and >30 %, and switch FG to a s
 
 ## Phase 3 - networks, documentation and data
 
-**v0.6.0 status (2026-10-02):** built, not yet live-tested.
+**Historical 2025 evidence:** 294/294 fixture checks on v0.7.0, plus data-shortcut reference/publication checks on v0.7.3. These results do not live-verify the prepared v0.8.1 changes.
 - Built: gravity pipe networks (catalog, create, structures, pipes, validate), sections and sample lines, COGO points and groups, data shortcuts (status, publish, reference), PDF plotting of layouts, and our own verified LandXML 1.2 export.
 - AutoCAD tooling: layers, entities, dimensions, styles, blocks, tables, layouts and cleanup.
 - Civil 3D labels.
-- Still open: pressure networks, DWG export, `capture_view`, earthwork procedures, Excel/Power BI reporting, spirals, and the 2026/2027 live matrix.
+- Prepared v0.8.1: capability catalog, drawing audit, current-state DWG export and pressure-network list/get/empty creation/rename; locally tested and compiled for 2025, live pending.
+- Still open: pressure part catalog/creation/connections, `capture_view`, earthwork/material quantities, Excel/Power BI reporting, spirals, atomic `execute_plan`, complete modified-object UNDO verification, and the 2026/2027 live matrix. See `CAPABILITY_REVIEW.md` for priorities and acceptance criteria.
 
 Phase 3 adds:
 

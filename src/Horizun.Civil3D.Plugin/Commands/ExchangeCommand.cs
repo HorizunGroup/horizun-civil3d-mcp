@@ -14,6 +14,7 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil.DataShortcuts;
 using Autodesk.Civil.DatabaseServices;
+using Autodesk.Civil.Settings;
 using Horizun.Civil3D.Core;
 using Horizun.Civil3D.Plugin.Civil;
 using AcApp = Autodesk.AutoCAD.ApplicationServices.Application;
@@ -34,6 +35,8 @@ internal sealed class ExchangeCommand : ICommand
             "shortcuts_publish" => Shortcuts.Publish(ctx),
             "shortcuts_project" => Shortcuts.Project(ctx),
             "shortcuts_reference" => Shortcuts.Reference(ctx),
+            "export_dwg" => DwgExport.Run(ctx),
+            "export_revit" => RevitTerrainExport.Run(ctx),
             _ => ExportLandXml(ctx),
         };
     }
@@ -100,15 +103,37 @@ internal sealed class ExchangeCommand : ICommand
         var withProfiles = Hz.Bool(ctx.Args, "include_profiles") ?? true;
         var model = new LandXmlModel { AppVersion = App.PluginVersion };
         var skipped = new JsonArray();
+        bool ValidFile(string path)
+        {
+            var sum = LandXmlSummary.Read(File.ReadAllText(path));
+            return model.Surfaces.All(s => sum.Surfaces.TryGetValue(s.Name, out var got) &&
+                       got.Points == s.Points.Count && got.Faces == s.Faces.Count)
+                   && model.Alignments.All(a => sum.Alignments.TryGetValue(a.Name, out var got) &&
+                       Math.Abs(got.Length - a.Length) <= 1e-6 &&
+                       Math.Abs(got.ElementLength - a.Length) <= 1e-4 &&
+                       a.Profiles.All(p => got.ProfilePvis != null &&
+                           got.ProfilePvis.TryGetValue(p.Name, out var count) && count == p.Pvis.Count));
+        }
         return WriteFlow.Run(ctx, "HZ_EXCHANGE",
             (doc, tr, plan) =>
             {
                 if (File.Exists(output)) throw new HzRefusal(ErrorCodes.InvalidInput, "The output file exists; this action never overwrites. Nothing written.");
                 if (Path.GetDirectoryName(output) is not { } dir || !Directory.Exists(dir)) throw new HzRefusal(ErrorCodes.NotFound, "The output folder does not exist. Nothing written.");
-                var units = doc.Database.Insunits;
-                if (units is not (UnitsValue.Meters or UnitsValue.Feet or UnitsValue.Undefined))
-                    throw new HzRefusal(ErrorCodes.Unsupported, "Drawing units are " + units + "; LandXML export supports meters or feet. Nothing written.");
-                model.Metric = units != UnitsValue.Feet;
+                // Civil design coordinates use the drawing settings. INSUNITS can
+                // deliberately differ when MatchAutoCADVariables is disabled.
+                var zone = CommandContext.Civil(doc).Settings.DrawingSettings.UnitZoneSettings;
+                model.Metric = zone.DrawingUnits switch
+                {
+                    DrawingUnitType.Meters => true,
+                    DrawingUnitType.Feet => false,
+                    _ => throw new HzRefusal(ErrorCodes.Unsupported, "Civil drawing units could not be identified. Nothing written."),
+                };
+                model.ImperialLinearUnit = model.Metric ? "foot" : zone.ImperialToMetricConversion switch
+                {
+                    ImperialToMetricConversionType.InternationalFoot => "foot",
+                    ImperialToMetricConversionType.UsSurveyFoot => "USSurveyFoot",
+                    _ => throw new HzRefusal(ErrorCodes.Unsupported, "The Civil foot definition could not be identified. Nothing written."),
+                };
                 foreach (var n in Resolve.Strings(ctx.Args["surfaces"]))
                 {
                     var o = tr.GetObject(Resolve.Named(doc, tr, "surface", n), OpenMode.ForRead);
@@ -118,12 +143,14 @@ internal sealed class ExchangeCommand : ICommand
                 }
                 foreach (var n in Resolve.Strings(ctx.Args["alignments"]))
                     model.Alignments.Add(AlignmentModel((Alignment)tr.GetObject(Resolve.Named(doc, tr, "alignment", n), OpenMode.ForRead), tr, withProfiles, skipped));
-                plan["output"] = output; plan["units"] = model.Metric ? "metric" : "imperial (US survey foot)";
+                plan["output"] = output; plan["units"] = model.Metric ? "meter" : model.ImperialLinearUnit;
+                plan["units_source"] = "Civil drawing settings";
                 plan["surfaces"] = new JsonArray(model.Surfaces.Select(s => (JsonNode)new JsonObject { ["name"] = s.Name, ["points"] = s.Points.Count, ["faces"] = s.Faces.Count }).ToArray());
                 plan["alignments"] = new JsonArray(model.Alignments.Select(a => (JsonNode)new JsonObject { ["name"] = a.Name, ["length"] = Hz.Finite(a.Length, 6), ["elements"] = a.Elements.Count, ["profiles"] = a.Profiles.Count }).ToArray());
                 if (skipped.Count > 0) plan["skipped"] = skipped.DeepClone();
             },
-            (doc, tr) => File.WriteAllText(output, LandXmlWriter.Write(model, DateTime.Now), new UTF8Encoding(false)),
+            (doc, tr) => AtomicOutput.Write(output, false,
+                stage => File.WriteAllText(stage, LandXmlWriter.Write(model, DateTime.Now), new UTF8Encoding(false)), ValidFile),
             (doc, tr, v, after) =>
             {
                 v.Flag("file written", true, File.Exists(output));
@@ -364,7 +391,7 @@ internal static class Shortcuts
     public static CommandResult Reference(CommandContext ctx)
     {
         var name = Hz.Str(ctx.Args, "name")!;
-        var type = Enum.Parse<DataShortcutEntityType>(Hz.Str(ctx.Args, "type")!);
+        var type = (DataShortcutEntityType)Enum.Parse(typeof(DataShortcutEntityType), Hz.Str(ctx.Args, "type")!);
         var source = Hz.Str(ctx.Args, "source_dwg");
         var created = new List<ObjectId>();
         string projectId = "";

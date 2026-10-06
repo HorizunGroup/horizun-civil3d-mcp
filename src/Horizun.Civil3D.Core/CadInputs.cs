@@ -164,7 +164,7 @@ public static class CadInputs
         if (type is "polyline" or "polyline3d")
         {
             if (V.Points(o, "points", 2, 100000, type == "polyline3d") is { } pe) return pe;
-            if (o["bulges"] != null && (o["bulges"] is not JsonArray b || b.Count != ((JsonArray)o["points"]!).Count || b.Any(x => Hz.AsDouble(x) is not { } d || !double.IsFinite(d))))
+            if (o["bulges"] != null && (o["bulges"] is not JsonArray b || b.Count != ((JsonArray)o["points"]!).Count || b.Any(x => Hz.AsDouble(x) is not { } d || !Hz.IsFinite(d))))
                 return "bulges must give one finite bulge per point (0 = straight).";
         }
         if (type is "text" or "mtext" && (Hz.Str(o, "text") is not { } t || t.Length == 0 || t.Length > 10000)) return "text must be 1 to 10000 characters.";
@@ -237,7 +237,7 @@ public static class CadInputs
             var isBool = key is "dimtih" or "dimtoh";
             if (isText && (v is not JsonValue sv || !sv.TryGetValue<string>(out _))) return "properties." + k + " must be a string.";
             if (isBool && (v is not JsonValue bv || !bv.TryGetValue<bool>(out _))) return "properties." + k + " must be true or false.";
-            if (!isText && !isBool && (Hz.AsDouble(v) is not { } d || !double.IsFinite(d) || d < 0)) return "properties." + k + " must be a number >= 0.";
+            if (!isText && !isBool && (Hz.AsDouble(v) is not { } d || !Hz.IsFinite(d) || d < 0)) return "properties." + k + " must be a number >= 0.";
             if (key is "dimdec" or "dimadec" or "dimzin" or "dimtad" or "dimclrd" or "dimclre" or "dimclrt" && Hz.AsDouble(v) is { } i && i != Math.Floor(i)) return "properties." + k + " must be an integer.";
         }
         return null;
@@ -270,7 +270,7 @@ public static class CadInputs
             if (o.FirstOrDefault(kv => kv.Key is not ("tag" or "prompt" or "default" or "position" or "height" or "invisible" or "constant")) is { Key: { } x }) return "attributes[" + i + "]." + x + " is not recognised.";
             var tag = Hz.Str(o, "tag");
             if (string.IsNullOrWhiteSpace(tag) || tag.Contains(' ')) return "attributes[" + i + "].tag must be a non-empty tag without spaces.";
-            if (!tags.Add(tag)) return "attribute tag '" + tag + "' repeats.";
+            if (!tags.Add(tag!)) return "attribute tag '" + tag + "' repeats.";
             if (o["position"] == null || V.Point(o, "position", true) is { }) return "attributes[" + i + "].position must be {x, y} relative to the base point.";
             if (V.Pos(o, "height") is { } h) return "attributes[" + i + "]." + h;
         }
@@ -338,6 +338,8 @@ public static class CadInputs
         ["delete"] = new(new[] { "name" }, Array.Empty<string>(), F),
         ["viewport"] = new(new[] { "layout", "center", "width", "height", "view_center", "scale" }, new[] { "locked", "frozen_layers", "layer" }, W, a => V.First(
             V.Point(a, "center"), V.Point(a, "view_center"), V.Pos(a, "width"), V.Pos(a, "height"), V.Pos(a, "scale"), V.Strings(a, "frozen_layers", 1000))),
+        ["alignment_viewport"] = new(new[] { "layout", "center", "width", "height", "scale", "alignment", "station" }, new[] { "offset", "layer" }, W, SheetInputs.ValidateCreate),
+        ["refresh_alignment_viewport"] = new(new[] { "handle" }, Array.Empty<string>(), W, a => V.Hex(a, "handle")),
         ["page_setup"] = new(new[] { "layout", "device" }, new[] { "media", "plot_style", "area", "fit", "scale", "centered", "rotation" }, W, a => V.First(
             V.OneOf(a, "area", "layout", "extents", "display"), V.Pos(a, "scale"), V.OneOf(a, "rotation", "0", "90", "180", "270"),
             Hz.Bool(a, "fit") == true && a["scale"] != null ? "Give fit OR scale." : null)),

@@ -37,6 +37,8 @@ public sealed class App : IExtensionApplication
 #endif
 
     public static int Year { get; } = ReadYear();
+    public static string BuildRuntime { get; } = typeof(App).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
+        .FirstOrDefault(a => a.Key == "Civil3DRuntime")?.Value ?? "unknown";
     public static string PluginVersion { get; } =
         typeof(App).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion?.Split('+')[0]
         ?? typeof(App).Assembly.GetName().Version?.ToString() ?? "0.0.0";
@@ -54,9 +56,15 @@ public sealed class App : IExtensionApplication
         {
             HorizunPaths.EnsureDirectories();
             Log.Start(Year);
+            if (!MatchesHost(out var mismatch))
+            {
+                StartupError = mismatch;
+                Log.Warn("not starting: " + mismatch);
+                return;
+            }
             try { if (CSharpChannel.EndSession(HorizunPaths.SettingsFile())) Log.Info("C# channel left on by the previous session: turned off at startup"); }
             catch (System.Exception e) { Log.Warn("C# channel end of session: " + e.Message); }
-            Log.Info($"version {PluginVersion}, built for Civil 3D {Year}, contract {Contract.Hash}");
+            Log.Info($"version {PluginVersion}, built for Civil 3D {Year}/{BuildRuntime}, contract {Contract.Hash}");
 
             if (!IsCivil3D(out var why))
             {
@@ -80,7 +88,7 @@ public sealed class App : IExtensionApplication
             UiPump.Start(d);
             Bridge = d;
 
-            var pid = Environment.ProcessId;
+            var pid = Horizun.Civil3D.Core.RuntimeCompat.ProcessId;
             var token = Hz.NewToken(32);
             var pipeName = Wire.PipeName(pid);
             Pipe = new PipeServer(pipeName, token, d);
@@ -137,6 +145,7 @@ public sealed class App : IExtensionApplication
         var d = new Dispatcher(Year);
         d.Register(new HealthCommand());
         d.Register(new DocumentCommand());
+        d.Register(new AuditCommand());
         d.Register(new QueryCommand());
         d.Register(new StylesCommand());
         d.Register(new SurfaceCommand());
@@ -172,7 +181,7 @@ public sealed class App : IExtensionApplication
             if (!c3d)
             {
                 // AutoCAD keeps the exe in the product root; probe there too.
-                var exeDir = Path.GetDirectoryName(Environment.ProcessPath) ?? "";
+                var exeDir = Path.GetDirectoryName(Horizun.Civil3D.Core.RuntimeCompat.ProcessPath) ?? "";
                 c3d = File.Exists(Path.Combine(exeDir, "C3D", "AeccDbMgd.dll"));
             }
             why = c3d ? "" : "This AutoCAD is not Civil 3D (no C3D\\AeccDbMgd.dll). The Horizun Civil 3D bridge does not start.";
@@ -183,5 +192,16 @@ public sealed class App : IExtensionApplication
             why = "Could not determine whether this is Civil 3D: " + e.Message;
             return false;
         }
+    }
+
+    private static bool MatchesHost(out string why)
+    {
+        var runtimeMajor = BuildRuntime switch { "net48" => 4, "net8" => 8, "net10" => 10, _ => 0 };
+        var version = typeof(CommandMethodAttribute).Assembly.GetName().Version;
+        var expected = Year switch { 2024 => (24, 3), 2025 => (25, 0), 2026 => (25, 1), 2027 => (26, 0), _ => (0, 0) };
+        var matches = runtimeMajor != 0 && Environment.Version.Major == runtimeMajor &&
+            version != null && (version.Major, version.Minor) == expected;
+        why = matches ? "" : $"This bridge targets Civil 3D {Year}/{BuildRuntime}; loaded AutoCAD is {version} on CLR {Environment.Version}. Install a build for this year/update. Bridge not started.";
+        return matches;
     }
 }

@@ -14,7 +14,7 @@ public static class SurfaceMath
         var ax=Hz.Num(a,"x")!.Value; var ay=Hz.Num(a,"y")!.Value;
         var bx=Hz.Num(b,"x")!.Value; var by=Hz.Num(b,"y")!.Value;
         var dx=bx-ax; var dy=by-ay; var length=Math.Sqrt(dx*dx+dy*dy);
-        if (!double.IsFinite(length) || !double.IsFinite(step) || step <= 0 || Math.Ceiling(length/step)+1 > SurfaceInputs.MaxPoints)
+        if (!Hz.IsFinite(length) || !Hz.IsFinite(step) || step <= 0 || Math.Ceiling(length/step)+1 > SurfaceInputs.MaxPoints)
             throw new HzRefusal(ErrorCodes.InvalidInput,"Line sampling exceeds 10000 points or has invalid coordinates/step.");
         var result=new List<SurfaceXY>();
         if (length == 0) { result.Add(new(ax,ay)); return result; }
@@ -29,10 +29,10 @@ public static class SurfaceMath
     public static (List<SurfaceCell> Cells,double Spacing) Grid(double xmin,double ymin,double xmax,double ymax,double? spacing,int maxSamples)
     {
         var w=xmax-xmin; var h=ymax-ymin;
-        if (!new[]{xmin,ymin,xmax,ymax,w,h,w*h}.All(double.IsFinite) || w<=0 || h<=0 || maxSamples<1 || maxSamples>SurfaceInputs.MaxGridSamples)
+        if (!new[]{xmin,ymin,xmax,ymax,w,h,w*h}.All(Hz.IsFinite) || w<=0 || h<=0 || maxSamples<1 || maxSamples>SurfaceInputs.MaxGridSamples)
             throw new HzRefusal(ErrorCodes.InvalidInput,"Surface XY bounds or sampling budget are invalid.");
         var s=spacing ?? Math.Max(Math.Sqrt(w*h/maxSamples),Math.Max(w,h)/maxSamples);
-        if (!double.IsFinite(s) || s<=0) throw new HzRefusal(ErrorCodes.InvalidInput,"grid_spacing must be finite and > 0.");
+        if (!Hz.IsFinite(s) || s<=0) throw new HzRefusal(ErrorCodes.InvalidInput,"grid_spacing must be finite and > 0.");
         double Count(double v) => Math.Max(1,Math.Ceiling(v/s));
         if (spacing == null) while(Count(w)*Count(h)>maxSamples) s*=1.01;
         if (Count(w)*Count(h)>maxSamples) throw new HzRefusal(ErrorCodes.InvalidInput,"grid_spacing requires more than max_samples; increase spacing or the budget. Nothing sampled.");
@@ -51,7 +51,7 @@ public sealed class SurfaceSamples
     private readonly List<(double Z,double Area)> _values=new();
     public void Add(double z,double area)
     {
-        if (!double.IsFinite(z) || !double.IsFinite(area) || area<=0 || !double.IsFinite(z*area))
+        if (!Hz.IsFinite(z) || !Hz.IsFinite(area) || area<=0 || !Hz.IsFinite(z*area))
             throw new HzRefusal(ErrorCodes.InvalidInput,"A sampled elevation/area is non-finite or invalid.");
         _values.Add((z,area));
     }
@@ -60,7 +60,7 @@ public sealed class SurfaceSamples
         var area=_values.Sum(v=>v.Area); var cut=_values.Where(v=>v.Z<0).Select(v=>(Z:-v.Z,v.Area)).ToList(); var fill=_values.Where(v=>v.Z>0).ToList();
         var ca=cut.Sum(v=>v.Area); var fa=fill.Sum(v=>v.Area);
         var cv=cut.Sum(v=>v.Z*v.Area); var fv=fill.Sum(v=>v.Z*v.Area);
-        if (!new[] { area,ca,fa,cv,fv,fv-cv }.All(double.IsFinite))
+        if (!new[] { area,ca,fa,cv,fv,fv-cv }.All(Hz.IsFinite))
             throw new HzRefusal(ErrorCodes.InvalidInput,"Accumulated sampled area or volume overflows; statistics are unavailable.");
         return new JsonObject {
             ["method"]="midpoint_grid_estimate", ["samples"]=_values.Count, ["area_2d_estimated"]=_values.Count>0?Hz.Finite(area):null,

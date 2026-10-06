@@ -52,7 +52,7 @@ public static class SurfaceAnalysisMath
 
     public static List<(double Min, double Max)> Equal(double min, double max, int n)
     {
-        if (!double.IsFinite(min) || !double.IsFinite(max) || max <= min)
+        if (!Hz.IsFinite(min) || !Hz.IsFinite(max) || max <= min)
             throw new HzRefusal(ErrorCodes.InvalidInput, "The surface has no finite value range to split (min " + min + ", max " + max + ").");
         if (n < 1 || n > MaxRanges) throw new HzRefusal(ErrorCodes.InvalidInput, "number_of_ranges must be 1-" + MaxRanges + ".");
         var w = (max - min) / n;
@@ -62,9 +62,9 @@ public static class SurfaceAnalysisMath
     /// <summary>Fixed-interval bands covering [min,max], with a boundary exactly on breakAt.</summary>
     public static List<(double Min, double Max)> Step(double min, double max, double interval, double breakAt)
     {
-        if (!double.IsFinite(min) || !double.IsFinite(max) || max <= min)
+        if (!Hz.IsFinite(min) || !Hz.IsFinite(max) || max <= min)
             throw new HzRefusal(ErrorCodes.InvalidInput, "The surface has no finite value range to split.");
-        if (!double.IsFinite(interval) || interval <= 0) throw new HzRefusal(ErrorCodes.InvalidInput, "interval must be finite and > 0.");
+        if (!Hz.IsFinite(interval) || interval <= 0) throw new HzRefusal(ErrorCodes.InvalidInput, "interval must be finite and > 0.");
         var first = breakAt + Math.Floor((min - breakAt) / interval) * interval;
         var last = breakAt + Math.Ceiling((max - breakAt) / interval) * interval;
         var n = (int)Math.Round((last - first) / interval);

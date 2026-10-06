@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/mcpb/main/schemas/mcpb-manifest-v0.4.schema.json",
+  "manifest_version": "0.4",
+  "name": "horizun-civil3d-mcp",
+  "display_name": "Horizun Civil 3D MCP",
+  "version": "0.9.2",
+  "description": "Read and make verified writes in local Autodesk Civil 3D drawings.",
+  "long_description": "Local Civil 3D engineering through MCP: inspect drawings and apply confirmed, post-commit verified edits. The extension carries an installable release package and starts the local bridge through its PowerShell launcher.",
+  "author": {"name": "HorizunGroup", "url": "https://github.com/HorizunGroup"},
+  "homepage": "https://github.com/HorizunGroup/horizun-civil3d-mcp",
+  "documentation": "https://github.com/HorizunGroup/horizun-civil3d-mcp#readme",
+  "support": "https://github.com/HorizunGroup/horizun-civil3d-mcp/issues",
+  "server": {
+    "type": "binary",
+    "entry_point": "scripts/plugin-launcher.ps1",
+    "mcp_config": {
+      "command": "powershell.exe",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${__dirname}/scripts/plugin-launcher.ps1"]
+    }
+  },
+  "tools_generated": true,
+  "keywords": ["civil-3d", "autodesk", "aec", "bim", "mcp"],
+  "license": "Apache-2.0",
+  "compatibility": {"platforms": ["win32"]}
+}

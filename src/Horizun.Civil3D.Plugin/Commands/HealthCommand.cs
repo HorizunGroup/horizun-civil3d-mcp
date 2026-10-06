@@ -24,7 +24,7 @@ internal sealed class HealthCommand : ICommand
             ["protocol_version"] = Contract.ProtocolVersion,
         };
 
-        var civil3d = new JsonObject { ["year"] = ctx.Year, ["pid"] = Environment.ProcessId };
+        var civil3d = new JsonObject { ["year"] = ctx.Year, ["pid"] = Horizun.Civil3D.Core.RuntimeCompat.ProcessId, ["build_runtime"] = App.BuildRuntime };
         try { civil3d["acadver"] = Convert.ToString(AcApp.GetSystemVariable("ACADVER")); } catch { civil3d["acadver"] = null; }
         try { civil3d["product"] = Convert.ToString(AcApp.GetSystemVariable("PRODUCT")); } catch { civil3d["product"] = null; }
         var aecc = ApiProbe.FindAssembly("AeccDbMgd");

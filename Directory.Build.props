@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <Version>0.8.0</Version>
+    <Version>0.9.2</Version>
     <Company>Horizun Group</Company>
     <Product>Horizun Civil 3D MCP</Product>
     <Copyright>Copyright 2026 Horizun Group</Copyright>
@@ -8,6 +8,9 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <Deterministic>true</Deterministic>
+    <!-- Public binaries must not disclose the builder's checkout/profile paths. -->
+    <PathMap>$(MSBuildThisFileDirectory)=/_/</PathMap>
+    <PathMap Condition="'$(USERPROFILE)' != ''">$(PathMap),$(USERPROFILE)=/_/user</PathMap>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 </Project>

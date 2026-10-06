@@ -13,7 +13,23 @@ As a module: from mcp_call import run; run([[name, args], ...]) -> list of MCP r
 """
 import json, os, subprocess, sys
 
-EXE = os.path.join(os.environ.get("LOCALAPPDATA", ""), "Programs", "Horizun", "Civil3D-MCP", "server", "horizun-civil3d-mcp.exe")
+def installed_server(root):
+    """Honor a verified installation's isolated server, confined to this product root."""
+    manifest = os.path.join(root, "manifest.json")
+    directory = os.path.join(root, "server")
+    if os.path.isfile(manifest):
+        with open(manifest, encoding="utf-8-sig") as stream:
+            value = json.load(stream).get("server_dir")
+        if not isinstance(value, str) or not value or not os.path.isabs(value):
+            raise RuntimeError("Installed server_dir must be an absolute path")
+        directory = os.path.realpath(value)
+        product_root = os.path.realpath(root)
+        if os.path.normcase(os.path.commonpath([product_root, directory])) != os.path.normcase(product_root):
+            raise RuntimeError("Installed server_dir escapes the Civil3D MCP product root")
+    return os.path.join(directory, "horizun-civil3d-mcp.exe")
+
+
+EXE = installed_server(os.path.join(os.environ.get("LOCALAPPDATA", ""), "Programs", "Horizun", "Civil3D-MCP"))
 
 def run(calls, timeout=900):
     msgs = [{"jsonrpc": "2.0", "id": 0, "method": "initialize",

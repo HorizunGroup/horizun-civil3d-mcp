@@ -139,7 +139,12 @@ internal sealed class DrawingRevision
     public static void SetLastWrite(Document doc, LastWrite w) => LastWrites[doc.Database.UnmanagedObject] = w;
     public static LastWrite? GetLastWrite(Document doc) => LastWrites.TryGetValue(doc.Database.UnmanagedObject, out var w) ? w : null;
     public static void ClearLastWrite(Document doc) => LastWrites.Remove(doc.Database.UnmanagedObject);
-    private void ObjectErased(object sender, ObjectErasedEventArgs e) { if (!Bookkeeping(e.DBObject)) Observe(); }
+    private void ObjectErased(object sender, ObjectErasedEventArgs e)
+    {
+        if (Bookkeeping(e.DBObject)) return;
+        try { _modified?.Add(e.DBObject.ObjectId); } catch { }
+        Observe();
+    }
     private void VariableChanged(object sender, Autodesk.AutoCAD.DatabaseServices.SystemVariableChangedEventArgs e) => Observe();
     private void ViewChanged(object? sender, EventArgs e) => Observe();
     private void DatabaseClosing(object? sender, EventArgs e) => Detach();
@@ -147,6 +152,7 @@ internal sealed class DrawingRevision
     private void Detach()
     {
         _disposed = true;
+        LastWrites.Remove(_key);
         if (_key != IntPtr.Zero && Observers.TryGetValue(_key, out var current) && current == this) Observers.Remove(_key);
         try
         {

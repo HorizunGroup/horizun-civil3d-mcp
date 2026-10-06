@@ -303,7 +303,7 @@ internal sealed class FeatureLineCommand : ICommand
         data["plan"] = plan;
         data["after"] = after;
         data["verified"] = checks.ToJson();
-        data["undo"] = new JsonObject { ["label"] = "HZ_FEATURELINE", ["instruction"] = "One UNDO in Civil 3D reverts this change; no drawing was saved." };
+        data["undo"] = new JsonObject { ["available"] = false, ["label"] = "HZ_FEATURELINE", ["instruction"] = "Automatic undo_last is disabled. Use Civil 3D native UNDO manually and inspect the result; no drawing was saved." };
         return checks.AllVerified ? CommandResult.Ok(data)
             : CommandResult.Fail(ErrorCodes.VerificationFailed, "The change committed but the re-read did not verify every item. Inspect after/verified.", data);
     }

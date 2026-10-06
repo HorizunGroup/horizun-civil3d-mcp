@@ -1,0 +1,119 @@
+# AcDbMgd.dll 25.0.0.0 (Civil 3D 2025)
+== Autodesk.AutoCAD.DatabaseServices.DwgFiler : Autodesk.AutoCAD.Runtime.RXObject
+  M IntPtr ReadAddress()
+  M Byte[] ReadBinaryChunk()
+  M Boolean ReadBoolean()
+  M Byte ReadByte()
+  M Void ReadBytes(Byte[] value)
+  M Double ReadDouble()
+  M Handle ReadHandle()
+  M ObjectId ReadHardOwnershipId()
+  M ObjectId ReadHardPointerId()
+  M Int16 ReadInt16()
+  M Int32 ReadInt32()
+  M Int64 ReadInt64()
+  M Point2d ReadPoint2d()
+  M Point3d ReadPoint3d()
+  M Scale3d ReadScale3d()
+  M ObjectId ReadSoftOwnershipId()
+  M ObjectId ReadSoftPointerId()
+  M String ReadString()
+  M UInt16 ReadUInt16()
+  M UInt32 ReadUInt32()
+  M UInt64 ReadUInt64()
+  M Vector2d ReadVector2d()
+  M Vector3d ReadVector3d()
+  M Void ResetFilerStatus()
+  M Void Seek(Int64 offset, Int32 method)
+  M Void WriteAddress(IntPtr value)
+  M Void WriteBinaryChunk(Byte[] chunk)
+  M Void WriteBoolean(Boolean value)
+  M Void WriteByte(Byte value)
+  M Void WriteBytes(Byte[] value)
+  M Void WriteDouble(Double value)
+  M Void WriteHandle(Handle handle)
+  M Void WriteHardOwnershipId(ObjectId value)
+  M Void WriteHardPointerId(ObjectId value)
+  M Void WriteInt16(Int16 value)
+  M Void WriteInt32(Int32 value)
+  M Void WriteInt64(Int64 value)
+  M Void WritePoint2d(Point2d value)
+  M Void WritePoint3d(Point3d value)
+  M Void WriteScale3d(Scale3d value)
+  M Void WriteSoftOwnershipId(ObjectId value)
+  M Void WriteSoftPointerId(ObjectId value)
+  M Void WriteString(String value)
+  M Void WriteUInt16(UInt16 value)
+  M Void WriteUInt32(UInt32 value)
+  M Void WriteUInt64(UInt64 value)
+  M Void WriteVector2d(Vector2d value)
+  M Void WriteVector3d(Vector3d value)
+  P FullDwgVersion DwgVersion {get;}
+  P MaintenanceReleaseVersion ExtendedMinorVersion {get;}
+  P ErrorStatus FilerStatus {get;set;}
+  P FilerType FilerType {get;}
+  P Int64 Position {get;}
+== Autodesk.AutoCAD.DatabaseServices.FilerType : System.Enum
+  E BagFiler
+  E CopyFiler
+  E DeepCloneFiler
+  E FileFiler
+  E IdFiler
+  E IdTranslateFiler
+  E PageFiler
+  E PurgeFiler
+  E UndoFiler
+  F Int32 value__
+  E WblockCloneFiler
+== Autodesk.AutoCAD.DatabaseServices.DBDictionary : Autodesk.AutoCAD.DatabaseServices.DBObject
+  C ()
+  M Boolean Contains(ObjectId objId)
+  M Boolean Contains(String entryName)
+  M Void CopyTo(DBDictionaryEntry[] array, Int32 index)
+  M ObjectId GetAt(String entryName)
+  M DbDictionaryEnumerator GetEnumerator()
+  M String NameAt(ObjectId objId)
+  M Void Remove(ObjectId objId)
+  M ObjectId Remove(String key)
+  M ObjectId SetAt(String searchKey, DBObject newValue)
+  M Void SetName(String oldName, String newName)
+  P Int32 Count {get;}
+  P DBDictionary IncludingErased {get;}
+  P Object Item[String key] {get;set;}
+  P DuplicateRecordCloning MergeStyle {get;set;}
+  P Boolean TreatElementsAsHard {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.BlockTableRecord : Autodesk.AutoCAD.DatabaseServices.SymbolTableRecord
+  C ()
+  V BlockInsertionPoints(Object sender, BlockInsertionPointsEventArgs e)
+  F static String ModelSpace
+  F static String PaperSpace
+  M ObjectId AppendEntity(Entity entity)
+  M Void AssumeOwnershipOf(ObjectIdCollection entitiesToMove)
+  M ObjectIdCollection GetAnonymousBlockIds()
+  M ObjectIdCollection GetBlockReferenceIds(Boolean directOnly, Boolean forceValidity)
+  M BlockTableRecordEnumerator GetEnumerator()
+  M ObjectIdCollection GetErasedBlockReferenceIds()
+  M Database GetXrefDatabase(Boolean incrementUnresolved)
+  M Void UpdateAnonymousBlocks()
+  P ObjectId BlockBeginId {get;}
+  P ObjectId BlockEndId {get;}
+  P BlockScaling BlockScaling {get;set;}
+  P String Comments {get;set;}
+  P ObjectId DrawOrderTableId {get;}
+  P Boolean Explodable {get;set;}
+  P Boolean HasAttributeDefinitions {get;}
+  P Boolean HasPreviewIcon {get;}
+  P HyperLinkCollection Hyperlinks {get;}
+  P BlockTableRecord IncludingErased {get;}
+  P Boolean IsAnonymous {get;}
+  P Boolean IsDynamicBlock {get;}
+  P Boolean IsFromExternalReference {get;}
+  P Boolean IsFromOverlayReference {get;set;}
+  P Boolean IsLayout {get;}
+  P Boolean IsUnloaded {get;set;}
+  P ObjectId LayoutId {get;set;}
+  P Point3d Origin {get;set;}
+  P String PathName {get;set;}
+  P Bitmap PreviewIcon {get;set;}
+  P UnitsValue Units {get;set;}
+  P XrefStatus XrefStatus {get;}

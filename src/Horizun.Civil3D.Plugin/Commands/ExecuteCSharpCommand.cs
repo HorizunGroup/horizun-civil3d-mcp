@@ -4,8 +4,9 @@
 // Gate: profile unsafe_code AND enable_execute_csharp (checked by the server and
 // again by the dispatcher). query mode always aborts the transaction; execute
 // commits as one undoable command (the dispatcher runs UnsafeCode in command
-// context). Results are SELF-REPORTED: the host verifies nothing a script does,
-// and the reply says so in fields a client cannot miss.
+// context). Results are SELF-REPORTED: the host verifies nothing a script does.
+// A query script can use doc/db to commit its own transaction or write files;
+// aborting the transaction supplied as `tr` does not roll back those effects.
 //
 // Compiled scripts are cached by source hash: the first compile of a session
 // takes seconds; repeats are immediate.
@@ -103,14 +104,22 @@ internal sealed class ExecuteCSharpCommand : ICommand
         try
         {
             value = execute
-                ? ctx.Write(doc, "HZ_CSHARP", tr => { globals.tr = tr; return Run(script!, globals); })
+                ? ctx.Write(doc, "HZ_CSHARP", tr => { globals.tr = tr; return Run(script!, globals); }, recordUndo: false)
                 : ctx.Read(doc, tr => { globals.tr = tr; return Run(script!, globals); });
         }
         catch (ScriptFailure f)
         {
             throw new HzRefusal(ErrorCodes.TransactionFailed,
-                "The script threw " + f.InnerException!.GetType().Name + ": " + f.InnerException.Message + ". The transaction was rolled back; nothing persisted.",
+                "The script threw " + f.InnerException!.GetType().Name + ": " + f.InnerException.Message +
+                ". The bridge-managed transaction was rolled back; independent transactions and external effects may have persisted. Inspect the drawing and files before retrying.",
                 new JsonObject { ["output"] = globals.Output.Length > 0 ? globals.Output.ToString() : null });
+        }
+        finally
+        {
+            // Arbitrary code may have committed an independent transaction even
+            // in query mode or before throwing. Invalidate previous plans/UNDO.
+            Civil.DrawingRevision.Bump(doc);
+            Civil.DrawingRevision.ClearLastWrite(doc);
         }
 
         JsonNode? returned;
@@ -123,18 +132,19 @@ internal sealed class ExecuteCSharpCommand : ICommand
             ["tool"] = ctx.Tool.Name,
             ["mode"] = mode,
             ["document"] = doc.Name,
-            ["committed"] = execute,
+            ["committed"] = execute ? true : null,
+            ["bridge_transaction_committed"] = execute,
             ["returned"] = returned,
             ["return_note"] = serializeNote,
             ["output"] = globals.Output.Length > 0 ? globals.Output.ToString() : null,
             ["compile_ms"] = compileMs,
             ["compiled_from_cache"] = cached,
             ["total_ms"] = sw.ElapsedMilliseconds,
-            ["evidence_status"] = execute ? "self_reported" : "self_reported_read_only",
+            ["evidence_status"] = "self_reported_unverified",
             ["host_verified"] = false,
             ["warning"] = execute
-                ? "The script's changes were COMMITTED but NOT verified by the bridge. Re-read them with typed tools before reporting them as done. One UNDO in Civil 3D reverts the script."
-                : "query mode: the transaction was aborted; nothing the script did persists.",
+                ? "The bridge-managed transaction committed, but independent drawing or file effects may also have occurred. Nothing was verified by the bridge, and one Civil 3D UNDO is not guaranteed to reverse all effects. Re-read before reporting completion."
+                : "query mode: the bridge-managed transaction was aborted. A script can still commit its own transaction or change files and settings; inspect those effects before reporting this as read-only.",
         });
     }
 

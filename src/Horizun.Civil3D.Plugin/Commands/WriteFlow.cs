@@ -20,6 +20,13 @@ namespace Horizun.Civil3D.Plugin.Commands;
 
 internal static class WriteFlow
 {
+    // These actions change files or Civil 3D's data-shortcut environment outside
+    // the DWG undo stack. A DWG UNDO cannot reverse the full operation.
+    private static bool HasOnlyDrawingEffects(CommandContext ctx) =>
+        !(ctx.Tool.Name == "horizun_c3d_exchange" ||
+          (ctx.Tool.Name == "horizun_c3d_layouts" && ctx.Action == "plot_pdf") ||
+          (ctx.Tool.Name == "horizun_c3d_points" && ctx.Action is "export_csv" or "export_editable_csv"));
+
     public static JsonObject Data(CommandContext ctx, Document doc) => new()
     {
         ["tool"] = ctx.Tool.Name,
@@ -43,7 +50,23 @@ internal static class WriteFlow
         ctx.RequireConfirmation(doc, p);
         var stage = ctx.Tool.Name + ":" + ctx.Action;
         Log.Info("apply start " + stage);
-        ctx.Write(doc, undoLabel, tr => { apply(doc, tr); Log.Info("apply body done, committing " + stage); return 0; });
+        var drawingOnly = HasOnlyDrawingEffects(ctx);
+        try
+        {
+            ctx.Write(doc, undoLabel, tr => { apply(doc, tr); Log.Info("apply body done, committing " + stage); return 0; },
+                recordUndo: drawingOnly);
+        }
+        catch (Exception e) when (!drawingOnly)
+        {
+            Log.Error("external apply outcome unknown " + stage, e);
+            data["dry_run"] = false;
+            data["committed"] = null;
+            data["plan"] = p;
+            data["undo"] = new JsonObject { ["available"] = false };
+            data["outcome"] = "unknown_external_effects";
+            return CommandResult.Fail(ErrorCodes.TransactionFailed,
+                "The operation failed, but files or Civil 3D settings may already have changed. Inspect them before retrying; drawing rollback cannot reverse external effects.", data);
+        }
         Log.Info("apply committed, verify start " + stage);
         var checks = new VerificationSet();
         var after = new JsonObject();
@@ -54,7 +77,9 @@ internal static class WriteFlow
         data["plan"] = p;
         data["after"] = after;
         data["verified"] = checks.ToJson();
-        data["undo"] = new JsonObject { ["label"] = undoLabel, ["instruction"] = "One UNDO in Civil 3D reverts this change; no drawing was saved." };
+        data["undo"] = new JsonObject { ["available"] = false,
+                ["reason"] = drawingOnly ? "Automatic undo_last is disabled; use Civil 3D native UNDO manually and inspect the result."
+                    : "This operation has effects outside the drawing that Civil 3D UNDO cannot reverse." };
         return checks.AllVerified ? CommandResult.Ok(data)
             : CommandResult.Fail(ErrorCodes.VerificationFailed, "The change committed but the re-read did not verify every item. Inspect after/verified before retrying.", data);
     }

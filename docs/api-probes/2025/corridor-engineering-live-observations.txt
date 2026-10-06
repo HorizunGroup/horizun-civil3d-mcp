@@ -1,0 +1,89 @@
+# Civil 3D 2025 / AeccDbMgd 13.7.0.1402 / bridge 0.9.0
+# Observed 2026-10-05 on a new disposable drawing, using typed MCP APIs only.
+# Source assembly: Autodesk-installed tutorial Corridor-1a.dwg,
+# "Primary Road Full Section". Source drawing was opened read-only as a side DB.
+
+PASS create_tin: rehearsal + token + applied new-transaction verification match.
+PASS add_data: four vertices of a generated flat terrain; verification match.
+PASS alignment create_by_pis: generated straight 90-unit alignment; verification match.
+PASS profile create_layout: generated constant-elevation layout; verification match.
+PASS corridor assembly_import: complete tutorial assembly/subassemblies; verification match.
+PASS corridor create: generated baseline/region, rebuild=false; verification match.
+
+OBSERVED get_targets failed before any target assignment:
+InvalidOperationException: The count of TargetIds should be greater or equal to 2.
+The failing public getter was SubassemblyTargetInfo.TargetToOption.
+An unassigned or singly assigned target has no readable multi-target selection option.
+Correction: report null + target_to_option_reason for fewer than two TargetIds;
+refuse setting this option with fewer than two resolved handles. When going from
+an unreadable single/zero-target state to multiple targets, require an explicit
+option rather than guessing the hidden/default value.
+
+No target assignment, applied-geometry quantity, split or merge was performed
+after the observed getter failure. No drawing was saved. Full evidence is local
+and deliberately excluded from Git. Acceptance continues after plugin reload.
+
+# Follow-up on bridge 0.9.1, fresh disposable fixture, six creators verified again.
+OBSERVED get_targets then failed at SubassemblyTargetInfo.UseSameSideTarget
+for a non-Offset target:
+InvalidOperationException: Other target types are not supported, except for Offset
+target type. Target type of OffsetPipe is also not supported.
+The first correction already skipped TargetToOption for empty target assignments;
+the second exception came from UseSameSideTarget, not TargetToOption.
+
+Corrected bounded option handling:
+- UseSameSideTarget is read/set only for Offset in 2025+; absent in the measured
+  2024 DLL, represented as null + unsupported_year_api.
+- TargetToOption is read for Offset/Elevation only when >=2 targets are assigned.
+  Other bridge-unsupported families report null + unsupported_target_type.
+- Native InvalidOperationException on either applicable getter becomes null with
+  native_getter_unavailable and the native message; no invented default.
+- Offset setters accept Nearest/Farthest; Flattest/Steepest are refused before write.
+  Elevation accepts all four native option values according to the API exception
+  specification, which prohibits Flattest/Steepest specifically for Offset/OffsetPipe.
+
+Primary documentation:
+https://help.autodesk.com/cloudhelp/2021/ENU/Civil3D-API/files/html/ec5c75cb-a879-1d1d-0cc3-188a936eb4ce.htm
+https://help.autodesk.com/cloudhelp/2025/ENU/Civil3D-UserGuide/files/GUID-1D60B4B8-622F-4889-98A4-4B5EE82B1658.htm
+
+Target assignment/geometry/split/merge acceptance still awaits corrected plugin load.
+
+# Corrected bridge loaded through the standard trusted application bundle.
+# Fresh disposable metric drawing; tutorial assembly imported again read-only.
+PASS get_targets: actual native target metadata and nullable option reasons.
+PASS set_targets: both Surface target rows assigned the generated flat terrain,
+  rehearsal/token/apply/new-transaction verification match; exact typed reread.
+PASS wrong surface target object family: Alignment refused before mutation.
+PASS applied_geometry: applied shape links and native XYZ/SOE points returned.
+PASS region_quantities: Pave1/Pave2/Base/SubBase/Curb/Sidewalk; caller independently
+  integrated returned station areas using average-end-area and compared outputs.
+  Estimated quantities, not native QTO/material lists.
+PASS unknown shape code and split at region boundary: named refusals.
+PASS split_region: native split at 45 on a 0..90 region; definition/frequency/
+  station checks verified after commit. Ending region retains identical targets.
+PASS merge_regions: native merge restores original readable baseline definitions.
+PASS split-merge preserves shape areas at every applied station.
+PASS layout create: typed rehearsal/token/apply/new-transaction verification match.
+OBSERVED alignment_viewport: rehearsal passed; apply aborted with eNotInPaperspace
+  while enabling a viewport owned by an inactive paper layout. Transaction rolled
+  back. No applied viewport, refresh or UNDO acceptance yet; root owns correction.
+
+64 acceptance checks passed before the viewport failure. No drawing was saved
+by this acceptance script. Full payloads are local, not tracked in Git.
+
+# Final viewport acceptance after scoped native paper-layout activation fix.
+PASS alignment_viewport: rehearsal/token/apply/new-transaction verification match.
+PASS camera target: WCS (50,50,0) on the generated straight alignment at station 45.
+PASS refresh_alignment_viewport: explicit refresh verification match, same camera
+  and scale; native prior layout/tile state restoration included in bridge checks.
+PASS typed layout reread: persistent viewport handle, locked and enabled.
+PASS out-of-range station refused before mutation.
+PASS generated temporary TIN creation, guarded UNDO attribution and execution once.
+PASS independent fresh typed surface get: undone created TIN is not found.
+LIMIT undo_last itself returned committed=true, verification_failed, status=partial:
+  one created object was gone, but two modified container values lack before
+  snapshots. The client never retried UNDO and does not claim generic restoration.
+
+22 final acceptance checks passed with this explicit UNDO limitation. The previous
+64 corridor checks remain valid. Offset/Elevation multi-target option setters were
+not part of this live fixture. 2024/2026 live acceptance still requires those hosts.

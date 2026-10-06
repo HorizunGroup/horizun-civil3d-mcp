@@ -18,7 +18,7 @@ internal static class Log
         try
         {
             Directory.CreateDirectory(HorizunPaths.LogsDir());
-            _path = System.IO.Path.Combine(HorizunPaths.LogsDir(), $"plugin-{year}-{Environment.ProcessId}.log");
+            _path = System.IO.Path.Combine(HorizunPaths.LogsDir(), $"plugin-{year}-{Horizun.Civil3D.Core.RuntimeCompat.ProcessId}.log");
             Info("Horizun Civil 3D plug-in starting");
         }
         catch { _path = null; }

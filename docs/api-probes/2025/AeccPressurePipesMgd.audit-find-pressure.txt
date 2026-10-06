@@ -1,0 +1,208 @@
+# AeccPressurePipesMgd.dll 13.7.0.1402 (Civil 3D 2025)
+<CppImplementationDetails>.$PTMType$P8AeccDatabaseDataPressurePipes@@EAAX_N@Z
+<CppImplementationDetails>.$PTMType$P8AeccDatabaseDataPressurePipes@@EBA_NXZ
+AcDbObjectPointer<AeccDbPressurePipe>
+AcDbObjectPointerBase<AeccDbPressurePipe>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::CrossingPressurePipeProfileLabel\,AeccDbCrossingPressurePipeProfileLabel>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::PressureAppurtenance\,AeccDbAppurtenance>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::PressureAppurtenanceLabel\,AeccDbAppurtenanceLabel>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::PressureAppurtenanceProfileLabel\,AeccDbAppurtenanceProfileLabel>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::PressureAppurtenanceSectionLabel\,AeccDbAppurtenanceSectionLabel>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::PressureFitting\,AeccDbFitting>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::PressureFittingLabel\,AeccDbFittingLabel>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::PressureFittingProfileLabel\,AeccDbFittingProfileLabel>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::PressureFittingSectionLabel\,AeccDbFittingSectionLabel>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::PressurePipe\,AeccDbPressurePipe>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::PressurePipeLabel\,AeccDbPressurePipeLabel>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::PressurePipeNetwork\,AeccDbPressurePipeNetwork>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::PressurePipeProfileLabel\,AeccDbPressurePipeProfileLabel>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::PressurePipeSectionLabel\,AeccDbPressurePipeSectionLabel>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::ProfileViewPressurePart\,AeccDbGraphProfilePressurePart>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::SectionPressurePipeNetwork\,AeccDbSectionPressurePipeNetwork>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::Styles::PressureAppurtenanceStyle\,AeccDbAppurtenanceStyle>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::Styles::PressureFittingStyle\,AeccDbFittingStyle>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::Styles::PressureNetworkBandStyle\,AeccDbGraphProfileStylePressureNetworkBand>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::Styles::PressurePartList\,AeccDbPressurePartList>
+AcMgObjectFactory<Autodesk::Civil::DatabaseServices::Styles::PressurePipeStyle\,AeccDbPressurePipeStyle>
+AeccCachedService<AeccPressurePipesServices>
+AeccDatabaseDataPressurePipes
+AeccDbCrossingPressurePipeProfileLabel
+AeccDbGraphProfilePressurePart
+AeccDbGraphProfilePressurePart+eAnchorDefType
+AeccDbGraphProfileStylePressureNetworkBand
+AeccDbObjectPointer<AeccDbGraphProfilePressurePart>
+AeccDbObjectPointer<AeccDbPressurePartList>
+AeccDbObjectPointer<AeccDbPressurePipe>
+AeccDbObjectPointer<AeccDbSectionPressurePipeNetwork>
+AeccDbObjectPointerProtected<AeccDbPressurePipe>
+AeccDbPressureBlockPart
+AeccDbPressurePart
+AeccDbPressurePartLabel
+AeccDbPressurePartList
+AeccDbPressurePartProfileLabel
+AeccDbPressurePartSectionLabel
+AeccDbPressurePipe
+AeccDbPressurePipeLabel
+AeccDbPressurePipeNetwork
+AeccDbPressurePipeNetwork+eUndoCode
+AeccDbPressurePipeNetwork+RefParams
+AeccDbPressurePipeProfileLabel
+AeccDbPressurePipeSectionLabel
+AeccDbPressurePipeStyle
+AeccDbSectionPressurePipeNetwork
+AeccDbSectionPressurePipeNetwork+eAnchorDefType
+AeccPressurePart
+AeccPressurePart+EqualTo
+AeccPressurePart+LessThan
+AeccPressurePart+State
+AeccPressurePartCatalog
+AeccPressurePartCatalogFactory
+AeccPressurePartFilter
+AeccPressurePartSizeSwapper
+AeccPressurePipeNetworkStatistics
+AeccPressurePipesServices
+AecDbObjectPointer<AeccDbPressurePipe>
+Autodesk.Civil.ApplicationServices.CivilDocumentPressurePipesExtension
+Autodesk.Civil.CollectionEnumerator<Autodesk::Civil::DatabaseServices::PressureAppurtenanceOverrideCollection\,Autodesk::Civil::DatabaseServices::PressureAppurtenanceOverride ^>
+Autodesk.Civil.CollectionEnumerator<Autodesk::Civil::DatabaseServices::PressureFittingOverrideCollection\,Autodesk::Civil::DatabaseServices::PressureFittingOverride ^>
+Autodesk.Civil.CollectionEnumerator<Autodesk::Civil::DatabaseServices::PressurePipeOverrideCollection\,Autodesk::Civil::DatabaseServices::PressurePipeOverride ^>
+Autodesk.Civil.CollectionEnumerator<Autodesk::Civil::DatabaseServices::PressurePipeRunCollection\,Autodesk::Civil::DatabaseServices::PressurePipeRun ^>
+Autodesk.Civil.DatabaseServices.CrossingPressurePipeProfileLabel
+Autodesk.Civil.DatabaseServices.PressureAppurtenance
+Autodesk.Civil.DatabaseServices.PressureAppurtenanceLabel
+Autodesk.Civil.DatabaseServices.PressureAppurtenanceOverride
+Autodesk.Civil.DatabaseServices.PressureAppurtenanceOverrideCollection
+Autodesk.Civil.DatabaseServices.PressureAppurtenanceProfileLabel
+Autodesk.Civil.DatabaseServices.PressureAppurtenanceSectionLabel
+Autodesk.Civil.DatabaseServices.PressureBlockPartConnector
+Autodesk.Civil.DatabaseServices.PressureFitting
+Autodesk.Civil.DatabaseServices.PressureFittingLabel
+Autodesk.Civil.DatabaseServices.PressureFittingOverride
+Autodesk.Civil.DatabaseServices.PressureFittingOverrideCollection
+Autodesk.Civil.DatabaseServices.PressureFittingProfileLabel
+Autodesk.Civil.DatabaseServices.PressureFittingSectionLabel
+Autodesk.Civil.DatabaseServices.PressureNetworkPartData
+Autodesk.Civil.DatabaseServices.PressurePart
+Autodesk.Civil.DatabaseServices.PressurePartConnection
+Autodesk.Civil.DatabaseServices.PressurePartContextType
+Autodesk.Civil.DatabaseServices.PressurePartDomainType
+Autodesk.Civil.DatabaseServices.PressurePartProfileLabel
+Autodesk.Civil.DatabaseServices.PressurePartProperty
+Autodesk.Civil.DatabaseServices.PressurePartSectionLabel
+Autodesk.Civil.DatabaseServices.PressurePartType
+Autodesk.Civil.DatabaseServices.PressurePipe
+Autodesk.Civil.DatabaseServices.PressurePipeLabel
+Autodesk.Civil.DatabaseServices.PressurePipeNetwork
+Autodesk.Civil.DatabaseServices.PressurePipeOverride
+Autodesk.Civil.DatabaseServices.PressurePipeOverrideCollection
+Autodesk.Civil.DatabaseServices.PressurePipeProfileLabel
+Autodesk.Civil.DatabaseServices.PressurePipeRun
+Autodesk.Civil.DatabaseServices.PressurePipeRunCollection
+Autodesk.Civil.DatabaseServices.PressurePipeRunVerticalOffsetType
+Autodesk.Civil.DatabaseServices.PressurePipeSectionLabel
+Autodesk.Civil.DatabaseServices.ProfileViewPressurePart
+Autodesk.Civil.DatabaseServices.ProfileViewPressurePipesExtension
+Autodesk.Civil.DatabaseServices.SectionPressurePipeNetwork
+Autodesk.Civil.DatabaseServices.Styles.BandStylesRootPressurePipesExtension
+Autodesk.Civil.DatabaseServices.Styles.LabelStylesPressureAppurtenanceRoot
+Autodesk.Civil.DatabaseServices.Styles.LabelStylesPressureFittingRoot
+Autodesk.Civil.DatabaseServices.Styles.LabelStylesPressurePipeRoot
+Autodesk.Civil.DatabaseServices.Styles.LabelStylesRootPressurePipesExtension
+Autodesk.Civil.DatabaseServices.Styles.PressureAppurtenanceDisplayStyleSectionType
+Autodesk.Civil.DatabaseServices.Styles.PressureAppurtenancePlanViewType
+Autodesk.Civil.DatabaseServices.Styles.PressureAppurtenanceStyle
+Autodesk.Civil.DatabaseServices.Styles.PressureAppurtenanceStyleCollection
+Autodesk.Civil.DatabaseServices.Styles.PressureAppurtenanceStylePlanOption
+Autodesk.Civil.DatabaseServices.Styles.PressureFittingDisplayStyleSectionType
+Autodesk.Civil.DatabaseServices.Styles.PressureFittingPlanViewType
+Autodesk.Civil.DatabaseServices.Styles.PressureFittingStyle
+Autodesk.Civil.DatabaseServices.Styles.PressureFittingStyleCollection
+Autodesk.Civil.DatabaseServices.Styles.PressureFittingStylePlanOption
+Autodesk.Civil.DatabaseServices.Styles.PressureLabelStyleCollection
+Autodesk.Civil.DatabaseServices.Styles.PressureNetworkBandStyle
+Autodesk.Civil.DatabaseServices.Styles.PressureNetworkDisplayStyleType
+Autodesk.Civil.DatabaseServices.Styles.PressurePartCatalog
+Autodesk.Civil.DatabaseServices.Styles.PressurePartList
+Autodesk.Civil.DatabaseServices.Styles.PressurePartListCollection
+Autodesk.Civil.DatabaseServices.Styles.PressurePartSize
+Autodesk.Civil.DatabaseServices.Styles.PressurePipeDisplayStylePlanType
+Autodesk.Civil.DatabaseServices.Styles.PressurePipeDisplayStyleProfileType
+Autodesk.Civil.DatabaseServices.Styles.PressurePipeDisplayStyleSectionType
+Autodesk.Civil.DatabaseServices.Styles.PressurePipeEndSizeType
+Autodesk.Civil.DatabaseServices.Styles.PressurePipeHatchStyleProfileType
+Autodesk.Civil.DatabaseServices.Styles.PressurePipeHatchType
+Autodesk.Civil.DatabaseServices.Styles.PressurePipesBandStyleCollection
+Autodesk.Civil.DatabaseServices.Styles.PressurePipeStyle
+Autodesk.Civil.DatabaseServices.Styles.PressurePipeStyleCollection
+Autodesk.Civil.DatabaseServices.Styles.PressurePipeStylePlanOption
+Autodesk.Civil.DatabaseServices.Styles.PressurePipeStyleProfileOption
+Autodesk.Civil.DatabaseServices.Styles.PressurePipeWallSizeType
+Autodesk.Civil.DatabaseServices.Styles.StylesRootPressurePipesExtension
+Autodesk.Civil.DatabaseServices.Styles.TableStylesRootPressurePipesExtension
+Autodesk.Civil.Settings.SettingsCmdAddPressurePartPlanLabel
+Autodesk.Civil.Settings.SettingsCmdAddPressurePartProfLabel
+Autodesk.Civil.Settings.SettingsCmdAddPressurePartsToProf
+Autodesk.Civil.Settings.SettingsCmdAddPressurePipeTable
+Autodesk.Civil.Settings.SettingsCmdAddPressurePipeTable+SettingsCmdTableCreation
+Autodesk.Civil.Settings.SettingsCmdAddPressurePlanLabels
+Autodesk.Civil.Settings.SettingsCmdAddPressureProfLabels
+Autodesk.Civil.Settings.SettingsCmdCreateAlignFromPressureNW
+Autodesk.Civil.Settings.SettingsCmdCreateAlignFromPressureNW+SettingsCmdAlignmentTypeOption
+Autodesk.Civil.Settings.SettingsCmdCreatePressureFromIndModel
+Autodesk.Civil.Settings.SettingsCmdCreatePressureNetwork
+Autodesk.Civil.Settings.SettingsCmdCreatePressureNetwork+SettingsCmdDepthOfCover
+Autodesk.Civil.Settings.SettingsCmdCreatePressureNetwork+SettingsCmdLabelNewParts
+Autodesk.Civil.Settings.SettingsCmdCreatePressurePartList
+Autodesk.Civil.Settings.SettingsCmdCreatePressurePartListFull
+Autodesk.Civil.Settings.SettingsPressureAppurtenance
+Autodesk.Civil.Settings.SettingsPressureFitting
+Autodesk.Civil.Settings.SettingsPressureNetwork
+Autodesk.Civil.Settings.SettingsPressureNetwork+SettingsDepthOfCover
+Autodesk.Civil.Settings.SettingsPressureNetwork+SettingsNameFormat
+Autodesk.Civil.Settings.SettingsPressureNetwork+SettingsProfileLabelPlacement
+Autodesk.Civil.Settings.SettingsPressureNetwork+SettingsSectionLabelPlacement
+Autodesk.Civil.Settings.SettingsPressureNetwork+SettingsStyles
+Autodesk.Civil.Settings.SettingsPressurePipe
+DbObjectPointer<AeccDbGraphProfilePressurePart\,0\,0>
+DbObjectPointer<AeccDbPressurePartList\,0\,0>
+DbObjectPointer<AeccDbPressurePipe\,0\,0>
+DbObjectPointer<AeccDbPressurePipe\,1\,0>
+DbObjectPointer<AeccDbSectionPressurePipeNetwork\,0\,0>
+DbObjectReader<AeccDbGraphProfilePressurePart\,0>
+DbObjectReader<AeccDbPressurePartList\,0>
+DbObjectReader<AeccDbPressurePipe\,0>
+DbObjectReader<AeccDbSectionPressurePipeNetwork\,0>
+DbObjectWriter<AeccDbPressurePipe\,0>
+PressurePropertyEnumerator
+std._Alloc_construct_ptr<std::allocator<std::_Tree_node<std::pair<AcDbObjectId const \,AeccPressurePart \*>\,void \*> > >
+std._Tree_find_result<std::_Tree_node<std::pair<AcDbObjectId const \,AeccPressurePart \*>\,void \*> \*>
+std._Tree_id<std::_Tree_node<std::pair<AcDbObjectId const \,AeccPressurePart \*>\,void \*> \*>
+std._Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<AcDbObjectId const \,AeccPressurePart \*> > > >
+std._Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<AeccPressurePartFilter const \,std::vector<AeccPressurePart\,std::allocator<AeccPressurePart> > > > > >
+std._Tree_node<std::pair<AcDbObjectId const \,AeccPressurePart \*>\,void \*>
+std._Tree_node<std::pair<AcDbObjectId const \,AeccPressurePart>\,void \*>
+std._Tree_node<std::pair<AeccPressurePartFilter const \,std::vector<AeccPressurePart\,std::allocator<AeccPressurePart> > >\,void \*>
+std._Tree_temp_node_alloc<std::allocator<std::_Tree_node<std::pair<AcDbObjectId const \,AeccPressurePart \*>\,void \*> > >
+std._Tree_temp_node<std::allocator<std::_Tree_node<std::pair<AcDbObjectId const \,AeccPressurePart \*>\,void \*> > >
+std._Tree_unchecked_const_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<AeccPressurePartFilter const \,std::vector<AeccPressurePart\,std::allocator<AeccPressurePart> > > > >\,std::_Iterator_base0>
+std._Tree_val<std::_Tree_simple_types<std::pair<AcDbObjectId const \,AeccPressurePart \*> > >
+std._Tree_val<std::_Tree_simple_types<std::pair<AcDbObjectId const \,AeccPressurePart> > >
+std._Tree_val<std::_Tree_simple_types<std::pair<AeccPressurePartFilter const \,std::vector<AeccPressurePart\,std::allocator<AeccPressurePart> > > > >
+std._Tree<std::_Tmap_traits<AcDbObjectId\,AeccPressurePart \*\,std::less<AcDbObjectId>\,std::allocator<std::pair<AcDbObjectId const \,AeccPressurePart \*> >\,0> >
+std._Vector_const_iterator<std::_Vector_val<std::_Simple_types<AeccPressurePartFilter> > >
+std._Vector_iterator<std::_Vector_val<std::_Simple_types<AeccPressurePartFilter> > >
+std.allocator<std::_Tree_node<std::pair<AcDbObjectId const \,AeccPressurePart \*>\,void \*> >
+std.allocator<std::_Tree_node<std::pair<AcDbObjectId const \,AeccPressurePart>\,void \*> >
+std.allocator<std::_Tree_node<std::pair<AeccPressurePartFilter const \,std::vector<AeccPressurePart\,std::allocator<AeccPressurePart> > >\,void \*> >
+std.map<AcDbObjectId\,AeccPressurePart \*\,std::less<AcDbObjectId>\,std::allocator<std::pair<AcDbObjectId const \,AeccPressurePart \*> > >
+std.map<AcDbObjectId\,AeccPressurePart\,std::less<AcDbObjectId>\,std::allocator<std::pair<AcDbObjectId const \,AeccPressurePart> > >
+std.map<AeccPressurePartFilter\,std::vector<AeccPressurePart\,std::allocator<AeccPressurePart> >\,std::less<AeccPressurePartFilter>\,std::allocator<std::pair<AeccPressurePartFilter const \,std::vector<AeccPressurePart\,std::allocator<AeccPressurePart> > > > >
+std.pair<AcDbObjectId const \,AeccPressurePart \*>
+std.pair<AcDbObjectId const \,AeccPressurePart>
+std.pair<AeccPressurePartFilter const \,std::vector<AeccPressurePart\,std::allocator<AeccPressurePart> > >
+std.pair<AeccPressurePartSizeSwapper::PartPort\,AeccPressurePartSizeSwapper::PartPort>
+std.pair<std::_Tree_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<AcDbObjectId const \,AeccPressurePart \*> > > >\,bool>
+std.pair<std::_Tree_node<std::pair<AcDbObjectId const \,AeccPressurePart \*>\,void \*> \*\,bool>
+std.vector<AeccPressurePart\,std::allocator<AeccPressurePart> >
+std.vector<AeccPressurePartFilter\,std::allocator<AeccPressurePartFilter> >
+std.vector<std::pair<AeccPressurePartSizeSwapper::PartPort\,AeccPressurePartSizeSwapper::PartPort>\,std::allocator<std::pair<AeccPressurePartSizeSwapper::PartPort\,AeccPressurePartSizeSwapper::PartPort> > >

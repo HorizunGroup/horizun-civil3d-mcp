@@ -100,9 +100,12 @@ public static partial class Contract
             "delete (FULL WRITE), viewport (paper centre/size, model view centre, scale as paper/model e.g. 0.002 = 1:500, lock, " +
             "frozen layers), page_setup (device, media, plot style, area, fit or scale, rotation). plot_pdf (FULL WRITE) plots layouts " +
             "to one PDF (foreground plot) and verifies the file exists, starts with %PDF and has the expected page count. This is " +
-            "the alternative to plan production sheets, which have no public API.",
+            "the alternative to plan production sheets, which have no public API. alignment_viewport creates a persistent station link " +
+            "and oriented camera; refresh_alignment_viewport explicitly recomputes it after alignment edits. These are layout viewports, " +
+            "not native view frames or automatically updated sheet sets. Scale is native paper units divided by model units.",
             P(("device", Str), ("new_name", Str), ("name", Str), ("copy_from", Str), ("template_dwg", Str), ("template_layout", Str),
               ("layout", Str), ("center", Pt), ("width", Num), ("height", Num), ("view_center", Pt), ("scale", Num), ("locked", Bool),
+              ("alignment", Str), ("station", Num), ("offset", Num), ("handle", Str),
               ("frozen_layers", StrArr), ("layer", Str), ("media", Str), ("plot_style", Str), ("area", "{\"type\":\"string\",\"enum\":[\"layout\",\"extents\",\"display\"]}"),
               ("fit", Bool), ("centered", Bool), ("rotation", "{\"type\":\"string\",\"enum\":[\"0\",\"90\",\"180\",\"270\"]}"),
               ("layouts", StrArr), ("output", Str), ("overwrite", Bool)),

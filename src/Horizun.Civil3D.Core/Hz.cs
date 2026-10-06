@@ -15,6 +15,7 @@ namespace Horizun.Civil3D.Core;
 
 public static class Hz
 {
+    public static bool IsFinite(double value) => !double.IsNaN(value) && !double.IsInfinity(value);
     // Live finding (Civil 3D 2025, v0.3.0): inside acad.exe reflection-based JSON serialization is
     // DISABLED by default, so a JsonValue built by JsonArray.Add<T>/JsonValue.Create<T> ("customized"
     // value) throws "must specify a TypeInfoResolver" at serialization time. Every serialization in the
@@ -74,14 +75,12 @@ public static class Hz
 
     public static string Sha256Hex(string text)
     {
-        var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(text));
-        return Convert.ToHexString(bytes).ToLowerInvariant();
+        return RuntimeCompat.Hex(RuntimeCompat.Sha256(Encoding.UTF8.GetBytes(text)));
     }
 
     public static string NewToken(int bytes = 32)
     {
-        var buf = RandomNumberGenerator.GetBytes(bytes);
-        return Convert.ToHexString(buf).ToLowerInvariant();
+        return RuntimeCompat.Hex(RuntimeCompat.RandomBytes(bytes));
     }
 
     /// <summary>Constant-time comparison for secrets (pipe auth token).</summary>
@@ -90,7 +89,7 @@ public static class Hz
         if (a == null || b == null) return false;
         var x = Encoding.UTF8.GetBytes(a);
         var y = Encoding.UTF8.GetBytes(b);
-        return CryptographicOperations.FixedTimeEquals(x, y);
+        return RuntimeCompat.SecretEquals(x, y);
     }
 
     public static JsonObject Obj(params (string Key, JsonNode? Value)[] items)
@@ -174,7 +173,7 @@ public static class Hz
     {
         if (string.IsNullOrEmpty(pattern)) return true;
         text ??= "";
-        return LikeAt(text.ToUpperInvariant(), 0, pattern.ToUpperInvariant(), 0);
+        return LikeAt(text.ToUpperInvariant(), 0, pattern!.ToUpperInvariant(), 0);
     }
 
     private static bool LikeAt(string t, int ti, string p, int pi)

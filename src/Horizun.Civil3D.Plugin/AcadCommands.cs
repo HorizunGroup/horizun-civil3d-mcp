@@ -70,6 +70,7 @@ public sealed class AcadCommands
                     "Encender el canal C# permite que el asistente ejecute codigo C# arbitrario dentro de Civil 3D " +
                     "(horizun_c3d_execute_csharp). Ese codigo NO pasa por la verificacion de las herramientas tipadas: " +
                     "sus resultados son auto-reportados.\n\n" +
+                    "El permiso se comparte con TODAS las instancias de Civil 3D de este usuario de Windows.\n" +
                     "Se apaga al pulsar de nuevo el boton o automaticamente la proxima vez que abras Civil 3D.\n\n" +
                     "Perfil actual: " + Settings.ProfileName(now.Profile) + "\n\nEncender el canal C#?",
                     "Horizun - Canal C#", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Warning,
@@ -107,6 +108,7 @@ public sealed class AcadCommands
                     "borrar objetos, purgar, eliminar layouts, imprimir a PDF, borrar puntos, publicar accesos directos y guardar el dibujo.\n\n" +
                     "Cada una sigue pidiendo dry run + confirmacion y se verifica, y cada cambio en el dibujo se deshace con UNDO, " +
                     "pero los archivos escritos (PDF, guardado) quedan en disco.\n\n" +
+                    "El permiso se comparte con TODAS las instancias de Civil 3D de este usuario de Windows.\n" +
                     "Se apaga al pulsar de nuevo el boton o automaticamente la proxima vez que abras Civil 3D.\n\n" +
                     "Perfil actual: " + Settings.ProfileName(now.Profile) + "\n\nEncender la escritura completa?",
                     "Horizun - Escritura completa", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Warning,

@@ -31,7 +31,7 @@ internal sealed class QueryCommand : ICommand
         var layerF = Hz.Str(ctx.Args, "layer");
         var styleF = Hz.Str(ctx.Args, "style");
         var offset = Math.Max(0, Hz.Int(ctx.Args, "offset") ?? 0);
-        var limit = Math.Clamp(Hz.Int(ctx.Args, "limit") ?? 100, 1, 1000);
+        var limit = RuntimeCompat.Clamp(Hz.Int(ctx.Args, "limit") ?? 100, 1, 1000);
         var fields = (ctx.Args["fields"] as JsonArray)?.Select(n => n?.GetValue<string>()).Where(s => s != null).Select(s => s!).ToHashSet();
 
         var data = new JsonObject { ["type"] = type, ["document"] = doc.Name };

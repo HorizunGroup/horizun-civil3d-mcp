@@ -69,7 +69,7 @@ internal sealed class GradingCommand : ICommand
                 var target = (Surface)tr.GetObject(targetId, OpenMode.ForRead);
                 sampler = (x, y) =>
                 {
-                    try { var z = target.FindElevationAtXY(x, y); return double.IsFinite(z) ? z : null; }
+                    try { var z = target.FindElevationAtXY(x, y); return Hz.IsFinite(z) ? z : null; }
                     catch (PointNotOnEntityException) { return null; }
                 };
                 plan["surface"] = new JsonObject { ["name"] = target.Name, ["handle"] = target.Handle.ToString(), ["fingerprint"] = target.ComputeFingerPrint().ToString() };
@@ -190,7 +190,7 @@ internal sealed class GradingCommand : ICommand
         data["plan"] = plan;
         data["after"] = after;
         data["verified"] = checks.ToJson();
-        data["undo"] = new JsonObject { ["label"] = "HZ_GRADING", ["instruction"] = "One UNDO in Civil 3D removes the TIN and its polylines; no drawing was saved." };
+        data["undo"] = new JsonObject { ["available"] = false, ["label"] = "HZ_GRADING", ["instruction"] = "Automatic undo_last is disabled. Use Civil 3D native UNDO manually and inspect the result; no drawing was saved." };
         return checks.AllVerified ? CommandResult.Ok(data)
             : CommandResult.Fail(ErrorCodes.VerificationFailed, "The grading committed but the re-read did not verify every item. Inspect after/verified.", data);
     }

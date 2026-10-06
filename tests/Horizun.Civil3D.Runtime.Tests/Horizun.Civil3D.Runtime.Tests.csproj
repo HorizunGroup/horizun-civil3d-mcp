@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Execute the host-independent suite in the actual CLR used by each host family. -->
+  <PropertyGroup>
+    <TargetFrameworks>net48;net8.0;net10.0</TargetFrameworks>
+    <IsPackable>false</IsPackable>
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <ProjectReference Include="../../src/Horizun.Civil3D.Core/Horizun.Civil3D.Core.csproj" />
+    <Compile Include="../../src/Horizun.Civil3D.Plugin/PipeServer.cs" Link="PluginTransport/PipeServer.cs" />
+    <Compile Include="../../src/Horizun.Civil3D.Plugin/Log.cs" Link="PluginTransport/Log.cs" />
+    <Using Include="Xunit" />
+    <RuntimeHostConfigurationOption Include="System.Text.Json.JsonSerializer.IsReflectionEnabledByDefault" Value="false" />
+    <Compile Include="../Horizun.Civil3D.Core.Tests/*.cs" Exclude="../Horizun.Civil3D.Core.Tests/ServerTests.cs;../Horizun.Civil3D.Core.Tests/CapabilitiesTests.cs;../Horizun.Civil3D.Core.Tests/SurfaceTests.cs;../Horizun.Civil3D.Core.Tests/GradingEngineTests.cs;../Horizun.Civil3D.Core.Tests/ExportCapabilitiesTests.cs;../Horizun.Civil3D.Core.Tests/HostInspectionTests.cs" Link="Shared/%(Filename)%(Extension)" />
+    <None Include="../Horizun.Civil3D.Core.Tests/runtimeconfig.template.json" Link="runtimeconfig.template.json" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all" />
+    <PackageReference Include="PolySharp" Version="1.15.0" PrivateAssets="all" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,2238 @@
+# AeccDbMgd.dll 13.6.1781.0 (Civil 3D 2024)
+== Autodesk.Civil.AngleUnitType : System.Enum
+  E Degree
+  E Grad
+  E Radian
+  F Int32 value__
+== Autodesk.Civil.ApplicationServices.CivilApplication : System.Object
+  P static CivilDocument ActiveDocument {get;}
+  P static ProductType ActiveProduct {get;}
+  P static SurveyProjectCollection SurveyProjects {get;}
+== Autodesk.Civil.ApplicationServices.CivilDocument : Autodesk.AutoCAD.Runtime.DisposableWrapper
+  M ObjectIdCollection GetAlignmentIds()
+  M ObjectIdCollection GetAlignmentTableIds()
+  M ObjectIdCollection GetAllPointIds()
+  M ObjectIdCollection GetBridgeIds()
+  M CatchmentGroupCollection GetCatchmentGroups()
+  M static CivilDocument GetCivilDocument(Database database)
+  M ObjectIdCollection GetGeneralSegmentLabelIds()
+  M ObjectIdCollection GetIntersectionIds()
+  M ObjectIdCollection GetLegendTableIds()
+  M ObjectIdCollection GetNoteLabelIds()
+  M ObjectIdCollection GetParcelSegmentTableIds()
+  M ObjectIdCollection GetParcelTableIds()
+  M ObjectIdCollection GetPipeNetworkIds()
+  M ObjectIdCollection GetPointTableIds()
+  M ObjectIdCollection GetSiteIds()
+  M ObjectId GetSitelessAlignmentId(String name)
+  M ObjectIdCollection GetSitelessAlignmentIds()
+  M ObjectIdCollection GetSitelessFeatureLineIds()
+  M ObjectIdCollection GetSurfaceIds()
+  M ObjectIdCollection GetViewFrameGroupIds()
+  P AssemblyCollection AssemblyCollection {get;}
+  P CogoPointCollection CogoPoints {get;}
+  P CorridorCollection CorridorCollection {get;}
+  P CorridorState CorridorState {get;}
+  P Boolean IsCorridorSectionViewActive {get;}
+  P Boolean IsDriveActive {get;}
+  P Boolean IsSectionEditorCorridorReferenceObject {get;}
+  P PipeNetworkState NetworkState {get;}
+  P UDPClassificationCollection ParcelUDPClassifications {get;}
+  P UDPCollection ParcelUDPs {get;}
+  P PointGroupCollection PointGroups {get;}
+  P UDPClassificationCollection PointUDPClassifications {get;}
+  P UDPCollection PointUDPs {get;}
+  P SettingsRoot Settings {get;}
+  P StylesRoot Styles {get;}
+  P SubassemblyCollection SubassemblyCollection {get;}
+== Autodesk.Civil.AreaUnitType : System.Enum
+  E Acre
+  E Hectare
+  E SquareFoot
+  E SquareKilometer
+  E SquareMeter
+  E SquareMile
+  E SquareYard
+  F Int32 value__
+== Autodesk.Civil.DatabaseServices.Alignment : Autodesk.Civil.DatabaseServices.Feature
+  M Void CopyToSite(String siteName)
+  M Void CopyToSite(ObjectId siteId)
+  M static ObjectId Create(CivilDocument document, String alignmentName, ObjectId siteId, ObjectId layerId, ObjectId styleId, ObjectId labelSetId, AlignmentType type)
+  M static ObjectId Create(CivilDocument document, String alignmentName, ObjectId siteId, ObjectId layerId, ObjectId styleId, ObjectId labelSetId)
+  M static ObjectId Create(CivilDocument document, String alignmentName, String siteName, String layerName, String styleName, String labelSetName)
+  M static ObjectId Create(CorridorFeatureLine corridorFeatureLine, String alignmentName, ObjectId siteId, ObjectId layerId, ObjectId styleId, ObjectId labelSetId, AlignmentType alignmentType)
+  M static ObjectId Create(CivilDocument document, PolylineOptions plineOptions, String alignmentName, ObjectId siteId, ObjectId layerId, ObjectId styleId, ObjectId labelSetId)
+  M static ObjectId Create(CivilDocument document, PolylineOptions plineOptions, String alignmentName, String siteName, String layerName, String styleName, String labelSetName)
+  M static ObjectId CreateConnectedAlignment(String alignmentName, ObjectId siteId, ObjectId layerId, ObjectId styleId, ObjectId labelSetId, ConnectedAlignmentParams connectedAlignmentParams)
+  M static ObjectId CreateOffsetAlignment(Database database, String alignmentName, String parentAlignmentName, Double offset, String styleName, Double startStation, Double endStation)
+  M static ObjectId CreateOffsetAlignment(Database database, String alignmentName, String parentAlignmentName, Double offset, String styleName)
+  M static ObjectId CreateOffsetAlignment(String alignmentName, ObjectId parentAlignmentId, Double offset, ObjectId styleId, Double startStation, Double endStation)
+  M static ObjectId CreateOffsetAlignment(String alignmentName, ObjectId parentAlignmentId, Double offset, ObjectId styleId)
+  M ObjectId CreateOffsetAlignment(Double offsetDistance)
+  M Void DistanceToAlignment(Double stationOnThisAlignment, Alignment otherAlignment, AlignmentSide enumSide, Double& distanceToOtherAlignment, Double& stationOnOtherAlignment)
+  M Void DistanceToAlignment(Double stationOnThisAlignment, Alignment otherAlignment, Double& distanceToOtherAlignment, Double& stationOnOtherAlignment)
+  M ObjectIdCollection GetAlignmentLabelGroupIds()
+  M ObjectIdCollection GetAlignmentLabelIds()
+  M ObjectIdCollection GetChildOffsetAlignmentIds(Boolean onlyDynamicUpdate)
+  M ObjectIdCollection GetChildOffsetAlignmentIds()
+  M Double GetCrossSlopeAtStation(Double station, SuperelevationCrossSegmentType crossSegmentType, Boolean applySmoothing)
+  M Double GetInstantaneousRadius(Double rawStation)
+  M ObjectIdCollection GetLabelGroupIds()
+  M ObjectIdCollection GetLabelIds()
+  M static String GetNextUniqueName(String alignmentName)
+  M ObjectId GetPolyline()
+  M ObjectIdCollection GetProfileIds()
+  M ObjectIdCollection GetProfileViewIds()
+  M AlignmentRegionCollection GetRegions()
+  M ObjectIdCollection GetSampleLineGroupIds()
+  M Station[] GetStationSet(StationTypes stationType)
+  M Station[] GetStationSet(StationTypes stationType, Double interval)
+  M Station[] GetStationSet(StationTypes stationType, Double majorInterval, Double minorInterval)
+  M String GetStationStringWithEquations(Double rawStation)
+  M ObjectIdCollection GetSuperelevationViewIds()
+  M Void ImportLabelSet(String labelSetStyleName)
+  M Void ImportLabelSet(ObjectId labelSetStyleId)
+  M Void PointLocation(Double station, Double offset, Double tolerance, Double& easting, Double& northing, Double& Bearing)
+  M Void PointLocation(Double station, Double offset, Double& easting, Double& northing)
+  M Void Reverse()
+  M Void StationOffset(Double easting, Double northing, Double tolerance, Double& station, Double& offset)
+  M Void StationOffset(Double easting, Double northing, Double& station, Double& offset)
+  M Void StationOffsetAcceptOutOfRange(Double easting, Double northing, Double tolerance, Double& station, Double& offset, Boolean& outofrange)
+  M Void StationOffsetAcceptOutOfRange(Double easting, Double northing, Double& station, Double& offset, Boolean& outofrange)
+  M Void Update()
+  P AlignmentType AlignmentType {get;}
+  P CANTCriticalStationCollection CANTCriticalStaitons {get;}
+  P CANTCurveCollection CANTCurves {get;}
+  P ConnectedAlignmentInfo ConnectedAlignmentInfo {get;}
+  P AlignmentCreationType CreationMode {get;}
+  P String CriteriaFileName {get;set;}
+  P ObjectId DesignCheckSetId {get;set;}
+  P String DesignCheckSetName {get;set;}
+  P DesignSpeedCollection DesignSpeeds {get;}
+  P Double EndingStation {get;}
+  P Double EndingStationWithEquations {get;}
+  P AlignmentEntityCollection Entities {get;}
+  P Boolean HasRoundabout {get;}
+  P Boolean IsConnectedAlignment {get;}
+  P Boolean IsOffsetAlignment {get;}
+  P Boolean IsSiteless {get;}
+  P Double Length {get;}
+  P OffsetAlignmentInfo OffsetAlignmentInfo {get;}
+  P RailAlignmentInfo RailAlignmentInfo {get;}
+  P Point2d ReferencePoint {get;set;}
+  P Double ReferencePointStation {get;set;}
+  P ObjectId SiteId {get;}
+  P String SiteName {get;}
+  P Double StartingStation {get;}
+  P StationEquationCollection StationEquations {get;}
+  P Double StationIndexIncrement {get;set;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+  P SuperelevationCriticalStationCollection SuperelevationCriticalStations {get;}
+  P SuperelevationCurveCollection SuperelevationCurves {get;}
+  P SuperelevationType SuperelevationType {get;}
+  P AlignmentUpdateType UpdateMode {get;}
+  P Boolean UseDesignCheckSet {get;set;}
+  P Boolean UseDesignCriteriaFile {get;set;}
+  P Boolean UseDesignSpeed {get;set;}
+== Autodesk.Civil.DatabaseServices.AlignmentArc : Autodesk.Civil.DatabaseServices.AlignmentCurve
+  P Point2d CenterPoint {get;set;}
+  P Double ChordDirection {get;}
+  P Double ChordLength {get;set;}
+  P Boolean Clockwise {get;}
+  P AlignmentArcConstraintType Constraint2 {get;}
+  P String CurveGroupIndex {get;set;}
+  P String CurveGroupSubEntityIndex {get;set;}
+  P Double DeflectedAngle {get;set;}
+  P Double Delta {get;set;}
+  P Double DirectionAtPoint1 {get;set;}
+  P Double DirectionAtPoint2 {get;set;}
+  P Double EndDirection {get;}
+  P Double ExternalSecant {get;set;}
+  P Double ExternalTangent {get;set;}
+  P Boolean GreaterThan180 {get;set;}
+  P AlignmentSubEntity Item[Int32 index] {get;}
+  P Double Length {get;set;}
+  P Double MidOrdinate {get;set;}
+  P Double MinimumRadius {get;}
+  P Point2d PassThroughPoint1 {get;set;}
+  P Point2d PassThroughPoint2 {get;set;}
+  P Point2d PassThroughPoint3 {get;set;}
+  P Double PIStation {get;}
+  P Double Radius {get;set;}
+  P Boolean ReverseCurve {get;}
+  P Double StartDirection {get;}
+== Autodesk.Civil.DatabaseServices.AlignmentCurve : Autodesk.Civil.DatabaseServices.AlignmentEntity
+  P Point2d EndPoint {get;}
+  P Double EndStation {get;}
+  P Double HighestDesignSpeed {get;}
+  P Double Length {get;set;}
+  P Point2d StartPoint {get;}
+  P Double StartStation {get;}
+== Autodesk.Civil.DatabaseServices.AlignmentCurveLabel : Autodesk.Civil.DatabaseServices.FeatureLabel
+  M static ObjectId Create(AlignmentSubEntityArc subEntityArc, ObjectId labelStyleId)
+  M static ObjectId Create(AlignmentArc entity, ObjectId labelStyleId)
+== Autodesk.Civil.DatabaseServices.AlignmentEntity : Autodesk.AutoCAD.Runtime.DisposableWrapper
+  M Collection<AlignmentDesignCheck> DesignChecks()
+  M Boolean Equals(Object obj)
+  M Boolean ValidateDesignCheck(AlignmentDesignCheck designCheck)
+  P AlignmentEntityConstraintType Constraint1 {get;}
+  P Int32 EntityAfter {get;}
+  P Int32 EntityBefore {get;}
+  P Int32 EntityId {get;}
+  P AlignmentEntityType EntityType {get;}
+  P AlignmentSubEntity Item[Int32 index] {get;}
+  P Int32 SubEntityCount {get;}
+== Autodesk.Civil.DatabaseServices.AlignmentEntityCollection : Autodesk.Civil.CivilWrapper<AeccDbAlignment>
+  M AlignmentArc AddFixedCurve(Int32 previousEntityId, Point3d passThroughPoint)
+  M AlignmentArc AddFixedCurve(Point3d passThroughPoint1, Vector3d directionAtPassThroughPoint1, Double radius, Boolean isClockwise)
+  M AlignmentArc AddFixedCurve(Int32 previousEntityId, Point3d passThroughPoint1, Point3d passThroughPoint2, Double radius, Boolean isClockwise, Boolean isGreaterThan180)
+  M AlignmentArc AddFixedCurve(Point3d passThroughPoint1, Point3d passThroughPoint2, Double radius, Boolean isClockwise)
+  M AlignmentArc AddFixedCurve(Point3d passThroughPoint1, Point3d passThroughPoint2, Vector3d directionAtPassThroughPoint2)
+  M AlignmentArc AddFixedCurve(Point3d passThroughPoint1, Vector3d directionAtPassThroughPoint1, Point3d passThroughPoint2)
+  M AlignmentArc AddFixedCurve(Point3d centerPoint, Point3d passThroughPoint, Boolean isClockwise)
+  M AlignmentArc AddFixedCurve(Point3d centerPoint, Double radius, Boolean isClockwise)
+  M AlignmentArc AddFixedCurve(Int32 previousEntityId, Point3d startPoint, Point3d middlePoint, Point3d endPoint)
+  M AlignmentLine AddFixedLine(Int32 previousEntityId, Double distance)
+  M AlignmentLine AddFixedLine(Point3d startPoint, Point3d endPoint)
+  M AlignmentLine AddFixedLine(Int32 previousEntityId, Point3d startPoint, Point3d endPoint)
+  M AlignmentSpiral AddFixedSpiral(Int32 previousEntityId, Double startRadius, Double endRadius, Double length, SpiralType spiralDefinition)
+  M AlignmentSpiral AddFixedSpiral(Int32 previousEntityId, Double radius, Double length, SpiralCurveType spiralCurveType, SpiralType spiralDefinition)
+  M AlignmentSpiral AddFixedSpiral(Int32 previousEntityId, Point3d startPoint, Point3d spiralPI, Point3d endPoint, SpiralType definitionType)
+  M AlignmentSpiral AddFixedSpiral(Int32 previousEntityId, Point3d startPoint, Point3d spiralPI, Double startRadius, Double endRadius, Double length, Boolean isClockwise, SpiralType spiralDefinition)
+  M AlignmentSpiral AddFixedSpiral(Int32 previousEntityId, Point3d startPoint, Point3d spiralPI, Double radius, Double length, SpiralCurveType spiralCurveType, Boolean isClockwise, SpiralType spiralDefinition)
+  M AlignmentSCS AddFloatingArcWithSpiral(Int32 attachEntityId, EntityAttachType attachType, Double spParam, SpiralParamType spType, Double radius, Double arcLength, Boolean isClockwise, SpiralType spiralDefinition)
+  M AlignmentSCS AddFloatingArcWithSpiral(Int32 attachEntityId, EntityAttachType attachType, Double spParam, SpiralParamType spType, Double radius, Point3d passThroughPoint, Boolean isGreaterThan180, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFloatingCSS(Int32 nextEntityId, Point3d passThroughPoint1, Point3d passThroughPoint2, Double sp3Param, Double sp4Param, SpiralParamType spType, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFloatingCSS(Int32 nextEntityId, Double radius, Point3d passThroughPoint, Double sp3Param, Double sp4Param, SpiralParamType spType, SpiralType spiralDefinition)
+  M AlignmentArc AddFloatingCurve(Double radius, Double paramValue, CurveParamType paramType, Boolean isClockwise, Int32 nextEntityId)
+  M AlignmentArc AddFloatingCurve(Int32 previousEntityId, Double radius, Double paramValue, CurveParamType paramType, Boolean isClockwise)
+  M AlignmentArc AddFloatingCurve(Int32 previousEntityId, Point3d passThroughPoint)
+  M AlignmentArc AddFloatingCurve(Int32 previousEntityId, Point3d passThroughPoint, Vector3d directionAtPassThroughPoint)
+  M AlignmentArc AddFloatingCurve(Point3d passThroughPoint, Double radius, Boolean isGreaterThan180, CurveType curveType, Int32 nextEntityId)
+  M AlignmentArc AddFloatingCurve(Point3d passThroughPoint, Int32 nextEntityId)
+  M AlignmentArc AddFloatingCurve(Point3d passThroughPoint, Vector3d directionAtPassThroughPoint, Int32 nextEntityId)
+  M AlignmentArc AddFloatingCurve(Int32 previousEntityId, Point3d passThroughPoint, Double radius, Boolean isGreaterThan180, CurveType curveType)
+  M AlignmentLine AddFloatingLine(Double length, Int32 nextEntityId)
+  M AlignmentLine AddFloatingLine(Point3d passThroughPoint, Int32 nextEntityId)
+  M AlignmentLine AddFloatingLine(Int32 previousEntityId, Double length)
+  M AlignmentLine AddFloatingLine(Int32 previousEntityId, Point3d passThroughPoint)
+  M AlignmentSTS AddFloatingLineWithSpiral(Int32 attachEntityId, EntityAttachType attachType, Double spParam, SpiralParamType spType, Double tanLength, SpiralType spiralDefinition)
+  M AlignmentSTS AddFloatingLineWithSpiral(Int32 attachEntityId, EntityAttachType attachType, Double spParam, SpiralParamType spType, Point3d passThroughPoint, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFloatingSSC(Int32 previousEntityId, Double sp1Param, Double sp2Param, SpiralParamType spType, Point3d passThroughPoint1, Point3d passThroughPoint2, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFloatingSSC(Int32 previousEntityId, Double sp1Param, Double sp2Param, SpiralParamType spType, Double radius, Point3d passThroughPoint, SpiralType spiralDefinition)
+  M AlignmentSpiral AddFloatSpiral(Double radius, Double length, Int32 nextEntityId, Boolean isClockwise, SpiralType spiralDefinition)
+  M AlignmentSpiral AddFloatSpiral(Int32 previousEntityId, Double radius, Double length, Boolean isClockwise, SpiralType spiralDefinition)
+  M AlignmentArc AddFreeCurve(Int32 previousEntityId, Int32 nextEntityId, Point3d passThroughPoint)
+  M AlignmentArc AddFreeCurve(Int32 previousEntityId, Int32 nextEntityId, Double paramValue, CurveParamType paramType, Boolean isGreaterThan180, CurveType curveType)
+  M AlignmentLine AddFreeLine(Int32 previousEntityId, Int32 nextEntityId)
+  M AlignmentSCS AddFreeSCS(Int32 previousEntityId, Int32 nextEntityId, Double spiral1Param, Double spiral2Param, SpiralParamType spType, Double radius, Boolean isGreaterThan180, SpiralType spiralDefinition)
+  M AlignmentSCSCS AddFreeSCSCS(Int32 previousEntityId, Int32 nextEntityId, SCSCSConstraints constraintValue, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFreeSCSS(Int32 previousEntityId, Int32 nextEntityId, Double sp1Param, Double radius, Double sp3Param, Double sp4Param, Boolean isGreaterThan180, SpiralType spiralDefinition)
+  M AlignmentSCSSCS AddFreeSCSSCS(Int32 previousEntityId, Int32 nextEntityId, SCSSCSConstraints constraintValue, SpiralType spiralDefinition)
+  M AlignmentSCS AddFreeSpiral(Int32 previousEntityId, Int32 nextEntityId, Double spParam, SpiralParamType spType, SpiralCurveType spiralCurveType, SpiralType spiralDefinition)
+  M AlignmentSTS AddFreeSSBetweenCurves(Int32 previousEntityId, Int32 nextEntityId, Double spRatio, SpiralParamType spType, SpiralType spiralDefinition)
+  M AlignmentSCS AddFreeSSBetweenTangents(Int32 previousEntityId, Int32 nextEntityId, Double spiral1Param, Double spiral2Param, SpiralParamType spType, Boolean isGreaterThan180, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFreeSSCS(Int32 previousEntityId, Int32 nextEntityId, Double sp1Param, Double sp2Param, Double radius, Double sp3Param, Boolean isGreaterThan180, SpiralType spiralDefinition)
+  M AlignmentSSCSS AddFreeSSCSS(Int32 previousEntityId, Int32 nextEntityId, Double sp1Param, Double sp2Param, Double radius, Double sp3Param, Double sp4Param, Boolean isGreaterThan180, SpiralType spiralDefinition)
+  M AlignmentSTS AddFreeSTS(Int32 previousEntityId, Int32 nextEntityId, Double tanLength, SpiralType spiralDefinition)
+  M AlignmentSTS AddFreeSTS(Int32 previousEntityId, Int32 nextEntityId, Double sp1Param, Double sp2Param, SpiralParamType spType, SpiralType spiralDefinition)
+  M Void Clear()
+  M AlignmentEntity EntityAtId(Int32 id)
+  M AlignmentEntity EntityAtStation(Double rawStation)
+  M AlignmentEntity GetEntityByOrder(Int32 index)
+  M IEnumerator<AlignmentEntity> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M Void Remove(AlignmentEntity entity)
+  M Void RemoveAt(Int32 index)
+  P Int32 Count {get;}
+  P Int32 FirstEntity {get;}
+  P AlignmentEntity Item[Int32 index] {get;}
+  P Int32 LastEntity {get;}
+== Autodesk.Civil.DatabaseServices.AlignmentLabelGroup : Autodesk.Civil.DatabaseServices.AutoFeatureLabelGroup
+  M static ObjectIdCollection GetAvailableLabelGroupIds(RXClass rxClass, ObjectId alignmentId, Boolean includeDerived)
+  M static ObjectIdCollection GetAvailableLabelGroups(RXClass rxClass, ObjectId alignmentId, Boolean includeDerived)
+== Autodesk.Civil.DatabaseServices.AlignmentLine : Autodesk.Civil.DatabaseServices.AlignmentCurve
+  P AlignmentLineConstraintType Constraint2 {get;}
+  P String CurveGroupIndex {get;set;}
+  P String CurveGroupSubEntityIndex {get;set;}
+  P Double Direction {get;}
+  P AlignmentSubEntity Item[Int32 index] {get;}
+  P Double Length {get;set;}
+  P Point2d MidPoint {get;}
+  P Point2d PassThroughPoint1 {get;set;}
+  P Point2d PassThroughPoint2 {get;set;}
+== Autodesk.Civil.DatabaseServices.AlignmentStationLabelGroup : Autodesk.Civil.DatabaseServices.AlignmentLabelGroup
+  M static ObjectId Create(ObjectId styleId, ObjectId alignmentId, Double increment)
+  M static ObjectId CreateMajor(ObjectId styleId, ObjectId alignmentId, Double increment)
+  M static ObjectIdCollection GetAvailableLabelGroupIds(ObjectId alignmentId, Boolean includeDerived)
+  M static ObjectIdCollection GetAvailableLabelGroups(ObjectId alignmentId, Boolean includeDerived)
+  P Double Increment {get;set;}
+  P Double RangeEnd {get;set;}
+  P Double RangeStart {get;set;}
+== Autodesk.Civil.DatabaseServices.AlignmentTangentLabel : Autodesk.Civil.DatabaseServices.FeatureLabel
+  M static ObjectId Create(AlignmentSubEntityLine subEntityLine, ObjectId labelStyleId)
+  M static ObjectId Create(AlignmentLine entityLine, ObjectId labelStyleId)
+== Autodesk.Civil.DatabaseServices.AnchorInfo : System.Object
+  C (Boolean isOnCurve, Point2d centerOfCurve, Vector3d directionAtLocation, Point3d location)
+  F Point2d CenterOfCurve
+  F Vector3d DirectionAtLocation
+  F Boolean IsOnCurve
+  F Point3d Location
+== Autodesk.Civil.DatabaseServices.AppliedAssemblySetting : System.Object
+  P List<AdditionalAppliedAssemblyInfo> AdditionalAppliedAssemblies {get;set;}
+  P Boolean AppliedAdjacentToOffsetTargetStartEnd {get;set;}
+  P Boolean AppliedAtHorizontalGeometryPoints {get;set;}
+  P Boolean AppliedAtOffsetTargetGeometryPoints {get;set;}
+  P Boolean AppliedAtProfileGeometryPoints {get;set;}
+  P Boolean AppliedAtProfileHighLowPoints {get;set;}
+  P Boolean AppliedAtSuperelevationCriticalPoints {get;set;}
+  P CorridorAlongCurveOption CorridorAlongCurvesOption {get;set;}
+  P Double FrequencyAlongCurves {get;set;}
+  P Double FrequencyAlongProfileCurves {get;set;}
+  P Double FrequencyAlongSpirals {get;set;}
+  P Double FrequencyAlongTangents {get;set;}
+  P Double FrequencyAlongTargetCurves {get;set;}
+  P Double MODAlongCurves {get;set;}
+  P Double MODAlongTargetCurves {get;set;}
+  P CorridorAlongOffsetTargetCurveOption TargetCurveOption {get;set;}
+== Autodesk.Civil.DatabaseServices.Assembly : Autodesk.Civil.DatabaseServices.GeoEntity
+  M Void AddSubassembly(ObjectId subassemblyId, Point pointHookTo)
+  M AssemblyGroup AddSubassembly(ObjectId subassemblyId)
+  M ObjectId CopySubassembly(ObjectId subassemblyIdFrom, Point pointHookTo)
+  M AssemblyGroup CopySubassembly(ObjectId subassemblyIdFrom)
+  M String[] GetOffsetBaselineNames()
+  M Void InsertSubassemblyAfter(ObjectId subassemblyId, Point pointHookTo)
+  M Void InsertSubassemblyBefore(ObjectId subassemblyId, ObjectId targetSubassemblyId)
+  M ObjectId MirrorSubassembly(ObjectId subassemblyIdFrom, Point pointHookTo)
+  M AssemblyGroup MirrorSubassembly(ObjectId subassemblyIdFrom)
+  M Void ReplaceSubassembly(ObjectId subassemblyId, ObjectId targetSubassemblyId)
+  P ObjectId CodeSetStyleId {get;set;}
+  P String CodeSetStyleName {get;set;}
+  P AssemblyGroupCollection Groups {get;}
+  P Point3d Location {get;set;}
+  P OffsetAssemblyCollection OffsetAssemblies {get;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+  P AssemblyType Type {get;set;}
+== Autodesk.Civil.DatabaseServices.AssemblyCollection : Autodesk.Civil.CivilWrapper<AcDbDatabase>
+  M ObjectId Add(String assemblyName, AssemblyType type, Point3d location, ObjectId styleId, ObjectId codeSetStyleId)
+  M ObjectId Add(String assemblyName, AssemblyType type, Point3d location)
+  M IEnumerator<ObjectId> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M ObjectId ImportAssembly(String assemblyName, Database sourceDatabase, String sourceAssemblyName, Point3d location)
+  M ObjectId ImportAssembly(String assemblyName, String atcFilePath, String itemId, Point3d location)
+  P Int32 Count {get;}
+  P ObjectId Item[String assemblyName] {get;}
+  P ObjectId Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.AssemblyType : System.Enum
+  E DividedCrownedRoad
+  E DividedPlanarRoad
+  E Other
+  E Railway
+  E UndividedCrownedRoad
+  E UndividedPlanarRoad
+  F Int32 value__
+== Autodesk.Civil.DatabaseServices.AutoFeatureLabelGroup : Autodesk.Civil.DatabaseServices.LabelGroup
+  M Void SetRange(Double rangeStart, Double rangeEnd)
+  P Double RangeEnd {get;set;}
+  P Boolean RangeEndFromFeature {get;set;}
+  P Double RangeStart {get;set;}
+  P Boolean RangeStartFromFeature {get;set;}
+== Autodesk.Civil.DatabaseServices.Baseline : Autodesk.Civil.DatabaseServices.BaseBaseline
+  M ObjectIdCollection ExportSolids(ExportCorridorSolidsParams params, Database targetDatabase)
+  M Void ExportTransitions(String csvFileName)
+  M AppliedAssembly GetAppliedAssemblyAtIndex(Int32 index)
+  M AppliedAssembly GetAppliedAssemblyAtStation(Double station)
+  M SubassemblyTargetInfoCollection GetTargets()
+  M List<CorridorTransitionSet> getTransitions()
+  M Int32 ImportTransitions(String csvFileName)
+  M Boolean IsFeatureLineBased()
+  M Void SetFeatureLine(ObjectId featureLineId)
+  M Void SetTargets(SubassemblyTargetInfoCollection updatedTargets)
+  M Void SetTransitions(IEnumerable<CorridorTransitionSet> transitionSets)
+  M Double[] SortedStations()
+  M Void UpdateStation(Double station)
+  P ObjectId AlignmentId {get;}
+  P AppliedAssembly AppliedAssembly[Double station] {get;}
+  P AppliedAssembly AppliedAssembly[Int32 index] {get;}
+  P Guid baselineGUID {get;}
+  P BaselineRegionCollection BaselineRegions {get;}
+  P CorridorBaselineType BaselineType {get;}
+  P Boolean IsProcessed {get;}
+  P BaselineFeatureLines MainBaselineFeatureLines {get;}
+  P String Name {get;set;}
+  P Boolean NeedsProcessing {get;set;}
+  P BaselineFeatureLinesCollection OffsetBaselineFeatureLinesCol {get;}
+  P ObjectId ProfileId {get;}
+== Autodesk.Civil.DatabaseServices.BaselineCollection : Autodesk.Civil.CivilWrapper<AeccDbCorridor>
+  M Baseline Add(String baselineName, ObjectId featureLineId)
+  M Baseline Add(String baselineName, ObjectId alignmentId, ObjectId profileId)
+  M Baseline Add(String baselineName, String alignmentName, String profileName)
+  M Baseline AddGUIDBaseline(String baselineName, ObjectId alignmentId, ObjectId profileId)
+  M IEnumerator<Baseline> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M Boolean Remove(Baseline baseline)
+  M Boolean Remove(String baselineName)
+  M Void RemoveAt(Int32 index)
+  P ObjectId CorridorId {get;}
+  P Int32 Count {get;}
+  P Baseline Item[Guid baselineGUID] {get;}
+  P Baseline Item[String baselineName] {get;}
+  P Baseline Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.BaselineRegion : Autodesk.Civil.CivilWrapper<AeccDbCorridor>
+  M Double[] AdditionalStations()
+  M Void AddStation(Double rawStation, String description)
+  M Void ClearAdditionalStations()
+  M Void DeleteStation(Double rawStation)
+  M ObjectIdCollection ExportSolids(ExportCorridorSolidsParams params, Double startStation, Double endStation, Database targetDatabase)
+  M ObjectIdCollection ExportSolids(ExportCorridorSolidsParams params, Database database)
+  M OverriddenStationInfo[] GetOverriddenStations()
+  M SubassemblyTargetInfoCollection GetTargets()
+  M Void Match(BaselineRegion sourceRegion, RegionMatchType matchOption)
+  M Void Merge(BaselineRegion firstRegion, BaselineRegion lastRegion)
+  M Boolean RemoveOverriddenStation(Double station)
+  M Void SetTargets(SubassemblyTargetInfoCollection updatedTargets)
+  M Double[] SortedStations()
+  M BaselineRegion Split(Double splitStation)
+  P AppliedAssemblyCollection AppliedAssemblies {get;}
+  P AppliedAssemblySetting AppliedAssemblySetting {get;}
+  P ObjectId AssemblyId {get;set;}
+  P ObjectId CorridorId {get;}
+  P Double EndStation {get;set;}
+  P Boolean IsProcessed {get;}
+  P String Name {get;set;}
+  P Boolean NeedsProcessing {get;set;}
+  P OffsetBaselineCollection OffsetBaselines {get;}
+  P Guid RegionGUID {get;}
+  P Double StartStation {get;set;}
+== Autodesk.Civil.DatabaseServices.BaselineRegionCollection : Autodesk.Civil.CivilWrapper<AeccDbCorridor>
+  M BaselineRegion Add(String regionName, ObjectId assemblyId, Double startStation, Double endStation)
+  M BaselineRegion Add(String regionName, String assemblyName, Double startStation, Double endStation)
+  M BaselineRegion Add(String regionName, ObjectId assemblyId)
+  M BaselineRegion Add(String regionName, String assemblyName)
+  M BaselineRegion AddRegion(String regionName, ObjectId assemblyId)
+  M BaselineRegion AddRegion(String regionName, String assemblyName)
+  M IEnumerator<BaselineRegion> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M Int32 IndexOf(BaselineRegion region)
+  M Boolean Remove(BaselineRegion region)
+  M Boolean Remove(String regionName)
+  M Void RemoveAt(Int32 index)
+  P ObjectId CorridorId {get;}
+  P Int32 Count {get;}
+  P BaselineRegion Item[Guid regionGUID] {get;}
+  P BaselineRegion Item[String regionName] {get;}
+  P BaselineRegion Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.CogoPoint : Autodesk.AutoCAD.DatabaseServices.Entity
+  M Void ApplyDescriptionKeys()
+  M Void ClearAllLabelTextComponentOverrides()
+  M Void ClearLabelTextComponentOverrides(ObjectId labelComponentId)
+  M ObjectIdCollection GetLabelTextComponentIds()
+  M TextJustificationType GetLabelTextComponentJustificationOverride(ObjectId labelComponentId)
+  M String GetLabelTextComponentOverride(ObjectId labelComponentId)
+  M String GetUDPValue(UDPEnumeration udp)
+  M Boolean GetUDPValue(UDPBoolean udp)
+  M Int32 GetUDPValue(UDPInteger udp)
+  M String GetUDPValue(UDPString udp)
+  M Double GetUDPValue(UDPDouble udp)
+  M Boolean IsLabelTextComponentOverriden(ObjectId labelComponentId)
+  M UInt32 Renumber(UInt32 newPointNumber, PointNumberResolveType resolveType)
+  M UInt32 Renumber(UInt32 newPointNumber)
+  M Void ResetLabel()
+  M Void ResetLabelLocation()
+  M Void ResetLabelRotation()
+  M Void SetLabelTextComponentJustificationOverride(ObjectId labelComponentId, TextJustificationType textJustificationType)
+  M Void SetLabelTextComponentOverride(ObjectId labelComponentId, String textOverride)
+  M Void SetUDPValue(UDPEnumeration udp, String value)
+  M Void SetUDPValue(UDPBoolean udp, Boolean value)
+  M Void SetUDPValue(UDPInteger udp, Int32 value)
+  M Void SetUDPValue(UDPString udp, String value)
+  M Void SetUDPValue(UDPDouble udp, Double value)
+  P Double Convergence {get;}
+  P String DescriptionFormat {get;set;}
+  P Double Easting {get;set;}
+  P Double Elevation {get;set;}
+  P Double ElevationOverride {get;}
+  P String FullDescription {get;}
+  P String FullDescriptionOverride {get;}
+  P Double GridEasting {get;set;}
+  P Double GridNorthing {get;set;}
+  P Boolean IsCheckedOut {get;}
+  P Boolean IsLabelDragged {get;}
+  P Boolean IsLabelPinned {get;set;}
+  P Boolean IsLabelVisible {get;set;}
+  P Boolean IsLocked {get;set;}
+  P Boolean IsMovable {get;}
+  P Boolean IsProjectPoint {get;}
+  P Boolean IsSurveyPoint {get;}
+  P Point3d LabelLocation {get;set;}
+  P Double LabelRotation {get;set;}
+  P ObjectId LabelStyleId {get;set;}
+  P ObjectId LabelStyleIdOverride {get;}
+  P Double Latitude {get;set;}
+  P LeaderAttachmentBehaviorType LeaderAttachment {get;set;}
+  P LeaderTailVisibilityType LeaderTailVisibility {get;set;}
+  P LeaderVisibilityType LeaderVisibility {get;set;}
+  P Point3d Location {get;}
+  P Double Longitude {get;set;}
+  P Double MarkerRotation {get;set;}
+  P Double Northing {get;set;}
+  P String PointName {get;set;}
+  P UInt32 PointNumber {get;set;}
+  P ObjectId PrimaryPointGroupId {get;}
+  P Int32 ProjectVersion {get;}
+  P String RawDescription {get;set;}
+  P String RawDescriptionOverride {get;}
+  P Double Scale {get;}
+  P Double ScaleXY {get;set;}
+  P Double ScaleZ {get;set;}
+  P Boolean ShowToolTip {get;set;}
+  P ObjectId StyleId {get;set;}
+  P ObjectId StyleIdOverride {get;}
+== Autodesk.Civil.DatabaseServices.CogoPointCollection : System.Object
+  M ObjectIdCollection Add(Point3dCollection locations, String desc, Boolean useDescriptionKey, Boolean matchOnParams, Boolean useNextPointNumSetting)
+  M ObjectIdCollection Add(Point3dCollection locations, String desc, Boolean useNextPointNumSetting)
+  M ObjectIdCollection Add(Point3dCollection locations, Boolean useNextPointNumSetting)
+  M ObjectId Add(Point3d location, String desc, Boolean useDescriptionKey, Boolean matchOnParams, Boolean useNextPointNumSetting)
+  M ObjectId Add(Point3d location, String desc, Boolean useNextPointNumSetting)
+  M ObjectId Add(Point3d location, Boolean useNextPointNumSetting)
+  M Void Clear()
+  M Boolean Contains(UInt32 pointNumber)
+  M static UInt32 ExportPoints(String pointFileFullName, PointFileFormat fileFormat, Boolean useAdjustedElevation, Boolean shouldTransformCoordinate, Boolean shouldExpandCoordinateData, ObjectId pointGroupId)
+  M static UInt32 ExportPoints(String pointFileFullName, PointFileFormat fileFormat, Boolean useAdjustedElevation, Boolean shouldTransformCoordinate, Boolean shouldExpandCoordinateData)
+  M static UInt32 ExportPoints(String pointFileFullName, PointFileFormat fileFormat, ObjectId pointGroupId)
+  M static UInt32 ExportPoints(String pointFileFullName, PointFileFormat fileFormat)
+  M static CogoPointCollection GetCogoPoints(Database pDatabase)
+  M IEnumerator<ObjectId> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M ObjectId GetPointByPointNumber(UInt32 pointNumber)
+  M static UInt32 ImportPoints(String pointFileFullName, PointFileFormat fileFormat, Boolean useAdjustedElevation, Boolean shouldTransformCoordinate, Boolean shouldExpandCoordinateData, ObjectId pointGroupId)
+  M static UInt32 ImportPoints(String pointFileFullName, PointFileFormat fileFormat, Boolean useAdjustedElevation, Boolean shouldTransformCoordinate, Boolean shouldExpandCoordinateData)
+  M static UInt32 ImportPoints(String pointFileFullName, PointFileFormat fileFormat, ObjectId pointGroupId)
+  M static UInt32 ImportPoints(String pointFileFullName, PointFileFormat fileFormat)
+  M Void Remove(ObjectId pointId)
+  M Void Remove(UInt32 pointNumber)
+  M ObjectIdCollection SetDescriptionFormat(IEnumerable<ObjectId> pointIds, IEnumerable<String> values)
+  M ObjectIdCollection SetDescriptionFormat(IEnumerable<ObjectId> pointIds, String descFormat)
+  M ObjectId SetDescriptionFormat(ObjectId pointId, String descFormat)
+  M ObjectIdCollection SetEasting(IEnumerable<ObjectId> pointIds, IEnumerable<Double> values)
+  M ObjectIdCollection SetEasting(IEnumerable<ObjectId> pointIds, Double easting)
+  M ObjectId SetEasting(ObjectId pointId, Double easting)
+  M ObjectIdCollection SetElevation(IEnumerable<ObjectId> pointIds, IEnumerable<Double> elevations)
+  M ObjectIdCollection SetElevation(IEnumerable<ObjectId> pointIds, Double elevation)
+  M ObjectId SetElevation(ObjectId pointId, Double elevation)
+  M ObjectIdCollection SetElevationByOffset(IEnumerable<ObjectId> pointIds, IEnumerable<Double> offsets)
+  M ObjectIdCollection SetElevationByOffset(IEnumerable<ObjectId> pointIds, Double offset)
+  M ObjectId SetElevationByOffset(ObjectId pointId, Double offset)
+  M ObjectIdCollection SetElevationBySurface(IEnumerable<ObjectId> pointIds, ObjectId surfaceId)
+  M ObjectId SetElevationBySurface(ObjectId pointId, ObjectId surfaceId)
+  M ObjectIdCollection SetIsLocked(IEnumerable<ObjectId> pointIds, IEnumerable<Boolean> values)
+  M ObjectIdCollection SetIsLocked(IEnumerable<ObjectId> pointIds, Boolean isLocked)
+  M ObjectId SetIsLocked(ObjectId pointId, Boolean isLocked)
+  M ObjectIdCollection SetLabelRotation(IEnumerable<ObjectId> pointIds, IEnumerable<Double> values)
+  M ObjectIdCollection SetLabelRotation(IEnumerable<ObjectId> pointIds, Double rotation)
+  M ObjectId SetLabelRotation(ObjectId pointId, Double rotation)
+  M ObjectIdCollection SetLabelStyleId(IEnumerable<ObjectId> pointIds, IEnumerable<ObjectId> styleIds)
+  M ObjectIdCollection SetLabelStyleId(IEnumerable<ObjectId> pointIds, ObjectId styleId)
+  M ObjectId SetLabelStyleId(ObjectId pointId, ObjectId styleId)
+  M ObjectIdCollection SetMarkerRotation(IEnumerable<ObjectId> pointIds, IEnumerable<Double> values)
+  M ObjectIdCollection SetMarkerRotation(IEnumerable<ObjectId> pointIds, Double rotation)
+  M ObjectId SetMarkerRotation(ObjectId pointId, Double rotation)
+  M ObjectIdCollection SetNorthing(IEnumerable<ObjectId> pointIds, IEnumerable<Double> values)
+  M ObjectIdCollection SetNorthing(IEnumerable<ObjectId> pointIds, Double northing)
+  M ObjectId SetNorthing(ObjectId pointId, Double northing)
+  M ObjectIdCollection SetPointName(IEnumerable<ObjectId> pointIds, IEnumerable<String> values)
+  M ObjectId SetPointName(ObjectId pointId, String name)
+  M ObjectIdCollection SetPointNumber(IEnumerable<ObjectId> pointIds, Int32 additiveFactor)
+  M ObjectId SetPointNumber(ObjectId pointId, UInt32 pointNumber)
+  M ObjectIdCollection SetRawDescription(IEnumerable<ObjectId> pointIds, IEnumerable<String> rawDescs)
+  M ObjectIdCollection SetRawDescription(IEnumerable<ObjectId> pointIds, String rawDesc)
+  M ObjectId SetRawDescription(ObjectId pointId, String rawDesc)
+  M ObjectIdCollection SetScaleXY(IEnumerable<ObjectId> pointIds, IEnumerable<Double> values)
+  M ObjectIdCollection SetScaleXY(IEnumerable<ObjectId> pointIds, Double scale)
+  M ObjectId SetScaleXY(ObjectId pointId, Double scale)
+  M ObjectIdCollection SetScaleZ(IEnumerable<ObjectId> pointIds, IEnumerable<Double> values)
+  M ObjectIdCollection SetScaleZ(IEnumerable<ObjectId> pointIds, Double scale)
+  M ObjectId SetScaleZ(ObjectId pointId, Double scale)
+  M ObjectIdCollection SetShowTooltips(IEnumerable<ObjectId> pointIds, IEnumerable<Boolean> values)
+  M ObjectIdCollection SetShowTooltips(IEnumerable<ObjectId> pointIds, Boolean showTooltips)
+  M ObjectId SetShowTooltips(ObjectId pointId, Boolean showTooltips)
+  M ObjectIdCollection SetStyleId(IEnumerable<ObjectId> pointIds, IEnumerable<ObjectId> styleIds)
+  M ObjectIdCollection SetStyleId(IEnumerable<ObjectId> pointIds, ObjectId styleId)
+  M ObjectId SetStyleId(ObjectId pointId, ObjectId styleId)
+  P UInt32 Count {get;}
+== Autodesk.Civil.DatabaseServices.Corridor : Autodesk.Civil.DatabaseServices.Entity
+  M ObjectId ExportFeatureLinesAsCogoPoints(String pointGroupName, CorridorPointCodeSelector codes, ValueType baseLineRange)
+  M ObjectId ExportFeatureLinesAsCogoPoints(String pointGroupName, CorridorPointCodeSelector codes)
+  M ObjectIdCollection ExportSolids(ExportCorridorSolidsParams params, Database targetDatabase)
+  M String[] GetLinkCodes()
+  M String[] GetPointCodes()
+  M String[] GetShapeCodes()
+  M SubassemblyTargetInfoCollection GetTargets()
+  M Void Rebuild()
+  M Void SetTargets(SubassemblyTargetInfoCollection updatedTargets)
+  P BaselineCollection Baselines {get;}
+  P ObjectId CodeSetStyleId {get;set;}
+  P String CodeSetStyleName {get;set;}
+  P CorridorSurfaceCollection CorridorSurfaces {get;}
+  P FeatureLineCodeInfoCollection FeatureLineCodeInfos {get;}
+  P Boolean IsOutOfDate {get;}
+  P Double MaximumTriangleSideLength {get;set;}
+  P Boolean RebuildAutomatic {get;set;}
+  P CorridorRegionLockType RegionLockMode {get;set;}
+  P CorridorSlopePatternCollection SlopePatterns {get;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+== Autodesk.Civil.DatabaseServices.CorridorCollection : Autodesk.Civil.CivilWrapper<AcDbDatabase>
+  M ObjectId Add(String corridorName, String baselineName, ObjectId featureLineId, String baselineRegionName, ObjectId assemblyId)
+  M ObjectId Add(String corridorName, String baselineName, ObjectId featureLineId)
+  M ObjectId Add(String corridorName, String baselineName, ObjectId alignmentId, ObjectId profileId, String baselineRegionName, ObjectId assemblyId)
+  M ObjectId Add(String corridorName, String baselineName, ObjectId alignmentId, ObjectId profileId)
+  M ObjectId Add(String corridorName)
+  M IEnumerator<ObjectId> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M Void RebuildAll()
+  P Int32 Count {get;}
+  P ObjectId Item[String corridorName] {get;}
+  P ObjectId Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.CorridorSurface : Autodesk.Civil.CivilWrapper<AeccDbCorridor>
+  M Void AddFeatureLineCode(String codeName)
+  M Void AddLinkCode(String codeName, Boolean addAsBreakLine)
+  M Boolean FeatureLineCodeIsBreak(String name)
+  M String[] FeatureLineCodes()
+  M Double FindElevationAtXY(Double x, Double y)
+  M Point3dCollection GetSampleElevations(Double startX, Double startY, Double endX, Double endY)
+  M Boolean IsLinkCodeAsBreakLine(String codeName)
+  M String[] LinkCodes()
+  M String[] PointCodes()
+  M Boolean RemoveFeatureLineCode(String codeName)
+  M Boolean RemoveLinkCode(String codeName)
+  M Void SetLinkCodeAsBreakLine(String codeName, Boolean asBreakLine)
+  P CorridorSurfaceBoundaryCollection Boundaries {get;}
+  P ObjectId CorridorId {get;}
+  P String Description {get;set;}
+  P Boolean IsBuild {get;set;}
+  P Boolean IsDraw {get;}
+  P CorridorSurfaceMaskCollection Masks {get;}
+  P String Name {get;set;}
+  P OverhangCorrectionType OverhangCorrection {get;set;}
+  P ObjectId RenderMaterialId {get;set;}
+  P ObjectId SectionStyleId {get;}
+  P ObjectId SurfaceId {get;}
+  P ObjectId SurfaceStyleId {get;set;}
+== Autodesk.Civil.DatabaseServices.CorridorSurfaceCollection : Autodesk.Civil.CivilWrapper<AeccDbCorridor>
+  M CorridorSurface Add(String corridorSurfaceName)
+  M CorridorSurface Add(String corridorSurfaceName, ObjectId styleId)
+  M IEnumerator<CorridorSurface> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M Boolean Remove(CorridorSurface corridorSurface)
+  M Boolean Remove(String corridorSurfaceName)
+  M Void RemoveAt(Int32 index)
+  M String[] SurfaceNames()
+  P ObjectId CorridorId {get;}
+  P Int32 Count {get;}
+  P CorridorSurface Item[String surfaceName] {get;}
+  P CorridorSurface Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.Entity : Autodesk.Aec.DatabaseServices.Entity
+  M UInt64 ComputeFingerPrint()
+  M DataShortcutKey GetReferenceInfo()
+  P Object Application {get;}
+  P String Description {get;set;}
+  P String DisplayName {get;}
+  P Object Document {get;}
+  P UInt64 FingerPrint {get;set;}
+  P ObjectId FolderId {get;}
+  P Boolean IsReferencedSourceExisting {get;}
+  P Boolean IsReferenceObject {get;}
+  P Boolean IsReferenceStale {get;}
+  P Boolean IsReferenceSubObject {get;}
+  P Boolean IsReferenceValid {get;}
+  P Boolean IsUsed {get;}
+  P String Name {get;set;}
+  P Boolean ShowToolTip {get;set;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+== Autodesk.Civil.DatabaseServices.Feature : Autodesk.Civil.DatabaseServices.Entity
+  M static Boolean IsEditableFeature(ObjectId featureId)
+  P Boolean IsEditable {get;}
+== Autodesk.Civil.DatabaseServices.FeatureLabel : Autodesk.Civil.DatabaseServices.Label
+== Autodesk.Civil.DatabaseServices.FeatureLine : Autodesk.Civil.DatabaseServices.Feature
+  M Void AssignElevationsFromSurface(ObjectId surfaceId, Boolean bIncIntermediate)
+  M static ObjectId Create(String featurelineName, ObjectId idCreatedFrom)
+  M static ObjectId Create(String featurelineName, ObjectId idCreatedFrom, ObjectId siteId)
+  M Void DeleteElevationPoint(Point3d pt)
+  M Void DeleteElevationPoints(Point3dCollection cliPoints)
+  M Void DeletePIPoint(Point3d pt)
+  M Double Get3dDistanceAtPoint(Point3d pt)
+  M Double GetBulge(Int32 index)
+  M Double GetCurveRadius(Int32 index)
+  M Double GetDeflectionAngleAtPoint(Point3d pt)
+  M Double GetGradeInAtPoint(Point3d pt)
+  M Double GetGradeOutAtPoint(Point3d pt)
+  M Double GetPointRelativeElevation(Point3d pt)
+  M Point3dCollection GetPoints(FeatureLinePointType type)
+  M Void InsertElevationPoint(Point3d pt)
+  M Void InsertElevationPoints(Point3dCollection cliPoints)
+  M Void InsertPIPoint(Point3d pt)
+  M Boolean IsElevationRelativeToSurface(Point3d pt)
+  M static Void MoveToNoneSite(ObjectId featureLineId)
+  M static Void MoveToSite(ObjectId featureLineId, ObjectId destinationSiteId)
+  M Void SetBulge(Int32 index, Double bugle)
+  M Void SetCurveRadius(Int32 index, Double radius)
+  M Void SetPointElevation(Int32 index, Double elevation)
+  M Void SetPointRelativeElevation(Point3d pt, Boolean relative, Double elevation)
+  P Int32 CurvesCount {get;}
+  P Int32 ElevationPointsCount {get;}
+  P Double Length2D {get;}
+  P Double Length3D {get;}
+  P Double MaxElevation {get;}
+  P Double MaxGrade {get;}
+  P Double MinElevation {get;}
+  P Double MinGrade {get;}
+  P Int32 PIPointsCount {get;}
+  P Int32 PointsCount {get;}
+  P ObjectId RelativeSurfaceId {get;set;}
+  P ObjectId SiteId {get;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+== Autodesk.Civil.DatabaseServices.GeneralSegmentLabel : Autodesk.Civil.DatabaseServices.Label
+  M static ObjectId Create(ObjectId featureId, Double ratio)
+  M static ObjectId Create(ObjectId featureId, Double ratio, ObjectId lineLabelStyleId, ObjectId curveLabelStyleId)
+  M static ObjectIdCollection GetAvailableLabelIds(ObjectId featureId)
+  P ObjectId CurveLabelStyleId {get;set;}
+  P ObjectId LineLabelStyleId {get;set;}
+  P Double Ratio {get;set;}
+  P String StyleName {get;set;}
+== Autodesk.Civil.DatabaseServices.GeneralSurfaceProperties : System.Object
+  P Double MaximumCoordinateX {get;}
+  P Double MaximumCoordinateY {get;}
+  P Double MaximumElevation {get;}
+  P Double MeanElevation {get;}
+  P Double MinimumCoordinateX {get;}
+  P Double MinimumCoordinateY {get;}
+  P Double MinimumElevation {get;}
+  P Int32 NumberOfPoints {get;}
+  P Int32 RevisionNumber {get;}
+== Autodesk.Civil.DatabaseServices.GridSurface : Autodesk.Civil.DatabaseServices.Surface
+  M SurfaceOperationAddGridPoint AddPoint(GridLocation location, Double elevation)
+  M static ObjectId Create(String surfaceName, Double spacingX, Double spacingY, Double orientation, ObjectId styleId)
+  M static ObjectId Create(Database database, String surfaceName, Double spacingX, Double spacingY, Double orientation)
+  M static ObjectId CreateFromDEM(String DEMFileName, ObjectId styleId)
+  M static ObjectId CreateFromDEM(Database database, String DEMFileName)
+  M SurfaceOperationDeleteLine DeleteLine(GridSurfaceEdge edge)
+  M SurfaceOperationDeleteMultipleLines DeleteLines(IEnumerable<GridSurfaceEdge> edges)
+  M SurfaceOperationDeleteGridPoint DeletePoint(GridLocation location)
+  M SurfaceOperationDeleteMultipleGridPoints DeletePoints(IEnumerable<GridLocation> locations)
+  M ObjectIdCollection ExtractBorder(SurfaceExtractionSettingsType settingsType)
+  M ObjectIdCollection ExtractContours(Double interval, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractContours(Double interval)
+  M ObjectIdCollection ExtractContours(Double lowElev, Double highElev, Double interval, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractContours(Double lowElev, Double highElev, Double interval)
+  M ObjectIdCollection ExtractContoursAt(Double elevation, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractContoursAt(Double elevation)
+  M ObjectIdCollection ExtractGridded(SurfaceExtractionSettingsType settingsType)
+  M ObjectIdCollection ExtractMajorContours(SurfaceExtractionSettingsType settingsType, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractMajorContours(SurfaceExtractionSettingsType settingsType)
+  M ObjectIdCollection ExtractMinorContours(SurfaceExtractionSettingsType settingsType, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractMinorContours(SurfaceExtractionSettingsType settingsType)
+  M ObjectIdCollection ExtractWatershed(SurfaceExtractionSettingsType settingsType)
+  M GridSurfaceCell FindCellAtXY(Double x, Double y)
+  M GridSurfaceEdge FindEdgeAtXY(Double x, Double y)
+  M GridSurfaceVertex FindVertexAtXY(Double x, Double y)
+  M GridSurfaceCellCollection GetCells(Boolean includeInvisible)
+  M GridSurfaceProperties GetGridProperties()
+  M TerrainSurfaceProperties GetTerrainProperties()
+  M GridSurfaceVertexCollection GetVertices(Boolean includeInvisible)
+  M SurfaceOperationModifyMultipleGridPointsElevation RaisePoints(IEnumerable<GridLocation> locations, Double deltaElevation)
+  M SurfaceOperationRaise RaiseSurface(Double deltaElevation)
+  M Point3dCollection SampleElevations(Point3d pt1, Point3d pt2)
+  M Point3dCollection SampleElevations(ObjectId curveId)
+  M SurfaceOperationModifyGridPointElevation SetPointElevation(GridLocation location, Double newElevation)
+  M SurfaceOperationModifyMultipleGridPointsElevation SetPointsElevation(IEnumerable<GridLocation> locations, Double newElevation)
+  P GridSurfaceCellCollection Cells {get;}
+  P SurfaceDefinitionDEMFiles DEMFilesDefinition {get;}
+  P GridSurfaceVertexCollection Vertices {get;}
+== Autodesk.Civil.DatabaseServices.GridVolumeSurface : Autodesk.Civil.DatabaseServices.Surface
+  M static ObjectId Create(String surfaceName, ObjectId baseSurfaceId, ObjectId comparisonSurfaceId, Double spacingX, Double spacingY, Double orientation, ObjectId styleId)
+  M static ObjectId Create(String surfaceName, ObjectId baseSurfaceId, ObjectId comparisonSurfaceId, Double spacingX, Double spacingY, Double orientation)
+  M GridSurfaceProperties GetGridProperties()
+  M VolumeSurfaceProperties GetVolumeProperties()
+  P Double CutFactor {get;set;}
+  P Double FillFactor {get;set;}
+== Autodesk.Civil.DatabaseServices.Label : Autodesk.Civil.DatabaseServices.LabelBase
+  M Void ClearAllTextComponentOverrides()
+  M ObjectId GetReferenceTextTarget(ObjectId referenceTextComponentId)
+  M ObjectIdCollection GetTextComponentIds()
+  M TextJustificationType GetTextComponentJustificationOverride(ObjectId labelStyleComponentId)
+  M String GetTextComponentOverride(ObjectId labelStyleComponentId)
+  M Boolean IsTextComponentOverriden(ObjectId labelStyleComponentId)
+  M Void Reset()
+  M Void ResetLocation()
+  M Void ResetProperties()
+  M Void SetReferenceTextTarget(ObjectId referenceTextComponentId, ObjectId referenceObjectId)
+  M Void SetTextComponentJustificationOverride(ObjectId labelStyleComponentId, TextJustificationType textJustificationType)
+  M Void SetTextComponentOverride(ObjectId labelStyleComponentId, String textOverride, TextJustificationType textJustificationType)
+  M Void SetTextComponentOverride(ObjectId labelStyleComponentId, String textOverride)
+  P AnchorInfo AnchorInfo {get;}
+  P Double AnchorMarkerRotationAngle {get;set;}
+  P ObjectId AnchorMarkerStyleId {get;set;}
+  P Boolean CanRotate {get;}
+  P AnchorInfo DimensionAnchorInfo {get;}
+  P DimensionAnchorOptionType DimensionAnchorOption {get;set;}
+  P Double DimensionAnchorValue {get;set;}
+  P Boolean Dragged {get;}
+  P Vector3d DraggedOffset {get;set;}
+  P Boolean Flipped {get;set;}
+  P Point3d LabelLocation {get;set;}
+  P LeaderAttachmentBehaviorType LeaderAttachment {get;set;}
+  P LeaderTailVisibilityType LeaderTailVisibility {get;set;}
+  P LeaderVisibilityType LeaderVisibility {get;set;}
+  P Boolean Pinned {get;set;}
+  P Boolean Reversed {get;set;}
+  P Double RotationAngle {get;set;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+== Autodesk.Civil.DatabaseServices.LabelBase : Autodesk.Civil.DatabaseServices.Entity
+  P Boolean AllowsAnchorMarker {get;}
+  P Boolean AllowsDimensionAnchors {get;}
+  P Boolean AllowsDragging {get;}
+  P Boolean AllowsFlipping {get;}
+  P Boolean AllowsLeaderAttachment {get;}
+  P Boolean AllowsPinning {get;}
+  P Boolean AllowsReversing {get;}
+  P StaggerLabelType AutoStagger {get;set;}
+  P DimensionAnchorOptionType DefaultDimensionAnchorOption {get;set;}
+  P Double DefaultDimensionAnchorValue {get;set;}
+  P ObjectId FeatureId {get;}
+  P LabelType LabelType {get;}
+  P LabelMaskType Mask {get;set;}
+  P LabelRotationType RotationType {get;}
+  P ObjectId ViewId {get;}
+== Autodesk.Civil.DatabaseServices.LabelGroup : Autodesk.Civil.DatabaseServices.LabelBase
+  M LabelGroupSubEntity GetAt(UInt32 index)
+  M Void ResetAllSubCommonLabelLocations()
+  M Void ResetAllSubCommonLabelProperties()
+  M Void ResetAllSubCommonLabels()
+  P DimensionAnchorOptionType DefaultDimensionAnchorOption {get;set;}
+  P Double DefaultDimensionAnchorValue {get;set;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+  P IList<LabelGroupSubEntity> SubEntities {get;}
+  P UInt32 SubEntityCount {get;}
+== Autodesk.Civil.DatabaseServices.LabelGroupSubEntity : System.Object
+  M Void ClearAllTextComponentOverrides()
+  M ObjectId GetReferenceTextTarget(ObjectId referenceTextComponentId)
+  M ObjectIdCollection GetTextComponentIds()
+  M TextJustificationType GetTextComponentJustificationOverride(ObjectId labelStyleComponentId)
+  M String GetTextComponentOverride(ObjectId labelStyleComponentId)
+  M Boolean IsTextComponentOverriden(ObjectId newVal)
+  M Void Reset()
+  M Void ResetLocation()
+  M Void ResetProperties()
+  M Void SetReferenceTextTarget(ObjectId referenceTextComponentId, ObjectId referenceObjectId)
+  M Void SetTextComponentJustificationOverride(ObjectId labelStyleComponentId, TextJustificationType textJustificationType)
+  M Void SetTextComponentOverride(ObjectId labelStyleComponentId, String textOverride, TextJustificationType textJustificationType)
+  M Void SetTextComponentOverride(ObjectId labelStyleComponentId, String textOverride)
+  P Boolean AllowsAnchorMarker {get;}
+  P Boolean AllowsDimensionAnchors {get;}
+  P Boolean AllowsDragging {get;}
+  P Boolean AllowsFlipping {get;}
+  P Boolean AllowsLeaderAttachment {get;}
+  P Boolean AllowsPinning {get;}
+  P Boolean AllowsReversing {get;}
+  P AnchorInfo AnchorInfo {get;}
+  P Double AnchorMarkerRotationAngle {get;set;}
+  P ObjectId AnchorMarkerStyleId {get;set;}
+  P Boolean CanRotate {get;}
+  P DimensionAnchorOptionType DefaultDimensionAnchorOption {get;set;}
+  P Double DefaultDimensionAnchorValue {get;set;}
+  P AnchorInfo DimensionAnchorInfo {get;}
+  P DimensionAnchorOptionType DimensionAnchorOption {get;set;}
+  P Double DimensionAnchorValue {get;set;}
+  P Boolean Dragged {get;}
+  P Vector3d DraggedOffset {get;set;}
+  P Boolean Flipped {get;set;}
+  P UInt32 Index {get;}
+  P Point3d LabelLocation {get;set;}
+  P LeaderAttachmentBehaviorType LeaderAttachment {get;set;}
+  P LeaderTailVisibilityType LeaderTailVisibility {get;set;}
+  P LeaderVisibilityType LeaderVisibility {get;set;}
+  P LabelGroup Parent {get;}
+  P Boolean Pinned {get;set;}
+  P Boolean Reversed {get;set;}
+  P Double RotationAngle {get;set;}
+  P LabelRotationType RotationType {get;}
+  P ObjectId StyleId {get;set;}
+  P Boolean Visibility {get;set;}
+== Autodesk.Civil.DatabaseServices.Network : Autodesk.Civil.DatabaseServices.GeoEntity
+  M ObjectId AddCurvePipe(ObjectId pipeFamilyId, ObjectId pipeSizeId, PipeCurveGeometry curveGeometry, Boolean applyRules)
+  M Void AddCurvePipe(ObjectId pipeFamilyId, ObjectId pipeSizeId, Curve3d curve, Boolean clockwise, ObjectId& newPipeId, Boolean applyRules)
+  M Void AddLinePipe(ObjectId pipeFamilyId, ObjectId pipeSizeId, LineSegment3d line, ObjectId& newPipeId, Boolean applyRules)
+  M Void AddStructure(ObjectId structureFamilyId, ObjectId structureSizeId, Point3d location, Double rotation, ObjectId& newStructureId, Boolean applyRules)
+  M Void AddStructure(ObjectId structureId)
+  M Void BreakPipe(ObjectId pipeIdToBreak, Point3d breakPoint, ObjectId existingStructureId, ObjectId& newPipeId)
+  M static ObjectId Create(CivilDocument document, String& networkName)
+  M static ObjectIdCollection FindShortestNetworkPath(ObjectId startPartId, ObjectId endPartId, Double& minLength)
+  M ObjectIdCollection GetPipeIds()
+  M ObjectIdCollection GetSpanningPipePlanLabelIds()
+  M ObjectIdCollection GetSpanningPipeProfileLabelIds()
+  M ObjectIdCollection GetStructureIds()
+  M Void MoveParts(ObjectIdCollection partIds, ObjectId dstNetworkId)
+  P String ModifiedPipeNetworkSectionLayerName {get;}
+  P String ModifiedPipePlanLayerName {get;}
+  P String ModifiedPipeProfileLayerName {get;}
+  P String ModifiedStructurePlanLayerName {get;}
+  P String ModifiedStructureProfileLayerName {get;}
+  P ObjectId PartsListId {get;set;}
+  P String PartsListName {get;set;}
+  P String PipeNameTemplate {get;set;}
+  P ObjectId PipeNetworkSectionLayerId {get;set;}
+  P String PipeNetworkSectionLayerName {get;set;}
+  P ObjectId PipePlanLabelStyleId {get;set;}
+  P String PipePlanLabelStyleName {get;set;}
+  P ObjectId PipePlanLayerId {get;set;}
+  P String PipePlanLayerName {get;set;}
+  P ObjectId PipeProfileLabelStyleId {get;set;}
+  P String PipeProfileLabelStyleName {get;set;}
+  P ObjectId PipeProfileLayerId {get;set;}
+  P String PipeProfileLayerName {get;set;}
+  P ObjectId ReferenceAlignmentId {get;set;}
+  P String ReferenceAlignmentName {get;set;}
+  P ObjectId ReferenceSurfaceId {get;set;}
+  P String ReferenceSurfaceName {get;set;}
+  P String StructureNameTemplate {get;set;}
+  P ObjectId StructurePlanLabelStyleId {get;set;}
+  P String StructurePlanLabelStyleName {get;set;}
+  P ObjectId StructurePlanLayerId {get;set;}
+  P String StructurePlanLayerName {get;set;}
+  P ObjectId StructureProfileLabelStyleId {get;set;}
+  P String StructureProfileLabelStyleName {get;set;}
+  P ObjectId StructureProfileLayerId {get;set;}
+  P String StructureProfileLayerName {get;set;}
+== Autodesk.Civil.DatabaseServices.NoteLabel : Autodesk.Civil.DatabaseServices.Label
+  M static ObjectId Create(Database database, Point3d location)
+  M static ObjectId Create(Point3d location, ObjectId labelStyleId, ObjectId markerStyleId)
+  M static ObjectIdCollection GetAvailableLabelIds(Database database)
+== Autodesk.Civil.DatabaseServices.Parcel : Autodesk.Civil.DatabaseServices.Entity
+  M ObjectIdCollection GetAvailableParcelAreaLabelIds()
+  M String GetUDPValue(UDPEnumeration udp)
+  M Boolean GetUDPValue(UDPBoolean udp)
+  M Int32 GetUDPValue(UDPInteger udp)
+  M String GetUDPValue(UDPString udp)
+  M Double GetUDPValue(UDPDouble udp)
+  M Void ResetAreaSelectionLabel()
+  M Void SetUDPValue(UDPEnumeration udp, String value)
+  M Void SetUDPValue(UDPBoolean udp, Boolean value)
+  M Void SetUDPValue(UDPInteger udp, Int32 value)
+  M Void SetUDPValue(UDPString udp, String value)
+  M Void SetUDPValue(UDPDouble udp, Double value)
+  P String Address {get;set;}
+  P Point3d AreaLocation {get;set;}
+  P Point3d AreaSelectionLabelLocation {get;set;}
+  P ObjectId AreaSelectionLabelStyleId {get;set;}
+  P Point3d Centroid {get;}
+  P Boolean IsAreaSelectionLabelPinned {get;set;}
+  P Int32 Number {get;set;}
+  P ObjectId StyleId {get;set;}
+  P Int32 TaxId {get;set;}
+== Autodesk.Civil.DatabaseServices.PartDataField : System.Object
+  P PartContextType Context {get;}
+  P String ContextString {get;}
+  P PartCatalogDataType DataType {get;}
+  P String Description {get;}
+  P Int32 Index {get;}
+  P Boolean IsFromList {get;}
+  P Boolean IsFromRange {get;}
+  P Boolean IsReadOnly {get;}
+  P String Name {get;}
+  P String Units {get;}
+  P Object Value {get;set;}
+  P PartDataList ValueList {get;}
+  P PartDataRange ValueRange {get;}
+== Autodesk.Civil.DatabaseServices.PartDataRecord : System.Object
+  M Void Dispose()
+  M PartDataField[] GetAllDataFields()
+  M PartDataField GetDataFieldBy(String name)
+  M PartDataField GetDataFieldBy(PartContextType context)
+  M PartDataField GetDataFieldBy(PartContextType context, Int32 index)
+  M Int32 GetMaxIndex(PartContextType context)
+  M PartContextType[] GetSupportedContexts()
+== Autodesk.Civil.DatabaseServices.Pipe : Autodesk.Civil.DatabaseServices.Part
+  M Boolean AdjustEndpoint(ConnectorPositionType endpointToAdjust, PipeEndLocation targetLocation, Double dOffset)
+  M Void ConnectToPipe(ConnectorPositionType sourceType, ObjectId destinationPipeId, ConnectorPositionType destinationType, ObjectId structureFamilyId, ObjectId structureSizeId, ObjectId& newStructureId, Boolean applyRules, Boolean force)
+  M Void ConnectToStructure(ConnectorPositionType sourcePosition, ObjectId destinationStructureId, Boolean force)
+  M Void Disconnect(ConnectorPositionType pos)
+  M ObjectIdCollection GetAvailablePipeLabelIds()
+  M ObjectIdCollection GetAvailableSpanningPipeLabelIds()
+  M Point3d GetClosestPointTo(Point3d sourcePoint)
+  M ObjectIdCollection GetLabelIds()
+  M Double GetParamAtPoint(Point3d point)
+  M ObjectIdCollection GetPipeLabelIds()
+  M Point3d GetPointAtParam(Double paramInterval)
+  M Boolean GetProject2dPointVertically(Point2d sourcePoint, Point3d& projectPoint)
+  M Boolean IsMaxCoverViolated(Double maxCover, Point3d[]& pointsViolated, Double[]& differences, Double[]& params)
+  M Boolean IsMinCoverViolated(Double minCover, Point3d[]& pointsViolated, Double[]& differences, Double[]& params)
+  M Void ResizeByInnerDiameterOrWidth(Double innerDiameterOrWidth, Boolean useClosestSize)
+  M Void SetSlopeHoldEnd(Double endValue)
+  M Void SetSlopeHoldStart(Double startValue)
+  P Double Bearing {get;}
+  P Double CoverOfEndpoint {get;}
+  P Double CoverOfStartPoint {get;}
+  P SweptShapeType CrossSectionalShape {get;}
+  P CircularArc2d Curve2d {get;}
+  P PipeCurveGeometry CurveGeometry {get;set;}
+  P Double EndOffset {get;}
+  P Point3d EndPoint {get;set;}
+  P Double EndStation {get;}
+  P ObjectId EndStructureId {get;}
+  P Double EnergyGradeLineDown {get;set;}
+  P Double EnergyGradeLineUp {get;set;}
+  P FlowDirectionType FlowDirection {get;}
+  P FlowDirectionMethodType FlowDirectionMethod {get;set;}
+  P Double FlowRate {get;set;}
+  P HoldOnResizeType HoldOnResizeType {get;set;}
+  P Double HydraulicGradeLineDown {get;set;}
+  P Double HydraulicGradeLineUp {get;set;}
+  P Double InnerDiameterOrWidth {get;}
+  P Double InnerHeight {get;}
+  P Double JunctionLoss {get;set;}
+  P Double Length2D {get;}
+  P Double Length2DCenterToCenter {get;}
+  P Double Length2DToInsideEdge {get;}
+  P Double Length3D {get;}
+  P Double Length3DCenterToCenter {get;}
+  P Double Length3DToInsideEdge {get;}
+  P Double MaximumCover {get;}
+  P Double MinimumCover {get;}
+  P Double OuterDiameterOrWidth {get;}
+  P Double OuterHeight {get;}
+  P Double Radius {get;}
+  P Int32 ReturnPeriod {get;set;}
+  P Double Slope {get;}
+  P Double StartOffset {get;}
+  P Point3d StartPoint {get;set;}
+  P Double StartStation {get;}
+  P ObjectId StartStructureId {get;}
+  P ObjectId StyleId {get;set;}
+  P PipeSubEntityType SubEntityType {get;}
+== Autodesk.Civil.DatabaseServices.PointGroup : Autodesk.Civil.DatabaseServices.DBObject
+  M Void ApplyDescriptionKeys()
+  M Boolean ContainsPoint(UInt32 pointNumber)
+  M Void DeletePoints()
+  M PointGroupChangeInfo GetPendingChanges()
+  M UInt32[] GetPointNumbers()
+  M PointGroupQuery GetQuery()
+  M Void LockPoints()
+  M Void SetQuery(PointGroupQuery query)
+  M Void UnlockPoints()
+  M Void Update()
+  M Void UseAllClassifications()
+  M Void UseCustomClassification(UDPClassification udpClassification)
+  M Void UseCustomClassification(String name)
+  M Void UseNoneClassification()
+  P static String AllPointsGroupName {get;}
+  P String Description {get;set;}
+  P PointGroupElevationOverrideInfo ElevationOverride {get;}
+  P Boolean IsAllPointsGroup {get;}
+  P Boolean IsElevationOverridden {get;set;}
+  P Boolean IsLocked {get;set;}
+  P Boolean IsOutOfDate {get;}
+  P Boolean IsPointLabelStyleOverridden {get;set;}
+  P Boolean IsPointStyleOverridden {get;set;}
+  P Boolean IsRawDescriptionOverridden {get;set;}
+  P String Name {get;set;}
+  P ObjectId PointLabelStyleId {get;set;}
+  P UInt32 PointsCount {get;}
+  P ObjectId PointStyleId {get;set;}
+  P String RawDescription {get;}
+  P PointGroupRawDescriptionOverrideInfo RawDescriptionOverride {get;}
+  P UDPClassificationApplyType UDPClassificationApplyType {get;}
+  P String UDPClassificationName {get;}
+== Autodesk.Civil.DatabaseServices.PointGroupCollection : System.Object
+  M ObjectId Add(String name)
+  M Boolean Contains(String name)
+  M Boolean Contains(ObjectId pointGroupId)
+  M IEnumerator<ObjectId> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M ObjectIdCollection GetOutOfDatePointGroupIds()
+  M static PointGroupCollection GetPointGroups(Database pDatabase)
+  M Void Remove(ObjectId pointGroupId)
+  M Void Remove(String name)
+  M Void RemoveAt(Int32 index)
+  M Void UpdateAllPointGroups()
+  P ObjectId AllPointsPointGroupId {get;}
+  P Int32 Count {get;}
+  P ObjectIdCollection DrawOrder {get;set;}
+  P ObjectId Item[Int32 index] {get;}
+  P ObjectId Item[String name] {get;}
+== Autodesk.Civil.DatabaseServices.PolylineOptions : System.ValueType
+  M Boolean Equals(PolylineOptions other)
+  M Boolean Equals(Object obj)
+  M Int32 GetHashCode()
+  P Boolean AddCurvesBetweenTangents {get;set;}
+  P Boolean EraseExistingEntities {get;set;}
+  P ObjectId PlineId {get;set;}
+== Autodesk.Civil.DatabaseServices.Profile : Autodesk.Civil.DatabaseServices.Feature
+  M static ObjectId CreateByLayout(String profileName, CivilDocument document, String alignmentName, String layerName, String styleName, String labelSetName)
+  M static ObjectId CreateByLayout(String profileName, ObjectId alignmentId, ObjectId layerId, ObjectId styleId, ObjectId labelSetId)
+  M static ObjectId CreateFromFeatureLine(String profileName, CorridorFeatureLine corridorFeatureLine, ObjectId alignmentId, ObjectId layerId, ObjectId styleId, ObjectId labelSetId)
+  M static ObjectId CreateFromSurface(String profileName, CivilDocument document, String alignmentName, String surfaceName, String layerName, String styleName, String labelSetName)
+  M static ObjectId CreateFromSurface(String profileName, CivilDocument document, String alignmentName, String surfaceName, String layerName, String styleName, String labelSetName, Double offset, Double sampleStart, Double sampleEnd)
+  M static ObjectId CreateFromSurface(String profileName, ObjectId alignmentId, ObjectId surfaceId, ObjectId layerId, ObjectId styleId, ObjectId labelSetId)
+  M static ObjectId CreateFromSurface(String profileName, ObjectId alignmentId, ObjectId surfaceId, ObjectId layerId, ObjectId styleId, ObjectId labelSetId, Double offset, Double sampleStart, Double sampleEnd)
+  M ObjectId CreateOffsetProfileBySlope(String profileName, String offsetAlignmentName, String styleName, Double slope)
+  M ObjectId CreateOffsetProfileBySlope(String profileName, ObjectId offsetAlignmentId, ObjectId profileStyleId, Double slope)
+  M static ObjectId CreateStaticFGFromProfile(String profileName, CivilDocument document, String srcProfileName, String layerName, String styleName, String labelSetName)
+  M static ObjectId CreateStaticFGFromProfile(String profileName, ObjectId profileId, ObjectId layerId, ObjectId styleId, ObjectId labelSetId)
+  M Double ElevationAt(Double station)
+  M Double GradeAt(Double station)
+  P ObjectId AlignmentId {get;}
+  P ObjectId DataSourceId {get;}
+  P String DataSourceName {get;}
+  P ObjectId DesignCheckSetId {get;set;}
+  P String DesignCheckSetName {get;set;}
+  P Boolean DesignSpeedBased {get;set;}
+  P Double ElevationMax {get;}
+  P Double ElevationMin {get;}
+  P Double EndingStation {get;}
+  P ProfileEntityCollection Entities {get;}
+  P Double Length {get;}
+  P Double Offset {get;}
+  P OffsetProfileParameters OffsetParameters {get;}
+  P Boolean Plinegen {get;set;}
+  P ProfileType ProfileType {get;}
+  P ProfilePVICollection PVIs {get;}
+  P Double StartingStation {get;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+  P ProfileUpdateType UpdateMode {get;set;}
+  P Boolean UseDesignCheckSet {get;set;}
+  P Boolean UseDesignCriteriaFile {get;set;}
+== Autodesk.Civil.DatabaseServices.ProfileCircular : Autodesk.Civil.DatabaseServices.ProfileEntity
+  P VerticalCurveType CurveType {get;}
+  P ProfileEntityType EntityType {get;}
+  P Double GradeChange {get;}
+  P Double GradeIn {get;}
+  P Double GradeOut {get;}
+  P Double HighLowPointElevation {get;}
+  P Double HighLowPointStation {get;}
+  P Double K {get;set;}
+  P Double M {get;}
+  P Double PVIElevation {get;}
+  P Double PVIStation {get;}
+  P Double Radius {get;set;}
+  P Double TangentOffsetAtPVI {get;}
+== Autodesk.Civil.DatabaseServices.ProfileEntity : Autodesk.Civil.CivilWrapper<AeccDbVAlignment>
+  M ProfileDesignCheck[] DesignChecks()
+  M Boolean ValidateDesignCheck(ProfileDesignCheck designCheck, ProfileApplyCurveType curveType)
+  P ProfileEntityConstraintType Constraint1 {get;}
+  P EntityVerticalConstraintType Constraint2 {get;}
+  P Double EndElevation {get;}
+  P Double EndStation {get;}
+  P UInt32 EntityAfter {get;}
+  P UInt32 EntityBefore {get;}
+  P UInt32 EntityId {get;}
+  P ProfileEntityType EntityType {get;}
+  P Double HighestDesignSpeed {get;}
+  P Double Length {get;set;}
+  P Double MinimumKValueHSD {get;}
+  P Double MinimumKValuePSD {get;}
+  P Double MinimumKValueSSD {get;}
+  P Double StartElevation {get;}
+  P Double StartStation {get;}
+== Autodesk.Civil.DatabaseServices.ProfileEntityCollection : Autodesk.Civil.CivilWrapper<AeccDbVAlignment>
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByEntityEndAndThroughPoint(UInt32 attachEntityId, Point3d passPoint)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByEntityEndAndThroughPoint(UInt32 attachEntityId, Point2d passPoint)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByThreePoints(Point3d point, Point3d point2, Point3d point3)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByThreePoints(Point2d point, Point2d point2, Point2d point3)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndEndGrade(Point3d point1, Point3d point2, Double endGrade)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndEndGrade(Point2d point1, Point2d point2, Double endGrade)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndK(Point3d point1, Point3d point2, VerticalCurveType curveType, Double k)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndK(Point2d point1, Point2d point2, VerticalCurveType curveType, Double k)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndRadius(Point3d point1, Point3d point2, VerticalCurveType curType, Double radius)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndRadius(Point2d point1, Point2d point2, VerticalCurveType curType, Double radius)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndStartGrade(Point3d point1, Point3d point2, Double startGrade)
+  M ProfileParabolaSymmetric AddFixedSymmetricParabolaByTwoPointsAndStartGrade(Point2d point1, Point2d point2, Double startGrade)
+  M ProfileTangent AddFixedTangent(Point3d startPoint, Point3d endPoint)
+  M ProfileTangent AddFixedTangent(Point2d startPoint, Point2d endPoint)
+  M ProfileTangent AddFixedTangentWithPreviousEntity(UInt32 previousEntityId, Point3d startPoint, Point3d endPoint)
+  M ProfileTangent AddFixedTangentWithPreviousEntity(UInt32 previousEntityId, Point2d startPoint, Point2d endPoint)
+  M ProfileParabolaSymmetric AddFloatingSymmetricParabolaByThroughPointAndGrade(UInt32 attachEntityId, Point3d passPoint, Double grade, EntityAttachType attachType)
+  M ProfileParabolaSymmetric AddFloatingSymmetricParabolaByThroughPointAndGrade(UInt32 attachEntityId, Point2d passPoint, Double grade, EntityAttachType attachType)
+  M ProfileParabolaSymmetric AddFloatingSymmetricParabolaByThroughPointAndK(UInt32 attachEntityId, Point3d passPoint, Double k, EntityAttachType attachType)
+  M ProfileParabolaSymmetric AddFloatingSymmetricParabolaByThroughPointAndK(UInt32 attachEntityId, Point2d passPoint, Double k, EntityAttachType attachType)
+  M ProfileParabolaSymmetric AddFloatingSymmetricParabolaByThroughPointAndRadius(UInt32 attachEntityId, Point3d passPoint, Double radius, EntityAttachType attachType)
+  M ProfileParabolaSymmetric AddFloatingSymmetricParabolaByThroughPointAndRadius(UInt32 attachEntityId, Point2d passPoint, Double radius, EntityAttachType attachType)
+  M ProfileTangent AddFloatingTangent(UInt32 entityId, Point3d passPoint, EntityAttachType attachType)
+  M ProfileTangent AddFloatingTangent(UInt32 entityId, Point2d passPoint, EntityAttachType attachType)
+  M ProfileParabolaAsymmetric AddFreeAsymmetricParabolaByPVIAndLengths(ProfilePVI attachProfilePVI, Double length1, Double length2)
+  M ProfileCircular AddFreeCircularCurveByPVIAndLength(ProfilePVI attachProfilePVI, Double length)
+  M ProfileCircular AddFreeCircularCurveByPVIAndRadius(ProfilePVI attachProfilePVI, Double radius)
+  M ProfileCircular AddFreeCircularCurveByPVIAndThroughPoint(ProfilePVI attachProfilePVI, Point3d passPoint)
+  M ProfileCircular AddFreeCircularCurveByPVIAndThroughPoint(ProfilePVI attachProfilePVI, Point2d passPoint)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByK(UInt32 previousEntityId, UInt32 nextEntityId, VerticalCurveType curveType, Double k)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByLength(UInt32 previousEntityId, UInt32 nextEntityId, VerticalCurveType curveType, Double length, Boolean preferFlat)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByPVIAndCurveLength(ProfilePVI attachProfilePVI, Double curveLength)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByPVIAndK(ProfilePVI attachProfilePVI, Double k)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByPVIAndThroughPoint(ProfilePVI attachProfilePVI, Point3d passPoint)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByPVIAndThroughPoint(ProfilePVI attachProfilePVI, Point2d passPoint)
+  M ProfileParabolaSymmetric AddFreeSymmetricParabolaByRadius(UInt32 previousEntityId, UInt32 nextEntityId, VerticalCurveType curveType, Double radius)
+  M ProfileTangent AddFreeTangent(UInt32 previousEntityId, UInt32 nextEntityId)
+  M Void Clear()
+  M ProfileEntity EntityAtId(UInt32 id)
+  M IEnumerator<ProfileEntity> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M Void Remove(ProfileEntity entity)
+  M Void RemoveAt(Int32 index)
+  P Int32 Count {get;}
+  P UInt32 FirstEntity {get;}
+  P ProfileEntity Item[Int32 index] {get;}
+  P UInt32 LastEntity {get;}
+== Autodesk.Civil.DatabaseServices.ProfileLabelGroup : Autodesk.Civil.DatabaseServices.AutoFeatureLabelGroup
+  M static ObjectIdCollection GetAvailableLabelGroupIds(RXClass runtimeClass, ObjectId profileViewId, ObjectId profileId, Boolean includeDerived)
+  M static ObjectIdCollection GetAvailableLabelGroups(RXClass runtimeClass, ObjectId profileViewId, ObjectId profileId, Boolean includeDerived)
+== Autodesk.Civil.DatabaseServices.ProfileParabolaSymmetric : Autodesk.Civil.DatabaseServices.ProfileEntity
+  M Double GetHeadlightSightDistance(Double maxAngle, Double headlightHeight)
+  M Double GetPassingSightDistance(Double eyeHeight, Double objectHeight)
+  M Double GetStoppingSightDistance(Double eyeHeight, Double objectHeight)
+  M Void SetHeadlightSightDistance(Double maxAngle, Double headlightHeight, Double distance)
+  M Void SetPassingSightDistance(Double eyeHeight, Double objectHeight, Double distance)
+  M Void SetStoppingSightDistance(Double eyeHeight, Double objectHeight, Double distance)
+  P VerticalCurveType CurveType {get;}
+  P ProfileEntityType EntityType {get;}
+  P Double GradeAtThroughPoint1 {get;set;}
+  P Double GradeAtThroughPoint2 {get;set;}
+  P Double GradeChange {get;}
+  P Double GradeIn {get;}
+  P Double GradeOut {get;}
+  P Double HighLowPointElevation {get;}
+  P Double HighLowPointStation {get;}
+  P Double K {get;set;}
+  P Double M {get;}
+  P Double PVIElevation {get;}
+  P Double PVIStation {get;}
+  P Double Radius {get;set;}
+  P Double TangentOffsetAtPVI {get;}
+  P Double ThroughPoint1Elevation {get;set;}
+  P Double ThroughPoint1Station {get;set;}
+  P Double ThroughPoint2Elevation {get;set;}
+  P Double ThroughPoint2Station {get;set;}
+  P Double ThroughPoint3Elevation {get;set;}
+  P Double ThroughPoint3Station {get;set;}
+== Autodesk.Civil.DatabaseServices.ProfilePVI : Autodesk.Civil.CivilWrapper<AeccDbVAlignment>
+  P Double Elevation {get;set;}
+  P UInt32 EntityAfter {get;}
+  P UInt32 EntityBefore {get;}
+  P Double GradeIn {get;set;}
+  P Double GradeOut {get;set;}
+  P Double HeadlightSightDistance {get;set;}
+  P Double PassingSightDistance {get;set;}
+  P ProfileEntityType PVIType {get;}
+  P Double RawStation {get;set;}
+  P Double Station {get;set;}
+  P Double StoppingSightDistance {get;set;}
+  P ProfileEntity VerticalCurve {get;}
+== Autodesk.Civil.DatabaseServices.ProfilePVICollection : Autodesk.Civil.CivilWrapper<AeccDbVAlignment>
+  M ProfilePVI AddPVI(Double station, Double elevation)
+  M ProfilePVI AddPVIArc(Double station, Double elevation, Double radius)
+  M ProfilePVI AddPVIAsymParabola(Double station, Double elevation, Double tangentLen1, Double tangentLen2)
+  M ProfilePVI AddPVISymParabola(Double station, Double elevation, Double curveLength)
+  M IEnumerator<ProfilePVI> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M ProfilePVI GetPVIAt(Double station, Double elevation)
+  M Void Remove(ProfilePVI profilePVI)
+  M Void RemoveAt(Double station, Double elevation)
+  M Void RemoveAt(Int32 index)
+  P Int32 Count {get;}
+  P ProfilePVI Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.ProfilePVILabelGroup : Autodesk.Civil.DatabaseServices.ProfileLabelGroup
+  M static ObjectId Create(ObjectId profileViewId, ObjectId profileId, ObjectId styleId)
+  M static ObjectIdCollection GetAvailableLabelGroupIds(ObjectId profileViewId, ObjectId profileId)
+  M static ObjectIdCollection GetAvailableLabelGroups(ObjectId profileViewId, ObjectId profileId, Boolean includeDerived)
+  P Double StaggerLineHeight1 {get;set;}
+  P Double StaggerLineHeight2 {get;set;}
+  P Double Weeding {get;set;}
+== Autodesk.Civil.DatabaseServices.ProfileTangent : Autodesk.Civil.DatabaseServices.ProfileEntity
+  P ProfileEntityType EntityType {get;}
+  P Double Grade {get;}
+  P Double ThroughPoint1Elevation {get;set;}
+  P Double ThroughPoint1Station {get;set;}
+  P Double ThroughPoint2Elevation {get;set;}
+  P Double ThroughPoint2Station {get;set;}
+== Autodesk.Civil.DatabaseServices.ProfileView : Autodesk.Civil.DatabaseServices.Graph
+  M static ObjectIdCollection Create(ObjectId alignmentId, Point3d insertPosition, StackedProfileViewsCreationOptions stackedOptions, SplitProfileViewCreationOptions splitOptions)
+  M static ObjectIdCollection Create(ObjectId alignmentId, Point3d insertPosition, StackedProfileViewsCreationOptions stackedOptions)
+  M static ObjectIdCollection Create(ObjectId alignmentId, Point3d insertPosition, String profileViewName, ObjectId profileViewBandSetId, StackedProfileViewsCreationOptions stackedOptions, SplitProfileViewCreationOptions splitOptions)
+  M static ObjectIdCollection Create(ObjectId alignmentId, Point3d insertPosition, String profileViewName, ObjectId profileViewBandSetId, StackedProfileViewsCreationOptions stackedOptions)
+  M static ObjectId Create(ObjectId alignmentId, Point3d insertPosition, SplitProfileViewCreationOptions splitOptions)
+  M static ObjectId Create(ObjectId alignmentId, Point3d insertPosition)
+  M static ObjectId Create(ObjectId alignmentId, Point3d insertPosition, String profileViewName, ObjectId profileViewBandSetId, ObjectId profileViewStyleId, SplitProfileViewCreationOptions splitOptions)
+  M static ObjectId Create(ObjectId alignmentId, Point3d insertPosition, String profileViewName, ObjectId profileViewBandSetId, ObjectId profileViewStyleId)
+  M static ObjectId Create(CivilDocument document, String profileViewName, ObjectId profileViewBandSetId, ObjectId alignmentId, Point3d insertPosition)
+  M static ObjectId Create(CivilDocument document, String profileViewName, String profileViewBandSetName, String alignmentName, Point3d insertPosition)
+  M static ObjectIdCollection CreateMultiple(ObjectId alignmentId, Point3d insertPosition, StackedProfileViewsCreationOptions stackedOptions, MultipleProfileViewsCreationOptions multipleOptions, SplitProfileViewCreationOptions splitOptions, ProfileViewDatumType datumType)
+  M static ObjectIdCollection CreateMultiple(ObjectId alignmentId, Point3d insertPosition, StackedProfileViewsCreationOptions stackedOptions, MultipleProfileViewsCreationOptions multipleOptions)
+  M static ObjectIdCollection CreateMultiple(ObjectId alignmentId, Point3d insertPosition, String profileViewName, ObjectId profileViewBandSetId, StackedProfileViewsCreationOptions stackedOptions, MultipleProfileViewsCreationOptions multipleOptions, SplitProfileViewCreationOptions splitOptions, ProfileViewDatumType datumType)
+  M static ObjectIdCollection CreateMultiple(ObjectId alignmentId, Point3d insertPosition, String profileViewName, ObjectId profileViewBandSetId, StackedProfileViewsCreationOptions stackedOptions, MultipleProfileViewsCreationOptions multipleOptions)
+  M static ObjectIdCollection CreateMultiple(ObjectId alignmentId, Point3d insertPosition, MultipleProfileViewsCreationOptions multipleOptions, SplitProfileViewCreationOptions splitOptions, ProfileViewDatumType datumType)
+  M static ObjectIdCollection CreateMultiple(ObjectId alignmentId, Point3d insertPosition, MultipleProfileViewsCreationOptions multipleOptions)
+  M static ObjectIdCollection CreateMultiple(ObjectId alignmentId, Point3d insertPosition, String profileViewName, ObjectId profileViewBandSetId, ObjectId profileViewStyleId, MultipleProfileViewsCreationOptions multipleOptions, SplitProfileViewCreationOptions splitOptions, ProfileViewDatumType datumType)
+  M static ObjectIdCollection CreateMultiple(ObjectId alignmentId, Point3d insertPosition, String profileViewName, ObjectId profileViewBandSetId, ObjectId profileViewStyleId, MultipleProfileViewsCreationOptions multipleOptions)
+  M Boolean FindStationAndElevationAtXY(Double x, Double y, Double& station, Double& elevation)
+  M Boolean FindXYAtStationAndElevation(Double station, Double elevation, Double& x, Double& y)
+  M ObjectIdCollection GetAvailablePipeProfileLabelIds()
+  M ObjectIdCollection GetAvailableSpanningPipeProfileLabelIds()
+  M ObjectIdCollection GetAvailableStructureProfileLabelIds()
+  M ObjectIdCollection GetLabelIds()
+  M ObjectIdCollection GetPressureNetworkPartsInGraph()
+  M ObjectIdCollection GetProfileViewLabelIds()
+  P ObjectId AlignmentId {get;}
+  P String AlignmentName {get;}
+  P ProfileViewBandSet Bands {get;}
+  P Double ElevationMax {get;set;}
+  P Double ElevationMin {get;set;}
+  P ElevationRangeType ElevationRangeMode {get;set;}
+  P ProfileOverrideCollection GraphOverrides {get;}
+  P ProfileHatchAreaCollection HatchAreas {get;}
+  P PipeOverrideCollection PipeOverrides {get;}
+  P ProfileViewSplitDataCollection SplitDataLines {get;}
+  P DatumRoundingType SplitDatumRounding {get;set;}
+  P Double SplitHeight {get;set;}
+  P Boolean SplitProfileView {get;set;}
+  P SplitStationType SplitStationMode {get;set;}
+  P StationRoundingType SplitStationRounding {get;set;}
+  P Double StationEnd {get;set;}
+  P StationRangeType StationRangeMode {get;set;}
+  P Double StationStart {get;set;}
+  P StructureOverrideCollection StructureOverrides {get;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+== Autodesk.Civil.DatabaseServices.SampleLine : Autodesk.Civil.DatabaseServices.GeoEntity
+  M static ObjectId Create(String sampleLineName, ObjectId sampleLineGroupId, Point2dCollection points)
+  M static ObjectId Create(String sampleLineName, ObjectId sampleLineGroupId, Double station)
+  M ObjectId GetMaterialSectionId(Guid materialListGuid, Guid materialGuid)
+  M ObjectId GetSectionId(ObjectId sampledSourceId)
+  M ObjectIdCollection GetSectionIds()
+  M ObjectIdCollection GetSectionViewIds()
+  P ObjectId GroupId {get;}
+  P Boolean LockToStation {get;set;}
+  P Int32 Number {get;}
+  P Double Station {get;set;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+  P SampleLineVertexCollection Vertices {get;}
+== Autodesk.Civil.DatabaseServices.SampleLineGroup : Autodesk.Civil.DatabaseServices.GeoEntity
+  M static ObjectId Create(String groupName, ObjectId alignmentId)
+  M ObjectIdCollection GetAvailableSampleLineLabelGroupIds()
+  M Guid GetMappingGuid(String mappingName)
+  M ObjectIdCollection GetMassHaulViewIds()
+  M Guid GetMaterialGuid(Guid mappingGuid, String materialName)
+  M String[] GetMaterialNamesInMapping(Guid mappingGuid)
+  M MaterialSectionSourceCollection GetMaterialSectionSources()
+  M String[] GetQTOMappingNames()
+  M ObjectIdCollection GetSampleLineIds(Double station, Double tolerance)
+  M ObjectIdCollection GetSampleLineIds()
+  M SectionSourceCollection GetSectionSources()
+  M QuantityTakeoffResult GetTotalVolumeResultDataForMaterialList(Guid mappingGuid)
+  M static Void ReportQuantities(ObjectId sampleLineGroupId, String materialList, String reportFile, String styleSheetFile)
+  P ObjectId DefaultSamplineLabelStyleId {get;set;}
+  P ObjectId DefaultSamplineStyleId {get;set;}
+  P SectionViewGroup IndividualSectionViewGroup {get;}
+  P QTOMaterialListCollection MaterialLists {get;}
+  P ObjectId ParentAlignmentId {get;}
+  P SectionViewGroupCollection SectionViewGroups {get;}
+== Autodesk.Civil.DatabaseServices.SampleLineVertex : Autodesk.Civil.CivilWrapper<AeccDbSampleLine>
+  P Point3d Location {get;set;}
+  P Int32 OffsetIndex {get;}
+  P SampleLineVertexSideType Side {get;}
+== Autodesk.Civil.DatabaseServices.SampleLineVertexCollection : Autodesk.Civil.CivilWrapper<AeccDbSampleLine>
+  M IEnumerator<SampleLineVertex> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  P Int32 Count {get;}
+  P SampleLineVertex Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.Section : Autodesk.Civil.DatabaseServices.GeoEntity
+  P ObjectId CorridorSurfaceId {get;}
+  P Double LeftOffset {get;}
+  P Double LeftSwathWidth {get;set;}
+  P Double MaximumElevation {get;}
+  P Double MinmumElevation {get;}
+  P ObjectId ParentId {get;}
+  P Double RightOffset {get;}
+  P Double RightSwathWidth {get;set;}
+  P ObjectId SampleLineId {get;}
+  P SectionPointCollection SectionPoints {get;}
+  P ObjectId SourceId {get;}
+  P String SourceName {get;}
+  P SectionSourceType SourceType {get;}
+  P Double Station {get;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+  P SectionUpdateType UpdateMode {get;set;}
+== Autodesk.Civil.DatabaseServices.SectionPoint : Autodesk.Civil.CivilWrapper<AeccDbSection>
+  P Point3d Location {get;}
+  P Int32 SegmentTo {get;}
+== Autodesk.Civil.DatabaseServices.SectionPointCollection : Autodesk.Civil.CivilWrapper<AeccDbSection>
+  M IEnumerator<SectionPoint> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  P Int32 Count {get;}
+  P SectionPoint Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.SectionSource : System.Object
+  M ObjectIdCollection GetSectionIds()
+  P Boolean IsSampled {get;set;}
+  P ObjectId SourceId {get;}
+  P String SourceName {get;}
+  P SectionSourceType SourceType {get;}
+  P ObjectId StyleId {get;set;}
+  P SectionUpdateType UpdateMode {get;set;}
+== Autodesk.Civil.DatabaseServices.SectionSourceCollection : System.Object
+  M IEnumerator<SectionSource> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  P Int32 Count {get;}
+  P SectionSource Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.SectionView : Autodesk.Civil.DatabaseServices.Graph
+  M static ObjectId Create(String sectionViewName, ObjectId sampleLineId, Point3d location)
+  M Boolean FindOffsetAndElevationAtXY(Double x, Double y, Double& offset, Double& elevation)
+  M Boolean FindXYAtOffsetAndElevation(Double offset, Double elevation, Double& x, Double& y)
+  M ObjectIdCollection GetPipeSectionLabelIds()
+  M ObjectIdCollection GetSectionCorridorPointLabelGroupIds()
+  M ObjectIdCollection GetSectionCrossingLabelIds()
+  M ObjectIdCollection GetSectionGradeBreakLabelGroupIds()
+  M ObjectIdCollection GetSectionMinorOffsetLabelGroupIds()
+  M ObjectIdCollection GetSectionOffsetLabelGroupIds()
+  M ObjectIdCollection GetSectionProjectionLabelIds()
+  M ObjectIdCollection GetSectionSegmentLabelGroupIds()
+  M ObjectIdCollection GetSectionViewDepthLabelIds()
+  M SectionViewGroup GetSectionViewGroup()
+  M ObjectIdCollection GetSectionViewOffsetElevationLabelIds()
+  M ObjectIdCollection GetStructureSectionLabelIds()
+  P SectionViewBandSet Bands {get;}
+  P Double ElevationMax {get;set;}
+  P Double ElevationMin {get;set;}
+  P SectionOverrideCollection GraphOverrides {get;}
+  P Boolean IsElevationRangeAutomatic {get;set;}
+  P Boolean IsOffsetRangeAutomatic {get;set;}
+  P Double OffsetLeft {get;set;}
+  P Double OffsetRight {get;set;}
+  P ObjectId ParentEntityId {get;}
+  P SectionViewProfileGradePointCollection ProfileGradePoints {get;}
+  P ObjectId SampleLineId {get;}
+  P String SectionViewGroupName {get;}
+  P ObjectId StyleId {get;set;}
+  P SectionViewVolumeTableGroup VolumeTables {get;}
+== Autodesk.Civil.DatabaseServices.SectionViewGroup : System.Object
+  M ObjectIdCollection GetSectionViewIds()
+  M Void ImportLabelSetForSectionsInGroup(SectionSource sectionSource, ObjectId labelSetId)
+  M Void UpdateLayout()
+  P Boolean IsIndividual {get;}
+  P String LayoutName {get;}
+  P String Name {get;}
+  P ObjectId PlotStyleId {get;set;}
+  P ObjectId SampleLineGroupId {get;}
+  P String TemplateFilePath {get;}
+== Autodesk.Civil.DatabaseServices.SectionViewGroupCollection : System.Object
+  M SectionViewGroup Add(Point3d insertPosition, Double startStation, Double endStation, SectionViewGroupCreationRangeOptions rangeOptions, SectionViewGroupCreationPlacementOptions placementOptions, SectionDisplayOptionCollection sectionDisplayOptions, ObjectId sectionViewStyleId, ObjectId sectionViewBandSetStyleId)
+  M SectionViewGroup Add(Point3d insertPosition, Double startStation, Double endStation, SectionViewGroupCreationRangeOptions rangeOptions, SectionViewGroupCreationPlacementOptions placementOptions)
+  M SectionViewGroup Add(Point3d insertPosition)
+  M IEnumerator<SectionViewGroup> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M Boolean Remove(SectionViewGroup sectionViewGroup)
+  M Void RemoveAt(Int32 index)
+  P Int32 Count {get;}
+  P SectionViewGroup Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.SectionViewGroupCreationPlacementOptions : System.Object
+  C ()
+  M String[] GetAvailableLayoutNames(String templateFilePath)
+  M Void UseDraftPlacement()
+  M Void UseProductionPlacement(String templateFilePath, String layoutName)
+  P String LayoutName {get;}
+  P PlacementOptionType PlacementOption {get;}
+  P String TemplateFilePath {get;}
+== Autodesk.Civil.DatabaseServices.SectionViewGroupCreationRangeOptions : System.Object
+  C (ObjectId sampleLineGroupId)
+  M Void Dispose()
+  M Void FollowSection(SectionSource sectionSource)
+  M Void SetOffsetRange(Double leftOffset, Double rightOffset)
+  P Double Elevation {get;set;}
+  P SectionViewElevationRangeType ElevationRangeType {get;set;}
+  P Double LeftOffset {get;}
+  P Double RightOffset {get;}
+  P Boolean UseUserSpecifiedElevation {get;set;}
+  P Boolean UseUserSpecifiedOffset {get;set;}
+== Autodesk.Civil.DatabaseServices.Site : Autodesk.Civil.DatabaseServices.Entity
+  M static ObjectId Create(CivilDocument document, String siteName)
+  M ObjectIdCollection GetAlignmentIds()
+  M ObjectIdCollection GetFeatureLineIds()
+  M ObjectIdCollection GetParcelIds()
+  M Void UseAllClassifications()
+  M Void UseCustomClassification(UDPClassification udpClassification)
+  M Void UseCustomClassification(String name)
+  M Void UseNoneClassification()
+  P UDPClassificationApplyType UDPClassificationApplyType {get;}
+  P String UDPClassificationName {get;}
+== Autodesk.Civil.DatabaseServices.StandardPointGroupQuery : Autodesk.Civil.DatabaseServices.PointGroupQuery
+  C ()
+  P String ExcludeElevations {get;set;}
+  P String ExcludeFullDescriptions {get;set;}
+  P String ExcludeNames {get;set;}
+  P String ExcludeNumbers {get;set;}
+  P String ExcludeRawDescriptions {get;set;}
+  P Boolean IncludeAllPoints {get;set;}
+  P String IncludeElevations {get;set;}
+  P String IncludeFullDescriptions {get;set;}
+  P String IncludeNames {get;set;}
+  P String IncludeNumbers {get;set;}
+  P String IncludeRawDescriptions {get;set;}
+  P IList<String> PointGroups {get;}
+== Autodesk.Civil.DatabaseServices.StationElevationLabel : Autodesk.Civil.DatabaseServices.FeatureLabel
+  M static ObjectId Create(ObjectId profileViewId, ObjectId labelStyleId, ObjectId markerStyleId, Double station, Double elevation)
+  P Double Elevation {get;}
+  P ObjectId Profile1Id {get;set;}
+  P ObjectId Profile2Id {get;set;}
+  P Double Station {get;}
+== Autodesk.Civil.DatabaseServices.StationOffsetLabel : Autodesk.Civil.DatabaseServices.FeatureLabel
+  M static ObjectId Create(ObjectId alignmentId, ObjectId labelStyleId, ObjectId markerStyleId, Point2d location)
+  P Boolean AnchorAtXY {get;set;}
+  P Point2d Location {get;set;}
+== Autodesk.Civil.DatabaseServices.Structure : Autodesk.Civil.DatabaseServices.Part
+  M Void ConnectToPipe(ObjectId pipeId, ConnectorPositionType positionType)
+  M Void Disconnect(ObjectId pipeId)
+  M ObjectIdCollection GetAvailableStructureLabelIds()
+  M ObjectIdCollection GetConnectedCatchmentIds()
+  M String[] GetConnectedPipeNames()
+  M ObjectIdCollection GetConnectedPressurePipeIds()
+  M ObjectIdCollection GetLabelIds()
+  M Boolean IsConnectedPipeFlowingIn(Int32 index)
+  M Boolean IsConnectedPipeFlowingOut(Int32 index)
+  M Boolean IsPointInsideStructureRegion(Point3d point)
+  M Boolean ResizeByPipeDepths()
+  M Void ResizeJunctionStructure(String partFamilyGuid, Double rimElevation, Double sumpElevation)
+  P Boolean AutomaticRimSurfaceAdjustment {get;set;}
+  P Double BarrelPipeClearance {get;}
+  P BoundingShapeType BoundingShape {get;}
+  P Double CatchmentsArea {get;set;}
+  P Double CatchmentsRunoffCoefficient {get;set;}
+  P Double CatchmentsTimeOfConcentration {get;set;}
+  P Double ConeHeight {get;}
+  P ObjectId ConnectedPipe[Int32 index] {get;}
+  P Int32 ConnectedPipesCount {get;}
+  P StructureControlSumpType ControlSumpBy {get;set;}
+  P String Cover {get;}
+  P Double DiameterOrWidth {get;}
+  P Double Easting {get;set;}
+  P Double EnergyGradeLine {get;set;}
+  P Double FloorThickness {get;}
+  P String Frame {get;}
+  P Double FrameDiameter {get;}
+  P Double FrameHeight {get;}
+  P String Grate {get;}
+  P Double HeadwallBaseThickness {get;}
+  P Double HeadwallBaseWidth {get;}
+  P Double Height {get;}
+  P Double HydraulicGradeLine {get;set;}
+  P Double InnerDiameterOrWidth {get;}
+  P Double InnerLength {get;}
+  P Double KnownCapacity {get;set;}
+  P Double Length {get;}
+  P Point3d Location {get;set;}
+  P Double Northing {get;set;}
+  P Double Offset {get;}
+  P Double PipeCenterDepth[Int32 index] {get;}
+  P Double PipeInnerDiameterOrWidth[Int32 index] {get;}
+  P Double PipeInvertDepth[Int32 index] {get;}
+  P Double PipeLowestBottomDepth {get;}
+  P Double PipeOuterBottomDepth[Int32 index] {get;}
+  P Double PipeOuterTopDepth[Int32 index] {get;}
+  P Double PipeUpperTopDepth {get;}
+  P Double PipeWallThickness[Int32 index] {get;}
+  P Double RimElevation {get;set;}
+  P Double RimToSumpHeight {get;set;}
+  P Double Rotation {get;set;}
+  P Double Station {get;}
+  P ObjectId StyleId {get;set;}
+  P Double SumpDepth {get;set;}
+  P Double SumpElevation {get;set;}
+  P Double SurfaceAdjustmentValue {get;set;}
+  P Double SurfaceElevationAtInsertionPoint {get;}
+  P Double VerticalPipeClearance {get;}
+== Autodesk.Civil.DatabaseServices.Styles.DisplayStyle : Autodesk.Civil.CivilWrapper<AeccDbStyle>
+  P Color Color {get;set;}
+  P String Layer {get;set;}
+  P String Linetype {get;set;}
+  P Double LinetypeScale {get;set;}
+  P LineWeight Lineweight {get;set;}
+  P String PlotStyle {get;set;}
+  P Boolean Visible {get;set;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStyle : Autodesk.Civil.DatabaseServices.Styles.StyleBase
+  M ObjectId AddChild(String labelStyleName)
+  M ObjectId AddComponent(String name, LabelStyleComponentType type)
+  M ObjectId AddReferenceTextComponent(String name, ReferenceTextComponentSelectedType selectedType)
+  M ObjectId AddTextForEachComponent(String name, TextForEachComponentSelectedType selectedType)
+  M ObjectIdCollection GetComponents(LabelStyleComponentType type)
+  M Int32 GetComponentsCount()
+  M Int32 GetComponentsCount(LabelStyleComponentType type)
+  M ObjectId[] GetComponentsDrawOrder()
+  M Boolean IsSupportedComponent(LabelStyleComponentType type)
+  M Void RemoveAllDescendants()
+  M Void RemoveChild(Int32 index)
+  M Void RemoveChild(String labelStyleName)
+  M Void RemoveComponent(String name)
+  M Void SetComponentsDrawOrder(ObjectId[] componentIds)
+  M Void SwitchComponentsDrawOrder(Int32 index1, Int32 index2)
+  P Int32 ChildrenCount {get;}
+  P ObjectId Item[Int32 index] {get;}
+  P ObjectId Item[String labelStyleName] {get;}
+  P ObjectId ParentLabelStyleId {get;}
+  P LabelStyleBase Properties {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStyleCollection : Autodesk.Civil.DatabaseServices.Styles.StyleCollectionBase
+  M ObjectId Add(String name)
+  M Void Remove(String styleName)
+  M Void Remove(Int32 index)
+  P LabelStyleDefault DefaultLabelStyle {get;}
+  P ExpressionCollection Expressions {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStylesAlignmentRoot : Autodesk.Civil.DatabaseServices.Styles.LabelStylesNode
+  P LabelStyleCollection CantCriticalPointsLabelStyles {get;}
+  P LabelStyleCollection CurveLabelStyles {get;}
+  P LabelStyleCollection DesignSpeedLabelStyles {get;}
+  P LabelStyleCollection GeometryPointLabelStyles {get;}
+  P LabelStyleCollection LineLabelStyles {get;}
+  P LabelStyleCollection MajorStationLabelStyles {get;}
+  P LabelStyleCollection MinorStationLabelStyles {get;}
+  P LabelStyleCollection PointOfIntersectionLabelStyles {get;}
+  P LabelStyleCollection SpiralLabelStyles {get;}
+  P LabelStyleCollection StationEquationLabelStyles {get;}
+  P LabelStyleCollection StationOffsetLabelStyles {get;}
+  P LabelStyleCollection SuperelevationCriticalPointsLabelStyles {get;}
+  P LabelStyleCollection TangentIntersectionLabelStyles {get;}
+  P LabelStyleCollection VerticalGeometryPointLabelStyles {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStylesPipeRoot : Autodesk.Civil.DatabaseServices.Styles.LabelStylesNode
+  P LabelStyleCollection CrossProfileLabelStyles {get;}
+  P LabelStyleCollection CrossSectionLabelStyles {get;}
+  P LabelStyleCollection PlanProfileLabelStyles {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStylesPointRoot : Autodesk.Civil.DatabaseServices.Styles.LabelStylesNode
+  P LabelStyleCollection LabelStyles {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStylesProfileRoot : Autodesk.Civil.DatabaseServices.Styles.LabelStylesNode
+  P LabelStyleCollection CurveLabelStyles {get;}
+  P LabelStyleCollection GradeBreadLabelStyles {get;}
+  P LabelStyleCollection GradeBreakLabelStyles {get;}
+  P LabelStyleCollection HorizontalGeometryPointLabelStyles {get;}
+  P LabelStyleCollection LineLabelStyles {get;}
+  P LabelStyleCollection MajorStationLabelStyles {get;}
+  P LabelStyleCollection MinorStationLabelStyles {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStylesProfileViewRoot : Autodesk.Civil.DatabaseServices.Styles.LabelStylesNode
+  P LabelStyleCollection DepthLabelStyles {get;}
+  P LabelStyleCollection StationElevationLabelStyles {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStylesRoot : Autodesk.Civil.DatabaseServices.Styles.LabelStylesNode
+  M LabelStylesSurveyRoot GetSurveyLabelStyles()
+  P LabelStylesAlignmentRoot AlignmentLabelStyles {get;}
+  P LabelStylesCatchmentRoot CatchmentLabelStyles {get;}
+  P LabelStyleCollection GeneralCurveLabelStyles {get;}
+  P LabelStyleCollection GeneralLineLabelStyles {get;}
+  P LabelStyleCollection GeneralLinkLabelStyles {get;}
+  P LabelStyleCollection GeneralMarkerLabelStyles {get;}
+  P LabelStyleCollection GeneralNoteLabelStyles {get;}
+  P LabelStyleCollection GeneralShapeLabelStyles {get;}
+  P LabelStylesIntersectionRoot IntersectionLabelStyles {get;}
+  P LabelStylesMatchLineRoot MatchLineLabelStyles {get;}
+  P LabelStylesParcelRoot ParcelLabelStyles {get;}
+  P LabelStylesPipeRoot PipeLabelStyles {get;}
+  P LabelStylesPointRoot PointLabelStyles {get;}
+  P LabelStylesProfileRoot ProfileLabelStyles {get;}
+  P LabelStylesProfileViewRoot ProfileViewLabelStyles {get;}
+  P LabelStylesProjectionRoot ProjectionLabelStyles {get;}
+  P LabelStylesSampleLineRoot SampleLineLabelStyles {get;}
+  P LabelStylesSectionRoot SectionLabelStyles {get;}
+  P LabelStylesSectionViewRoot SectionViewLabelStyles {get;}
+  P LabelStylesStructureRoot StructureLabelStyles {get;}
+  P LabelStylesSurfaceRoot SurfaceLabelStyles {get;}
+  P LabelStylesViewFrameRoot ViewFrameLabelStyles {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStylesStructureRoot : Autodesk.Civil.DatabaseServices.Styles.LabelStylesNode
+  P LabelStyleCollection LabelStyles {get;}
+== Autodesk.Civil.DatabaseServices.Styles.LabelStylesSurfaceRoot : Autodesk.Civil.DatabaseServices.Styles.LabelStylesNode
+  P LabelStyleCollection ContourLabelStyles {get;}
+  P LabelStyleCollection SlopeLabelStyles {get;}
+  P LabelStyleCollection SpotElevationLabelStyles {get;}
+  P LabelStyleCollection WatershedLabelStyles {get;}
+== Autodesk.Civil.DatabaseServices.Styles.MarkerStyleCollection : Autodesk.Civil.DatabaseServices.Styles.StyleCollectionBase
+  M ObjectId Add(String name)
+== Autodesk.Civil.DatabaseServices.Styles.PartFamily : Autodesk.Civil.DatabaseServices.DBObject
+  M Void AddPartSize(SizeFilterRecord partSizeFilter)
+  M Void RemovePartSize(ObjectId partSizeId)
+  M Void RemovePartSize(Int32 index)
+  P BoundingShapeType BoundingShape {get;}
+  P String Description {get;}
+  P DomainType Domain {get;}
+  P String GUID {get;}
+  P ObjectId Item[String description] {get;}
+  P ObjectId Item[Int32 index] {get;}
+  P Int32 PartSizeCount {get;}
+  P SizeFilterRecord PartSizeFilter {get;}
+  P PartType PartType {get;}
+  P SweptShapeType SweptShape {get;}
+== Autodesk.Civil.DatabaseServices.Styles.PartSize : Autodesk.Civil.DatabaseServices.DBObject
+  P ObjectId MaterialStyleId {get;set;}
+  P ObjectId PartStyleId {get;set;}
+  P String[] PayItems {get;set;}
+  P ObjectId RulesStyleId {get;set;}
+  P PartDataRecord SizeDataRecord {get;set;}
+== Autodesk.Civil.DatabaseServices.Styles.PartsList : Autodesk.Civil.DatabaseServices.Styles.StyleBase
+  M Void AddPartFamilyByDescription(DomainType domain, String description)
+  M Void AddPartFamilyByGuid(DomainType domain, String guid)
+  M static DataPartFamily[] GetAvailablePartFamilies(DomainType domain)
+  M ObjectIdCollection GetPartFamilyIdsByDomain(DomainType domain)
+  M Void RemovePartFamily(ObjectId partFamilyId)
+  M Void RemovePartFamily(String description)
+  P ObjectId Item[String description] {get;}
+  P ObjectId Item[Int32 index] {get;}
+  P Int32 PartFamilyCount {get;}
+== Autodesk.Civil.DatabaseServices.Styles.PartsListCollection : Autodesk.Civil.DatabaseServices.Styles.StyleCollectionBase
+  M ObjectId Add(String name)
+== Autodesk.Civil.DatabaseServices.Styles.StyleBase : Autodesk.Civil.DatabaseServices.DBObject
+  M ObjectId CopyAsSibling(String styleName)
+  M static Void ExportTo(ObjectIdCollection styleIds, Database destinationDatabase, StyleConflictResolverType conflictResolution)
+  M Void ExportTo(Database destinationDatabase, StyleConflictResolverType conflictResolution)
+  P String CreateBy {get;set;}
+  P String DateCreated {get;}
+  P String DateModified {get;}
+  P String ModifiedBy {get;}
+  P String Name {get;set;}
+== Autodesk.Civil.DatabaseServices.Styles.StyleCollectionBase : Autodesk.Civil.DatabaseServices.TreeNodeCollectionBase
+  M ObjectId Add(String name)
+  M Void Remove(StyleBase style)
+  M Void Remove(String styleName)
+  M Void Remove(Int32 index)
+  P ObjectId Item[String styleName] {get;}
+  P ObjectId Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.Styles.StylesRoot : Autodesk.Civil.TreeOidWrapper
+  P AlignmentDesignCheckSetCollection AlignmentDesignCheckSets {get;}
+  P AlignmentStyleCollection AlignmentStyles {get;}
+  P AssemblyStyleCollection AssemblyStyles {get;}
+  P BandStylesRoot BandStyles {get;}
+  P BuildingSiteStyleCollection BuildingSiteStyles {get;}
+  P CantViewStyleCollection CantViewStyles {get;}
+  P CatchmentStyleCollection CatchmentStyles {get;}
+  P CodeSetStyleCollection CodeSetStyles {get;}
+  P CorridorStyleCollection CorridorStyles {get;}
+  P FeatureLineStyleCollection FeatureLineStyles {get;}
+  P GradingCriteriaSetCollection GradingCriteriaSets {get;}
+  P GradingStyleCollection GradingStyles {get;}
+  P GroupPlotStyleCollection GroupPlotStyles {get;}
+  P InterferenceStyleCollection InterferenceStyles {get;}
+  P IntersectionStyleCollection IntersectionStyles {get;}
+  P LabelSetStylesRoot LabelSetStyles {get;}
+  P LabelStylesRoot LabelStyles {get;}
+  P LinkStyleCollection LinkStyles {get;}
+  P MarkerStyleCollection MarkerStyles {get;}
+  P MassHaulLineStyleCollection MassHaulLineStyles {get;}
+  P MassHaulViewStyleCollection MassHaulViewStyles {get;}
+  P MatchLineStyleCollection MatchLineStyles {get;}
+  P ParcelStyleCollection ParcelStyles {get;}
+  P PartsListCollection PartsListSet {get;}
+  P PipeRuleSetStyleCollection PipeRuleSetStyles {get;}
+  P PipeStyleCollection PipeStyles {get;}
+  P PointCloudStyleCollection PointCloudStyles {get;}
+  P PointStyleCollection PointStyles {get;}
+  P ProfileDesignCheckSetCollection ProfileDesignCheckSets {get;}
+  P ProfileStyleCollection ProfileStyles {get;}
+  P ProfileViewBandSetStyleCollection ProfileViewBandSetStyles {get;}
+  P ProfileViewStyleCollection ProfileViewStyles {get;}
+  P ProjectionStyleCollection ProjectionStyles {get;}
+  P QuantityTakeoffCriteriaCollection QuantityTakeoffCriterias {get;}
+  P SampleLineStyleCollection SampleLineStyles {get;}
+  P SectionStyleCollection SectionStyles {get;}
+  P SectionViewBandSetStyleCollection SectionViewBandSetStyles {get;}
+  P SectionViewStyleCollection SectionViewStyles {get;}
+  P ShapeStyleCollection ShapeStyles {get;}
+  P SheetStyleCollection SheetStyles {get;}
+  P SlopePatternStyleCollection SlopePatternStyles {get;}
+  P StructureRuleSetStyleCollection StructureRuleSetStyles {get;}
+  P StructureStyleCollection StructureStyles {get;}
+  P SuperelevationViewStyleCollection SuperelevationViewStyles {get;}
+  P SurfaceStyleCollection SurfaceStyles {get;}
+  P SurveyFigureStyleCollection SurveyFigureStyles {get;}
+  P SurveyNetworkStyleCollection SurveyNetworkStyles {get;}
+  P TableStylesRoot TableStyles {get;}
+  P ViewFrameStyleCollection ViewFrameStyles {get;}
+== Autodesk.Civil.DatabaseServices.Styles.SurfaceDisplayStyleType : System.Enum
+  E Boundary
+  E Directions
+  E Elevations
+  E Gridded
+  E MajorContour
+  E MinorContour
+  E Points
+  E SlopeArrows
+  E Slopes
+  E Triangles
+  E UserContours
+  F Int32 value__
+  E Watersheds
+== Autodesk.Civil.DatabaseServices.Styles.SurfaceElevationStyle : Autodesk.Civil.DatabaseServices.Styles.SurfaceBaseStyle
+  P ColorSchemeType ColorScheme {get;set;}
+  P ColorSchemeType CutScheme {get;set;}
+  P DataBandingType DataBandingMode {get;set;}
+  P SurfaceDisplayType DisplayEntityMode {get;set;}
+  P ColorSchemeType FillScheme {get;set;}
+  P SurfaceGroupValuesByType GroupValuesBy {get;set;}
+  P Double IntervalLength {get;set;}
+  P ObjectId LegendStyleId {get;set;}
+  P String LegendStyleName {get;set;}
+  P Int32 NumberOfRanges {get;set;}
+  P PrecisionRangeType RangePrecision {get;set;}
+== Autodesk.Civil.DatabaseServices.Styles.SurfaceSlopeStyle : Autodesk.Civil.DatabaseServices.Styles.SurfaceBaseStyle
+  P ColorSchemeType ColorScheme {get;set;}
+  P SurfaceDisplayType DisplayEntityMode {get;set;}
+  P SurfaceGroupValuesByType GroupValuesBy {get;set;}
+  P ObjectId LegendStyleId {get;set;}
+  P String LegendStyleName {get;set;}
+  P Int32 NumberOfRanges {get;set;}
+  P PrecisionRangeType RangePrecision {get;set;}
+== Autodesk.Civil.DatabaseServices.Styles.SurfaceStyle : Autodesk.Civil.DatabaseServices.Styles.StyleBase
+  M DisplayStyle GetDisplayStyleModel(SurfaceDisplayStyleType type)
+  M DisplayStyle GetDisplayStylePlan(SurfaceDisplayStyleType type)
+  M DisplayStyle GetDisplayStyleSection()
+  P SurfaceBoundaryStyle BoundaryStyle {get;}
+  P SurfaceContourStyle ContourStyle {get;}
+  P SurfaceDirectionStyle DirectionStyle {get;}
+  P SurfaceElevationStyle ElevationStyle {get;}
+  P SurfaceGridStyle GridStyle {get;}
+  P SurfacePointStyle PointStyle {get;}
+  P SurfaceSlopeArrowStyle SlopeArrowStyle {get;}
+  P SurfaceSlopeStyle SlopeStyle {get;}
+  P SurfaceTriangleStyle TriangleStyle {get;}
+  P SurfaceWatershedStyle WatershedStyle {get;}
+== Autodesk.Civil.DatabaseServices.Styles.SurfaceStyleCollection : Autodesk.Civil.DatabaseServices.Styles.StyleCollectionBase
+  M ObjectId Add(String name)
+== Autodesk.Civil.DatabaseServices.SubassemblyCollection : Autodesk.Civil.CivilWrapper<AcDbDatabase>
+  M ObjectId Add(String subassemblyName, ObjectId entityId, Double midOrdinateDist, LinkCreationType linkCreationOption)
+  M IEnumerator<ObjectId> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M ObjectIdCollection GetSubassemblyIdsByName(String subassemblyName)
+  M ObjectId ImportSACSubassembly(String subassemblyName, String pktFilePath, Point3d location)
+  M ObjectId ImportStockSubassembly(String subassemblyName, String className, Point3d location)
+  M ObjectId ImportSubassembly(String subassemblyName, String atcFilePath, String itemId, Point3d location)
+  M Boolean Remove(ObjectId subassemblyId)
+  M Void RemoveAt(Int32 index)
+  P Int32 Count {get;}
+  P ObjectId Item[String subassemblyName] {get;}
+  P ObjectId Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.Surface : Autodesk.Civil.DatabaseServices.Entity
+  M Void CreateSnapshot()
+  M Void ExportToDEM(String fileName, String coordinateSystemCode, Double gridSpacing, ExportDetermineElevationType deteElevBy)
+  M Void ExportToDEM(String fileName, String coordinateSystemCode, Double gridSpacing, ExportDetermineElevationType deteElevBy, Boolean useCustomNullElevationation, Single customNullElevation)
+  M Double FindDirectionAtXY(Double x, Double y)
+  M Double FindElevationAtXY(Double x, Double y)
+  M Point3dCollection FindPointsAlongLine(LineSegment3d lineSeg3d)
+  M Double FindSlopeAtXY(Double x, Double y)
+  M SurfaceVolumeInfo GetBoundedVolumes(Point3dCollection polygon, Double datumElevation)
+  M SurfaceVolumeInfo GetBoundedVolumes(Point3dCollection polygon)
+  M GeneralSurfaceProperties GetGeneralProperties()
+  M Point3d GetIntersectionPoint(Point3d startPoint, Vector3d dir)
+  M Void Rebuild()
+  M Void RebuildSnapshot()
+  M Void RemoveSnapshot()
+  P SurfaceAnalysis Analysis {get;}
+  P Boolean AutoRebuild {get;set;}
+  P SurfaceDefinitionBoundaries BoundariesDefinition {get;}
+  P SurfaceBuildOptions BuildOptions {get;}
+  P Boolean HasSnapshot {get;}
+  P Boolean IsOutOfDate {get;}
+  P Boolean IsSnapshotOutOfDate {get;}
+  P Boolean IsVolumeSurface {get;}
+  P Boolean Lock {get;set;}
+  P SurfaceMaskCollection Masks {get;}
+  P SurfaceOperationCollection Operations {get;}
+  P ObjectId StyleId {get;set;}
+== Autodesk.Civil.DatabaseServices.SurfaceAnalysis : System.Object
+  M ObjectIdCollection CreateWaterdrop(Point2d location, WaterdropObjectType objectType)
+  M Void Dispose()
+  M SurfaceAnalysisContourData[] GetContourData()
+  M SurfaceAnalysisDirectionData[] GetDirectionData()
+  M SurfaceAnalysisElevationData[] GetElevationData()
+  M SurfaceAnalysisSlopeArrowData[] GetSlopeArrowData()
+  M SurfaceAnalysisSlopeData[] GetSlopeData()
+  M SurfaceAnalysisUserDefinedContourData[] GetUserDefinedContourData()
+  M SurfaceAnalysisWatershedDataCollection GetWatershedData()
+  M Void SetContourData(SurfaceAnalysisContourData[] analysisData)
+  M Void SetDirectionData(SurfaceAnalysisDirectionData[] analysisData)
+  M Void SetElevationData(SurfaceAnalysisElevationData[] analysisData)
+  M Void SetSlopeArrowData(SurfaceAnalysisSlopeArrowData[] analysisData)
+  M Void SetSlopeData(SurfaceAnalysisSlopeData[] analysisData)
+  M Void SetUserDefinedContourData(SurfaceAnalysisUserDefinedContourData[] analysisData)
+  M Void SetWatershedData(SurfaceAnalysisWatershedDataCollection analysisData)
+== Autodesk.Civil.DatabaseServices.SurfaceAnalysisElevationData : System.Object
+  C (Double minimumElevation, Double maximumElevation, Color scheme)
+  C ()
+  M Void Initialize(ColorValue* codeValue)
+  M Void Update(ColorValue* A_0)
+  P Double MaximumElevation {get;set;}
+  P Double MinimumElevation {get;set;}
+  P Color Scheme {get;set;}
+== Autodesk.Civil.DatabaseServices.SurfaceAnalysisSlopeData : System.Object
+  C (Double minimumSlope, Double maximumSlope, Color scheme)
+  C ()
+  M Void Initialize(ColorValue* codeValue)
+  M Void Update(ColorValue* A_0)
+  P Double MaximumSlope {get;set;}
+  P Double MinimumSlope {get;set;}
+  P Color Scheme {get;set;}
+== Autodesk.Civil.DatabaseServices.SurfaceBoundary : System.Object
+  P SurfaceBoundaryType BoundaryType {get;}
+  P Point3dCollection Vertices {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceBreakline : System.Object
+  M ObjectId InsertIntoDrawing()
+  P SurfaceBreaklineType BreaklineType {get;}
+  P String Description {get;}
+  P Point3dCollection Vertices {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceContourLabelGroup : Autodesk.Civil.DatabaseServices.AutoFeatureLabelGroup
+  M static ObjectId Create(ObjectId surfaceId, Point2dCollection labelLinePoints, ObjectId majorContourlabelStyleId, ObjectId minorContourlabelStyleId, ObjectId userContourlabelStyleId)
+  M static ObjectId Create(ObjectId surfaceId, Point2dCollection labelLinePoints)
+  M static Void CreateMultipleAtInterval(ObjectId surfaceId, Point2d labelLineStartPoint, Point2d labelLineEndPoint, Double interval, SurfaceContourLabelGroupCreateOption options)
+  M static Void CreateMultipleAtInterval(ObjectId surfaceId, Point2d labelLineStartPoint, Point2d labelLineEndPoint, Double interval)
+  M static ObjectIdCollection GetAvailableLabelGroupIds(ObjectId surfaceId)
+  M static ObjectIdCollection GetAvailableLabelGroups(ObjectId surfaceId)
+  M Point2d GetLabelLinePoint(Int32 index)
+  M Void SetLabelLinePoint(Int32 index, Point2d __unnamed001)
+  P Boolean IsLabelLineVisible {get;set;}
+  P Boolean IsMajorContourLabelVisible {get;set;}
+  P Boolean IsMinorContourLabelVisible {get;set;}
+  P Boolean IsUserContourLabelVisible {get;set;}
+  P Point2dCollection LabelLinePoints {get;set;}
+  P ObjectId MajorContourLabelStyleId {get;set;}
+  P ObjectId MinorContourLabelStyleId {get;set;}
+  P Double RangeEnd {get;set;}
+  P Boolean RangeEndFromFeature {get;set;}
+  P Double RangeStart {get;set;}
+  P Boolean RangeStartFromFeature {get;set;}
+  P ObjectId UserContourLabelStyleId {get;set;}
+== Autodesk.Civil.DatabaseServices.SurfaceDefinitionBase`1 : System.Object
+  C (Surface surface)
+  M Void RemoveAt(Int32 index)
+  P Int32 Count {get;}
+  P T Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceDefinitionBoundaries : Autodesk.Civil.DatabaseServices.SurfaceDefinitionBase`1[[Autodesk.Civil.DatabaseServices.SurfaceOperationAddBoundary, AeccDbMgd, Version=13.6.1781.0, Culture=neutral, PublicKeyToken=null]]
+  M SurfaceOperationAddBoundary AddBoundaries(Point3dCollection points, Double midOrdinateDistance, SurfaceBoundaryType boundaryType, Boolean useNonDestructiveBreakline)
+  M SurfaceOperationAddBoundary AddBoundaries(Point2dCollection points, Double midOrdinateDistance, SurfaceBoundaryType boundaryType, Boolean useNonDestructiveBreakline)
+  M SurfaceOperationAddBoundary AddBoundaries(ObjectIdCollection boundaryEntities, Double midOrdinateDistance, SurfaceBoundaryType boundaryType, Boolean useNonDestructiveBreakline)
+== Autodesk.Civil.DatabaseServices.SurfaceDefinitionBreaklines : Autodesk.Civil.DatabaseServices.SurfaceDefinitionBase`1[[Autodesk.Civil.DatabaseServices.SurfaceOperationAddBreakline, AeccDbMgd, Version=13.6.1781.0, Culture=neutral, PublicKeyToken=null]]
+  M SurfaceOperationAddBreaklineFromFile AddBreaklinesFromFile(String filename)
+  M SurfaceOperationAddBreakline AddNonDestructiveBreaklines(Point3dCollection points, Double midOrdinateDistance)
+  M SurfaceOperationAddBreakline AddNonDestructiveBreaklines(Point2dCollection points, Double midOrdinateDistance)
+  M SurfaceOperationAddBreakline AddNonDestructiveBreaklines(ObjectIdCollection breaklineEntities, Double midOrdinateDistance)
+  M SurfaceOperationAddBreakline AddProximityBreaklines(Point3dCollection points, Double midOrdinateDistance)
+  M SurfaceOperationAddBreakline AddProximityBreaklines(Point2dCollection points, Double midOrdinateDistance)
+  M SurfaceOperationAddBreakline AddProximityBreaklines(ObjectIdCollection breaklineEntities, Double midOrdinateDistance)
+  M SurfaceOperationAddBreakline AddStandardBreaklines(Point3dCollection points, Double midOrdinateDistance, Double maximumDistance, Double weedingDistance, Double weedingAngle)
+  M SurfaceOperationAddBreakline AddStandardBreaklines(Point2dCollection points, Double midOrdinateDistance, Double maximumDistance, Double weedingDistance, Double weedingAngle)
+  M SurfaceOperationAddBreakline AddStandardBreaklines(ObjectIdCollection breaklineEntities, Double midOrdinateDistance, Double maximumDistance, Double weedingDistance, Double weedingAngle)
+  M SurfaceOperationAddBreakline AddWallBreaklines(WallBreaklineCreationData[] creationData, Double midOrdinateDistance, Double maximumDistance, Double weedingDistance, Double weedingAngle)
+  M SurfaceOperationAddBreakline AddWallBreaklines(WallBreaklineCreationDataEx[] creationData, Double midOrdinateDistance, Double maximumDistance, Double weedingDistance, Double weedingAngle)
+  M SurfaceOperationAddBreakline[] ImportBreaklinesFromFile(String filename)
+== Autodesk.Civil.DatabaseServices.SurfaceElevationLabel : Autodesk.Civil.DatabaseServices.FeatureLabel
+  M static ObjectId Create(ObjectId surfaceId, Point2d location, ObjectId labelStyleId, ObjectId markerStyleId)
+  M static ObjectId Create(ObjectId surfaceId, Point2d location)
+  M static ObjectIdCollection GetAvailableSurfaceElevationLabelIds(ObjectId surfaceId)
+  M static ObjectIdCollection GetAvailableSurfaceElevationLabels(ObjectId surfaceId)
+  P Point2d Location {get;set;}
+== Autodesk.Civil.DatabaseServices.SurfaceOperation : System.Object
+  M Void Dispose()
+  M Void MoveDown()
+  M Void MoveToBottom()
+  M Void MoveToTop()
+  M Void MoveUp()
+  P Boolean Enabled {get;set;}
+== Autodesk.Civil.DatabaseServices.SurfaceOperationAddBoundary : Autodesk.Civil.DatabaseServices.SurfaceOperation
+  M IEnumerator<SurfaceBoundary> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M ObjectIdCollection InsertIntoDrawing()
+  P SurfaceBoundaryType BoundaryType {get;}
+  P Int32 Count {get;}
+  P Boolean IsTrimmed {get;}
+  P SurfaceBoundary Item[Int32 index] {get;}
+  P Double MidOrdinateDistance {get;}
+  P String Name {get;set;}
+== Autodesk.Civil.DatabaseServices.SurfaceOperationAddBreakline : Autodesk.Civil.DatabaseServices.SurfaceOperation
+  M IEnumerator<SurfaceBreakline> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M ObjectIdCollection InsertIntoDrawing()
+  P SurfaceBreaklineType BreaklineType {get;}
+  P Int32 Count {get;}
+  P String Description {get;set;}
+  P SurfaceBreakline Item[Int32 index] {get;}
+  P Double MaximumDistance {get;}
+  P Double MidOrdinateDistance {get;}
+  P Double WeedingAngle {get;}
+  P Double WeedingDistance {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceOperationAddTinMultipleVertices : Autodesk.Civil.DatabaseServices.SurfaceOperation
+  P Point3dCollection Locations {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceOperationAddTinVertex : Autodesk.Civil.DatabaseServices.SurfaceOperation
+  P Point3d Location {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceOperationCollection : System.Object
+  M Void DisableOperations(Type operationClassType)
+  M Void EnableOperations(Type operationClassType)
+  M SurfaceOpeartionStatusType GetOperationStatus(Type operationClassType)
+  M Void Remove(SurfaceOperation operation)
+  M Void RemoveAt(Int32 index)
+  M Void Swap(SurfaceOperation firstOperation, SurfaceOperation secondOperation)
+  M Void SwapAt(Int32 firstIndex, Int32 secondIndex)
+  P Int32 Count {get;}
+  P SurfaceOperation Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceOperationPasteSurface : Autodesk.Civil.DatabaseServices.SurfaceOperation
+  P ObjectId SurfaceId {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceSlopeLabel : Autodesk.Civil.DatabaseServices.FeatureLabel
+  M static ObjectId Create(ObjectId surfaceId, Point2d point1, Point2d point2, ObjectId labelStyleId)
+  M static ObjectId Create(ObjectId surfaceId, Point2d point1, Point2d point2)
+  M static ObjectId Create(ObjectId surfaceId, Point2d location, ObjectId labelStyleId)
+  M static ObjectId Create(ObjectId surfaceId, Point2d location)
+  M static ObjectIdCollection GetAvailableSurfaceSlopeLabelIds(ObjectId surfaceId)
+  M static ObjectIdCollection GetAvailableSurfaceSlopeLabels(ObjectId surfaceId)
+  P Point2d Location {get;set;}
+  P Point2d Location2 {get;set;}
+  P SurfaceSlopeLabelType SlopeLabelType {get;}
+== Autodesk.Civil.DatabaseServices.SurfaceVolumeInfo : System.ValueType
+  P Double Cut {get;}
+  P Double Fill {get;}
+  P Double Net {get;}
+== Autodesk.Civil.DatabaseServices.TerrainSurfaceProperties : System.Object
+  P Double MaximumGradeOrSlope {get;}
+  P Double MeanGradeOrSlope {get;}
+  P Double MinimumGradeOrSlope {get;}
+  P Double SurfaceArea2D {get;}
+  P Double SurfaceArea3D {get;}
+== Autodesk.Civil.DatabaseServices.TinSurface : Autodesk.Civil.DatabaseServices.Surface
+  M SurfaceOperationAddLine AddLine(TinSurfaceVertex vertex1, TinSurfaceVertex vertex2)
+  M SurfaceOperationAddTinVertex AddVertex(Point2d location)
+  M SurfaceOperationAddTinVertex AddVertex(Point3d location)
+  M SurfaceOperationAddTinMultipleVertices AddVertices(Point2dCollection locations)
+  M SurfaceOperationAddTinMultipleVertices AddVertices(Point3dCollection locations)
+  M static ObjectId Create(String surfaceName, ObjectId styleId)
+  M static ObjectId Create(Database database, String surfaceName)
+  M static ObjectId CreateByCropping(Database destDatabase, String surfaceName, ObjectId srcSurfaceId, ObjectIdCollection objects, Point2d location)
+  M static ObjectId CreateByCropping(Database destDatabase, String surfaceName, ObjectId srcSurfaceId, Point3dCollection points)
+  M static ObjectId CreateByCropping(Database destDatabase, String surfaceName, ObjectId srcSurfaceId, Point2dCollection points)
+  M static ObjectId CreateFromCorridorSurface(String surfaceName, CorridorSurface corridorSurface)
+  M static ObjectId CreateFromIMX(Database database, ObjectId styleId, String imxFileName, String surfaceName, String gitHash, String query, Boolean doCoordSysConversion)
+  M static ObjectId CreateFromLandXML(Database database, String newSurfaceName, String landXMLfileName, String landXMLSurfaceName)
+  M static ObjectId CreateFromLandXML(Database database, String surfaceName, String landXMLfileName)
+  M static ObjectId CreateFromTin(Database database, String tinFileName)
+  M ObjectIdCollection CreateSolidsAtDepth(Double depth, String layer, UInt16 penIndex)
+  M ObjectIdCollection CreateSolidsAtDepthToFile(Double depth, String layer, UInt16 penIndex, String& fileName)
+  M ObjectIdCollection CreateSolidsAtFixedElevation(Double elevation, String layer, UInt16 penIndex)
+  M ObjectIdCollection CreateSolidsAtFixedElevationToFile(Double elevation, String layer, UInt16 penIndex, String& fileName)
+  M ObjectIdCollection CreateSolidsAtSurface(ObjectId bottomSurfaceId, String layer, UInt16 penIndex)
+  M ObjectIdCollection CreateSolidsAtSurfaceToFile(ObjectId bottomSurfaceId, String layer, UInt16 penIndex, String& fileName)
+  M SurfaceOperationDeleteLine DeleteLine(TinSurfaceEdge tinTriangleEdge)
+  M SurfaceOperationDeleteMultipleLines DeleteLines(IEnumerable<TinSurfaceEdge> tinTriangleEdges)
+  M SurfaceOperationDeleteTinVertex DeleteVertex(TinSurfaceVertex vertex)
+  M SurfaceOperationDeleteMultipleTinVertices DeleteVertices(IEnumerable<TinSurfaceVertex> vertices)
+  M ObjectIdCollection ExtractBorder(SurfaceExtractionSettingsType settingsType)
+  M ObjectIdCollection ExtractContours(Double interval, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractContours(Double interval)
+  M ObjectIdCollection ExtractContours(Double lowElev, Double highElev, Double interval, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractContours(Double lowElev, Double highElev, Double interval)
+  M ObjectIdCollection ExtractContoursAt(Double elevation, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractContoursAt(Double elevation)
+  M ObjectIdCollection ExtractGridded(SurfaceExtractionSettingsType settingsType)
+  M ObjectIdCollection ExtractMajorContours(SurfaceExtractionSettingsType settingsType, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractMajorContours(SurfaceExtractionSettingsType settingsType)
+  M ObjectIdCollection ExtractMinorContours(SurfaceExtractionSettingsType settingsType, ContourSmoothingType smoothType, Int32 smoothFactor)
+  M ObjectIdCollection ExtractMinorContours(SurfaceExtractionSettingsType settingsType)
+  M ObjectIdCollection ExtractWatershed(SurfaceExtractionSettingsType settingsType)
+  M TinSurfaceEdge FindEdgeAtXY(Double x, Double y)
+  M TinSurfaceTriangle FindTriangleAtXY(Double x, Double y)
+  M TinSurfaceVertex FindVertexAtXY(Double x, Double y)
+  M TerrainSurfaceProperties GetTerrainProperties()
+  M TinSurfaceProperties GetTinProperties()
+  M TinSurfaceTriangleCollection GetTriangles(Boolean includeInvisible)
+  M TinSurfaceVertex[] GetVerticesInsideBorder(Point3dCollection border)
+  M TinSurfaceVertex[] GetVerticesInsideBorderRandom(Point3dCollection border, Int32 randomNumber)
+  M TinSurfaceVertex[] GetVerticesInsidePolylines(ObjectIdCollection polylineIds)
+  M TinSurfaceVertex[] GetVerticesInsidePolylinesRandom(ObjectIdCollection polylineIds, Int32 randomNumber)
+  M Type IdentifyFeatureTypeAtXY(Double x, Double y)
+  M SurfaceOperationMinimizeFlatAreas MinimizeFlatAreas(SurfaceMinimizeFlatAreaOptions minimizeOptions)
+  M SurfaceOperationMoveTinVertex MoveVertex(TinSurfaceVertex vertex, Point2d newLocation)
+  M SurfaceOperationPasteSurface PasteSurface(ObjectId surfaceId)
+  M SurfaceOperationRaise RaiseSurface(Double deltaElevation)
+  M SurfaceOperationModifyMultipleTinVerticesElevation RaiseVertices(IEnumerable<TinSurfaceVertex> vertices, Double deltaElevation)
+  M Point3dCollection SampleElevations(Point3d pt1, Point3d pt2)
+  M Point3dCollection SampleElevations(ObjectId curveId)
+  M SurfaceOperationModifyTinVertexElevation SetVertexElevation(TinSurfaceVertex vertex, Double newElevation)
+  M SurfaceOperationModifyMultipleTinVerticesElevation SetVerticesElevation(IEnumerable<TinSurfaceVertex> vertices, Double newElevation)
+  M SurfaceOperationSimplify SimplifySurface(SurfaceSimplifyOptions simplifyOptions)
+  M SurfaceOperationSmooth SmoothSurfaceByKriging(KrigingMethodOptions krigingOptions, SurfacePointOutputOptions pointOutputOptions)
+  M SurfaceOperationSmooth SmoothSurfaceByNNI(SurfacePointOutputOptions pointOutputOptions)
+  M SurfaceOperationSwapEdge SwapEdge(TinSurfaceEdge tinTriangleEdge)
+  P SurfaceDefinitionBreaklines BreaklinesDefinition {get;}
+  P SurfaceDefinitionContours ContoursDefinition {get;}
+  P SurfaceDefinitionDEMFiles DEMFilesDefinition {get;}
+  P SurfaceDefinitionDrawingObjects DrawingObjectsDefinition {get;}
+  P SurfaceDefinitionPointFiles PointFilesDefinition {get;}
+  P SurfaceDefinitionPointGroups PointGroupsDefinition {get;}
+  P SurfaceDefinitionAddFigureSurveyQueries SurveyQueriesAddFigureDefinition {get;}
+  P SurfaceDefinitionAddPointSurveyQueries SurveyQueriesAddPointDefinition {get;}
+  P TinSurfaceTriangleCollection Triangles {get;}
+  P TinSurfaceVertexCollection Vertices {get;}
+== Autodesk.Civil.DatabaseServices.TinSurfaceProperties : System.Object
+  P Double MaximumTriangleArea {get;}
+  P Double MaximumTriangleLength {get;}
+  P Double MinimumTriangleArea {get;}
+  P Double MinimumTriangleLength {get;}
+  P Int32 NumberOfTriangles {get;}
+== Autodesk.Civil.DatabaseServices.TinSurfaceTriangle : Autodesk.Civil.DatabaseServices.TinSurfaceObject
+  P TinSurfaceEdge Edge1 {get;}
+  P TinSurfaceEdge Edge2 {get;}
+  P TinSurfaceEdge Edge3 {get;}
+  P Boolean IsVisible {get;}
+  P TinSurfaceVertex Vertex1 {get;}
+  P TinSurfaceVertex Vertex2 {get;}
+  P TinSurfaceVertex Vertex3 {get;}
+== Autodesk.Civil.DatabaseServices.TinSurfaceVertex : Autodesk.Civil.DatabaseServices.TinSurfaceObject
+  P TinSurfaceEdgeCollection Edges {get;}
+  P Point3d Location {get;}
+  P TinSurfaceTriangleCollection Triangles {get;}
+  P TinSurfaceVertexCollection Vertices {get;}
+== Autodesk.Civil.DatabaseServices.TinVolumeSurface : Autodesk.Civil.DatabaseServices.Surface
+  M static ObjectId Create(String surfaceName, ObjectId baseSurfaceId, ObjectId comparisonSurfaceId, ObjectId styleId)
+  M static ObjectId Create(String surfaceName, ObjectId baseSurfaceId, ObjectId comparisonSurfaceId)
+  M TinSurfaceProperties GetTinProperties()
+  M VolumeSurfaceProperties GetVolumeProperties()
+  P Double CutFactor {get;set;}
+  P Double FillFactor {get;set;}
+== Autodesk.Civil.DatabaseServices.TreeNodeCollectionBase : Autodesk.Civil.TreeOidWrapper
+  M ObjectId Add(String name)
+  M Boolean Contains(String name)
+  M Boolean Contains(ObjectId item)
+  M IEnumerator<ObjectId> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M Void Remove(String name)
+  M Void Remove(Int32 index)
+  M ObjectIdCollection ToObjectIds()
+  P Int32 Count {get;}
+  P ObjectId Item[String name] {get;}
+  P ObjectId Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.VolumeSurfaceProperties : System.Object
+  P Double AdjustedCutVolume {get;}
+  P Double AdjustedFillVolume {get;}
+  P Double AdjustedNetVolume {get;}
+  P ObjectId BaseSurface {get;}
+  P ObjectId ComparisonSurface {get;}
+  P Double CutFactor {get;}
+  P Double FillFactor {get;}
+  P Double UnadjustedCutVolume {get;}
+  P Double UnadjustedFillVolume {get;}
+  P Double UnadjustedNetVolume {get;}
+== Autodesk.Civil.DataShortcuts.DataShortcutEntityType : System.Enum
+  E Alignment
+  E Corridor
+  E PipeNetwork
+  E PressurePipeNetwork
+  E Profile
+  E SampleLineGroup
+  E Surface
+  E Unknown
+  F Int32 value__
+  E ViewFrameGroup
+== Autodesk.Civil.DataShortcuts.DataShortcutKey : Autodesk.AutoCAD.Runtime.DisposableWrapper
+  P UInt32 HandleHigh {get;}
+  P UInt32 HandleLow {get;}
+  P Boolean IsSourceDrawingExistent {get;}
+  P String Name {get;}
+  P String SourceDrawing {get;}
+  P DataShortcutEntityType Type {get;}
+NOTFOUND Autodesk.Civil.DataShortcuts.DataShortcuts
+NOTFOUND Autodesk.Civil.DataShortcuts.DataShortcuts+DataShortcutManager
+NOTFOUND Autodesk.Civil.DataShortcuts.DataShortcuts+DataShortcutManager+ExportableItem
+NOTFOUND Autodesk.Civil.DataShortcuts.DataShortcuts+DataShortcutManager+PublishedItem
+== Autodesk.Civil.FeatureLinePointType : System.Enum
+  E AllPoints
+  E ElevationPoint
+  E PIPoint
+  F Int32 value__
+== Autodesk.Civil.LinearUnitType : System.Enum
+  E Centimeter
+  E Decimeter
+  E Foot
+  E Inch
+  E Kilometer
+  E Meter
+  E Mile
+  E Millimeter
+  F Int32 value__
+  E Yard
+== Autodesk.Civil.PropertyEnum`1 : Autodesk.Civil.Property<int\,int\,Autodesk::Civil::CastOp<int\,int> >
+  P T Value {get;set;}
+== Autodesk.Civil.Settings.DrawingUnitType : System.Enum
+  E Feet
+  E Meters
+  F Int32 value__
+== Autodesk.Civil.Settings.ImperialToMetricConversionType : System.Enum
+  E InternationalFoot
+  E UsSurveyFoot
+  F Int32 value__
+== Autodesk.Civil.Settings.SettingsAmbient : Autodesk.Civil.TreeOidWrapper
+  P SettingsAcceleration Acceleration {get;}
+  P SettingsAngle Angle {get;}
+  P SettingsArea Area {get;}
+  P SettingsCoordinate Coordinate {get;}
+  P SettingsDegreeOfCurvature DegreeOfCurvature {get;}
+  P SettingsDimension Dimension {get;}
+  P SettingsDirection Direction {get;}
+  P SettingsDistance Distance {get;}
+  P SettingsElevation Elevation {get;}
+  P SettingsGeneral General {get;}
+  P SettingsGrade Grade {get;}
+  P SettingsGradeSlope GradeSlope {get;}
+  P SettingsGridCoordinate GridCoordinate {get;}
+  P SettingsLabeling Labeling {get;}
+  P SettingsLatLong LatLong {get;}
+  P SettingsPressure Pressure {get;}
+  P SettingsSlope Slope {get;}
+  P SettingsSpeed Speed {get;}
+  P SettingsStation Station {get;}
+  P SettingsTime Time {get;}
+  P SettingsTransparentCommands TransparentCommands {get;}
+  P SettingsUnitless Unitless {get;}
+  P SettingsVolume Volume {get;}
+== Autodesk.Civil.Settings.SettingsAmbient+SettingsDistance : Autodesk.Civil.Settings.SettingsAmbient+SettingsUnitNumber`1[[Autodesk.Civil.LinearUnitType, AeccDbMgd, Version=13.6.1781.0, Culture=neutral, PublicKeyToken=null]]
+== Autodesk.Civil.Settings.SettingsAmbient+SettingsUnitNumber`1 : Autodesk.Civil.Settings.SettingsAmbient+SettingsUnitlessNumber
+  P PropertyEnum<TUnit> Unit {get;}
+== Autodesk.Civil.Settings.SettingsAmbient+SettingsVolume : Autodesk.Civil.Settings.SettingsAmbient+SettingsUnitNumber`1[[Autodesk.Civil.VolumeUnitType, AeccDbMgd, Version=13.6.1781.0, Culture=neutral, PublicKeyToken=null]]
+== Autodesk.Civil.Settings.SettingsDrawing : Autodesk.Civil.TreeOidWrapper
+  P SettingsAbbreviation AbbreviationsSettings {get;}
+  P SettingsAmbient AmbientSettings {get;}
+  P Boolean ApplyTransformSettings {get;set;}
+  P SettingsObjectLayers ObjectLayerSettings {get;}
+  P SettingsTransformation TransformationSettings {get;}
+  P SettingsUnitZone UnitZoneSettings {get;}
+== Autodesk.Civil.Settings.SettingsRoot : Autodesk.Civil.TreeOidWrapper
+  M T GetSettings()
+  P String AssociateShortcutProjectId {get;set;}
+  P SettingsDrawing DrawingSettings {get;}
+  P SettingsLandXML LandXMLSettings {get;}
+  P SettingsTag TagSettings {get;}
+== Autodesk.Civil.Settings.SettingsUnitZone : Autodesk.Civil.TreeOidWrapper
+  M static String[] GetAllCodes()
+  M static SettingsCoordinateSystem GetCoordinateSystemByCode(String code)
+  P AngleUnitType AngularUnits {get;set;}
+  P String CoordinateSystemCode {get;set;}
+  P Double DrawingScale {get;set;}
+  P DrawingUnitType DrawingUnits {get;set;}
+  P ImperialToMetricConversionType ImperialToMetricConversion {get;set;}
+  P Boolean MatchAutoCADVariables {get;set;}
+  P Boolean ScaleObjectsFromOtherDrawings {get;set;}
+== Autodesk.Civil.SurfaceBoundaryType : System.Enum
+  E DataClip
+  E Hide
+  E Outer
+  E Show
+  F Int32 value__
+== Autodesk.Civil.SurfaceBreaklineType : System.Enum
+  E NonDestructive
+  E Standard
+  F Int32 value__
+  E Wall
+== Autodesk.Civil.VolumeUnitType : System.Enum
+  E CubicFoot
+  E CubicMeter
+  E CubicYard
+  F Int32 value__

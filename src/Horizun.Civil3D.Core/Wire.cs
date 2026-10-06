@@ -64,12 +64,14 @@ public static class Wire
             var nl = Array.IndexOf(chunk, (byte)'\n', 0, n);
             if (nl >= 0)
             {
+                if (buf.Length + nl > maxBytes)
+                    throw new InvalidDataException($"Message exceeds the {maxBytes}-byte limit; refused instead of buffered.");
                 buf.Write(chunk, 0, nl);
                 break;
             }
-            buf.Write(chunk, 0, n);
-            if (buf.Length > maxBytes)
+            if (buf.Length + n > maxBytes)
                 throw new InvalidDataException($"Message exceeds the {maxBytes}-byte limit; refused instead of buffered.");
+            buf.Write(chunk, 0, n);
         }
         if (buf.Length == 0) return null;
         return Encoding.UTF8.GetString(buf.ToArray()).TrimEnd('\r');
@@ -80,5 +82,59 @@ public static class Wire
         var bytes = Encoding.UTF8.GetBytes(message.ToJsonString(Hz.Compact) + "\n");
         s.Write(bytes, 0, bytes.Length);
         s.Flush();
+    }
+}
+
+/// <summary>Bounded, reusable reader for newline-delimited MCP requests on stdin.</summary>
+public sealed class BoundedStdioReader
+{
+    private readonly Stream _stream;
+    private readonly int _maxBytes;
+    private readonly byte[] _buffer = new byte[16 * 1024];
+    private int _next;
+    private int _count;
+    private bool _firstLine = true;
+
+    public BoundedStdioReader(Stream stream, int maxBytes)
+    {
+        if (stream == null) throw new ArgumentNullException(nameof(stream));
+        if (maxBytes <= 0) throw new ArgumentOutOfRangeException(nameof(maxBytes));
+        _stream = stream;
+        _maxBytes = maxBytes;
+    }
+
+    /// <summary>Returns null on EOF, or an over-limit flag after draining one whole line.</summary>
+    public string? ReadLine(out bool tooLong)
+    {
+        tooLong = false;
+        using var line = new MemoryStream();
+        var bytes = 0;
+        while (true)
+        {
+            if (_next == _count)
+            {
+                _count = _stream.Read(_buffer, 0, _buffer.Length);
+                _next = 0;
+                if (_count == 0) return null; // A partial line is not a complete request.
+            }
+            while (_next < _count)
+            {
+                var b = _buffer[_next++];
+                if (b == (byte)'\n')
+                {
+                    if (tooLong) return string.Empty;
+                    var result = Encoding.UTF8.GetString(line.GetBuffer(), 0, (int)line.Length).TrimEnd('\r');
+                    if (_firstLine)
+                    {
+                        _firstLine = false;
+                        result = result.TrimStart('\uFEFF');
+                    }
+                    return result;
+                }
+                bytes++;
+                if (bytes > _maxBytes) { tooLong = true; continue; }
+                line.WriteByte(b);
+            }
+        }
     }
 }
