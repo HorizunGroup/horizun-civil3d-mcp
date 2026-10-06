@@ -14,7 +14,7 @@ class InstalledPaths(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             directory = str(Path(temp)/'server-releases'/'0.9.2-final')
             (Path(temp)/'manifest.json').write_text(json.dumps(dict(server_dir=directory)), encoding='utf-8')
-            self.assertEqual(Path(installed_server(temp)), Path(directory)/'horizun-civil3d-mcp.exe')
+            self.assertEqual(Path(installed_server(temp)), (Path(directory)/'horizun-civil3d-mcp.exe').resolve())
 
     def test_invalid_or_outside_manifest_refused(self):
         with tempfile.TemporaryDirectory() as temp:
