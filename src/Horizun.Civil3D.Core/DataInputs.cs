@@ -77,9 +77,9 @@ public static class DataInputs
         ["list"] = new(Array.Empty<string>(), new[] { "group", "numbers", "limit" }, Extra: a => V.First(NumberRanges(a), V.Pos(a, "limit"))),
         ["create"] = new(new[] { "points" }, new[] { "group" }, W, PointItems),
         ["import"] = new(new[] { "file", "format" }, new[] { "group", "skip_header" }, W, a => V.First(V.OneOf(a, "format", PointFormats),
-            Hz.Str(a, "file") is { } f && Path.IsPathRooted(f) ? null : "file must be an absolute path.")),
+            Hz.Str(a, "file") is { } f && RuntimeCompat.IsPathFullyQualified(f) ? null : "file must be an absolute path.")),
         ["export_csv"] = new(new[] { "output" }, new[] { "group", "numbers", "format" }, F, a => V.First(V.OneOf(a, "format", PointFormats),
-            Hz.Str(a, "output") is { } f && Path.IsPathRooted(f) ? null : "output must be an absolute path.")),
+            Hz.Str(a, "output") is { } f && RuntimeCompat.IsPathFullyQualified(f) ? null : "output must be an absolute path.")),
         ["export_editable_csv"] = new(new[] { "output" }, new[] { "group", "numbers" }, F, a => V.First(NumberRanges(a), EditableCsvPath(a,"output"))),
         ["apply_csv"] = new(new[] { "file" }, new[] { "group", "numbers" }, W, a => V.First(NumberRanges(a), EditableCsvPath(a,"file"))),
         ["elevations_from_surface"] = new(new[] { "surface" }, new[] { "group", "numbers" }, W, a => V.First(V.Exactly1(a, "group", "numbers"), NumberRanges(a))),
@@ -121,11 +121,11 @@ public static class DataInputs
     {
         ["shortcuts_status"] = new(Array.Empty<string>(), Array.Empty<string>()),
         ["shortcuts_project"] = new(new[] { "working_folder" }, new[] { "name", "description" }, F, a => V.First(
-            Hz.Str(a, "working_folder") is { } w && Path.IsPathRooted(w) ? null : "working_folder must be an absolute folder path.",
+            Hz.Str(a, "working_folder") is { } w && RuntimeCompat.IsPathFullyQualified(w) ? null : "working_folder must be an absolute folder path.",
             a["name"] == null || (Hz.Str(a, "name") is { } n && n.Length <= 120 && n.IndexOfAny(Path.GetInvalidFileNameChars()) < 0) ? null : "name must be a valid folder name.")),
         ["shortcuts_publish"] = new(new[] { "names" }, Array.Empty<string>(), F, a => V.Strings(a, "names", 500)),
         ["shortcuts_reference"] = new(new[] { "name", "type" }, new[] { "source_dwg" }, W, a => V.First(V.OneOf(a, "type", ShortcutTypes),
-            a["source_dwg"] != null && !(Hz.Str(a, "source_dwg") is { } s && Path.IsPathRooted(s)) ? "source_dwg must be an absolute path." : null)),
+            a["source_dwg"] != null && !(Hz.Str(a, "source_dwg") is { } s && RuntimeCompat.IsPathFullyQualified(s)) ? "source_dwg must be an absolute path." : null)),
         ["export_dwg"] = new(new[] { "output" }, Array.Empty<string>(), F, a =>
             Hz.Str(a, "output") is { } o && RuntimeCompat.IsPathFullyQualified(o) && o.EndsWith(".dwg", StringComparison.OrdinalIgnoreCase)
                 ? null : "output must be a fully qualified .dwg path."),
@@ -133,7 +133,7 @@ public static class DataInputs
             Hz.Str(a, "output") is { } o && RuntimeCompat.IsPathFullyQualified(o) && o.EndsWith(".zip", StringComparison.OrdinalIgnoreCase)
                 ? null : "output must be a fully qualified .zip path."),
         ["export_landxml"] = new(new[] { "output" }, new[] { "surfaces", "alignments", "include_profiles" }, F, a => V.First(
-            Hz.Str(a, "output") is { } o && Path.IsPathRooted(o) && o.EndsWith(".xml", StringComparison.OrdinalIgnoreCase) ? null : "output must be an absolute .xml path.",
+            Hz.Str(a, "output") is { } o && RuntimeCompat.IsPathFullyQualified(o) && o.EndsWith(".xml", StringComparison.OrdinalIgnoreCase) ? null : "output must be an absolute .xml path.",
             V.Strings(a, "surfaces", 100), V.Strings(a, "alignments", 500),
             a["surfaces"] == null && a["alignments"] == null ? "Give surfaces and/or alignments to export." : null)),
     });

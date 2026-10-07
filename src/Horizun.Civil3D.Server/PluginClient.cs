@@ -9,7 +9,12 @@
 // server's: a mismatched pair (different builds) is refused, never "tried".
 // -----------------------------------------------------------------------------
 using System.IO.Pipes;
+using System.Runtime.InteropServices;
+using System.Security.Principal;
+using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
+using Microsoft.Win32.SafeHandles;
 using Horizun.Civil3D.Core;
 
 namespace Horizun.Civil3D.Server;
@@ -107,14 +112,30 @@ internal static class PluginClient
                 "The Civil 3D plug-in does not implement '" + command + "'. Nothing ran.");
     }
 
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool GetNamedPipeServerProcessId(SafePipeHandle pipe, out uint serverProcessId);
+
+    private const string CheckDrawing = " If this was a write, check the drawing before repeating it.";
+
     public static JsonObject Send(DiscoveryRecord r, string wireId, string command, JsonObject parameters, int timeoutMs)
     {
         var req = Wire.Request(wireId, command, parameters, r.AuthToken);
         req["timeout_ms"] = timeoutMs;
+        // Measured before connecting: the wire form can be larger than the stdin request (escaping), and an
+        // oversized request would make the plug-in drop the connection with no reply.
+        if (Encoding.UTF8.GetByteCount(req.ToJsonString(Hz.Compact)) > Contract.MaxRequestBytes)
+            throw new TargetException(ErrorCodes.InvalidInput,
+                "The request is larger than " + Contract.MaxRequestBytes + " bytes once encoded for Civil 3D. Send less data per call. Nothing ran.");
         try
         {
-            using var pipe = new NamedPipeClientStream(".", r.PipeName, PipeDirection.InOut, PipeOptions.None);
+            // Identification only: the plug-in never needs to act as this user, so a process that answers on the
+            // pipe name cannot impersonate us. The token is sent only after the pipe is proven to belong to the
+            // discovered acad.exe.
+            using var pipe = new NamedPipeClientStream(".", r.PipeName, PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.Identification);
             pipe.Connect(5000);
+            if (!GetNamedPipeServerProcessId(pipe.SafePipeHandle, out var serverPid) || serverPid != (uint)r.Pid)
+                throw new TargetException(ErrorCodes.Transport,
+                    "The bridge pipe '" + r.PipeName + "' is not served by Civil 3D (pid " + r.Pid + "). Nothing was sent and nothing ran.");
             Wire.WriteLine(pipe, req);
             var readTask = Task.Run(() => Wire.ReadLine(pipe, Contract.MaxReplyBytes));
             if (!readTask.Wait(timeoutMs + 30_000))
@@ -122,9 +143,12 @@ internal static class PluginClient
                     "No reply from Civil 3D within " + (timeoutMs / 1000 + 30) + " s. The command may still be running: check the " +
                     "drawing before repeating any write.");
             var line = readTask.Result ?? throw new TargetException(ErrorCodes.Transport,
-                "Civil 3D closed the connection without replying. If this was a write, check the drawing before repeating it.");
-            return JsonNode.Parse(line) as JsonObject
-                   ?? throw new TargetException(ErrorCodes.Transport, "Civil 3D sent a reply that is not a JSON object.");
+                "Civil 3D closed the connection without replying." + CheckDrawing);
+            JsonNode? reply;
+            try { reply = JsonNode.Parse(line); }
+            catch (JsonException) { throw new TargetException(ErrorCodes.Transport, "Civil 3D sent an incomplete or malformed reply (the connection may have broken)." + CheckDrawing); }
+            return reply as JsonObject
+                   ?? throw new TargetException(ErrorCodes.Transport, "Civil 3D sent a reply that is not a JSON object." + CheckDrawing);
         }
         catch (TimeoutException)
         {
@@ -133,12 +157,15 @@ internal static class PluginClient
         }
         catch (IOException e)
         {
-            throw new TargetException(ErrorCodes.Transport,
-                "The pipe to Civil 3D failed: " + e.Message + ". If this was a write, check the drawing before repeating it.");
+            throw new TargetException(ErrorCodes.Transport, "The pipe to Civil 3D failed: " + e.Message + "." + CheckDrawing);
         }
         catch (AggregateException e) when (e.InnerException is InvalidDataException ide)
         {
-            throw new TargetException(ErrorCodes.Transport, ide.Message);
+            throw new TargetException(ErrorCodes.Transport, ide.Message + CheckDrawing);
+        }
+        catch (AggregateException e) when (e.InnerException is IOException io)
+        {
+            throw new TargetException(ErrorCodes.Transport, "The pipe to Civil 3D failed while reading the reply: " + io.Message + "." + CheckDrawing);
         }
     }
 

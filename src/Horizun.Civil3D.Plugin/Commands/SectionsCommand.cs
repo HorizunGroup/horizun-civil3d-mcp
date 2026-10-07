@@ -36,6 +36,14 @@ internal sealed class SectionsCommand : ICommand
     private static Alignment Al(CommandContext ctx, Document doc, Transaction tr) =>
         Resolve.Open<Alignment>(tr, Resolve.Named(doc, tr, "alignment", Hz.Str(ctx.Args, "alignment")!));
 
+    /// <summary>
+    /// Open for write inside an always-aborted read/plan/verify transaction. Civil 3D updates pending sections on
+    /// first access and aborts acad.exe when they are only open for read (live finding), and a locked layer must
+    /// not turn a read into a failure, so the open ignores layer locks. Never used in an apply transaction.
+    /// </summary>
+    private static T W<T>(Transaction tr, ObjectId id) where T : Autodesk.AutoCAD.DatabaseServices.DBObject =>
+        (T)tr.GetObject(id, OpenMode.ForWrite, false, true);
+
     private static ObjectId? Group(Alignment al, Transaction tr, string name)
     {
         foreach (ObjectId id in al.GetSampleLineGroupIds())
@@ -71,9 +79,9 @@ internal sealed class SectionsCommand : ICommand
         var groups = new JsonArray();
         foreach (ObjectId gid in al.GetSampleLineGroupIds())
         {
-            var g = (SampleLineGroup)tr.GetObject(gid, OpenMode.ForWrite);
+            var g = W<SampleLineGroup>(tr, gid);
             var lines = new JsonArray();
-            foreach (ObjectId lid in g.GetSampleLineIds()) lines.Add(LineJson((SampleLine)tr.GetObject(lid, OpenMode.ForWrite), al));
+            foreach (ObjectId lid in g.GetSampleLineIds()) lines.Add(LineJson(W<SampleLine>(tr, lid), al));
             var sources = new JsonArray();
             foreach (SectionSource s in g.GetSectionSources())
                 sources.Add(new JsonObject { ["name"] = s.SourceName, ["type"] = s.SourceType.ToString(), ["sampled"] = s.IsSampled });
@@ -86,13 +94,13 @@ internal sealed class SectionsCommand : ICommand
     private static void GetSection(CommandContext ctx, Document doc, Transaction tr, JsonObject data)
     {
         var al = Al(ctx, doc, tr);
-        var g = (SampleLineGroup)tr.GetObject(RequireGroup(al, tr, Hz.Str(ctx.Args, "group")!), OpenMode.ForWrite);
+        var g = W<SampleLineGroup>(tr, RequireGroup(al, tr, Hz.Str(ctx.Args, "group")!));
         var station = Hz.Num(ctx.Args, "station")!.Value;
         SampleLine? line = null;
         var stations = new List<double>();
         foreach (ObjectId lid in g.GetSampleLineIds())
         {
-            var sl = (SampleLine)tr.GetObject(lid, OpenMode.ForWrite);
+            var sl = W<SampleLine>(tr, lid);
             stations.Add(sl.Station);
             if (Math.Abs(sl.Station - station) < 1e-6) line = sl;
         }
@@ -105,7 +113,7 @@ internal sealed class SectionsCommand : ICommand
             var o = new JsonObject { ["source"] = src.SourceName, ["type"] = src.SourceType.ToString() };
             try
             {
-                var sec = (Section)tr.GetObject(line.GetSectionId(src.SourceId), OpenMode.ForWrite);
+                var sec = W<Section>(tr, line.GetSectionId(src.SourceId));
                 var pts = new JsonArray();
                 var ys = new List<double>();
                 foreach (SectionPoint p in sec.SectionPoints)
@@ -166,10 +174,11 @@ internal sealed class SectionsCommand : ICommand
                 if (bad.Count > 0) throw new HzRefusal(ErrorCodes.InvalidInput, "Stations " + string.Join(", ", bad) + " are outside the alignment " + al.StartingStation + "-" + al.EndingStation + ". Nothing changed.");
                 if (!createGroup)
                 {
-                    var g = (SampleLineGroup)tr.GetObject(groupId, OpenMode.ForRead);
+                    var g = W<SampleLineGroup>(tr, groupId);
+                    Resolve.Editable(g, tr);
                     foreach (ObjectId lid in g.GetSampleLineIds())
                     {
-                        var st = ((SampleLine)tr.GetObject(lid, OpenMode.ForRead)).Station;
+                        var st = W<SampleLine>(tr, lid).Station;
                         if (stations.Any(s => Math.Abs(s - st) < 1e-6)) throw new HzRefusal(ErrorCodes.InvalidInput, "Group '" + groupName + "' already has a sample line at station " + st + ". Nothing changed.");
                     }
                 }
@@ -230,12 +239,12 @@ internal sealed class SectionsCommand : ICommand
                 // verify transaction aborted Civil 3D (eNotOpenForWrite): Civil updates the pending sections on first
                 // access. Open them for write here; the verify transaction is always aborted, so nothing is changed.
                 var al = (Alignment)tr.GetObject(alId, OpenMode.ForRead);
-                var g = (SampleLineGroup)tr.GetObject(groupId, OpenMode.ForWrite);
+                var g = W<SampleLineGroup>(tr, groupId);
                 v.Check("sample lines created", stations.Count, created.Count(id => !id.IsNull && !id.IsErased), created.All(id => !id.IsNull && !id.IsErased) && created.Count == stations.Count);
                 var lines = new JsonArray();
                 for (var i = 0; i < created.Count; i++)
                 {
-                    var sl = (SampleLine)tr.GetObject(created[i], OpenMode.ForWrite);
+                    var sl = W<SampleLine>(tr, created[i]);
                     v.Number("line " + i + " station", stations[i], sl.Station, 1e-6);
                     var offs = new List<double>();
                     foreach (SampleLineVertex vx in sl.Vertices) { double st = 0, off = 0; al.StationOffset(vx.Location.X, vx.Location.Y, ref st, ref off); offs.Add(off); }
@@ -263,7 +272,8 @@ internal sealed class SectionsCommand : ICommand
             {
                 var al = Al(ctx, doc, tr);
                 groupId = RequireGroup(al, tr, Hz.Str(ctx.Args, "group")!);
-                var g = (SampleLineGroup)tr.GetObject(groupId, OpenMode.ForRead);
+                var g = W<SampleLineGroup>(tr, groupId);
+                Resolve.Editable(g, tr);
                 before = g.SectionViewGroups.Count;
                 lineCount = g.GetSampleLineIds().Count;
                 if (lineCount == 0) throw new HzRefusal(ErrorCodes.InvalidInput, "Group '" + g.Name + "' has no sample lines. Nothing changed.");
@@ -273,7 +283,7 @@ internal sealed class SectionsCommand : ICommand
             (doc, tr) => ((SampleLineGroup)tr.GetObject(groupId, OpenMode.ForWrite)).SectionViewGroups.Add(insert),
             (doc, tr, v, after) =>
             {
-                var g = (SampleLineGroup)tr.GetObject(groupId, OpenMode.ForWrite);
+                var g = W<SampleLineGroup>(tr, groupId);
                 v.Check("section view groups", before + 1, g.SectionViewGroups.Count, g.SectionViewGroups.Count == before + 1);
                 if (g.SectionViewGroups.Count == before + 1)
                 {

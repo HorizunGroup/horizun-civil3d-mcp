@@ -41,7 +41,7 @@ internal static class Resolve
     public static void Editable(DBObject obj, Transaction tr)
     {
         var d = Catalog.Describe(obj, tr, new Catalog.Lookup(tr), false);
-        if (Hz.Bool(d, "editable") == false)
+        if (Hz.Bool(d, "editable") != true)
             throw new HzRefusal(ErrorCodes.NotEditable, "'" + (Hz.Str(d, "name") ?? obj.Handle.ToString()) + "' is not editable here: " +
                 d["not_editable_because"]?.ToJsonString(Hz.Compact) + ". Nothing changed.");
     }

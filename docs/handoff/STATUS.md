@@ -1,13 +1,14 @@
 # STATUS - estado actual y QUÉ SIGUE
 
 > Documento VIVO. Toda sesión que termine un bloque de trabajo lo **actualiza** (ver `WORKFLOW.md`).
-> Última actualización: **2026-10-06**, por Codex. **v0.9.2 publicada y repositorio PUBLIC**; PR#1 integrado tras CI exitosa. Cuatro paquetes y SHA256SUMS coinciden con los hashes remotos. Asset0.8.0 con rutas privadas retirado y respaldado; reportes privados de seguridad habilitados. Instalación2025 conserva78/78 controles y262 hashes correctos. UNDO automático deshabilitado;2024/2026 solo evidencia de compilación/pruebas sin anfitrión. Ver [PUBLIC_READINESS.md](../PUBLIC_READINESS.md).
+> Última actualización: **2026-10-06**, por Claude Code. **Correcciones de la revisión multiagente en la rama `phase-10/review-fixes`** (32 hallazgos; sin commit, sin instalar; contrato sin cambios). Los cambios del plug-in son B y esperan su prueba en vivo (ver "QUÉ SIGUE").
+> Anterior (Codex): **v0.9.2 publicada y repositorio PUBLIC**; PR#1 integrado tras CI exitosa. Cuatro paquetes y SHA256SUMS coinciden con los hashes remotos. Asset0.8.0 con rutas privadas retirado y respaldado; reportes privados de seguridad habilitados. Instalación2025 conserva78/78 controles y262 hashes correctos. UNDO automático deshabilitado;2024/2026 solo evidencia de compilación/pruebas sin anfitrión. Ver [PUBLIC_READINESS.md](../PUBLIC_READINESS.md).
 
 ## Versión
 
 | Qué | Valor |
 |---|---|
-| Código en el repo | **v0.9.2**: 28 herramientas / 163 acciones / 169 operaciones, contrato `e36ee390efbb5d34ee0fe86c`. 552 Core/Server,391 por net48/net8/net10,14 receptor y8 cliente. Builds2024/net48,2025/net8,2026/net8/net10 completos; undo_last reservado pero rechazado sin ejecutar |
+| Código en el repo | **v0.9.2 + correcciones de revisión sin publicar** (rama `phase-10/review-fixes`): 28 herramientas / 163 acciones / 169 operaciones, contrato `e36ee390efbb5d34ee0fe86c` (sin cambios). 569 Core/Server, 406 por net48/net8/net10. Antes: 552 Core/Server,391 por net48/net8/net10,14 receptor y8 cliente. Builds2024/net48,2025/net8,2026/net8/net10 completos; undo_last reservado pero rechazado sin ejecutar |
 | Instalación | **v0.9.2 operativa2025**. Generación `0.9.2-20261006-085000`, servidor aislado `server-releases/0.9.2-final` registrado en Codex;262 archivos verificados. SECURELOAD y perfil safe_write conservados. Ensayo de78 controles con el payload final y rechazo de UNDO sin cambios |
 | Civil 3D disponible | **2025**: aceptación nativa de corredores, CSV, comparación, planos, copia DWG y exportación de terreno. Revit2025: Toposolid y DirectShape creados, controles independientes y modelos guardados. 2024/2026 no instalados; solo build/pruebas sin anfitrión |
 | Git / GitHub | [Repositorio público](https://github.com/HorizunGroup/horizun-civil3d-mcp). PR#1 integrado en `main` (`2c02c2d`); [release v0.9.2](https://github.com/HorizunGroup/horizun-civil3d-mcp/releases/tag/v0.9.2) con cuatro paquetes y SHA256SUMS. `develop` conserva estado histórico previo. Notas personales en `.local/` ignorado |
@@ -28,7 +29,7 @@
 | `horizun_c3d_probe` | firmas de la API en vivo | Sí |
 | `horizun_c3d_surface` | list, get, sample_elevation, volumes_report, rename, set_style, duplicate_style, create_tin, create_volume, rebuild, **add_data, paste** | **Sí**: 46/46 en el dibujo de ensayo, deshacer incluido (v0.3.4) |
 
-### Herramientas de la fase 3 (v0.6.x): VERIFICADAS EN VIVO 284/284 (2026-10-02)
+### Herramientas de la fase 3 (v0.6.x): acciones v0.6.x VERIFICADAS EN VIVO 284/284 (2026-10-02). Las acciones añadidas después (p. ej. `pressure_*`) tienen su propio grado en `docs/CIVIL3D.md`; no se suponen verificadas en vivo
 
 | Bloque | Herramientas |
 |---|---|
@@ -82,6 +83,10 @@ Detalle de la evidencia: `docs/CIVIL3D.md`.
 - Las correcciones v0.1.1 y los auxiliares ChatGPT anteriores están incluidos en v0.2.0. Las secciones previas conservan su evidencia histórica.
 
 ## ▶ QUÉ SIGUE (siguiente bloque de trabajo)
+
+**Revisión multiagente corregida (2026-10-06, Claude Code):** 32 hallazgos corregidos en la rama `phase-10/review-fixes`, sin commit. Detalle en `CHANGELOG.md` (Unreleased) y la tabla de compuertas en vivo al final de `docs/CIVIL3D.md`.
+
+0. **Antes que nada:** el dueño decide si se hace commit/PR de la rama. Después, con Civil 3D cerrado (**guardar primero**), instalar con `pwsh scripts/install.ps1 -Years 2025` y correr las compuertas en vivo de la tabla "Review fixes" de `docs/CIVIL3D.md` sobre el fixture (grupo de puntos con consulta personalizada, secciones en capa bloqueada, health con el nuevo nombre de pipe, regresiones de pipes/shortcuts). Solo entonces subir esas filas a L y decidir versión (0.9.3).
 
 **Publicación completada:** autorización reiterada y nueva sesión con aprobación de ejecución permitieron push. PR#1 pasó CI (`37476925655`) y se integró en `2c02c2d6122c9904df15e03aa8a6ca7c819998df`. Release0.9.2 publicada con cinco hashes remotos idénticos. ZIP0.8.0 retirado después de verificar respaldo; tag/fuente conservados. Visibilidad PUBLIC verificada y reportes privados de seguridad habilitados. Configuración instalada y evidencia nativa conservadas.
 

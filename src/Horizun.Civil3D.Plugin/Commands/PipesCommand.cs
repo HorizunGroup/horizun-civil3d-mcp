@@ -416,10 +416,16 @@ internal sealed class PipesCommand : ICommand
                         continue;
                     }
                     double? sump = null;
-                    try { sump = st.SumpElevation; } catch (System.Exception) { }
+                    string? unreadable = null;
+                    try { sump = st.SumpElevation; } catch (System.Exception e) { unreadable = e.GetType().Name + ": " + e.Message; }
                     var nm = SafeText(() => st.Name)?.ToString() ?? sid.Handle.ToString();
-                    if (sump is { } sv) v.Check(nm + " sump at or below the lowest connected invert", "<= " + Math.Round(low, 6), Hz.Finite(sv, 6), sv <= low + 1e-6);
-                    sumps.Add(new JsonObject { ["structure"] = nm, ["sump"] = sump is { } s2 ? Hz.Finite(s2, 6) : null, ["lowest_invert"] = Hz.Finite(low, 6) });
+                    var what = nm + " sump at or below the lowest connected invert";
+                    // An unreadable sump is an unconfirmed check, never a skipped one.
+                    if (sump is { } sv) v.Check(what, "<= " + Math.Round(low, 6), Hz.Finite(sv, 6), sv <= low + 1e-6);
+                    else v.Check(what, "<= " + Math.Round(low, 6), null, false, "UNREADABLE: " + unreadable);
+                    var row = new JsonObject { ["structure"] = nm, ["sump"] = sump is { } s2 ? Hz.Finite(s2, 6) : null, ["lowest_invert"] = Hz.Finite(low, 6) };
+                    if (unreadable != null) row["sump_unreadable_reason"] = unreadable;
+                    sumps.Add(row);
                 }
                 after["structure_sumps"] = sumps;
             });

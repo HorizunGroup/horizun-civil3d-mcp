@@ -1,13 +1,14 @@
 // -----------------------------------------------------------------------------
 // Horizun Civil 3D MCP - the plug-in end of the local named pipe.
 //
-// Listens on "Horizun.Civil3D-<pid>" on a BACKGROUND thread. This thread never
+// Listens on "Horizun.Civil3D-<pid>-<random>" on a BACKGROUND thread. This thread never
 // touches the drawing: it authenticates, answers the two control verbs
 // directly, and hands every real command to the Dispatcher, which marshals it
 // to Civil 3D's main thread.
 //
-// Security: pipe ACL = current user only; every request carries the 256-bit
-// token from the discovery file, compared in constant time. No network
+// Security: pipe ACL = current user only, and the first instance must create the
+// pipe (a pipe someone else created first is refused); every request carries the
+// 256-bit token from the discovery file, compared in constant time. No network
 // listener exists anywhere in the bridge.
 // -----------------------------------------------------------------------------
 using System.IO.Pipes;
@@ -56,17 +57,28 @@ internal sealed class PipeServer
         catch { }
     }
 
+    private bool _created;
+
     private NamedPipeServerStream Create()
     {
         var rules = new PipeSecurity();
         var me = WindowsIdentity.GetCurrent().User!;
         rules.AddAccessRule(new PipeAccessRule(me, PipeAccessRights.FullControl, AccessControlType.Allow));
+        // The ACL above applies only when this process creates the pipe. If another process created it first,
+        // later instances would join that pipe under its ACL, so the first instance must be a new pipe.
 #if NET48
-        return new NamedPipeServerStream(_pipeName, PipeDirection.InOut, NamedPipeServerStream.MaxAllowedServerInstances,
-#else
-        return NamedPipeServerStreamAcl.Create(_pipeName, PipeDirection.InOut, NamedPipeServerStream.MaxAllowedServerInstances,
-#endif
+        // .NET Framework rejects FirstPipeInstance; the name is unguessable, and a pre-existing pipe is refused.
+        if (!_created && Directory.GetFiles(@"\\.\pipe\").Any(p => string.Equals(Path.GetFileName(p), _pipeName, StringComparison.OrdinalIgnoreCase)))
+            throw new UnauthorizedAccessException("The bridge pipe '" + _pipeName + "' already exists and was not created by this Civil 3D.");
+        var s = new NamedPipeServerStream(_pipeName, PipeDirection.InOut, NamedPipeServerStream.MaxAllowedServerInstances,
             PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 64 * 1024, 64 * 1024, rules);
+#else
+        var options = PipeOptions.Asynchronous | (_created ? PipeOptions.None : PipeOptions.FirstPipeInstance);
+        var s = NamedPipeServerStreamAcl.Create(_pipeName, PipeDirection.InOut, NamedPipeServerStream.MaxAllowedServerInstances,
+            PipeTransmissionMode.Byte, options, 64 * 1024, 64 * 1024, rules);
+#endif
+        _created = true;
+        return s;
     }
 
     private void AcceptLoop()
@@ -96,6 +108,12 @@ internal sealed class PipeServer
             {
                 server?.Dispose();
                 if (_stopping) break;
+                if (!_created)
+                {
+                    // Fail closed: never retry into a pipe another process owns.
+                    Log.Error("bridge pipe could not be created as a new pipe; the bridge does not listen", e);
+                    break;
+                }
                 Log.Error("pipe accept failed", e);
                 Thread.Sleep(250);
             }

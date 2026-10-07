@@ -1,5 +1,49 @@
 # Changelog
 
+## Unreleased - 2026-10-06 - Multi-agent review fixes (branch `phase-10/review-fixes`)
+
+Fixes for the 32 findings that survived a five-dimension multi-agent review with adversarial verification.
+Contract unchanged (`e36ee390efbb5d34ee0fe86c`), so the server and the plug-in stay compatible with v0.9.2.
+Plug-in fixes are built (B) and not live-verified; Core/Server fixes are unit-tested (T).
+
+- **Points:** `create`/`import` with `group` no longer replace a point group's custom query (which dropped its
+  members). A group whose query is not a standard query is refused by name; `_All Points` is left untouched; the
+  plan reports the group's previous point count and verify checks that the previous members are still in it.
+  Explicitly numbered rows are added before auto-numbered rows, so a mixed request cannot collide after confirmation.
+- **Sections:** plan, read and verify transactions open sample lines, groups and sections for write with the
+  locked-layer override (Civil 3D aborts on read-only access to pending sections; a locked layer no longer turns a
+  read into a failure). `create_sample_lines` into an existing group and `create_section_views` refuse a
+  non-editable group in the plan.
+- **Wildcards:** `Hz.Like` is an iterative O(n·m) matcher; a pattern such as `*-*-*-…Z` can no longer backtrack
+  exponentially on the Civil 3D thread.
+- **Pipe security:** the pipe name has a random part published only in the user-only discovery file; the first
+  pipe instance must create the pipe (`FirstPipeInstance`; on net48 a pre-existing pipe is refused) and the bridge
+  stops listening rather than join a pipe it did not create. The server connects with identification-level
+  impersonation and sends the token only after `GetNamedPipeServerProcessId` equals the discovered acad.exe pid.
+- **Transport errors:** a request larger than the pipe limit once encoded is refused before sending; truncated or
+  malformed replies and wrapped read faults are tool-level Transport errors that keep the "check the drawing" warning.
+- **Permissions:** an `allowed_tools`/`denied_tools` entry that is not an exact tool name fails closed to `read_only`.
+- **Tokens:** spent confirmation tokens are kept until they expire, so a replay reports `already_used`, not `unknown`.
+- **Verification:** layout and pressure-network renames compare case-sensitively; an unreadable structure sump is a
+  failed check with its reason, not a skipped one; `add_data` with `rebuild=false` does not check breakline
+  elevations against the stale TIN and says so. Editability fails closed when `is_reference` or the layer cannot be read.
+- **Inputs:** absolute-path checks use `IsPathFullyQualified` (drive- or root-relative paths such as `C:x.csv` are
+  refused); `set_cells` refuses a repeated (row, col); `split_region` refuses a split station that coincides with an
+  additional applied station; `blocks define` refuses source entities from different spaces in the plan.
+- **Data shortcuts:** the publish manager is disposed on failure.
+- **Installer:** in package mode, years chosen by default skip (and report) a year the package cannot serve instead of
+  blocking the others; a running installed server is refused before files are touched; plug-in install attempts keep
+  only their log on failure and the three newest attempts; installs keep the five newest backups.
+- **CI and privacy:** GitHub actions pinned to commit SHAs; trust-registration tests run in CI; package privacy tests
+  use a generic user-profile pattern instead of a personal account name.
+- **Docs:** README surface/undo/profile text, capability review counts, regenerated capability catalog hash, STATUS
+  heading, the shipped workflow skill (`undo_last` disabled) and the Core test that now pins the contract hash.
+- **API probes:** `acdbmgd.review-fixes.txt` (Transaction.GetObject overloads, Hatch, Curve, Entity, DBText,
+  Dimension, MLeaderStyle, AttributeReference, XrefGraph, Database) and `AeccDbMgd.review-fixes-part.txt` (Part).
+- Evidence: 569 Core/Server tests; 406 runtime tests on each of net48/net8/net10; Python, plug-in bootstrap, runtime
+  build, metadata, trust and rollback script tests pass. Plug-in builds 2024/net48, 2025/net8, 2026/net8 and
+  2026/net10: 0 errors.
+
 ## v0.9.2 - 2026-10-06 - Public readiness
 
 - Published v0.9.2 and made the repository public after explicit authorization and successful PR#1 CI. Four packages plus SHA256SUMS match GitHub digests. Withdrew the backed-up0.8.0 installer containing private build paths and enabled private vulnerability reporting.

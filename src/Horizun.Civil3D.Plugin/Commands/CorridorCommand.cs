@@ -158,7 +158,7 @@ internal sealed partial class CorridorCommand : ICommand
             (doc, tr, plan) =>
             {
                 Resolve.Unique(doc, tr, "assembly", name);
-                if (!Path.IsPathRooted(path) || !File.Exists(path)) throw new HzRefusal(ErrorCodes.NotFound, "source_dwg must be an existing absolute .dwg path: " + path + ". Nothing changed.");
+                if (!RuntimeCompat.IsPathFullyQualified(path) || !File.Exists(path)) throw new HzRefusal(ErrorCodes.NotFound, "source_dwg must be an existing absolute .dwg path: " + path + ". Nothing changed.");
                 if (string.Equals(Path.GetFullPath(path), Path.GetFullPath(doc.Name), StringComparison.OrdinalIgnoreCase))
                     throw new HzRefusal(ErrorCodes.InvalidInput, "source_dwg is the target drawing itself. Nothing changed.");
                 using (var src = new Database(false, true))

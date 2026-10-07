@@ -353,17 +353,21 @@ internal static class Shortcuts
             {
                 if (associate) DataShortcuts.AssociateDSProject(projectId, doc.Database, false);
                 var m = Manager();
-                var selected = 0;
-                for (var i = 0; i < m.GetExportableItemsCount(); i++)
+                try
                 {
-                    var e = m.GetExportableItemAt(i);
-                    if (!names.Contains(e.Name, StringComparer.OrdinalIgnoreCase)) continue;
-                    if (e.IsExported) { already.Add(e.Name); continue; }
-                    m.SetSelectItemAtIndex(e.Index, true);
-                    selected++;
+                    var selected = 0;
+                    for (var i = 0; i < m.GetExportableItemsCount(); i++)
+                    {
+                        var e = m.GetExportableItemAt(i);
+                        if (!names.Contains(e.Name, StringComparer.OrdinalIgnoreCase)) continue;
+                        if (e.IsExported) { already.Add(e.Name); continue; }
+                        m.SetSelectItemAtIndex(e.Index, true);
+                        selected++;
+                    }
+                    if (selected > 0 && !DataShortcuts.SaveDataShortcutManager(ref m)) throw new HzRefusal(ErrorCodes.Internal, "Civil 3D refused to save the data shortcuts. Nothing published.");
                 }
-                if (selected > 0 && !DataShortcuts.SaveDataShortcutManager(ref m)) throw new HzRefusal(ErrorCodes.Internal, "Civil 3D refused to save the data shortcuts. Nothing published.");
-                m.Dispose();
+                // SaveDataShortcutManager takes the manager by ref: dispose whichever instance is current, even on failure.
+                finally { m?.Dispose(); }
             },
             (doc, tr, v, after) =>
             {

@@ -1,7 +1,7 @@
 // -----------------------------------------------------------------------------
 // Horizun Civil 3D MCP - the wire between the MCP server and the plug-in.
 //
-// Local named pipe "Horizun.Civil3D-<pid>", ACL'd to the current user. One
+// Local named pipe "Horizun.Civil3D-<pid>-<random>", ACL'd to the current user. One
 // request per connection, one line of UTF-8 JSON each way:
 //
 //   request  {"id","command","params","token"}
@@ -24,7 +24,11 @@ public static class Wire
     public const string StatusVerb = "__status";
     public const string CancelVerb = "__cancel_queued";
 
-    public static string PipeName(int pid) => "Horizun.Civil3D-" + pid;
+    /// <summary>
+    /// Pipe name with an unguessable part. It is published only in the user-only discovery file, so another local
+    /// user cannot create the pipe first ("squat" it) to receive the bridge token.
+    /// </summary>
+    public static string PipeName(int pid, string nonce) => "Horizun.Civil3D-" + pid + "-" + nonce;
 
     public static JsonObject Request(string id, string command, JsonObject? parameters, string token) => new()
     {

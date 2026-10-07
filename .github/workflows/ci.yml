@@ -12,7 +12,7 @@ jobs:
   secrets:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
       - name: Scan source and complete reachable Git history
@@ -28,15 +28,15 @@ jobs:
     # Core and Server - contract, permissions, validation, engines, exchange formats - are tested here.
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: |
             8.0.x
             10.0.x
       - name: Unit tests (no Civil 3D)
         run: dotnet test tests/Horizun.Civil3D.Core.Tests -c Release --nologo
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: '3.12'
       - name: Revit mesh receiver guards (no Revit)
@@ -51,6 +51,8 @@ jobs:
           & ./scripts/claude-desktop-registration.tests.ps1
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & ./scripts/install-rollback.tests.ps1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & ./scripts/register-plugin-trust.tests.ps1
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           $pluginTestServer = Join-Path $env:RUNNER_TEMP 'c3d-plugin-test-server'
           dotnet publish src/Horizun.Civil3D.Server/Horizun.Civil3D.Server.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o $pluginTestServer --nologo -v q

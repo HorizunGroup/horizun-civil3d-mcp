@@ -125,6 +125,8 @@ internal sealed partial class PointsCommand : ICommand
         var names = fileRows == null ? ((JsonArray)ctx.Args["points"]!).Select(n => Hz.Str((JsonObject)n!, "name")).ToList() : rows.Select(_ => (string?)null).ToList();
         var groupName = Hz.Str(ctx.Args, "group");
         ObjectId groupId = ObjectId.Null;
+        var groupIsAll = false;
+        uint[] groupBefore = [];
         var created = new List<ObjectId>();
         return WriteFlow.Run(ctx, "HZ_POINTS",
             (doc, tr, plan) =>
@@ -135,7 +137,19 @@ internal sealed partial class PointsCommand : ICommand
                 if (dup.Count > 0) throw new HzRefusal(ErrorCodes.InvalidInput, "Point numbers repeat in the request: " + string.Join(", ", dup.Take(20)) + ". Nothing changed.");
                 var taken = nums.Where(cp.Contains).ToList();
                 if (taken.Count > 0) throw new HzRefusal(ErrorCodes.InvalidInput, taken.Count + " point number(s) already exist (e.g. " + string.Join(", ", taken.Take(10)) + "); existing points are never overwritten. Nothing changed.");
-                if (groupName != null) groupId = GroupId(doc, tr, groupName);
+                if (groupName != null)
+                {
+                    groupId = GroupId(doc, tr, groupName);
+                    var g = (PointGroup)tr.GetObject(groupId, OpenMode.ForRead);
+                    groupIsAll = g.IsAllPointsGroup;
+                    // Only a standard query can be extended by number. Rewriting any other query
+                    // would replace the group's definition and silently drop its members.
+                    if (!groupIsAll && g.GetQuery() is not StandardPointGroupQuery)
+                        throw new HzRefusal(ErrorCodes.InvalidInput, "Point group '" + g.Name + "' is defined by a custom query; adding points by number would replace that query. Add them to the group in Civil 3D, or omit 'group'. Nothing changed.");
+                    groupBefore = g.GetPointNumbers();
+                    plan["group_points_before"] = (long)groupBefore.Length;
+                    plan["group_query"] = groupIsAll ? "all points (no change needed)" : "standard: new numbers appended to IncludeNumbers";
+                }
                 plan["points"] = rows.Count; plan["with_numbers"] = nums.Count; plan["group"] = groupName;
                 plan["first"] = new JsonArray(rows.Take(5).Select(r => (JsonNode)new JsonObject { ["number"] = r.Number is { } n ? (long)n : null, ["x"] = r.X, ["y"] = r.Y, ["z"] = r.Z, ["description"] = r.Description }).ToArray());
                 if (fileRows != null) plan["file"] = Hz.Str(ctx.Args, "file");
@@ -143,16 +157,20 @@ internal sealed partial class PointsCommand : ICommand
             (doc, tr) =>
             {
                 var cp = Civ(doc).CogoPoints;
-                for (var i = 0; i < rows.Count; i++)
+                // Explicitly numbered rows first, so an auto-numbered row can never take a number
+                // that a later row asks for. `created` keeps request order for the verify step.
+                var ids = new ObjectId[rows.Count];
+                foreach (var i in Enumerable.Range(0, rows.Count).OrderBy(i => rows[i].Number == null ? 1 : 0))
                 {
                     var r = rows[i];
                     var id = cp.Add(new Point3d(r.X, r.Y, r.Z), r.Description, true);
                     var p = (CogoPoint)tr.GetObject(id, OpenMode.ForWrite);
                     if (r.Number is { } n) p.PointNumber = n;
                     if (names[i] is { } nm) p.PointName = nm;
-                    created.Add(id);
+                    ids[i] = id;
                 }
-                if (!groupId.IsNull)
+                created.AddRange(ids);
+                if (!groupId.IsNull && !groupIsAll)
                 {
                     var g = (PointGroup)tr.GetObject(groupId, OpenMode.ForWrite);
                     var q = g.GetQuery() as StandardPointGroupQuery ?? new StandardPointGroupQuery();
@@ -180,6 +198,8 @@ internal sealed partial class PointsCommand : ICommand
                     var g = (PointGroup)tr.GetObject(groupId, OpenMode.ForRead);
                     var missing = created.Count(id => !g.ContainsPoint(((CogoPoint)tr.GetObject(id, OpenMode.ForRead)).PointNumber));
                     v.Check("points in group " + g.Name, created.Count, created.Count - missing, missing == 0);
+                    var lost = groupBefore.Count(n => !g.ContainsPoint(n));
+                    v.Check("previous members kept in group " + g.Name, groupBefore.Length, groupBefore.Length - lost, lost == 0);
                 }
                 after["points"] = new JsonArray(created.Take(50).Select(id => (JsonNode)PointJson((CogoPoint)tr.GetObject(id, OpenMode.ForRead))).ToArray());
             });

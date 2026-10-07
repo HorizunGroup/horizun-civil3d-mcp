@@ -8,12 +8,14 @@ $repo = Split-Path $PSScriptRoot -Parent
 $version = ([xml](Get-Content -LiteralPath (Join-Path $repo 'Directory.Build.props') -Raw)).Project.PropertyGroup.Version
 
 function Assert-C3D([bool]$Condition, [string]$Message) { if (-not $Condition) { throw $Message } }
+# Any real Windows profile path (placeholders such as <name> or %USERPROFILE% are allowed) or synced folder.
+$PrivatePath = '(?i)[A-Z]:[\\/]Users[\\/](?!Public[\\/])[^\\/"<>%\s]+[\\/]|OneDrive[\\/]'
 foreach ($rel in @('.codex-plugin/plugin.json', '.claude-plugin/plugin.json', 'packaging/claude-desktop/manifest.json')) {
     $path = Join-Path $repo $rel
     $text = Get-Content -LiteralPath $path -Raw
     $metadata = $text | ConvertFrom-Json
     Assert-C3D ($metadata.version -ceq $version) "$rel version mismatch."
-    Assert-C3D ($text -notmatch '(?i)C:[\\/]Users[\\/]pablo|OneDrive[\\/]Documentos') "$rel contains a private path."
+    Assert-C3D ($text -notmatch $PrivatePath) "$rel contains a private path."
 }
 $codex = Get-Content -LiteralPath (Join-Path $repo '.codex-plugin/plugin.json') -Raw | ConvertFrom-Json
 $claude = Get-Content -LiteralPath (Join-Path $repo '.claude-plugin/plugin.json') -Raw | ConvertFrom-Json
@@ -93,7 +95,7 @@ try {
             Assert-C3D (@($names | Where-Object { $_ -match '(^/|^[A-Za-z]:|\.\.)' }).Count -eq 0) "$path has an unsafe ZIP path."
             foreach ($name in $names | Where-Object { $_ -match '(?i)\.(json|ps1|md|txt)$|^(LICENSE|NOTICE)$' }) {
                 $text = Read-ZipText $zip $name
-                Assert-C3D ($text -notmatch '(?i)C:[\\/]Users[\\/]pablo|OneDrive[\\/]Documentos|AppData[\\/]Local[\\/]Temp[\\/]horizun-c3d') "$name contains a private local path."
+                Assert-C3D ($text -notmatch ($PrivatePath + '|AppData[\\/]Local[\\/]Temp[\\/]horizun-c3d')) "$name contains a private local path."
             }
             $runtimeText = Read-ZipText $zip 'runtime-release.json'
             $runtime = $runtimeText | ConvertFrom-Json
@@ -101,7 +103,7 @@ try {
             Assert-C3D ($runtime.asset_name -ceq "horizun-civil3d-mcp-$version.zip") 'Runtime asset name mismatch.'
             Assert-C3D ($runtime.sha256 -ceq $expectedHash) 'Runtime SHA-256 does not match the release ZIP.'
             Assert-C3D ($runtime.url -ceq "https://github.com/HorizunGroup/horizun-civil3d-mcp/releases/download/v$version/$($runtime.asset_name)") 'Runtime URL mismatch.'
-            Assert-C3D ($runtimeText -notmatch '(?i)C:[\\/]Users[\\/]|OneDrive|pablo') 'Runtime metadata contains a private path.'
+            Assert-C3D ($runtimeText -notmatch '(?i)[A-Z]:[\\/]Users[\\/]|OneDrive') 'Runtime metadata contains a private path.'
             $payload = Read-ZipBytes $zip "payload/horizun-civil3d-mcp-$version.zip"
             $hasher = [Security.Cryptography.SHA256]::Create()
             try { $payloadHash = [BitConverter]::ToString($hasher.ComputeHash($payload)).Replace('-', '').ToLowerInvariant() }
@@ -111,7 +113,7 @@ try {
                 $text = Read-ZipText $zip $name
                 $manifest = $text | ConvertFrom-Json
                 Assert-C3D ($manifest.version -ceq $version) "$name version mismatch."
-                Assert-C3D ($text -notmatch '(?i)C:[\\/]Users[\\/]|OneDrive|pablo') "$name contains a private path."
+                Assert-C3D ($text -notmatch '(?i)[A-Z]:[\\/]Users[\\/]|OneDrive') "$name contains a private path."
             }
             if ($path -like '*.mcpb') {
                 $manifest = (Read-ZipText $zip 'manifest.json') | ConvertFrom-Json

@@ -198,7 +198,7 @@ internal static class PressureApi
             (doc, tr, checks, after) =>
             {
                 var net = (PressurePipeNetwork)tr.GetObject(id, OpenMode.ForRead);
-                checks.Text("pressure network name", name, net.Name);
+                checks.Text("pressure network name", name, net.Name, ignoreCase: false);
                 checks.Flag("network appears in Civil document collection", true, Ids(doc).Cast<ObjectId>().Contains(id));
                 if (!rename)
                 {

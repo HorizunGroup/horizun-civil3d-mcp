@@ -155,12 +155,14 @@ public sealed class ConfirmationStore
         }
     }
 
-    public int OutstandingCount { get { lock (_lock) { Prune(); return _issued.Count; } } }
+    public int OutstandingCount { get { lock (_lock) { Prune(); return _issued.Count(kv => !kv.Value.Used); } } }
 
+    // Spent tokens are kept until they expire, so a replay is reported as "already used" (one approval, one
+    // execution) instead of "unknown", which could make an agent think the first apply never happened.
     private void Prune()
     {
         var now = _now();
-        foreach (var k in _issued.Where(kv => kv.Value.Used || now > kv.Value.ExpiresUtc).Select(kv => kv.Key).ToList())
+        foreach (var k in _issued.Where(kv => now > kv.Value.ExpiresUtc).Select(kv => kv.Key).ToList())
             _issued.Remove(k);
     }
 }

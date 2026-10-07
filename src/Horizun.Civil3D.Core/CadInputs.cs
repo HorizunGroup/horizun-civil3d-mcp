@@ -321,8 +321,11 @@ public static class CadInputs
     private static string? Cells(JsonObject a)
     {
         if (a["cells"] is not JsonArray c || c.Count == 0 || c.Count > 10000) return "cells must list 1 to 10000 {row, col, value}.";
-        return c.Any(n => n is not JsonObject o || Hz.Num(o, "row") is not { } r || r < 0 || r != Math.Floor(r) || Hz.Num(o, "col") is not { } k || k < 0 || k != Math.Floor(k) || o["value"] is not JsonValue)
-            ? "Each cell is {row, col, value} with 0-based integer row/col." : null;
+        if (c.Any(n => n is not JsonObject o || Hz.Num(o, "row") is not { } r || r < 0 || r != Math.Floor(r) || Hz.Num(o, "col") is not { } k || k < 0 || k != Math.Floor(k) || o["value"] is not JsonValue))
+            return "Each cell is {row, col, value} with 0-based integer row/col.";
+        // Two values for one cell cannot both be written and verified.
+        var dup = c.GroupBy(n => (Hz.Num((JsonObject)n!, "row"), Hz.Num((JsonObject)n!, "col"))).FirstOrDefault(g => g.Count() > 1);
+        return dup != null ? "cells lists row " + dup.Key.Item1 + ", col " + dup.Key.Item2 + " more than once." : null;
     }
 
     // ---- layouts -----------------------------------------------------------
@@ -344,7 +347,7 @@ public static class CadInputs
             V.OneOf(a, "area", "layout", "extents", "display"), V.Pos(a, "scale"), V.OneOf(a, "rotation", "0", "90", "180", "270"),
             Hz.Bool(a, "fit") == true && a["scale"] != null ? "Give fit OR scale." : null)),
         ["plot_pdf"] = new(new[] { "layouts", "output" }, new[] { "device", "overwrite" }, F, a => V.First(V.Strings(a, "layouts", 200),
-            Hz.Str(a, "output") is { } o && Path.IsPathRooted(o) && o.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) ? null : "output must be an absolute .pdf path.")),
+            Hz.Str(a, "output") is { } o && RuntimeCompat.IsPathFullyQualified(o) && o.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) ? null : "output must be an absolute .pdf path.")),
     });
 
     // ---- cleanup -----------------------------------------------------------

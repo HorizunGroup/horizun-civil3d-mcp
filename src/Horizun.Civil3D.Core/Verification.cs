@@ -42,6 +42,10 @@ public sealed class VerificationSet
         if (verified) _verified++; else _failed++;
     }
 
+    /// <summary>
+    /// Text equality. Case-insensitive by default because the host normalises the case of many names. A rename
+    /// must pass ignoreCase: false: a case-only rename is otherwise verified whether or not it happened.
+    /// </summary>
     public void Text(string what, string? requested, string? actual, bool ignoreCase = true) =>
         Check(what, requested, actual,
             requested != null && actual != null &&

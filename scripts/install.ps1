@@ -101,6 +101,7 @@ foreach ($y in $Supported) {
     $dll = Join-Path $AcadRoots[$y] 'C3D\AeccDbMgd.dll'
     if (Test-Path $dll) { $installed += $y; Ok "Civil 3D $y found" }
 }
+$YearsDefaulted = -not $Years
 if (-not $Years) { $Years = $installed }
 foreach ($y in $Years) {
     if ($Supported -notcontains $y) { Fail "Civil 3D $y is not supported by this build (supported: $($Supported -join ', '))." }
@@ -114,31 +115,51 @@ if ($acad.Count -gt 0 -and -not $DryRun -and -not $PackageOut) {
     Fail ("Civil 3D / AutoCAD is running (acad.exe pid " + (($acad | ForEach-Object { $_.Id }) -join ', ') +
           "). SAVE your drawings and close every Civil 3D window, then run this again. Nothing was changed.")
 }
+# A running copy of the installed server locks its exe: replacing the folder would half-delete it and the
+# rollback could not restore it. Other MCP clients (Claude, Codex, the ChatGPT tunnel) may be running it.
+$serverPrefix = $ServerDir.TrimEnd('\') + '\'
+$servers = @(Get-Process -ErrorAction SilentlyContinue | Where-Object {
+    try { $_.Path -and $_.Path.StartsWith($serverPrefix, [StringComparison]::OrdinalIgnoreCase) } catch { $false } })
+if ($servers.Count -gt 0 -and -not $DryRun -and -not $PackageOut) {
+    Fail ("The installed Horizun Civil 3D MCP server is running (pid " + (($servers | ForEach-Object { $_.Id }) -join ', ') +
+          "). Close the MCP clients that use it (Claude, Codex, the ChatGPT tunnel), then run this again. Nothing was changed.")
+}
 
 # --- 3. test, build, stage (or use the prebuilt files of a release package) ---
 if ($PackageMode) {
     Step 'Release package: installing the prebuilt files next to this script'
     $StageBundle = Join-Path $PSScriptRoot 'Horizun.Civil3D.bundle'
     $StageServer = Join-Path $PSScriptRoot 'server'
-    foreach ($y in $Years) {
-        if (-not (Test-Path (Join-Path $StageBundle "Contents\$y\Horizun.Civil3D.dll"))) { Fail "This package has no build for Civil 3D $y." }
+    # Years the owner named must all be installable. Years picked by default (every installed Civil 3D) are
+    # narrowed to the ones this package can serve, and the rest are reported, so one unsupported year does not
+    # block the others.
+    $skipped = New-Object System.Collections.Generic.List[string]
+    function Skip-OrFail([int] $y, [string] $why) {
+        if (-not $YearsDefaulted) { Fail $why }
+        $skipped.Add("Civil 3D ${y}: $why")
+        $script:Years = @($script:Years | Where-Object { $_ -ne $y })
+    }
+    foreach ($y in @($Years)) {
+        if (-not (Test-Path (Join-Path $StageBundle "Contents\$y\Horizun.Civil3D.dll"))) { Skip-OrFail $y "This package has no build for Civil 3D $y." }
     }
     $hostManifestPath = Join-Path $StageBundle 'host-builds.json'
     if (-not (Test-Path -LiteralPath $hostManifestPath)) { Fail 'This package has no Autodesk runtime metadata. Rebuild it with the current installer.' }
     $hostBuilds = @(Get-Content -LiteralPath $hostManifestPath -Raw | ConvertFrom-Json)
-    foreach ($y in $Years) {
+    foreach ($y in @($Years)) {
         $record = @($hostBuilds | Where-Object { [int]$_.year -eq $y })
         if ($record.Count -ne 1) { Fail "This package must have exactly one Autodesk build record for Civil 3D $y." }
     }
     foreach ($build in $hostBuilds) {
-        if ($installed -notcontains [int]$build.year) { continue }
+        if ($Years -notcontains [int]$build.year) { continue }
         $actualJson = & (Join-Path $StageServer 'horizun-civil3d-mcp.exe') --inspect-host $AcadRoots[[int]$build.year] $build.year
         if ($LASTEXITCODE -ne 0) { Fail "Could not inspect Civil 3D $($build.year)." }
         $actual = $actualJson | ConvertFrom-Json
         if ($actual.runtime -cne $build.runtime -or $actual.autocad_assembly_version -cne $build.autocad_assembly_version -or $actual.civil_assembly_version -cne $build.civil_assembly_version) {
-            Fail "This Civil 3D $($build.year) package was built against different Autodesk DLLs/runtime ($($build.runtime)). Obtain a build matching this installed update ($($actual.runtime)); nothing was installed."
+            Skip-OrFail ([int]$build.year) "This Civil 3D $($build.year) package was built against different Autodesk DLLs/runtime ($($build.runtime)). Obtain a build matching this installed update ($($actual.runtime)); nothing was installed for it."
         }
     }
+    foreach ($s in $skipped) { Write-Host "    SKIPPED $s" -ForegroundColor Yellow }
+    if (@($Years).Count -eq 0) { Fail 'This package has no build matching any installed Civil 3D. Nothing was installed.' }
     $version = ([xml](Get-Content (Join-Path $StageBundle 'PackageContents.xml'))).ApplicationPackage.AppVersion
     $serverVersion = & (Join-Path $StageServer 'horizun-civil3d-mcp.exe') --version
     Ok $serverVersion
@@ -365,6 +386,11 @@ catch {
 }
 
 # --- 5. completed installation ----------------------------------------------
+# Each install backs up the whole previous installation; keep the five newest backups.
+try {
+    Get-ChildItem -LiteralPath (Split-Path $BackupDir -Parent) -Directory -ErrorAction Stop | Sort-Object Name -Descending |
+        Select-Object -Skip 5 | Remove-Item -Recurse -Force -ErrorAction Stop
+} catch { Write-Host "    Old backups were not pruned: $($_.Exception.Message)" -ForegroundColor Yellow }
 $exePath = Join-Path $ServerDir 'horizun-civil3d-mcp.exe'
 Step 'Done'
 Ok "Bundle : $BundleDir"

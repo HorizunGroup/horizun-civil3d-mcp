@@ -173,27 +173,22 @@ public static class Hz
     {
         if (string.IsNullOrEmpty(pattern)) return true;
         text ??= "";
-        return LikeAt(text.ToUpperInvariant(), 0, pattern!.ToUpperInvariant(), 0);
+        return LikeAt(text.ToUpperInvariant(), pattern!.ToUpperInvariant());
     }
 
-    private static bool LikeAt(string t, int ti, string p, int pi)
+    // Iterative greedy matcher, O(len(t) * len(p)) worst case. It runs on the Civil 3D thread, where a request
+    // cannot be interrupted, so it must never backtrack exponentially on a pattern like "*-*-*-*-*Z".
+    private static bool LikeAt(string t, string p)
     {
-        while (pi < p.Length)
+        int ti = 0, pi = 0, star = -1, mark = 0;
+        while (ti < t.Length)
         {
-            var c = p[pi];
-            if (c == '*')
-            {
-                while (pi < p.Length && p[pi] == '*') pi++;
-                if (pi == p.Length) return true;
-                for (var k = ti; k <= t.Length; k++)
-                    if (LikeAt(t, k, p, pi)) return true;
-                return false;
-            }
-            if (ti >= t.Length) return false;
-            if (c != '?' && c != t[ti]) return false;
-            ti++;
-            pi++;
+            if (pi < p.Length && (p[pi] == '?' || (p[pi] != '*' && p[pi] == t[ti]))) { ti++; pi++; }
+            else if (pi < p.Length && p[pi] == '*') { star = pi++; mark = ti; }
+            else if (star >= 0) { pi = star + 1; ti = ++mark; }
+            else return false;
         }
-        return ti == t.Length;
+        while (pi < p.Length && p[pi] == '*') pi++;
+        return pi == p.Length;
     }
 }
