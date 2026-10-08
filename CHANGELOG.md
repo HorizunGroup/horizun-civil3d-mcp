@@ -2,7 +2,7 @@
 
 ## v0.8.1 - 2026-10-08 - reads no longer refused for a default dry_run; document action=geo (Claude Code)
 
-Contract `985597be8acacd1bbe083f70` (install server and plug-in together, restart the MCP client).
+Contract `3cf0d8ccf8312ee217d613c8` (install server and plug-in together, restart the MCP client).
 
 ### Fixed (found live on v0.8.0, Civil 3D 2025)
 - **Read actions of mixed read/write tools were refused** with `Field 'dry_run' is not used by action ...` (seen on
@@ -18,6 +18,16 @@ Contract `985597be8acacd1bbe083f70` (install server and plug-in together, restar
 - **`execute_csharp` could not cast to Civil entities** (FeatureLine, Site, Surface...): CS0012, AecBaseMgd not
   referenced. The script now references AecBaseMgd (the base of `Autodesk.Civil.DatabaseServices.Entity`) and, when
   Civil 3D has loaded them, AeccPressurePipesMgd and AeccDataShortcutMgd.
+- **`grading create_geometric` could leave the platform NOT flat** (2 of 8 live gradings: only 389 of 2153 base
+  samples at 42.50, the rest down to 40.51). A 4-vertex flat base had no TIN vertex inside and Civil 3D triangulated
+  across it to a daylight line that almost touched the base; the verifier passed 7/7 because it re-read only line
+  vertices. Now, when the innermost line (base or last inner line) is planar within 1 mm (least-squares plane), a
+  grid of interior vertices on that plane is added before the outer boundary (`GradingEngine.Floor`; spacing
+  max(2 x densify, sqrt(area / 20000)), at least half a cell from the line), reported as `plan.floor`. The re-read
+  now also checks the TIN elevation inside the floor at cell centres, which are never TIN vertices; a tilted
+  platform fails verification. A non-planar floor adds nothing and says it is not checked. Tests include a base
+  whose daylight touches it (`GradingFloorTests`). The tool description now says the boundary must stay the last
+  operation if data is added to that TIN later.
 
 ### Added
 - **Typed reads of an open drawing that is NOT the active window** (owner's request). `target_document` may name

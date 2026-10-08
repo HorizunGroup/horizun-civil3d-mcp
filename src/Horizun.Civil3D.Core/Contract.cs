@@ -288,8 +288,12 @@ public static partial class Contract
                 "at convex corners) and inner steps (offset; grade_to_depth {depth, slope}; grade_to_elevation " +
                 "{elevation, slope}). Creates one closed 3D polyline per line on layer (default HZ-GRADING) and a NEW TIN " +
                 "surface named name with every line as a standard breakline and the outermost line as outer boundary. " +
-                "Dry run returns every computed line (points, z range, area) and failed daylight rays. Re-read after " +
-                "commit: breakline count, boundary, and the TIN elevation at the line vertices. volume_against (surface " +
+                "When the innermost line (the base, or the last inner line) is planar, a grid of interior vertices on its " +
+                "plane is added before the boundary so Civil 3D cannot triangulate across the platform (plan.floor). " +
+                "Dry run returns every computed line (points, z range, area), the floor and failed daylight rays. Re-read " +
+                "after commit: breakline count, boundary, the TIN elevation at the line vertices AND inside the planar floor " +
+                "at points that are not TIN vertices. If you later add data to this TIN, keep its boundary the LAST operation " +
+                "of the definition, or the new data is triangulated over the boundary. volume_against (surface " +
                 "name) adds cut/fill of the new TIN against that surface from a never-committed transient volume. " +
                 "Native grading creation is refused by name: use this.",
             InputSchemaJson = """

@@ -286,6 +286,11 @@ aborted, DBMOD unchanged):**
    - `surface volumes_report` and any write (e.g. `layers create` dry run) with `target_document=B` are refused with
      `document_mismatch` and the list of what the tool can read.
    - B's DBMOD is unchanged afterwards (check after activating B by hand).
+6. Grading floor (fixture drawing, not a client drawing): a 4-vertex flat rectangle graded 1:1 to a surface that
+   nearly meets it on one side. `plan.floor.planar=true` with interior vertices; after apply, the check
+   "floor base interior (off-vertex points)" matches every sample, and a Civil 3D surface elevation label inside the
+   platform reads the base elevation. Re-run the Primavera 2 T3/T5 case only with the owner's permission.
+   Note: if data is later added to such a TIN, the Outer boundary must remain the LAST operation of the definition.
 
 ### Design: reads and writes on a non-active drawing
 - Reads: `CommandContext.Document(forWrite:false)` returns the named open drawing when `DocumentScope.AllowsNonActive`

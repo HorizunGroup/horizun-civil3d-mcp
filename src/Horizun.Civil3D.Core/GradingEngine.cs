@@ -36,6 +36,8 @@ public sealed class GradingResult
     public int FailedRays { get; set; }
     public int TotalRays { get; set; }
     public GradingLine BoundaryLine => Lines.Last(l => l.Side != "inner");
+    /// <summary>Interior vertices that hold the platform / floor flat (null until Run finishes).</summary>
+    public FloorFill? Floor { get; set; }
 
     public JsonArray Summary() => Hz.Arr(Lines.Select(l => (JsonNode?)new JsonObject
     {
@@ -48,8 +50,30 @@ public sealed class GradingResult
     }));
 }
 
+/// <summary>
+/// The innermost closed line (the base, or the last inner line) and, when it is planar, a grid of interior
+/// vertices on its plane. Live finding (v0.8.0): with only the 4 corners of a flat base, Civil 3D triangulated
+/// ACROSS the platform to the daylight line and the platform came out tilted (389 of 2153 samples at grade).
+/// Checks are cell centres - never TIN vertices - so the re-read tests the triangles, not the inserted points.
+/// </summary>
+public sealed record FloorFill(string Tag, bool Planar, double MaxResidual, double Spacing, List<P3> Vertices, List<P3> Checks, string Note)
+{
+    public JsonObject Summary() => new()
+    {
+        ["line"] = Tag,
+        ["planar"] = Planar,
+        ["max_plane_residual"] = Hz.Finite(MaxResidual, 6),
+        ["grid_spacing"] = Planar ? Hz.Finite(Spacing, 4) : null,
+        ["interior_vertices"] = Vertices.Count,
+        ["interior_checks"] = Checks.Count,
+        ["note"] = Note,
+    };
+}
+
 public static class GradingEngine
 {
+    public const double PlanarTolerance = 0.001;
+    public const int MaxFloorVertices = 20000;
     public static readonly string[] OuterSteps = { "offset", "grade_to_surface" };
     public static readonly string[] InnerSteps = { "offset", "grade_to_depth", "grade_to_elevation" };
 
@@ -282,7 +306,81 @@ public static class GradingEngine
             if (inn.Count < 3 || after <= 1e-6 || after > before + 1e-6 || tooClose)
                 throw new HzRefusal(ErrorCodes.InvalidInput, "Inner step " + idx + " collapses the footprint (the inward offset is larger than the shape). Nothing changed.");
         }
+        var floorLine = res.Lines.Last(l => l.Side is "inner" or "base");
+        res.Floor = Floor(floorLine, densify);
+        res.Log.Add("floor " + floorLine.Tag + ": " + res.Floor.Note);
         return res;
+    }
+
+    /// <summary>Least-squares plane z = a + b(x - x0) + c(y - y0) through the points (centred for precision), or null if degenerate.</summary>
+    public static (double A, double B, double C, double X0, double Y0)? FitPlane(IReadOnlyList<P3> pts)
+    {
+        if (pts.Count < 3) return null;
+        double x0 = pts.Average(p => p.X), y0 = pts.Average(p => p.Y);
+        double sxx = 0, sxy = 0, syy = 0, sx = 0, sy = 0, sz = 0, sxz = 0, syz = 0, n = pts.Count;
+        foreach (var p in pts)
+        {
+            double x = p.X - x0, y = p.Y - y0;
+            sxx += x * x; sxy += x * y; syy += y * y; sx += x; sy += y; sz += p.Z; sxz += x * p.Z; syz += y * p.Z;
+        }
+        // Normal equations [n sx sy; sx sxx sxy; sy sxy syy] [a b c] = [sz sxz syz], solved by Cramer's rule.
+        double Det(double a1, double a2, double a3, double b1, double b2, double b3, double c1, double c2, double c3) =>
+            a1 * (b2 * c3 - b3 * c2) - a2 * (b1 * c3 - b3 * c1) + a3 * (b1 * c2 - b2 * c1);
+        var d = Det(n, sx, sy, sx, sxx, sxy, sy, sxy, syy);
+        if (Math.Abs(d) < 1e-12) return null;
+        var a = Det(sz, sx, sy, sxz, sxx, sxy, syz, sxy, syy) / d;
+        var b = Det(n, sz, sy, sx, sxz, sxy, sy, syz, syy) / d;
+        var c = Det(n, sx, sz, sx, sxx, sxz, sy, sxy, syz) / d;
+        return (a, b, c, x0, y0);
+    }
+
+    public static bool Inside(double x, double y, IReadOnlyList<P3> poly)
+    {
+        var inside = false;
+        for (int i = 0, j = poly.Count - 1; i < poly.Count; j = i++)
+        {
+            var a = poly[i]; var b = poly[j];
+            if ((a.Y > y) != (b.Y > y) && x < (b.X - a.X) * (y - a.Y) / (b.Y - a.Y) + a.X) inside = !inside;
+        }
+        return inside;
+    }
+
+    /// <summary>Interior vertices and off-vertex check points for a planar innermost line; nothing when it is not planar.</summary>
+    public static FloorFill Floor(GradingLine line, double densify, int maxVertices = MaxFloorVertices)
+    {
+        var poly = line.Points;
+        var plane = FitPlane(poly);
+        if (plane == null) return new FloorFill(line.Tag, false, double.NaN, 0, new(), new(), "Degenerate line: no interior vertices.");
+        var (a, b, c, x0, y0) = plane.Value;
+        double Z(double x, double y) => a + b * (x - x0) + c * (y - y0);
+        var residual = poly.Max(p => Math.Abs(p.Z - Z(p.X, p.Y)));
+        if (residual > PlanarTolerance)
+            return new FloorFill(line.Tag, false, residual, 0, new(), new(),
+                "Not planar (max residual " + residual.ToString("F4", System.Globalization.CultureInfo.InvariantCulture) +
+                "): its interior follows Civil 3D's triangulation; no interior vertices added and the interior is not checked.");
+
+        var area = Math.Abs(Area(poly));
+        var s = Math.Max(2 * densify, Math.Sqrt(area / maxVertices));
+        double minX = poly.Min(p => p.X), maxX = poly.Max(p => p.X), minY = poly.Min(p => p.Y), maxY = poly.Max(p => p.Y);
+        var verts = new List<P3>();
+        var checks = new List<P3>();
+        // Grid nodes at least s/2 from the line (no sliver triangles against the breakline); checks at cell centres.
+        // A floor narrower than the grid halves the spacing (down to densify/4) rather than staying empty.
+        for (var tries = 0; tries < 4; tries++, s /= 2)
+        {
+            verts.Clear(); checks.Clear();
+            for (var x = minX + s / 2; x < maxX; x += s)
+                for (var y = minY + s / 2; y < maxY; y += s)
+                {
+                    if (Inside(x, y, poly) && DistanceToBoundary(new P3(x, y, 0), poly) >= s / 2) verts.Add(new P3(x, y, Z(x, y)));
+                    double cx = x + s / 2, cy = y + s / 2;
+                    if (Inside(cx, cy, poly) && DistanceToBoundary(new P3(cx, cy, 0), poly) >= s / 4) checks.Add(new P3(cx, cy, Z(cx, cy)));
+                }
+            if (verts.Count > 0 || s / 2 < densify / 4) break;
+        }
+        return new FloorFill(line.Tag, true, residual, s, verts, checks,
+            "Planar: " + verts.Count + " interior vertices on its plane (grid " + s.ToString("F3", System.Globalization.CultureInfo.InvariantCulture) +
+            ") keep it flat; " + checks.Count + " off-vertex points re-read after commit.");
     }
 
     public static double DistanceToBoundary(P3 p, IReadOnlyList<P3> poly)

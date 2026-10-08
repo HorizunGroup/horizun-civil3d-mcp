@@ -7,8 +7,12 @@
 // Dry run returns the computed lines; the plan fingerprint includes them, so a
 // terrain that moved between dry run and apply makes the token stale.
 //
+// A planar innermost line (the platform / floor) also gets a grid of interior
+// vertices on its plane, added before the boundary (GradingEngine.Floor).
+//
 // Re-read after commit: the TIN, its breakline group (one breakline per line),
-// its outer boundary, and the TIN elevation at the line vertices.
+// its outer boundary, the TIN elevation at the line vertices and, for a planar
+// floor, at interior points that are not TIN vertices.
 // -----------------------------------------------------------------------------
 using System.Text.Json.Nodes;
 using Autodesk.AutoCAD.ApplicationServices;
@@ -97,6 +101,7 @@ internal sealed class GradingCommand : ICommand
             plan["inner"] = new JsonArray(inner.Select(o => (JsonNode?)o.DeepClone()).ToArray());
             plan["lines"] = result.Summary();
             plan["boundary_line"] = result.BoundaryLine.Tag;
+            plan["floor"] = result.Floor!.Summary();
             plan["daylight_rays"] = new JsonObject { ["total"] = result.TotalRays, ["failed"] = result.FailedRays };
             if (result.FailedRays > 0)
                 plan["warning"] = result.FailedRays + " daylight rays did not meet the target surface (it ends before the slope reaches it). " +
@@ -139,6 +144,14 @@ internal sealed class GradingCommand : ICommand
             tin.Description = "Horizun geometric grading";
             var op = tin.BreaklinesDefinition.AddStandardBreaklines(ids, 1.0, 0, 0, 0);
             op.Description = "Horizun geometric grading lines";
+            // Interior vertices on the planar floor, BEFORE the boundary: Civil 3D applies the definition in order and
+            // the outer boundary must be the last operation.
+            if (result.Floor!.Vertices.Count > 0)
+            {
+                var pc = new Point3dCollection();
+                foreach (var p in result.Floor.Vertices) pc.Add(new Point3d(p.X, p.Y, p.Z));
+                tin.AddVertices(pc);
+            }
             var boundaryId = lineIds.Last(l => l.Tag == result.BoundaryLine.Tag).Id;
             tin.BoundariesDefinition.AddBoundaries(new ObjectIdCollection { boundaryId }, 1.0, SurfaceBoundaryType.Outer, true);
             tin.Rebuild();
@@ -161,6 +174,11 @@ internal sealed class GradingCommand : ICommand
                 foreach (var line in result.Lines)
                     SurfaceCommand.ElevationCheck(checks, tin, "line " + line.Tag + " vertices", line.Points.Select(p => new Point3d(p.X, p.Y, p.Z)).ToList(),
                         boundaryInCall: line.Tag == result.BoundaryLine.Tag);
+                // The line vertices alone passed 7/7 live while the platform was tilted: re-read the INTERIOR at
+                // points that are not TIN vertices, so the triangles themselves are tested.
+                if (result.Floor!.Planar)
+                    SurfaceCommand.ElevationCheck(checks, tin, "floor " + result.Floor.Tag + " interior (off-vertex points)",
+                        result.Floor.Checks.Select(p => new Point3d(p.X, p.Y, p.Z)).ToList(), boundaryInCall: false);
                 checks.Flag("is_out_of_date after rebuild", false, tin.IsOutOfDate);
                 after["surface"] = new JsonObject { ["name"] = tin.Name, ["handle"] = tin.Handle.ToString(), ["counts"] = SurfaceCommand.TinCounts(tin) };
                 after["polylines"] = Hz.Arr(lineIds.Select(l => (JsonNode?)new JsonObject { ["tag"] = l.Tag, ["handle"] = l.Id.Handle.ToString() }));
