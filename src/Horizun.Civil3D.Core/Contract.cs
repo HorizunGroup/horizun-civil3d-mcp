@@ -114,7 +114,14 @@ public static partial class Contract
                 "system, external references. action=list_open: every open drawing and which is active. " +
                 "action=object_census: count of every Civil 3D object type (surfaces by kind, alignments, profiles, " +
                 "corridors, feature lines, sites, parcels, pipe networks, COGO points, point groups, sample line " +
-                "groups...), how many are data-shortcut references (not editable here) and xrefs. action=save: saves " +
+                "groups...), how many are data-shortcut references (not editable here) and xrefs. action=geo (read-only): " +
+                "georeference and orientation of the ACTIVE drawing - AutoCAD GeoLocation (coordinate system, design and " +
+                "reference points, north direction and vector, scale factor, units, type of coordinates, design point in " +
+                "lon/lat), the system variables NORTHDIRECTION, VIEWTWIST, WORLDUCS, UCSNAME, UCSORG/UCSXDIR/UCSYDIR, the " +
+                "current UCS, view twist and active viewport, Civil 3D's coordinate system and transformation settings " +
+                "(rotation to grid north, grid scale factor, reference/rotation points) and the grid convergence at the " +
+                "design point, computed through the drawing's own transform. Use it when north, the ViewCube or bearings " +
+                "do not agree. action=save: saves " +
                 "the active drawing to its own path; dry_run defaults to true and returns the plan plus a single-use " +
                 "confirmation_token; apply with dry_run=false and that token. Any subsequent drawing edit, variable " +
                 "or view change invalidates the save plan, even when DBMOD flags are unchanged. Save requires the full_write profile. " +
@@ -123,7 +130,7 @@ public static partial class Contract
                 "re-checks that objects the write created are gone.",
             InputSchemaJson = """
             {"type":"object","properties":{
-              "action":{"type":"string","enum":["info","list_open","object_census","save","undo_last"]},
+              "action":{"type":"string","enum":["info","list_open","object_census","geo","save","undo_last"]},
               __TARGET__,
               "dry_run":{"type":"boolean","default":true,"description":"save / undo_last. true = return the plan and a confirmation_token, change nothing."},
               "confirmation_token":{"type":"string","description":"save / undo_last. Token from the dry run of exactly this request."}

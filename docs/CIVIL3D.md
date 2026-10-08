@@ -252,3 +252,26 @@ Test project `HZ_PRUEBA` on the owner's Desktop, created with `shortcuts_project
 - **restore:** the original working folder was restored afterwards.
 
 Publish verification after a restart needs the drawing associated; v0.7.4 associates it, and that path is not yet re-run live.
+
+## v0.8.1: default dry_run on reads; document action=geo (2026-10-08)
+
+**Bug, reproduced live on v0.8.0:** `horizun_c3d_layouts action=list` with no `dry_run` from the user returned
+`invalid_input: Field 'dry_run' is not used by action list`. The MCP client filled the schema default.
+
+**geo API behaviour, read live (Civil 3D 2025, real georeferenced drawing, execute_csharp in query mode, transaction
+aborted, DBMOD unchanged):**
+- `Database.GeoDataObject`, `GeoLocationData` (all fields used), `TransformToLonLatAlt(Point3d)` returns X = longitude,
+  Y = latitude; the round trip `TransformFromLonLatAlt` returns the design point within 1.3e-7 m.
+- `NORTHDIRECTION` (sysvar) equals `Database.NorthDirection` and `GeoLocationData.NorthDirection`: radians.
+- `VIEWTWIST` is radians (5.2119 = 298.63 deg); `UCSXDIR`/`UCSYDIR`/`UCSORG` are `Point3d`; `WORLDUCS` is `Int16`.
+- Tiled model space: `Editor.CurrentViewportObjectId` is null; `Editor.ActiveViewportId` is the `*Active`
+  `ViewportTableRecord` (equals `Database.CurrentViewportTableRecordId`).
+- `SettingsDrawing.TransformationSettings` throws `InvalidOperationException` when `ApplyTransformSettings` is false.
+- `SettingsUnitZone.GetCoordinateSystemByCode` returns description, projection, datum, unit and category.
+
+**Live check for the deployed command** (after `scripts/install.ps1`, Claude restarted):
+1. `horizun_c3d_layouts action=list` and `horizun_c3d_entities action=query limit=5` succeed (no dry_run refusal).
+2. `horizun_c3d_entities action=query dry_run=false` is still refused (`dry_run`).
+3. `horizun_c3d_document action=geo` on a georeferenced drawing: geolocation present, lon/lat plausible, convergence
+   with `round_trip_error` below 1e-3, `observations` consistent with the UCS/VIEWTWIST variables; DBMOD unchanged.
+4. On a drawing with no GeoLocation: `geolocation.present=false` with the reason, `grid_convergence.value=null`.

@@ -1,0 +1,48 @@
+# AeccDbMgd.dll 13.7.0.145 (Civil 3D 2025)
+== Autodesk.Civil.Settings.SettingsTransformation : Autodesk.Civil.TreeOidWrapper
+  P Boolean ApplySeaLevelScaleFactor {get;set;}
+  P Point2d GridReferencePoint {get;set;}
+  P Point2d GridRotationPoint {get;set;}
+  P Double GridScaleFactor {get;set;}
+  P GridScaleFactorType GridScaleFactorComputation {get;set;}
+  P Point2d LocalReferencePoint {get;set;}
+  P Point2d LocalRotationPoint {get;set;}
+  P Double RotationToGridAzimuth {get;set;}
+  P Double RotationToGridNorth {get;set;}
+  P Double SeaLevelScaleElevation {get;set;}
+  P SpecifyRotationType SpecifyRotationType {get;set;}
+  P Double SpheroidRadius {get;}
+== Autodesk.Civil.Settings.GridScaleFactorType : System.Enum
+  E PrismodialFormula
+  E ReferencePoint
+  E Unity
+  E UserDefined
+  F Int32 value__
+== Autodesk.Civil.Settings.SpecifyRotationType : System.Enum
+  E GridRotationAngle
+  E RotationPoint
+  F Int32 value__
+== Autodesk.Civil.Settings.SettingsUnitZone : Autodesk.Civil.TreeOidWrapper
+  M static String[] GetAllCodes()
+  M static SettingsCoordinateSystem GetCoordinateSystemByCode(String code)
+  P AngleUnitType AngularUnits {get;set;}
+  P String CoordinateSystemCode {get;set;}
+  P Double DrawingScale {get;set;}
+  P DrawingUnitType DrawingUnits {get;set;}
+  P ImperialToMetricConversionType ImperialToMetricConversion {get;set;}
+  P Boolean MatchAutoCADVariables {get;set;}
+  P Boolean ScaleObjectsFromOtherDrawings {get;set;}
+== Autodesk.Civil.Settings.SettingsCoordinateSystem : System.Object
+  P String Category {get;}
+  P String Code {get;}
+  P String Datum {get;}
+  P String Description {get;}
+  P String Projection {get;}
+  P String Unit {get;}
+== Autodesk.Civil.Settings.SettingsDrawing : Autodesk.Civil.TreeOidWrapper
+  P SettingsAbbreviation AbbreviationsSettings {get;}
+  P SettingsAmbient AmbientSettings {get;}
+  P Boolean ApplyTransformSettings {get;set;}
+  P SettingsObjectLayers ObjectLayerSettings {get;}
+  P SettingsTransformation TransformationSettings {get;}
+  P SettingsUnitZone UnitZoneSettings {get;}

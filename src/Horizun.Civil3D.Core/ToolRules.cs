@@ -44,6 +44,7 @@ public static class ToolRules
             return "action must be one of: " + string.Join(", ", specs.Keys) + ".";
         var allowed = new HashSet<string>(spec.Required.Concat(spec.Optional)) { "action", "target_document" };
         if (spec.IsWrite) { allowed.Add("dry_run"); allowed.Add("confirmation_token"); }
+        args = WithoutUnusedDefaults(tool, args, allowed);
         if (args.FirstOrDefault(kv => kv.Value != null && !allowed.Contains(kv.Key)) is { Key: { } extra })
             return "Field '" + extra + "' is not used by action " + action + ". Fields for " + action + ": " +
                    string.Join(", ", spec.Required.Concat(spec.Optional)) + ".";
@@ -52,6 +53,36 @@ public static class ToolRules
                 return action + " requires " + r + ".";
         if (spec.IsWrite && string.IsNullOrWhiteSpace(Hz.Str(args, "target_document"))) return "Writes require target_document.";
         return spec.Extra?.Invoke(args);
+    }
+
+    /// <summary>
+    /// A copy of args without the fields the action does not use whose value is exactly the default the tool's
+    /// schema declares. MCP clients may fill schema defaults (dry_run=true on a read was refused live), and such a
+    /// field says nothing the user chose. A non-default value for an unused field is still refused.
+    /// </summary>
+    public static JsonObject WithoutUnusedDefaults(string tool, JsonObject args, ISet<string> allowed)
+    {
+        var props = Contract.Find(tool)?.InputSchema["properties"] as JsonObject;
+        if (props == null || !args.Any(kv => !allowed.Contains(kv.Key) && IsDefault(props, kv.Key, kv.Value))) return args;
+        var copy = new JsonObject();
+        foreach (var kv in args)
+            if (allowed.Contains(kv.Key) || !IsDefault(props, kv.Key, kv.Value)) copy[kv.Key] = kv.Value?.DeepClone();
+        return copy;
+    }
+
+    private static bool IsDefault(JsonObject props, string key, JsonNode? value) =>
+        props[key] is JsonObject p && p.TryGetPropertyValue("default", out var d) && SameScalar(d, value);
+
+    private static bool SameScalar(JsonNode? a, JsonNode? b)
+    {
+        if (a is not JsonValue x || b is not JsonValue y || x.GetValueKind() != y.GetValueKind()) return false;
+        return x.GetValueKind() switch
+        {
+            System.Text.Json.JsonValueKind.True or System.Text.Json.JsonValueKind.False => true,
+            System.Text.Json.JsonValueKind.String => x.GetValue<string>() == y.GetValue<string>(),
+            System.Text.Json.JsonValueKind.Number => Hz.AsDouble(x) is { } nx && Hz.AsDouble(y) is { } ny && nx == ny,
+            _ => false,
+        };
     }
 }
 

@@ -1,5 +1,35 @@
 # Changelog
 
+## v0.8.1 - 2026-10-08 - reads no longer refused for a default dry_run; document action=geo (Claude Code)
+
+Contract `27bca9b0ef96f6efaab6feb7` (install server and plug-in together, restart the MCP client).
+
+### Fixed (found live on v0.8.0, Civil 3D 2025)
+- **Read actions of mixed read/write tools were refused** with `Field 'dry_run' is not used by action ...` (seen on
+  `entities query` and `layouts list`). The MCP client fills schema defaults, so every call carried `dry_run: true`.
+  The per-action validation (`ToolRules`, `SurfaceInputs`, `FeatureLineInputs`) now ignores a field the action does not
+  use when its value is exactly the schema default (`ToolRules.WithoutUnusedDefaults`). A non-default value is still
+  refused (for example `dry_run: false` or a `confirmation_token` on a read). Applies to every action-based tool.
+- Tests: for every tool and action, filling all schema defaults never changes the validation outcome, and a default
+  `dry_run` is accepted on every action (`SchemaDefaultTests`).
+
+### Added
+- **`horizun_c3d_document` action=geo** (read-only): georeference and orientation of the active drawing.
+  - AutoCAD GeoLocation: coordinate system, type of coordinates, design and reference points, north direction (rad and
+    deg) and vector, scale factor and method, units, sea-level correction, the design point in lon/lat.
+  - System variables NORTHDIRECTION, VIEWTWIST, WORLDUCS, UCSNAME, UCSORG, UCSXDIR, UCSYDIR, UCSFOLLOW, UCSVP, TILEMODE,
+    CVPORT, ANGBASE, ANGDIR, GEOMARKERVISIBILITY, plus Database.NorthDirection.
+  - Current UCS, current view (twist, direction) and the active viewport (layout viewport or the model `*Active`).
+  - Civil 3D coordinate system definition and transformation settings (rotation to grid north/azimuth, grid scale
+    factor, reference and rotation points, sea level).
+  - Grid convergence at the design point, computed through the drawing's own GeoLocation transform.
+  - Observations, e.g. "VIEWTWIST is exactly minus the UCS rotation: the view is PLAN to that rotated UCS".
+  - One angle convention, stated in the reply: from drawing +Y, counter-clockwise, plus the clockwise azimuth
+    (`GeoMath`, unit-tested).
+- Live findings (Civil 3D 2025): in tiled model space `Editor.CurrentViewportObjectId` is null (the active viewport is
+  `ActiveViewportId`); with *Apply transformation settings* off, the `TransformationSettings` getter throws
+  `InvalidOperationException`, so that block is null with the reason.
+
 ## v0.8.0 - 2026-10-04 - undo_last; previous connector retired; first GitHub release (Claude Code)
 
 Contract `550ff5cb0f7cdce48d7194d5` (restart the MCP client).

@@ -1,17 +1,18 @@
 # STATUS - estado actual y QUÉ SIGUE
 
 > Documento VIVO. Toda sesión que termine un bloque de trabajo lo **actualiza** (ver `WORKFLOW.md`).
-> Última actualización: **2026-10-02 12:35**, por Claude Code, al cierre de la sesión de pruebas en vivo: **v0.6.9 instalada, 284/284 en vivo**. Incluye el trabajo previo de Codex.
+> Última actualización: **2026-10-08**, por Claude Code: v0.8.1 (lecturas con `dry_run` por defecto + `document action=geo`). Anterior: 2026-10-02, v0.6.9 instalada, 284/284 en vivo.
 
 ## Versión
 
 | Qué | Valor |
 |---|---|
-| Código en el repo | **v0.8.0**: 26 herramientas, contrato `550ff5cb0f7cdce48d7194d5`, 435 tests. Verificado en vivo: 294/294 con FULL WRITE aplicado + accesos directos + 2 instancias. Pendiente en vivo: `undo_last` y la publicación que asocia el dibujo |
+| Código en el repo | **v0.8.1** (2026-10-08): contrato `27bca9b0ef96f6efaab6feb7`, 734 tests. Corrige el rechazo de lecturas por `dry_run` por defecto y añade `document action=geo` (georreferencia, UCS, VIEWTWIST, convergencia). Ver CHANGELOG |
+| v0.8.0 (anterior) | 26 herramientas, contrato `550ff5cb0f7cdce48d7194d5`, 435 tests. Verificado en vivo: 294/294 con FULL WRITE aplicado + accesos directos + 2 instancias. Pendiente en vivo: `undo_last` y la publicación que asocia el dibujo |
 | Instalado en la máquina del dueño | **v0.8.0, edición de desarrollo**, registrada como `horizun-civil3d`. El conector anterior (`civil3d-mcp`) fue **retirado** el 2026-10-04 (respaldo en `Desarrollos\Civil3D MCP\_archivo\`) |
 | Civil 3D disponible | Solo **2025** (ACADVER 25.0s, AeccDbMgd 13.7.0.145) |
 | Git / GitHub | `HorizunGroup/horizun-civil3d-mcp` (privado). Ramas `develop` (trabajo) y `main` (versiones estables, cada una con Release e instalable `.zip`). Las notas personales van en `.local/` (ignorado) |
-| Perfil de permisos activo | `safe_write`. `settings.json` no existe: se borró tras la prueba de guardado |
+| Perfil de permisos activo | El 2026-10-08 `settings.json` existía con `unsafe_code` y `execute_csharp` encendido (lo puso el dueño para diagnosticar). Volver a `safe_write` cuando termine |
 | Integración ChatGPT | Auxiliares instalados, cliente oficial 0.0.15; 111 checks pasan en PowerShell 5.1 y 7.6.5. **pending_user_action**: faltan túnel/clave de cuenta y llamada real. Ver docs/CHATGPT.md |
 | Registro en Claude Desktop | Hecho, como `horizun-civil3d`. Los otros conectores siguen intactos |
 
@@ -21,7 +22,7 @@
 |---|---|---|
 | `horizun_c3d_health` | n/a | Sí |
 | `horizun_c3d_target` | listar o elegir instancia | Sí |
-| `horizun_c3d_document` | `info`, `list_open`, `object_census`, `save` | Sí. El guardado se probó con token y verificación en disco |
+| `horizun_c3d_document` | `info`, `list_open`, `object_census`, `save`, `undo_last`, **`geo`** (v0.8.1) | Sí. El guardado se probó con token y verificación en disco. `geo`: API leída en vivo por el canal C#; el comando instalado queda por verificar tras instalar |
 | `horizun_c3d_query` | `list`, `get` (15 tipos) | Sí para superficies y feature lines. Los demás tipos solo están compilados |
 | `horizun_c3d_styles` | `list`, `get` (con quién usa cada estilo) | Sí |
 | `horizun_c3d_probe` | firmas de la API en vivo | Sí |
@@ -81,6 +82,8 @@ Detalle de la evidencia: `docs/CIVIL3D.md`.
 - Las correcciones v0.1.1 y los auxiliares ChatGPT anteriores están incluidos en v0.2.0. Las secciones previas conservan su evidencia histórica.
 
 ## ▶ QUÉ SIGUE (siguiente bloque de trabajo)
+
+0. **Instalar la v0.8.1** (servidor + plug-in juntos, cambia el contrato) y verificar en vivo con la lista de `docs/CIVIL3D.md` § v0.8.1: lecturas sin rechazo por `dry_run` y `document action=geo`.
 
 1. ~~Probar el camino aplicado de FULL WRITE~~: **HECHO 2026-10-02** (294/294). Falta solo publicar y referenciar accesos directos, que necesitan un proyecto.
 2. ~~Accesos directos~~: **HECHO 2026-10-04** (publicar y referenciar con asociación automática, dos instancias). Falta re-ejecutar en vivo la publicación de la v0.7.4 (ahora asocia el dibujo).

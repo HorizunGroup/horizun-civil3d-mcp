@@ -459,3 +459,12 @@
 - Al final se restauró la carpeta de trabajo original de Civil 3D y el perfil quedó en `safe_write`.
 
 **Qué sigue:** instalar la v0.7.4 y re-ejecutar la publicación en vivo (por ejemplo HZ_FG desde hz-fuente.dwg); probar a mano los botones Canal C# y Escritura completa; GitHub (privado en HorizunGroup) cuando el dueño lo autorice.
+
+---
+
+## 2026-10-08 - Claude Code (Opus 5.5) - v0.8.1: dry_run por defecto en lecturas + lectura de georreferencia
+**Estado**: EN CURSO
+
+**Objetivo:**
+1. Bug visto en vivo: `entities query` y `layouts list` se rechazan con "Field 'dry_run' is not used" porque el cliente rellena el `default: true` del esquema. Arreglo genérico: un campo que no usa la acción y solo trae el valor por defecto del esquema se ignora; un valor distinto se sigue rechazando. Tests para todas las herramientas.
+2. Nueva lectura `horizun_c3d_document action=geo`: GeoLocation, NORTHDIRECTION, VIEWTWIST, UCS, viewport activo, ajustes de transformación de Civil 3D y convergencia. Solo lectura, verificada en vivo sin modificar el dibujo abierto del dueño.

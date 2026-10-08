@@ -47,6 +47,7 @@ public static class SurfaceInputs
         if (action is "volumes_report" or "create_volume") allowed.UnionWith(new[] { "base", "comparison" });
         if (action == "volumes_report") allowed.UnionWith(new[] { "cut_factor", "fill_factor" });
         if (action == "sample_elevation") allowed.UnionWith(new[] { "points", "line", "step" });
+        args = ToolRules.WithoutUnusedDefaults("horizun_c3d_surface", args, allowed);
         if (args.Any(kv => kv.Value != null && !allowed.Contains(kv.Key))) return "Field '"+args.First(kv => kv.Value != null && !allowed.Contains(kv.Key)).Key+"' is not used by action "+action+".";
         bool Has(string key) => !string.IsNullOrWhiteSpace(Hz.Str(args, key));
         var names = args["names"] as JsonArray;

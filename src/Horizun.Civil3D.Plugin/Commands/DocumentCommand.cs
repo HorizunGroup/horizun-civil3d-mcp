@@ -21,9 +21,10 @@ internal sealed class DocumentCommand : ICommand
     public string Name => "document";
 
     public CommandResult Execute(CommandContext ctx) =>
-        ctx.RequireAction("info", "list_open", "object_census", "save", "undo_last") switch
+        ctx.RequireAction("info", "list_open", "object_census", "geo", "save", "undo_last") switch
         {
             "info" => Info(ctx),
+            "geo" => Geo(ctx),
             "list_open" => ListOpen(),
             "object_census" => Census(ctx),
             "undo_last" => UndoLast(ctx),
@@ -100,6 +101,20 @@ internal sealed class DocumentCommand : ICommand
             return 0;
         });
         return CommandResult.Ok(new JsonObject { ["document"] = d });
+    }
+
+    /// <summary>Georeference and orientation, read-only (aborted transaction, no object opened for write).</summary>
+    private static CommandResult Geo(CommandContext ctx)
+    {
+        var doc = ctx.Document(forWrite: false);
+        var data = new JsonObject { ["document"] = Path.GetFileName(doc.Name) };
+        ctx.Read(doc, tr =>
+        {
+            data["units"] = DrawingInfo.Units(CommandContext.Civil(doc), doc.Database);
+            data["geo"] = GeoInfo.Read(doc, tr);
+            return 0;
+        });
+        return CommandResult.Ok(data);
     }
 
     private static CommandResult ListOpen()
