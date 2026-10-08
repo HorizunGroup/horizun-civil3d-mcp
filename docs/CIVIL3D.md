@@ -272,6 +272,10 @@ aborted, DBMOD unchanged):**
 **Live check for the deployed command** (after `scripts/install.ps1`, Claude restarted):
 1. `horizun_c3d_layouts action=list` and `horizun_c3d_entities action=query limit=5` succeed (no dry_run refusal).
 2. `horizun_c3d_entities action=query dry_run=false` is still refused (`dry_run`).
+   `horizun_c3d_feature_line action=create_from_polyline` as a dry run is no longer refused for
+   `insert_intermediate` (seen live on v0.8.0).
+   `horizun_c3d_execute_csharp` (query mode) compiles `var f = (FeatureLine)tr.GetObject(id, OpenMode.ForRead);`
+   without CS0012 (AecBaseMgd now referenced).
 3. `horizun_c3d_document action=geo` on a georeferenced drawing: geolocation present, lon/lat plausible, convergence
    with `round_trip_error` below 1e-3, `observations` consistent with the UCS/VIEWTWIST variables; DBMOD unchanged.
 4. On a drawing with no GeoLocation: `geolocation.present=false` with the reason, `grid_convergence.value=null`.

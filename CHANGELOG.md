@@ -7,11 +7,17 @@ Contract `27bca9b0ef96f6efaab6feb7` (install server and plug-in together, restar
 ### Fixed (found live on v0.8.0, Civil 3D 2025)
 - **Read actions of mixed read/write tools were refused** with `Field 'dry_run' is not used by action ...` (seen on
   `entities query` and `layouts list`). The MCP client fills schema defaults, so every call carried `dry_run: true`.
-  The per-action validation (`ToolRules`, `SurfaceInputs`, `FeatureLineInputs`) now ignores a field the action does not
-  use when its value is exactly the schema default (`ToolRules.WithoutUnusedDefaults`). A non-default value is still
-  refused (for example `dry_run: false` or a `confirmation_token` on a read). Applies to every action-based tool.
-- Tests: for every tool and action, filling all schema defaults never changes the validation outcome, and a default
-  `dry_run` is accepted on every action (`SchemaDefaultTests`).
+  The same happened with other defaulted fields: `feature_line create_from_polyline` was refused for
+  `insert_intermediate: false`. Validation (`ToolRules`, `SurfaceInputs`, `FeatureLineInputs`, `GradingInputs`) now runs
+  on a copy without every field whose value is exactly its schema default (`ToolRules.WithoutDefaults`; required
+  fields are kept), so a filled default trips neither "not used by action" nor a cross-field rule such as
+  "insert_intermediate applies to mode=from_surface only". A non-default value is still validated and refused (for
+  example `dry_run: false` or a `confirmation_token` on a read). The command still receives the original arguments.
+- Tests: for every tool and action, filling all schema defaults never changes the validation outcome, a default
+  `dry_run` is accepted on every action, plus the live cases (`SchemaDefaultTests`).
+- **`execute_csharp` could not cast to Civil entities** (FeatureLine, Site, Surface...): CS0012, AecBaseMgd not
+  referenced. The script now references AecBaseMgd (the base of `Autodesk.Civil.DatabaseServices.Entity`) and, when
+  Civil 3D has loaded them, AeccPressurePipesMgd and AeccDataShortcutMgd.
 
 ### Added
 - **`horizun_c3d_document` action=geo** (read-only): georeference and orientation of the active drawing.

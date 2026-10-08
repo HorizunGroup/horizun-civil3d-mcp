@@ -66,6 +66,11 @@ public class SchemaDefaultTests
     [InlineData("horizun_c3d_layouts", "{\"action\":\"list\",\"dry_run\":true}")]
     [InlineData("horizun_c3d_layers", "{\"action\":\"list\",\"dry_run\":true}")]
     [InlineData("horizun_c3d_surface", "{\"action\":\"list\",\"dry_run\":true}")]
+    // Live (v0.8.0): create_from_polyline refused "Field 'insert_intermediate' is not used" (schema default false).
+    [InlineData("horizun_c3d_feature_line", "{\"action\":\"create_from_polyline\",\"target_document\":\"a.dwg\",\"handles\":[\"1A\"],\"names\":[\"FL1\"],\"insert_intermediate\":false,\"dry_run\":true}")]
+    // The same default must not trip the cross-field rule "insert_intermediate applies to mode=from_surface only".
+    [InlineData("horizun_c3d_feature_line", "{\"action\":\"set_elevations\",\"target_document\":\"a.dwg\",\"name\":\"FL1\",\"mode\":\"constant\",\"elevation\":100,\"insert_intermediate\":false}")]
+    [InlineData("horizun_c3d_surface", "{\"action\":\"get\",\"name\":\"EG\",\"rebuild\":true,\"view\":\"plan\",\"allow_shared_style\":false,\"break_at\":0,\"offset\":0}")]
     public void Live_regression_reads_with_default_dry_run_pass(string tool, string json) =>
         Assert.Null(Validate(tool, JsonNode.Parse(json)!.AsObject()));
 
@@ -73,6 +78,7 @@ public class SchemaDefaultTests
     [InlineData("horizun_c3d_entities", "{\"action\":\"query\",\"dry_run\":false}", "dry_run")]
     [InlineData("horizun_c3d_layouts", "{\"action\":\"list\",\"confirmation_token\":\"t\"}", "confirmation_token")]
     [InlineData("horizun_c3d_surface", "{\"action\":\"list\",\"dry_run\":false}", "dry_run")]
+    [InlineData("horizun_c3d_feature_line", "{\"action\":\"create_from_polyline\",\"target_document\":\"a.dwg\",\"handles\":[\"1A\"],\"names\":[\"FL1\"],\"insert_intermediate\":true}", "insert_intermediate")]
     public void A_non_default_value_on_an_unused_field_is_still_refused(string tool, string json, string field) =>
         Assert.Contains("'" + field + "'", Validate(tool, JsonNode.Parse(json)!.AsObject()));
 

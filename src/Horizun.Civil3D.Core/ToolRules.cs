@@ -44,7 +44,7 @@ public static class ToolRules
             return "action must be one of: " + string.Join(", ", specs.Keys) + ".";
         var allowed = new HashSet<string>(spec.Required.Concat(spec.Optional)) { "action", "target_document" };
         if (spec.IsWrite) { allowed.Add("dry_run"); allowed.Add("confirmation_token"); }
-        args = WithoutUnusedDefaults(tool, args, allowed);
+        args = WithoutDefaults(tool, args, spec.Required);
         if (args.FirstOrDefault(kv => kv.Value != null && !allowed.Contains(kv.Key)) is { Key: { } extra })
             return "Field '" + extra + "' is not used by action " + action + ". Fields for " + action + ": " +
                    string.Join(", ", spec.Required.Concat(spec.Optional)) + ".";
@@ -56,17 +56,22 @@ public static class ToolRules
     }
 
     /// <summary>
-    /// A copy of args without the fields the action does not use whose value is exactly the default the tool's
-    /// schema declares. MCP clients may fill schema defaults (dry_run=true on a read was refused live), and such a
-    /// field says nothing the user chose. A non-default value for an unused field is still refused.
+    /// The arguments to VALIDATE: a copy without every field whose value is exactly the default the tool's schema
+    /// declares (fields in keep, e.g. required ones, stay). MCP clients may fill schema defaults - live on v0.8.0,
+    /// dry_run=true on reads and insert_intermediate=false on create_from_polyline were refused - and such a field
+    /// says nothing the user chose, so it must neither trip "not used by action" nor a cross-field rule. Absent
+    /// means the default, so validating without it is exact. A non-default value is still validated and refused.
+    /// The caller's object is not modified; the command still receives the original arguments.
     /// </summary>
-    public static JsonObject WithoutUnusedDefaults(string tool, JsonObject args, ISet<string> allowed)
+    public static JsonObject WithoutDefaults(string tool, JsonObject args, IEnumerable<string>? keep = null)
     {
         var props = Contract.Find(tool)?.InputSchema["properties"] as JsonObject;
-        if (props == null || !args.Any(kv => !allowed.Contains(kv.Key) && IsDefault(props, kv.Key, kv.Value))) return args;
+        var kept = new HashSet<string>(keep ?? Array.Empty<string>()) { "action" };
+        bool Drop(KeyValuePair<string, JsonNode?> kv) => !kept.Contains(kv.Key) && IsDefault(props!, kv.Key, kv.Value);
+        if (props == null || !args.Any(Drop)) return args;
         var copy = new JsonObject();
         foreach (var kv in args)
-            if (allowed.Contains(kv.Key) || !IsDefault(props, kv.Key, kv.Value)) copy[kv.Key] = kv.Value?.DeepClone();
+            if (!Drop(kv)) copy[kv.Key] = kv.Value?.DeepClone();
         return copy;
     }
 

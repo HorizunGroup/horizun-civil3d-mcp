@@ -14,6 +14,7 @@ public static class GradingInputs
     {
         var action = Hz.Str(args, "action");
         if (action == null || !Actions.Contains(action)) return "action must be create_geometric.";
+        args = ToolRules.WithoutDefaults("horizun_c3d_grading", args);
         var allowed = new[] { "action", "source", "surface", "name", "outer", "inner", "densify", "layer", "style", "volume_against",
                               "target_document", "dry_run", "confirmation_token" };
         if (args.FirstOrDefault(kv => kv.Value != null && !allowed.Contains(kv.Key)) is { Key: { } extra }) return "Field '" + extra + "' is not used by create_geometric.";
@@ -55,7 +56,7 @@ public static class FeatureLineInputs
             case "rename": allowed.UnionWith(new[] { "name", "handle", "new_name" }); break;
             case "export_polyline3d": allowed.UnionWith(new[] { "name", "handle", "layer" }); break;
         }
-        args = ToolRules.WithoutUnusedDefaults("horizun_c3d_feature_line", args, allowed);
+        args = ToolRules.WithoutDefaults("horizun_c3d_feature_line", args);
         if (args.FirstOrDefault(kv => kv.Value != null && !allowed.Contains(kv.Key)) is { Key: { } extra }) return "Field '" + extra + "' is not used by action " + action + ".";
         if (string.IsNullOrWhiteSpace(Hz.Str(args, "target_document"))) return "Writes require target_document.";
 

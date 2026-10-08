@@ -64,6 +64,9 @@ internal sealed class ExecuteCSharpCommand : ICommand
         "Autodesk.Civil", "Autodesk.Civil.ApplicationServices", "Autodesk.Civil.DatabaseServices",
     };
 
+    // Optional Civil 3D assemblies, referenced when Civil 3D has loaded them (pressure networks load on demand).
+    private static readonly string[] OptionalAssemblies = { "AeccPressurePipesMgd", "AeccDataShortcutMgd", "AecBaseMgd" };
+
     private static ScriptOptions Options()
     {
         var refs = new[]
@@ -71,7 +74,12 @@ internal sealed class ExecuteCSharpCommand : ICommand
             typeof(object).Assembly, typeof(Enumerable).Assembly, typeof(JsonNode).Assembly,
             typeof(Database).Assembly, typeof(Document).Assembly, typeof(Autodesk.AutoCAD.Geometry.Point3d).Assembly,
             typeof(CivilDocument).Assembly, typeof(HzScriptGlobals).Assembly,
-        }.Distinct();
+            // Live finding (v0.8.0): Civil entities (FeatureLine, Site, Surface...) derive from Autodesk.Aec's Entity in
+            // AecBaseMgd; without it any cast to them fails with CS0012.
+            typeof(Autodesk.Civil.DatabaseServices.Entity).BaseType!.Assembly,
+        }.Concat(AppDomain.CurrentDomain.GetAssemblies()
+                .Where(a => !a.IsDynamic && OptionalAssemblies.Contains(a.GetName().Name, StringComparer.OrdinalIgnoreCase)))
+         .Distinct();
         return ScriptOptions.Default.WithReferences(refs).WithImports(Imports).WithEmitDebugInformation(false);
     }
 
