@@ -279,3 +279,20 @@ aborted, DBMOD unchanged):**
 3. `horizun_c3d_document action=geo` on a georeferenced drawing: geolocation present, lon/lat plausible, convergence
    with `round_trip_error` below 1e-3, `observations` consistent with the UCS/VIEWTWIST variables; DBMOD unchanged.
 4. On a drawing with no GeoLocation: `geolocation.present=false` with the reason, `grid_convergence.value=null`.
+5. Non-active reads: open two drawings (A active, B not). `horizun_c3d_health` lists `bridge.non_active_reads`.
+   - With `target_document=B`: `document info`, `object_census`, `geo` (window parts null with reason), `query list
+     type=surface`, `surface get`, `layers list`, `entities query`, `layouts list` (`current` null) succeed, each
+     with the host message "Read from the open, NON-active drawing"; A stays the active window.
+   - `surface volumes_report` and any write (e.g. `layers create` dry run) with `target_document=B` are refused with
+     `document_mismatch` and the list of what the tool can read.
+   - B's DBMOD is unchanged afterwards (check after activating B by hand).
+
+### Design: reads and writes on a non-active drawing
+- Reads: `CommandContext.Document(forWrite:false)` returns the named open drawing when `DocumentScope.AllowsNonActive`
+  (listed pair + contract effect Read). `CommandContext.Read` already locks that document and reads its own database in
+  an aborted transaction. Code that reads per-window state (GetSystemVariable, Editor, LayoutManager) must check
+  `CommandContext.IsActive(doc)`; DrawingInfo.File, layouts list and geo do.
+- Writes stay active-only. Making them work elsewhere would need, per write: `doc.LockDocument(Write, label)` of the
+  target, a temporary `HostApplicationServices.WorkingDatabase` switch restored in `finally` (many Civil 3D creation
+  APIs and styles use it), revision tracking and `undo_last` keyed per document, and live proof that the undo step
+  lands in the target's own undo stack. Not done until each write is live-verified that way.

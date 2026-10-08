@@ -463,8 +463,17 @@
 ---
 
 ## 2026-10-08 - Claude Code (Opus 5.5) - v0.8.1: dry_run por defecto en lecturas + lectura de georreferencia
-**Estado**: EN CURSO
+**Estado**: EN CURSO (código terminado; falta instalar, verificar en vivo y push)
 
 **Objetivo:**
 1. Bug visto en vivo: `entities query` y `layouts list` se rechazan con "Field 'dry_run' is not used" porque el cliente rellena el `default: true` del esquema. Arreglo genérico: un campo que no usa la acción y solo trae el valor por defecto del esquema se ignora; un valor distinto se sigue rechazando. Tests para todas las herramientas.
 2. Nueva lectura `horizun_c3d_document action=geo`: GeoLocation, NORTHDIRECTION, VIEWTWIST, UCS, viewport activo, ajustes de transformación de Civil 3D y convergencia. Solo lectura, verificada en vivo sin modificar el dibujo abierto del dueño.
+3. (Pedidos añadidos) mismo arreglo para `insert_intermediate` y cualquier default; `execute_csharp` con AecBaseMgd; lecturas tipadas sobre dibujos abiertos NO activos (pedido del dueño).
+
+**Hecho (sin instalar; el dueño sigue trabajando en Civil 3D):**
+- Commits `ef6a4d1`, `de0b7ca` y el de lecturas no activas en `develop`. 754 tests; plug-in 2025 0/0. Contrato `985597be8acacd1bbe083f70`.
+- En vivo (v0.8.0): reproducido el rechazo por `dry_run`; API de `geo` leída por el canal C# en modo query (DBMOD sin cambios).
+- Revit MCP revisado: escribe solo en el activo y también rechaza LECTURAS tipadas de un documento no activo (`DocumentGate.ReadGuard`); las excepciones son `copy_between_documents` (lee el origen), `document_session` (guardar/cerrar otro) y `model_diff`.
+- Push pendiente: gh y git autentican con la cuenta personal, no la de Horizun.
+
+**Qué sigue:** instalar v0.8.1 cuando el dueño cierre Civil 3D, verificar en vivo (`docs/CIVIL3D.md` § v0.8.1, incluido el punto 5 con dos dibujos), push con la cuenta de Horizun.

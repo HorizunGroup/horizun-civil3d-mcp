@@ -73,7 +73,17 @@ internal sealed class HealthCommand : ICommand
             ["data_root"] = HorizunPaths.DataRoot(),
             ["log"] = Log.Path,
             ["commands"] = Hz.Strings(Contract.PluginCommands),
+            ["non_active_reads"] = NonActiveReads(),
         };
         return CommandResult.Ok(data);
+    }
+
+    /// <summary>Tool -> actions that may name an open, non-active drawing in target_document (DocumentScope).</summary>
+    private static JsonObject NonActiveReads()
+    {
+        var o = new JsonObject();
+        foreach (var (tool, actions) in DocumentScope.All().OrderBy(kv => kv.Key, StringComparer.Ordinal))
+            o[tool] = Hz.Strings(actions);
+        return o;
     }
 }

@@ -66,7 +66,7 @@ public static partial class Contract
     public const string Prefix = "horizun_c3d_";
 
     private const string TargetDocumentProp =
-        "\"target_document\": {\"type\": \"string\", \"description\": \"Drawing name (e.g. 'Site.dwg') or full path. Defaults to the ACTIVE drawing for reads; REQUIRED for writes and must equal the active drawing.\"}";
+        "\"target_document\": {\"type\": \"string\", \"description\": \"Drawing name (e.g. 'Site.dwg') or full path. Defaults to the ACTIVE drawing for reads. The reads listed in horizun_c3d_health bridge.non_active_reads may name another OPEN drawing: it is read in place and the active window is never changed. REQUIRED for writes and must equal the active drawing.\"}";
 
     public static readonly IReadOnlyList<ToolContract> All = new List<ToolContract>
     {

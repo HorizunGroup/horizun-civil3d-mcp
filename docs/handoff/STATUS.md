@@ -7,7 +7,7 @@
 
 | Qué | Valor |
 |---|---|
-| Código en el repo | **v0.8.1** (2026-10-08): contrato `27bca9b0ef96f6efaab6feb7`, 734 tests. Corrige el rechazo de lecturas por `dry_run` por defecto y añade `document action=geo` (georreferencia, UCS, VIEWTWIST, convergencia). Ver CHANGELOG |
+| Código en el repo | **v0.8.1** (2026-10-08): contrato `985597be8acacd1bbe083f70`, 754 tests. Corrige el rechazo de lecturas por `dry_run` por defecto y añade `document action=geo` (georreferencia, UCS, VIEWTWIST, convergencia) y lecturas tipadas sobre dibujos abiertos NO activos (lista en health `non_active_reads`; escrituras siguen exigiendo el activo). Ver CHANGELOG |
 | v0.8.0 (anterior) | 26 herramientas, contrato `550ff5cb0f7cdce48d7194d5`, 435 tests. Verificado en vivo: 294/294 con FULL WRITE aplicado + accesos directos + 2 instancias. Pendiente en vivo: `undo_last` y la publicación que asocia el dibujo |
 | Instalado en la máquina del dueño | **v0.8.0, edición de desarrollo**, registrada como `horizun-civil3d`. El conector anterior (`civil3d-mcp`) fue **retirado** el 2026-10-04 (respaldo en `Desarrollos\Civil3D MCP\_archivo\`) |
 | Civil 3D disponible | Solo **2025** (ACADVER 25.0s, AeccDbMgd 13.7.0.145) |

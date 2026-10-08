@@ -2,7 +2,7 @@
 
 ## v0.8.1 - 2026-10-08 - reads no longer refused for a default dry_run; document action=geo (Claude Code)
 
-Contract `27bca9b0ef96f6efaab6feb7` (install server and plug-in together, restart the MCP client).
+Contract `985597be8acacd1bbe083f70` (install server and plug-in together, restart the MCP client).
 
 ### Fixed (found live on v0.8.0, Civil 3D 2025)
 - **Read actions of mixed read/write tools were refused** with `Field 'dry_run' is not used by action ...` (seen on
@@ -20,7 +20,24 @@ Contract `27bca9b0ef96f6efaab6feb7` (install server and plug-in together, restar
   Civil 3D has loaded them, AeccPressurePipesMgd and AeccDataShortcutMgd.
 
 ### Added
+- **Typed reads of an open drawing that is NOT the active window** (owner's request). `target_document` may name
+  another open drawing for the reads listed in `DocumentScope` and published by `horizun_c3d_health`
+  (`bridge.non_active_reads`): document info/object_census/geo, query, styles, surface list/get/sample_elevation,
+  layers, entities query/get, dimensions/cad_styles/layouts list, blocks list/references, tables list/get,
+  alignment/profile/corridor reads, labels reads, pipes list, points list/groups, cleanup drawing_report/xrefs.
+  - The read locks THAT document and reads its own database in an aborted transaction; the active window is never
+    changed, and the reply carries a host message saying so. Double gate: the pair is listed AND the contract effect
+    of the action is Read, so a write can never pass.
+  - Not listed on purpose: surface volumes_report (aborted WRITE transaction), sections (pending sections must never
+    be read read-only), exchange (follows the working shortcut project), execute_csharp, and **every write**. Writes
+    still require the active drawing: undo grouping, the working database and the revision tracking that binds
+    confirmation tokens all belong to the active document.
+  - Same rule as the Revit MCP for writes; Revit refuses typed reads of a non-active document (`DocumentGate.ReadGuard`),
+    so this goes further for reads only. A name that matches two open drawings is refused (pass the full path).
+  - **Built and unit-tested; not yet live-verified** (needs two drawings open after installing).
 - **`horizun_c3d_document` action=geo** (read-only): georeference and orientation of the active drawing.
+  - On an open, non-active drawing the window-only parts (VIEWTWIST, view, viewport) are null with the reason, and the
+    UCS / NORTHDIRECTION / TILEMODE values come from that drawing's Database.
   - AutoCAD GeoLocation: coordinate system, type of coordinates, design and reference points, north direction (rad and
     deg) and vector, scale factor and method, units, sea-level correction, the design point in lon/lat.
   - System variables NORTHDIRECTION, VIEWTWIST, WORLDUCS, UCSNAME, UCSORG, UCSXDIR, UCSYDIR, UCSFOLLOW, UCSVP, TILEMODE,

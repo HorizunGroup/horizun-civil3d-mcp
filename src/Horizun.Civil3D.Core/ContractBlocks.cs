@@ -8,7 +8,7 @@ namespace Horizun.Civil3D.Core;
 public static partial class Contract
 {
     private const string Common =
-        "\"target_document\":{\"type\":\"string\",\"description\":\"Drawing name or path; required for writes and must be the active drawing.\"}," +
+        "\"target_document\":{\"type\":\"string\",\"description\":\"Drawing name or path. Reads default to the active drawing; the reads listed in horizun_c3d_health bridge.non_active_reads may name another OPEN drawing (read in place, the window is never changed). Required for writes and must be the active drawing.\"}," +
         "\"dry_run\":{\"type\":\"boolean\",\"default\":true,\"description\":\"Writes: true = plan + confirmation_token, nothing changes.\"}," +
         "\"confirmation_token\":{\"type\":\"string\",\"description\":\"Writes: token from the dry run of exactly this request.\"}";
 

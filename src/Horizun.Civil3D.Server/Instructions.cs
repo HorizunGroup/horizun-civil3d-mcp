@@ -16,7 +16,9 @@ internal static class Instructions
         "2. Resolve objects with horizun_c3d_query and styles with horizun_c3d_styles before any write. Never guess a " +
         "name: a missing or ambiguous name is refused with the candidates - pick from them or ask the user.\n" +
         "3. Writes default to dry_run=true: read the plan, then apply with dry_run=false and the confirmation_token " +
-        "(single use, 10 minutes, bound to this drawing, this request and this plan). Writes must name target_document.\n" +
+        "(single use, 10 minutes, bound to this drawing, this request and this plan). Writes must name target_document " +
+        "and it must be the ACTIVE drawing. Reads listed in health bridge.non_active_reads may name another OPEN drawing in " +
+        "target_document: it is read in place and the user's window is never switched.\n" +
         "4. Objects that are data-shortcut references or on locked layers are reported not editable; edit them in their " +
         "source drawing.\n" +
         "5. If Civil 3D is busy (a command or dialog is open), the call is refused and NOTHING RAN. The bridge never " +

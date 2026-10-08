@@ -39,8 +39,11 @@ internal static class GeoInfo
         o["grid_convergence"] = g == null
             ? new JsonObject { ["value"] = null, ["reason"] = "The drawing has no GeoLocation, so there is no geographic transform to compare against." }
             : Convergence(g);
-        o["system_variables"] = SystemVariables(db);
-        o["active_view"] = ActiveView(doc, tr);
+        // GetSystemVariable and the Editor describe the ACTIVE window only; another open drawing is read from its database.
+        var isActive = doc == AcApp.DocumentManager.MdiActiveDocument;
+        o["system_variables"] = isActive ? SystemVariables(db) : DatabaseVariables(db, tr);
+        o["active_view"] = isActive ? ActiveView(doc, tr)
+            : new JsonObject { ["value"] = null, ["reason"] = "View, view twist and viewport belong to the drawing's window; this drawing is open but not active." };
         o["civil3d"] = Civil3D(civil);
 
         Observations(o, notes);
@@ -153,6 +156,27 @@ internal static class GeoInfo
 
     private static readonly string[] Vars =
         { "NORTHDIRECTION", "VIEWTWIST", "WORLDUCS", "UCSNAME", "UCSORG", "UCSXDIR", "UCSYDIR", "UCSFOLLOW", "UCSVP", "TILEMODE", "CVPORT", "ANGBASE", "ANGDIR", "GEOMARKERVISIBILITY" };
+
+    /// <summary>The same keys, from the drawing's own Database (non-active drawing); window-only variables are null with a reason.</summary>
+    private static JsonObject DatabaseVariables(Database db, Transaction tr)
+    {
+        var o = new JsonObject();
+        var bad = new JsonObject();
+        Safe.Num(o, bad, "NORTHDIRECTION", () => db.NorthDirection);
+        Safe.Str(o, bad, "UCSNAME", () => db.Ucsname.IsNull ? "" : ((SymbolTableRecord)tr.GetObject(db.Ucsname, OpenMode.ForRead)).Name);
+        Safe.Set(o, bad, "UCSORG", () => P3(db.Ucsorg));
+        Safe.Set(o, bad, "UCSXDIR", () => P3(new Point3d(db.Ucsxdir.X, db.Ucsxdir.Y, db.Ucsxdir.Z)));
+        Safe.Set(o, bad, "UCSYDIR", () => P3(new Point3d(db.Ucsydir.X, db.Ucsydir.Y, db.Ucsydir.Z)));
+        Safe.Int(o, bad, "TILEMODE", () => db.TileMode ? 1 : 0);
+        Safe.Set(o, bad, "northdirection_api", () => GeoMath.Angle(db.NorthDirection));
+        foreach (var name in new[] { "VIEWTWIST", "WORLDUCS", "UCSFOLLOW", "UCSVP", "CVPORT", "ANGBASE", "ANGDIR", "GEOMARKERVISIBILITY" })
+            o[name] = null;
+        o["notes"] = "Non-active drawing: values come from its Database (Ucsname/Ucsorg/Ucsxdir/Ucsydir/NorthDirection/TileMode, " +
+                     "the model-space UCS saved in the drawing). VIEWTWIST and the other window variables are only readable for " +
+                     "the active drawing (GetSystemVariable reads the active window) and are null.";
+        if (bad.Count > 0) o["unreadable"] = bad;
+        return o;
+    }
 
     private static JsonObject SystemVariables(Database db)
     {
