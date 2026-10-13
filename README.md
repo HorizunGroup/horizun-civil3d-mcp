@@ -108,6 +108,12 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1 -RegisterClaudeDesktop -R
 
 Every installed file is checked against the package (SHA-256), and a failed install rolls back.
 
+## Learn to direct it
+
+Horizun Hub teaches, in Spanish, how to direct AI agents in real construction and design work — and how to review what they deliver before you sign it. A course for this MCP is in preparation; meanwhile, the [Academia](https://horizunhub.com/academia/?utm_source=github&utm_medium=readme&utm_campaign=horizun-civil3d-mcp) covers directing agents in Revit, Microsoft Project and Power BI.
+
+New to agents? Level 1 of [Opera agentes de IA desde cero](https://horizunhub.com/academia/agentes-ia-desde-cero/?utm_source=github&utm_medium=readme&utm_campaign=horizun-civil3d-mcp) is free with an account.
+
 ## Develop (Horizun developers)
 
 Build targets include **Civil 3D 2024 and 2026**, with 2025/2027 retained. Use the
