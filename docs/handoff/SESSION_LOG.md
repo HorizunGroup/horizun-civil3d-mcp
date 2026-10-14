@@ -477,3 +477,22 @@
 - Push pendiente: gh y git autentican con la cuenta personal, no la de Horizun.
 
 **Qué sigue:** instalar v0.8.1 cuando el dueño cierre Civil 3D, verificar en vivo (`docs/CIVIL3D.md` § v0.8.1, incluido el punto 5 con dos dibujos), push con la cuenta de Horizun.
+
+---
+
+## 2026-10-14 - Claude Code (Opus 5.5) - v0.8.2: entities draw no podía crear MTEXT ni TEXT
+**Estado**: TERMINADO (código y tests; sin instalar, sin push)
+
+**Objetivo:** bug visto en vivo al rotular un eje con MTEXT en un plano de cortes: `entities action=draw` rechaza todo item que no sea hatch con "items[0]: field 'pattern' is not used by mtext. Nothing ran." porque el esquema de `items[]` declara `pattern` con `default: "SOLID"` y el cliente MCP lo rellena en TODOS los items (`ToolRules.WithoutDefaults` solo limpia campos de primer nivel). Quitar el default del esquema (el plug-in ya aplica SOLID en el hatch), tests de mtext/text/hatch sin pattern y documentar.
+
+**Hecho:**
+- `ContractCad.cs`: `pattern` de `items[]` sin `default` (descripción: solo hatch, omitido = SOLID). El default vive en `CadInputs.HatchPattern`, que el plug-in usa en el plan, la escritura y la relectura.
+- `CadInputs.DrawItem`: un campo de item con valor `null` se ignora (como en los demás validadores). Un `pattern` no nulo en text/mtext se sigue rechazando por nombre.
+- Tests nuevos: `DrawItemPatternTests` (mtext/text/hatch sin pattern, hatch = SOLID, esquema sin default, `pattern:null` ignorado, guardia contra defaults anidados nuevos) y `WireEndToEndTests.Dry_run_draw_of_mtext_and_text_reaches_the_plugin_without_pattern` (servidor real + plug-in falso, con los defaults rellenados como hace el cliente).
+- Versión 0.8.2, contrato `154382e00355bbc7e125cdc4`. CHANGELOG, `docs/CIVIL3D.md` § v0.8.2 (incluye `eNotApplicable` de rotate/scale sobre etiquetas de Civil 3D como comportamiento conocido) y STATUS.
+
+**Evidencia:** 767/767 tests. Con el esquema de la v0.8.1 los 3 tests nuevos relevantes fallan con el mensaje exacto visto en vivo ("items[0]: field 'pattern' is not used by mtext. Nothing ran."). Plug-in 2025 compila 0/0.
+
+**Problemas / decisiones:** la misma clase de bug existe en `surface add_data`: `breaklines` y `boundaries` declaran defaults anidados (p. ej. `max_distance: 0`, "standard only"), así que `kind=proximity` con el default rellenado por el cliente se rechazaría. No se tocó (fuera del alcance); queda en la lista conocida del test guardián para quitarla al arreglarlo.
+
+**Qué sigue:** instalar v0.8.2 (servidor + plug-in juntos) y verificar en vivo con `docs/CIVIL3D.md` § v0.8.2; arreglar los defaults anidados de `surface add_data`.

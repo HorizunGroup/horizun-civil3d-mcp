@@ -72,6 +72,10 @@ public static class CadInputs
 
     public static readonly string[] DrawTypes = { "line", "polyline", "polyline3d", "circle", "arc", "text", "mtext", "point", "hatch" };
 
+    /// <summary>The pattern a draw item of type hatch gets. The default lives here, not in the item schema: a schema
+    /// default is filled by clients into every item, and text/mtext then refuse "pattern".</summary>
+    public static string HatchPattern(JsonObject item) => Hz.Str(item, "pattern") ?? "SOLID";
+
     public static readonly IReadOnlyDictionary<string, ActionSpec> Entities = ToolRules.Register("horizun_c3d_entities", new Dictionary<string, ActionSpec>
     {
         ["query"] = new(Array.Empty<string>(), new[] { "types", "layers", "block", "window", "crossing", "limit" }, Extra: a => V.First(
@@ -152,7 +156,7 @@ public static class CadInputs
         var type = Hz.Str(o, "type");
         if (type == null || !DrawFields.TryGetValue(type, out var f)) return "type must be one of " + string.Join(", ", DrawTypes) + ".";
         var allowed = f.Req.Concat(f.Opt).Concat(ItemCommon).ToHashSet();
-        if (o.FirstOrDefault(kv => !allowed.Contains(kv.Key)) is { Key: { } extra }) return "field '" + extra + "' is not used by " + type + ".";
+        if (o.FirstOrDefault(kv => kv.Value != null && !allowed.Contains(kv.Key)) is { Key: { } extra }) return "field '" + extra + "' is not used by " + type + ".";
         if (f.Req.FirstOrDefault(r => o[r] == null) is { } miss) return type + " requires " + miss + ".";
         var e = V.First(Color(o, "color"), Lineweight(o, "lineweight"), V.Point(o, "from", true), V.Point(o, "to", true), V.Point(o, "center", true),
             V.Point(o, "position", true), V.Pos(o, "radius"), V.Pos(o, "height"), V.Pos(o, "width"), V.Pos(o, "scale"),

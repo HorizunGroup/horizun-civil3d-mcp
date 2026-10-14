@@ -31,7 +31,8 @@ public static partial class Contract
             ("closed", Bool), ("elevation", Num), ("center", Pt), ("radius", Num), ("start_angle", "{\"type\":\"number\",\"description\":\"degrees CCW from +X\"}"),
             ("end_angle", Num), ("position", Pt), ("text", Str), ("height", Num), ("width", Num), ("rotation", Num), ("style", Str),
             ("justify", Str), ("attachment", Str), ("boundaries", "{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"description\":\"hatch: closed boundary handles\"}"),
-            ("pattern", "{\"type\":\"string\",\"default\":\"SOLID\"}"), ("scale", Num), ("angle", Num), ("layer", Str), ("color", ColorSchema),
+            // No schema "default" on item fields: clients fill it into EVERY item, and an mtext with pattern is refused.
+            ("pattern", "{\"type\":\"string\",\"description\":\"hatch only: predefined pattern name; omitted = SOLID\"}"), ("scale", Num), ("angle", Num), ("layer", Str), ("color", ColorSchema),
             ("linetype", Str), ("lineweight", LwSchema)) + "},\"additionalProperties\":false}";
         yield return Tool("horizun_c3d_entities", "entities", "AutoCAD entities: query, draw, edit, transform", CadInputs.Entities,
             "Model-space entities. query (by DXF type, layer, block name, window/crossing; returns handle, type, layer, real curve " +

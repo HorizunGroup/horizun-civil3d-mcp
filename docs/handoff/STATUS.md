@@ -1,13 +1,14 @@
 # STATUS - estado actual y QUÉ SIGUE
 
 > Documento VIVO. Toda sesión que termine un bloque de trabajo lo **actualiza** (ver `WORKFLOW.md`).
-> Última actualización: **2026-10-08**, por Claude Code: v0.8.1 (lecturas con `dry_run` por defecto + `document action=geo`). Anterior: 2026-10-02, v0.6.9 instalada, 284/284 en vivo.
+> Última actualización: **2026-10-14**, por Claude Code: v0.8.2 (`entities draw` vuelve a crear TEXT/MTEXT; el `pattern` por defecto del hatch ya no se cuela en los demás items). Anterior: 2026-10-08, v0.8.1.
 
 ## Versión
 
 | Qué | Valor |
 |---|---|
-| Código en el repo | **v0.8.1** (2026-10-08): contrato `3cf0d8ccf8312ee217d613c8`, 760 tests. Corrige el rechazo de lecturas por `dry_run` por defecto y añade `document action=geo` (georreferencia, UCS, VIEWTWIST, convergencia) y lecturas tipadas sobre dibujos abiertos NO activos (lista en health `non_active_reads`; escrituras siguen exigiendo el activo). Ver CHANGELOG |
+| Código en el repo | **v0.8.2** (2026-10-14, sin publicar): contrato `154382e00355bbc7e125cdc4`, 767 tests. Corrige `entities draw` de MTEXT/TEXT rechazado por `pattern` (default del esquema rellenado por el cliente en todos los items). Ver CHANGELOG |
+| v0.8.1 | (2026-10-08): contrato `3cf0d8ccf8312ee217d613c8`, 760 tests. Corrige el rechazo de lecturas por `dry_run` por defecto y añade `document action=geo` (georreferencia, UCS, VIEWTWIST, convergencia) y lecturas tipadas sobre dibujos abiertos NO activos (lista en health `non_active_reads`; escrituras siguen exigiendo el activo). Ver CHANGELOG |
 | v0.8.0 (anterior) | 26 herramientas, contrato `550ff5cb0f7cdce48d7194d5`, 435 tests. Verificado en vivo: 294/294 con FULL WRITE aplicado + accesos directos + 2 instancias. Pendiente en vivo: `undo_last` y la publicación que asocia el dibujo |
 | Instalado en la máquina del dueño | **v0.8.0, edición de desarrollo**, registrada como `horizun-civil3d`. El conector anterior (`civil3d-mcp`) fue **retirado** el 2026-10-04 (respaldo en `Desarrollos\Civil3D MCP\_archivo\`) |
 | Civil 3D disponible | Solo **2025** (ACADVER 25.0s, AeccDbMgd 13.7.0.145) |
@@ -83,7 +84,9 @@ Detalle de la evidencia: `docs/CIVIL3D.md`.
 
 ## ▶ QUÉ SIGUE (siguiente bloque de trabajo)
 
-0. **Instalar la v0.8.1** (servidor + plug-in juntos, cambia el contrato) y verificar en vivo con la lista de `docs/CIVIL3D.md` § v0.8.1: lecturas sin rechazo por `dry_run` y `document action=geo`.
+00. **v0.8.2 sin instalar ni publicar** (cambia el contrato: servidor + plug-in juntos). Instalar cuando el dueño cierre Civil 3D (guardar antes) y verificar con `docs/CIVIL3D.md` § v0.8.2: draw de mtext/text sin pattern y hatch SOLID por defecto.
+
+0. **v0.8.1 INSTALADA el 2026-10-09** (SHA-256 verificado, 12 + 13 archivos; push a `develop` con la cuenta de Horizun). Falta verificar en vivo con la lista de `docs/CIVIL3D.md` § v0.8.1: lecturas sin rechazo por `dry_run` y `document action=geo`.
 
 1. ~~Probar el camino aplicado de FULL WRITE~~: **HECHO 2026-10-02** (294/294). Falta solo publicar y referenciar accesos directos, que necesitan un proyecto.
 2. ~~Accesos directos~~: **HECHO 2026-10-04** (publicar y referenciar con asociación automática, dos instancias). Falta re-ejecutar en vivo la publicación de la v0.7.4 (ahora asocia el dibujo).

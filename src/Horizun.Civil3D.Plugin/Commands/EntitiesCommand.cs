@@ -457,7 +457,7 @@ internal sealed class EntitiesCommand : ICommand
                         }
                     if (type == "hatch")
                     {
-                        var pat = Hz.Str(it, "pattern") ?? "SOLID";
+                        var pat = CadInputs.HatchPattern(it);
                         using var probe = new Hatch();
                         try { probe.SetHatchPattern(HatchPatternType.PreDefined, pat); }
                         catch (Autodesk.AutoCAD.Runtime.Exception) { throw new HzRefusal(ErrorCodes.NotFound, "Hatch pattern '" + pat + "' is not a predefined pattern (acadiso.pat). Nothing changed."); }
@@ -480,7 +480,7 @@ internal sealed class EntitiesCommand : ICommand
                     if (e is DBText t && Hz.Str(p.Item, "justify") is { } j && j != "left") t.AdjustAlignment(db);
                     if (e is Hatch h)
                     {
-                        h.SetHatchPattern(HatchPatternType.PreDefined, Hz.Str(p.Item, "pattern") ?? "SOLID");
+                        h.SetHatchPattern(HatchPatternType.PreDefined, CadInputs.HatchPattern(p.Item));
                         if (Hz.Num(p.Item, "scale") is { } sc) h.PatternScale = sc;
                         if (Hz.Num(p.Item, "angle") is { } an) h.PatternAngle = Cad.Rad(an);
                         h.Associative = false;
@@ -634,7 +634,7 @@ internal sealed class EntitiesCommand : ICommand
                 double area;
                 try { area = h.Area; } catch (Autodesk.AutoCAD.Runtime.Exception) { area = double.NaN; }
                 v.Check(w + " hatch area", "> 0 (boundaries sum " + Math.Round(p.ExpectedArea, 6) + ")", Hz.Finite(area, 6), area > 0);
-                v.Text(w + " pattern", Hz.Str(it, "pattern") ?? "SOLID", h.PatternName);
+                v.Text(w + " pattern", CadInputs.HatchPattern(it), h.PatternName);
                 break;
             }
         }

@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.8.2 - unreleased - entities draw can create TEXT and MTEXT again (Claude Code)
+
+Contract `154382e00355bbc7e125cdc4` (install server and plug-in together, restart the MCP client).
+
+### Fixed (found live on v0.8.1, Civil 3D 2025)
+- **`entities action=draw` refused every non-hatch item** with `items[0]: field 'pattern' is not used by mtext.
+  Nothing ran.` The `items[]` schema declared `pattern` with `default: "SOLID"` (meant for hatch), the MCP client
+  filled it into every item, and `ToolRules.WithoutDefaults` only strips top-level fields. The schema no longer
+  declares a default for `pattern` (description: hatch only, omitted = SOLID); the hatch default moved to
+  `CadInputs.HatchPattern`, used by the plug-in for the plan, the write and the re-read. Item fields whose value is
+  `null` are now ignored, as in the other validators. A non-null `pattern` on text/mtext is still refused by name.
+- Tests (`DrawItemPatternTests`, `WireEndToEndTests`): mtext, text and hatch without pattern pass; hatch without
+  pattern is SOLID; a dry-run draw of mtext + text through the real server, with every schema default filled the way
+  the client does, reaches the fake plug-in with no `pattern` (fails on the v0.8.1 schema with the live message);
+  no tool may add a schema default below the top level (the surface `breaklines`/`boundaries` defaults predate this
+  and are listed as known).
+
+### Documented
+- `transform rotate|scale` on a Civil 3D note label fails with `eNotApplicable` (Civil 3D labels do not accept
+  `Entity.TransformBy`). `docs/CIVIL3D.md` § v0.8.2.
+
 ## v0.8.1 - 2026-10-08 - reads no longer refused for a default dry_run; document action=geo (Claude Code)
 
 Contract `3cf0d8ccf8312ee217d613c8` (install server and plug-in together, restart the MCP client).

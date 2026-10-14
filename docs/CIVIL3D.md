@@ -301,3 +301,27 @@ aborted, DBMOD unchanged):**
   target, a temporary `HostApplicationServices.WorkingDatabase` switch restored in `finally` (many Civil 3D creation
   APIs and styles use it), revision tracking and `undo_last` keyed per document, and live proof that the undo step
   lands in the target's own undo stack. Not done until each write is live-verified that way.
+
+## v0.8.2: entities draw of TEXT/MTEXT no longer refused for pattern (2026-10-14)
+
+**Bug, seen live on v0.8.1 (Civil 3D 2025, client drawing):** a dry-run `horizun_c3d_entities action=draw` of one
+MTEXT (layer, height and text only) returned `invalid_input: items[0]: field 'pattern' is not used by mtext. Nothing
+ran.` The `items[]` schema declared `pattern` with `default: "SOLID"` (meant for hatch) and the MCP client filled it
+into every item. `ToolRules.WithoutDefaults` only strips top-level fields, and `pattern: null` was not an option
+because the client validates the declared type. The label was placed with a Civil 3D note label instead.
+
+**Fix:** no schema default on `pattern`; the hatch default is `CadInputs.HatchPattern` (SOLID when omitted), used by
+the plug-in for the plan, the write and the re-read. A `null`-valued item field is ignored like elsewhere. A test now
+refuses any NEW schema default below the top level of any tool (the surface `breaklines`/`boundaries` defaults
+predate it and are listed as known).
+
+**Known behaviour (seen live 2026-10-14, not a bug of the bridge):** `transform operation=rotate|scale` on a Civil 3D
+note label fails with `eNotApplicable` from `Entity.TransformBy`: Civil 3D labels do not accept that general
+transform. Change a label's position or rotation through its label properties (Civil 3D or `horizun_c3d_labels`
+where it covers it). `move` on labels was not tested.
+
+**Live check for the deployed command** (after `scripts/install.ps1`, Claude restarted):
+1. `horizun_c3d_entities action=draw` dry run with one `mtext` and one `text` item (position, text, height, layer;
+   no pattern): returns the plan with `by_type {mtext:1, text:1}`; apply and the re-read matches text and position.
+2. The same with one `hatch` item on a closed polyline and no pattern: plan and re-read report pattern `SOLID`.
+3. An `mtext` item with `pattern: "ANSI31"` is still refused by name.
