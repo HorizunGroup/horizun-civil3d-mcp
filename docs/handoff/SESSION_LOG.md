@@ -508,7 +508,9 @@
 - En vivo (Civil 3D 2025, dos dibujos abiertos: el de ensayo activo y otro nuevo detrás): health reporta 0.8.2 y el contrato nuevo; `scripts/verify_live.py` **287/287** (`verify-20261015-104002.json`).
 - Desde el cliente Claude (con los defaults del esquema rellenados por el cliente): `surface list`, `surface get` con estadísticas de isopaca (reconciliación 0,0014 % y 0,01 %), `surface rebuild` en ensayo, `document geo` y `query list` sobre el dibujo NO activo (la ventana activa no cambia), y `entities draw` de MTEXT + TEXT: ensayo con token y aplicación con 7/7 controles `match`. En v0.8.0/0.8.1 estas llamadas fallaban con "Field '...' is not used by action ...".
 
-**No probado:** `execute_csharp` con AecBaseMgd (el perfil activo es `safe_write`, con `execute_csharp` apagado). `surface add_data` con `kind=proximity` sigue con el bug de defaults anidados (pendiente).
+**Después, con el dueño en `unsafe_code`:** `execute_csharp` (query) compila tipos fuertes (`TinSurface`, `Autodesk.Aec.DatabaseServices.Entity`): el arreglo de AecBaseMgd funciona. Grading geométrico sobre una plataforma INCLINADA pero plana (z = 101,5 + 0,05·(x − 60), 5 vértices, offset 1 m + talud 1:1 a HZ_EG): `plan.floor` planar con residuo 0, 368 vértices interiores; aplicado con 9/9 controles, incluidos 350/350 puntos interiores fuera de vértices del TIN (el caso T3/T5 de Primavera 2 queda cubierto).
+
+**No probado:** `surface add_data` con `kind=proximity` sigue con el bug de defaults anidados (pendiente).
 
 **Qué sigue:** arreglar los defaults anidados de `surface add_data`; publicar Release (merge a `main`) cuando el dueño lo pida.
 
