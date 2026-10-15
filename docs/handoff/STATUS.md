@@ -1,16 +1,16 @@
 # STATUS - estado actual y QUÉ SIGUE
 
 > Documento VIVO. Toda sesión que termine un bloque de trabajo lo **actualiza** (ver `WORKFLOW.md`).
-> Última actualización: **2026-10-14**, por Claude Code: v0.8.2 (`entities draw` vuelve a crear TEXT/MTEXT; el `pattern` por defecto del hatch ya no se cuela en los demás items). Anterior: 2026-10-08, v0.8.1.
+> Última actualización: **2026-10-15**, por Claude Code: v0.8.2 instalada y verificada en vivo (287/287 + casos con defaults del cliente). Antes, 2026-10-14: v0.8.2 (`entities draw` vuelve a crear TEXT/MTEXT; el `pattern` por defecto del hatch ya no se cuela en los demás items). Anterior: 2026-10-08, v0.8.1.
 
 ## Versión
 
 | Qué | Valor |
 |---|---|
-| Código en el repo | **v0.8.2** (2026-10-14, sin publicar): contrato `154382e00355bbc7e125cdc4`, 767 tests. Corrige `entities draw` de MTEXT/TEXT rechazado por `pattern` (default del esquema rellenado por el cliente en todos los items). Ver CHANGELOG |
+| Código en el repo | **v0.8.2** (2026-10-14; en `develop`, sin Release en `main`): contrato `154382e00355bbc7e125cdc4`, 767 tests. Corrige `entities draw` de MTEXT/TEXT rechazado por `pattern` (default del esquema rellenado por el cliente en todos los items). Ver CHANGELOG |
 | v0.8.1 | (2026-10-08): contrato `3cf0d8ccf8312ee217d613c8`, 760 tests. Corrige el rechazo de lecturas por `dry_run` por defecto y añade `document action=geo` (georreferencia, UCS, VIEWTWIST, convergencia) y lecturas tipadas sobre dibujos abiertos NO activos (lista en health `non_active_reads`; escrituras siguen exigiendo el activo). Ver CHANGELOG |
 | v0.8.0 (anterior) | 26 herramientas, contrato `550ff5cb0f7cdce48d7194d5`, 435 tests. Verificado en vivo: 294/294 con FULL WRITE aplicado + accesos directos + 2 instancias. Pendiente en vivo: `undo_last` y la publicación que asocia el dibujo |
-| Instalado en la máquina del dueño | **v0.8.0, edición de desarrollo**, registrada como `horizun-civil3d`. El conector anterior (`civil3d-mcp`) fue **retirado** el 2026-10-04 (respaldo en `Desarrollos\Civil3D MCP\_archivo\`) |
+| Instalado en la máquina del dueño | **v0.8.2, edición de desarrollo** (2026-10-14, 12 archivos del plug-in y 13 del servidor SHA-256 idénticos al build), registrada como `horizun-civil3d`. Verificada en vivo el 2026-10-15. El conector anterior (`civil3d-mcp`) fue **retirado** el 2026-10-04 (respaldo en `Desarrollos\Civil3D MCP\_archivo\`) |
 | Civil 3D disponible | Solo **2025** (ACADVER 25.0s, AeccDbMgd 13.7.0.145) |
 | Git / GitHub | `HorizunGroup/horizun-civil3d-mcp` (privado). Ramas `develop` (trabajo) y `main` (versiones estables, cada una con Release e instalable `.zip`). Las notas personales van en `.local/` (ignorado) |
 | Perfil de permisos activo | El 2026-10-08 `settings.json` existía con `unsafe_code` y `execute_csharp` encendido (lo puso el dueño para diagnosticar). Volver a `safe_write` cuando termine |
@@ -23,7 +23,7 @@
 |---|---|---|
 | `horizun_c3d_health` | n/a | Sí |
 | `horizun_c3d_target` | listar o elegir instancia | Sí |
-| `horizun_c3d_document` | `info`, `list_open`, `object_census`, `save`, `undo_last`, **`geo`** (v0.8.1) | Sí. El guardado se probó con token y verificación en disco. `geo`: API leída en vivo por el canal C#; el comando instalado queda por verificar tras instalar |
+| `horizun_c3d_document` | `info`, `list_open`, `object_census`, `save`, `undo_last`, **`geo`** (v0.8.1) | Sí. El guardado se probó con token y verificación en disco. `geo`: verificado en vivo con la v0.8.2 sobre un dibujo NO activo (2026-10-15) |
 | `horizun_c3d_query` | `list`, `get` (15 tipos) | Sí para superficies y feature lines. Los demás tipos solo están compilados |
 | `horizun_c3d_styles` | `list`, `get` (con quién usa cada estilo) | Sí |
 | `horizun_c3d_probe` | firmas de la API en vivo | Sí |

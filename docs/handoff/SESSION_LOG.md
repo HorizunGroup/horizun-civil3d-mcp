@@ -496,3 +496,19 @@
 **Problemas / decisiones:** la misma clase de bug existe en `surface add_data`: `breaklines` y `boundaries` declaran defaults anidados (p. ej. `max_distance: 0`, "standard only"), así que `kind=proximity` con el default rellenado por el cliente se rechazaría. No se tocó (fuera del alcance); queda en la lista conocida del test guardián para quitarla al arreglarlo.
 
 **Qué sigue:** instalar v0.8.2 (servidor + plug-in juntos) y verificar en vivo con `docs/CIVIL3D.md` § v0.8.2; arreglar los defaults anidados de `surface add_data`.
+
+---
+
+## 2026-10-15 - Claude Code (Opus 5.5) - v0.8.2 instalada y verificada en vivo
+**Estado**: TERMINADO
+
+**Hecho:**
+- Push de `2da5acf` a `develop` con la cuenta `JuanDaniel-Horizun` (token de `gh` solo para ese comando; la cuenta activa de `gh` sigue siendo la personal).
+- `install.ps1 -Years 2025 -DryRun` y luego la instalación real con Civil 3D cerrado (se detuvieron los 2 servidores MCP que tenía abiertos Claude). Plug-in 12 archivos y servidor 13 archivos SHA-256 idénticos al build; `horizun-civil3d-mcp 0.8.2`, contrato `154382e00355bbc7e125cdc4`.
+- En vivo (Civil 3D 2025, dos dibujos abiertos: el de ensayo activo y otro nuevo detrás): health reporta 0.8.2 y el contrato nuevo; `scripts/verify_live.py` **287/287** (`verify-20261015-104002.json`).
+- Desde el cliente Claude (con los defaults del esquema rellenados por el cliente): `surface list`, `surface get` con estadísticas de isopaca (reconciliación 0,0014 % y 0,01 %), `surface rebuild` en ensayo, `document geo` y `query list` sobre el dibujo NO activo (la ventana activa no cambia), y `entities draw` de MTEXT + TEXT: ensayo con token y aplicación con 7/7 controles `match`. En v0.8.0/0.8.1 estas llamadas fallaban con "Field '...' is not used by action ...".
+
+**No probado:** `execute_csharp` con AecBaseMgd (el perfil activo es `safe_write`, con `execute_csharp` apagado). `surface add_data` con `kind=proximity` sigue con el bug de defaults anidados (pendiente).
+
+**Qué sigue:** arreglar los defaults anidados de `surface add_data`; publicar Release (merge a `main`) cuando el dueño lo pida.
+

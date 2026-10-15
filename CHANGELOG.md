@@ -4,6 +4,8 @@
 
 Contract `154382e00355bbc7e125cdc4` (install server and plug-in together, restart the MCP client).
 
+**Live-verified 2026-10-15** on Civil 3D 2025: `verify_live.py` 287/287; from the Claude client, MTEXT + TEXT draw (dry run and apply, 7/7 re-read checks) and reads with client-filled defaults, including `document geo` and `query list` on a non-active drawing.
+
 ### Fixed (found live on v0.8.1, Civil 3D 2025)
 - **`entities action=draw` refused every non-hatch item** with `items[0]: field 'pattern' is not used by mtext.
   Nothing ran.` The `items[]` schema declared `pattern` with `default: "SOLID"` (meant for hatch), the MCP client
