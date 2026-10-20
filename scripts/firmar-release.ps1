@@ -254,7 +254,12 @@ function Update-TopSums([string] $Root) {
                 $lines.Add("$(Get-Digest $target)$($Matches[2])$($Matches[3])")
             } else { $lines.Add($line) }
         }
+        # El archivo cambia de bytes (saltos de linea, hashes nuevos): se registra para que cualquier
+        # manifiesto que lo fije (p. ej. package-hashes.json) quede con el hash y tamano finales.
+        $beforeSum = Get-Digest $sum.FullName
         [IO.File]::WriteAllText($sum.FullName, ($lines -join "`n") + "`n", [Text.UTF8Encoding]::new($false))
+        $afterSum = Get-Digest $sum.FullName
+        if ($beforeSum -ne $afterSum) { $script:HashMap[$beforeSum] = $afterSum; $script:SizeMap[$afterSum] = (Get-Item -LiteralPath $sum.FullName).Length }
     }
     foreach ($sidecar in @(Get-ChildItem -LiteralPath $Root -File -Filter '*.sha256')) {
         $target = $sidecar.FullName.Substring(0, $sidecar.FullName.Length - '.sha256'.Length)
@@ -309,6 +314,9 @@ try {
         Process-TopLevelItem $f.FullName
     }
     # 3. Metadatos de primer nivel.
+    Update-DirMetadata $assets
+    Update-TopSums $assets
+    # SHA256SUMS se reescribe al final: los manifiestos que fijan su hash (package-hashes.json) se actualizan otra vez.
     Update-DirMetadata $assets
     Update-TopSums $assets
 
