@@ -122,8 +122,8 @@ public class WireEndToEndTests
         {
             using (server)
             {
-                server.WaitForConnection();
-                try { received = Wire.ReadLine(server, Contract.MaxRequestBytes); } catch (IOException) { }
+                // The refused client may disconnect before this thread observes the connection ("pipe is being closed").
+                try { server.WaitForConnection(); received = Wire.ReadLine(server, Contract.MaxRequestBytes); } catch (IOException) { }
             }
         });
         var mcp = WithInstances(FakeRecord(pipe, "secret-token", pid: Environment.ProcessId + 1));

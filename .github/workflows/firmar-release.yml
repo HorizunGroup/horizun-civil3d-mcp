@@ -1,0 +1,49 @@
+name: firmar-release
+
+# Firma con el certificado Certum de HORIZUN GROUP S.A.S. los binarios de una release en BORRADOR
+# y la publica. El job espera la aprobacion de Pablo en el environment `firma-certum`
+# (SimplySign Desktop debe estar conectado en el PC del runner). Ver RELEASING.md.
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag de la release en borrador a firmar y publicar (por ejemplo v0.9.3)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: firmar-release-${{ inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  firmar-y-publicar:
+    name: firmar-y-publicar
+    runs-on: [self-hosted, windows, horizun-sign]
+    environment: firma-certum
+    permissions:
+      contents: write
+    steps:
+      - name: Localizar el commit del borrador
+        id: borrador
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          if ($env:TAG -notmatch '^v\d+\.\d+\.\d+$') { throw "Tag invalido: $env:TAG" }
+          $release = gh release view $env:TAG -R ${{ github.repository }} --json isDraft,targetCommitish | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0) { throw "No existe la release $env:TAG" }
+          if (-not $release.isDraft) { throw "La release $env:TAG ya esta publicada (inmutable): hace falta una version nueva." }
+          "ref=$($release.targetCommitish)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ steps.borrador.outputs.ref }}
+      - name: Firmar, verificar y publicar
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ inputs.tag }}
+        run: ./scripts/firmar-release.ps1 -Repo ${{ github.repository }} -Tag $env:TAG
