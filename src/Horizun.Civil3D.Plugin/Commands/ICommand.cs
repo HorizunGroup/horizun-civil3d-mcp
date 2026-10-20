@@ -88,19 +88,41 @@ internal sealed class CommandContext
             open.Add(JsonValue.Create(d.Name));
             if (NameMatches(d, target)) matches.Add(d);
         }
+        var detail = new JsonObject { ["active_document"] = active.Name, ["open_documents"] = open };
+        if (matches.Count == 0)
+            throw new HzRefusal(ErrorCodes.DocumentMismatch, "'" + target + "' is not open in this Civil 3D. Nothing ran.", detail);
+        // Ambiguity is checked before the active drawing is returned: a bare file name shared by two open drawings
+        // must not silently resolve to whichever one happens to be active.
         if (matches.Count > 1)
             throw new HzRefusal(ErrorCodes.Ambiguous,
                 "'" + target + "' matches more than one open drawing. Pass its full path as target_document. Nothing ran.",
                 new JsonObject { ["candidates"] = Hz.Strings(matches.Select(d => d.Name)) });
-        if (matches.Count == 1 && matches[0] == active) return active;
-        var exists = matches.Count == 1;
+        if (matches[0] == active) return active;
+
+        // A listed pure read may read another OPEN drawing in place: its own lock, its own database, an aborted
+        // transaction. The active window is never changed. Writes always require the active drawing.
+        if (!forWrite && DocumentScope.AllowsNonActive(Tool.Name, Action))
+        {
+            HostMessages.Add(JsonValue.Create("Read from the open, NON-active drawing '" + Path.GetFileName(matches[0].Name) +
+                                              "'. The active window ('" + Path.GetFileName(active.Name) + "') was not changed."));
+            return matches[0];
+        }
+        var can = DocumentScope.NonActiveActions(Tool.Name);
+        detail["non_active_reads_of_this_tool"] = Hz.Strings(can);
         throw new HzRefusal(ErrorCodes.DocumentMismatch,
-            exists
-                ? "'" + target + "' is open but is NOT the active drawing ('" + Path.GetFileName(active.Name) + "'). The bridge " +
-                  "never switches your window. Activate it in Civil 3D and call again. Nothing ran."
-                : "'" + target + "' is not open in this Civil 3D. Nothing ran.",
-            new JsonObject { ["active_document"] = active.Name, ["open_documents"] = open });
+            "'" + target + "' is open but is NOT the active drawing ('" + Path.GetFileName(active.Name) + "'). The bridge " +
+            "never switches your window. " +
+            (forWrite
+                ? "Writes only run on the active drawing: activate it in Civil 3D and call again."
+                : can.Count > 0
+                    ? "This action does not read non-active drawings; " + Tool.Name + " can with: " + string.Join(", ", can) + "."
+                    : Tool.Name + " does not read non-active drawings: activate it in Civil 3D and call again.") +
+            " Nothing ran.",
+            detail);
     }
+
+    /// <summary>True when doc is the drawing in the active window (per-document system variables and the Editor apply to it only).</summary>
+    public static bool IsActive(Document doc) => doc == AcApp.DocumentManager.MdiActiveDocument;
 
     public static CivilDocument Civil(Document doc) => CivilDocument.GetCivilDocument(doc.Database);
 

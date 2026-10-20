@@ -10,15 +10,18 @@ namespace Horizun.Civil3D.Plugin.Commands;
 internal sealed partial class CorridorCommand
 {
     private static int Index(JsonObject a, string key) => (int)(Hz.Num(a, key) ?? 0);
+    // UseSameSideTarget exists only in some Civil 3D builds: absent in 2024 (13.6.1781) and 2025 13.7.145, present in
+    // 2025 13.7.1402 and 2026 13.8.1516 (docs/api-probes). Reached by reflection so one binary loads on every update of a year and reports the gap
+    // instead of failing to JIT the method with MissingMethodException.
+    private static readonly System.Reflection.PropertyInfo? SameSideProperty =
+        typeof(SubassemblyTargetInfo).GetProperty("UseSameSideTarget", typeof(bool));
     private static bool? SameSideTarget(SubassemblyTargetInfo t, out string? reason)
     {
-#if C3D2024
-        reason = "unsupported_year_api"; return null; // No 2024 member.
-#else
+        if (SameSideProperty == null) { reason = "unsupported_host_api: this Civil 3D build has no SubassemblyTargetInfo.UseSameSideTarget"; return null; }
         if (t.TargetType.ToString() != "Offset") { reason = "unsupported_target_type"; return null; }
-        try { reason = null; return t.UseSameSideTarget; }
-        catch (InvalidOperationException e) { reason = "native_getter_unavailable: " + e.Message; return null; }
-#endif
+        try { reason = null; return (bool)SameSideProperty.GetValue(t)!; }
+        catch (System.Reflection.TargetInvocationException e) when (e.InnerException is InvalidOperationException ie)
+        { reason = "native_getter_unavailable: " + ie.Message; return null; }
     }
     private static (string? Value, string? Reason) TargetOption(SubassemblyTargetInfo t, int count)
     {
@@ -88,9 +91,6 @@ internal sealed partial class CorridorCommand
                 var optionReason = CorridorEngineeringInputs.TargetOptionReadability(targetType, ids.Count);
                 if (optionReason == null && option == null && expected[i]!["target_to_option"] == null) throw new HzRefusal(ErrorCodes.InvalidInput, "Specify target_to_option when assigning multiple handles to a target whose previous option was not readable. Nothing changed.");
                 if (same.HasValue && expected[i]!["use_same_side_target_reason"] is { } sameReason) throw new HzRefusal(ErrorCodes.Unsupported, "Cannot set use_same_side_target: " + sameReason.ToJsonString(Hz.Compact) + ". Nothing changed.");
-#if C3D2024
-                if(same.HasValue) throw new HzRefusal(ErrorCodes.Unsupported,"Civil 3D 2024 has no UseSameSideTarget API. Omit use_same_side_target; nothing changed.");
-#endif
                 updates.Add((i, ids.ToArray(), option, same));
                 var item = (JsonObject)expected[i]!; item["handles"] = Hz.Strings(ids.Select(x => x.Handle.ToString()));
                 if (optionReason != null) { item["target_to_option"] = null; item["target_to_option_reason"] = optionReason; }
@@ -106,9 +106,7 @@ internal sealed partial class CorridorCommand
             {
                 var t = targets[update.Index]; t.TargetIds = new ObjectIdCollection(update.Ids);
                 if (update.Option != null) t.TargetToOption = (SubassemblyTargetToOption)Enum.Parse(typeof(SubassemblyTargetToOption), update.Option);
-#if !C3D2024
-                if (update.SameSide != null) t.UseSameSideTarget = update.SameSide.Value;
-#endif
+                if (update.SameSide != null) SameSideProperty!.SetValue(t, update.SameSide.Value);
             }
             r.SetTargets(targets); if (Hz.Bool(ctx.Args, "rebuild") ?? true) c.Rebuild();
         }, (doc, tr, v, after) =>

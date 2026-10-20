@@ -66,7 +66,7 @@ public static partial class Contract
     public const string Prefix = "horizun_c3d_";
 
     private const string TargetDocumentProp =
-        "\"target_document\": {\"type\": \"string\", \"description\": \"Drawing name (e.g. 'Site.dwg') or full path. Defaults to the ACTIVE drawing for reads; REQUIRED for writes and must equal the active drawing.\"}";
+        "\"target_document\": {\"type\": \"string\", \"description\": \"Drawing name (e.g. 'Site.dwg') or full path. Defaults to the ACTIVE drawing for reads. The reads listed in horizun_c3d_health bridge.non_active_reads may name another OPEN drawing: it is read in place and the active window is never changed. REQUIRED for writes and must equal the active drawing.\"}";
 
     public static readonly IReadOnlyList<ToolContract> All = new List<ToolContract>
     {
@@ -133,7 +133,14 @@ public static partial class Contract
                 "system, external references. action=list_open: every open drawing and which is active. " +
                 "action=object_census: count of every Civil 3D object type (surfaces by kind, alignments, profiles, " +
                 "corridors, feature lines, sites, parcels, pipe networks, COGO points, point groups, sample line " +
-                "groups...), how many are data-shortcut references (not editable here) and xrefs. action=save: saves " +
+                "groups...), how many are data-shortcut references (not editable here) and xrefs. action=geo (read-only): " +
+                "georeference and orientation of the ACTIVE drawing - AutoCAD GeoLocation (coordinate system, design and " +
+                "reference points, north direction and vector, scale factor, units, type of coordinates, design point in " +
+                "lon/lat), the system variables NORTHDIRECTION, VIEWTWIST, WORLDUCS, UCSNAME, UCSORG/UCSXDIR/UCSYDIR, the " +
+                "current UCS, view twist and active viewport, Civil 3D's coordinate system and transformation settings " +
+                "(rotation to grid north, grid scale factor, reference/rotation points) and the grid convergence at the " +
+                "design point, computed through the drawing's own transform. Use it when north, the ViewCube or bearings " +
+                "do not agree. action=save: saves " +
                 "the active drawing to its own path; dry_run defaults to true and returns the plan plus a single-use " +
                 "confirmation_token; apply with dry_run=false and that token. Any subsequent drawing edit, variable " +
                 "or view change invalidates the save plan, even when DBMOD flags are unchanged. Save requires the full_write profile. " +
@@ -141,7 +148,7 @@ public static partial class Contract
                 "before native UNDO. Reliable attribution and full restoration are not verified. Use Civil 3D native UNDO manually.",
             InputSchemaJson = """
             {"type":"object","properties":{
-              "action":{"type":"string","enum":["info","list_open","object_census","save","undo_last"]},
+              "action":{"type":"string","enum":["info","list_open","object_census","geo","save","undo_last"]},
               __TARGET__,
               "dry_run":{"type":"boolean","default":true,"description":"save / undo_last. true = return the plan and a confirmation_token, change nothing."},
               "confirmation_token":{"type":"string","description":"save / undo_last. Token from the dry run of exactly this request."}
@@ -254,19 +261,19 @@ public static partial class Contract
               "vertices":{"type":"array","minItems":1,"maxItems":10000,"description":"add_data: TIN vertices in drawing WCS; each is re-read as an exact surface elevation after commit.","items":{"type":"object","properties":{"x":{"type":"number"},"y":{"type":"number"},"z":{"type":"number"}},"required":["x","y","z"],"additionalProperties":false}},
               "breaklines":{"type":"object","description":"add_data: ONE breakline group from existing drawing objects (3D polylines, polylines, feature lines).","properties":{
                 "handles":{"type":"array","minItems":1,"maxItems":500,"items":{"type":"string"}},
-                "kind":{"type":"string","enum":["standard","proximity","non_destructive"],"default":"standard"},
+                "kind":{"type":"string","enum":["standard","proximity","non_destructive"],"description":"Omitted = standard."},
                 "description":{"type":"string"},
-                "mid_ordinate":{"type":"number","default":1.0,"description":"Arc tessellation distance, >0."},
-                "max_distance":{"type":"number","default":0,"description":"standard only: supplementing distance, 0 = none."},
-                "weeding_distance":{"type":"number","default":0,"description":"standard only: 0 = keep every vertex."},
-                "weeding_angle":{"type":"number","default":0,"description":"standard only: 0 = keep every vertex."}
+                "mid_ordinate":{"type":"number","description":"Arc tessellation distance, >0. Omitted = 1.0."},
+                "max_distance":{"type":"number","description":"standard only: supplementing distance; omitted or 0 = none."},
+                "weeding_distance":{"type":"number","description":"standard only: omitted or 0 = keep every vertex."},
+                "weeding_angle":{"type":"number","description":"standard only: omitted or 0 = keep every vertex."}
               },"required":["handles"],"additionalProperties":false},
               "boundaries":{"type":"object","description":"add_data: ONE boundary group from existing CLOSED drawing objects.","properties":{
                 "handles":{"type":"array","minItems":1,"maxItems":500,"items":{"type":"string"}},
                 "kind":{"type":"string","enum":["outer","hide","show","data_clip"]},
                 "name":{"type":"string"},
-                "non_destructive":{"type":"boolean","default":true},
-                "mid_ordinate":{"type":"number","default":1.0}
+                "non_destructive":{"type":"boolean","description":"Omitted = true."},
+                "mid_ordinate":{"type":"number","description":"Arc tessellation distance, >0. Omitted = 1.0."}
               },"required":["handles","kind"],"additionalProperties":false},
               "sources":{"type":"array","minItems":1,"maxItems":50,"items":{"type":"string"},"description":"paste: exact source surface names, pasted IN THIS ORDER (later ones win where they overlap)."},
               "rebuild":{"type":"boolean","default":true,"description":"add_data/paste: rebuild the target after adding so the re-read sees the new definition."},
@@ -302,8 +309,12 @@ public static partial class Contract
                 "at convex corners) and inner steps (offset; grade_to_depth {depth, slope}; grade_to_elevation " +
                 "{elevation, slope}). Creates one closed 3D polyline per line on layer (default HZ-GRADING) and a NEW TIN " +
                 "surface named name with every line as a standard breakline and the outermost line as outer boundary. " +
-                "Dry run returns every computed line (points, z range, area) and failed daylight rays. Re-read after " +
-                "commit: breakline count, boundary, and the TIN elevation at the line vertices. volume_against (surface " +
+                "When the innermost line (the base, or the last inner line) is planar, a grid of interior vertices on its " +
+                "plane is added before the boundary so Civil 3D cannot triangulate across the platform (plan.floor). " +
+                "Dry run returns every computed line (points, z range, area), the floor and failed daylight rays. Re-read " +
+                "after commit: breakline count, boundary, the TIN elevation at the line vertices AND inside the planar floor " +
+                "at points that are not TIN vertices. If you later add data to this TIN, keep its boundary the LAST operation " +
+                "of the definition, or the new data is triangulated over the boundary. volume_against (surface " +
                 "name) adds cut/fill of the new TIN against that surface from a never-committed transient volume. " +
                 "Native grading creation is refused by name: use this.",
             InputSchemaJson = """

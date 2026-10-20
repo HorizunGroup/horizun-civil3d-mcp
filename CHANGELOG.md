@@ -1,5 +1,117 @@
 # Changelog
 
+## v0.9.4 - unreleased - develop line integrated into v0.9.3
+
+Merges the `develop` line (built on v0.8.0 in parallel with v0.9.x and live-verified on Civil 3D 2025 on
+2026-10-15) into v0.9.3. Everything in v0.9.3 is kept; the entries below marked "develop" describe what arrives.
+
+- **Reads accept the defaults an MCP client fills in** (`dry_run`, `rebuild`, `max_samples`... on read actions), and
+  validation ignores every schema default the client did not really choose (`ToolRules.WithoutDefaults`).
+- **`document action=geo`** (GeoLocation, UCS, NORTHDIRECTION, VIEWTWIST, grid convergence) and **typed reads of an
+  open, non-active drawing** for the actions listed in health `bridge.non_active_reads`; writes still need the active
+  drawing. Name resolution keeps the v0.9.3 ambiguity rule: a name matching two open drawings is refused with the
+  candidates before the active drawing is returned.
+- **`grading create_geometric` keeps a planar platform flat**: a grid of interior vertices on the plane of the
+  innermost line and an off-vertex re-read of the floor (`plan.floor`).
+- **`entities draw` creates TEXT and MTEXT again** (the hatch `pattern` default no longer leaks into other items).
+- **`execute_csharp` references AecBaseMgd**, so scripts can use strongly typed Civil 3D surfaces.
+- **`surface add_data` no longer declares nested defaults** in `breaklines`/`boundaries`: `kind=proximity` (or
+  `non_destructive`) with every schema default filled by the client is accepted; the defaults are applied by the
+  validator instead.
+- **Fixes found while integrating:** `compare_design` strips client-filled defaults before its own validator;
+  `UseSameSideTarget` is reached by reflection (main did not build for Civil 3D 2025 13.7.145, where it is absent:
+  now reported as `unsupported_host_api`); develop's `double.IsFinite` replaced by `Hz.IsFinite` for net48;
+  `verify_live.py` expects the v0.9.x `undo_last` refusal.
+- **Verified:** Core 942/942, Runtime 771/771 on net48/net8/net10; plug-in 2025 0/0; installed (13 + 16 files SHA-256
+  identical); live on Civil 3D 2025 13.7.145: `verify_live.py` 289/291 (the 2 were the old `undo_last` expectations,
+  fixed in the script and re-checked), plus client-default calls for `compare_design`, `add_data` proximity
+  (dry run + apply 4/4), MTEXT, `document geo` and reads of a non-active drawing.
+
+## develop v0.8.2 - 2026-10-14 (integrated in v0.9.4) - entities draw can create TEXT and MTEXT again (Claude Code)
+
+Contract `154382e00355bbc7e125cdc4` (install server and plug-in together, restart the MCP client).
+
+**Live-verified 2026-10-15** on Civil 3D 2025: `verify_live.py` 287/287; from the Claude client, MTEXT + TEXT draw (dry run and apply, 7/7 re-read checks) and reads with client-filled defaults, including `document geo` and `query list` on a non-active drawing. Also live: `execute_csharp` compiles strongly typed Civil 3D surfaces (AecBaseMgd reference, v0.8.1) and `grading create_geometric` keeps an inclined planar platform flat (9/9 checks, 350/350 interior off-vertex points).
+
+### Fixed (found live on v0.8.1, Civil 3D 2025)
+- **`entities action=draw` refused every non-hatch item** with `items[0]: field 'pattern' is not used by mtext.
+  Nothing ran.` The `items[]` schema declared `pattern` with `default: "SOLID"` (meant for hatch), the MCP client
+  filled it into every item, and `ToolRules.WithoutDefaults` only strips top-level fields. The schema no longer
+  declares a default for `pattern` (description: hatch only, omitted = SOLID); the hatch default moved to
+  `CadInputs.HatchPattern`, used by the plug-in for the plan, the write and the re-read. Item fields whose value is
+  `null` are now ignored, as in the other validators. A non-null `pattern` on text/mtext is still refused by name.
+- Tests (`DrawItemPatternTests`, `WireEndToEndTests`): mtext, text and hatch without pattern pass; hatch without
+  pattern is SOLID; a dry-run draw of mtext + text through the real server, with every schema default filled the way
+  the client does, reaches the fake plug-in with no `pattern` (fails on the v0.8.1 schema with the live message);
+  no tool may add a schema default below the top level (the surface `breaklines`/`boundaries` defaults predate this
+  and are listed as known).
+
+### Documented
+- `transform rotate|scale` on a Civil 3D note label fails with `eNotApplicable` (Civil 3D labels do not accept
+  `Entity.TransformBy`). `docs/CIVIL3D.md` § v0.8.2.
+
+## develop v0.8.1 - 2026-10-08 (integrated in v0.9.4) - reads no longer refused for a default dry_run; document action=geo (Claude Code)
+
+Contract `3cf0d8ccf8312ee217d613c8` (install server and plug-in together, restart the MCP client).
+
+### Fixed (found live on v0.8.0, Civil 3D 2025)
+- **Read actions of mixed read/write tools were refused** with `Field 'dry_run' is not used by action ...` (seen on
+  `entities query` and `layouts list`). The MCP client fills schema defaults, so every call carried `dry_run: true`.
+  The same happened with other defaulted fields: `feature_line create_from_polyline` was refused for
+  `insert_intermediate: false`. Validation (`ToolRules`, `SurfaceInputs`, `FeatureLineInputs`, `GradingInputs`) now runs
+  on a copy without every field whose value is exactly its schema default (`ToolRules.WithoutDefaults`; required
+  fields are kept), so a filled default trips neither "not used by action" nor a cross-field rule such as
+  "insert_intermediate applies to mode=from_surface only". A non-default value is still validated and refused (for
+  example `dry_run: false` or a `confirmation_token` on a read). The command still receives the original arguments.
+- Tests: for every tool and action, filling all schema defaults never changes the validation outcome, a default
+  `dry_run` is accepted on every action, plus the live cases (`SchemaDefaultTests`).
+- **`execute_csharp` could not cast to Civil entities** (FeatureLine, Site, Surface...): CS0012, AecBaseMgd not
+  referenced. The script now references AecBaseMgd (the base of `Autodesk.Civil.DatabaseServices.Entity`) and, when
+  Civil 3D has loaded them, AeccPressurePipesMgd and AeccDataShortcutMgd.
+- **`grading create_geometric` could leave the platform NOT flat** (2 of 8 live gradings: only 389 of 2153 base
+  samples at 42.50, the rest down to 40.51). A 4-vertex flat base had no TIN vertex inside and Civil 3D triangulated
+  across it to a daylight line that almost touched the base; the verifier passed 7/7 because it re-read only line
+  vertices. Now, when the innermost line (base or last inner line) is planar within 1 mm (least-squares plane), a
+  grid of interior vertices on that plane is added before the outer boundary (`GradingEngine.Floor`; spacing
+  max(2 x densify, sqrt(area / 20000)), at least half a cell from the line), reported as `plan.floor`. The re-read
+  now also checks the TIN elevation inside the floor at cell centres, which are never TIN vertices; a tilted
+  platform fails verification. A non-planar floor adds nothing and says it is not checked. Tests include a base
+  whose daylight touches it (`GradingFloorTests`). The tool description now says the boundary must stay the last
+  operation if data is added to that TIN later.
+
+### Added
+- **Typed reads of an open drawing that is NOT the active window** (owner's request). `target_document` may name
+  another open drawing for the reads listed in `DocumentScope` and published by `horizun_c3d_health`
+  (`bridge.non_active_reads`): document info/object_census/geo, query, styles, surface list/get/sample_elevation,
+  layers, entities query/get, dimensions/cad_styles/layouts list, blocks list/references, tables list/get,
+  alignment/profile/corridor reads, labels reads, pipes list, points list/groups, cleanup drawing_report/xrefs.
+  - The read locks THAT document and reads its own database in an aborted transaction; the active window is never
+    changed, and the reply carries a host message saying so. Double gate: the pair is listed AND the contract effect
+    of the action is Read, so a write can never pass.
+  - Not listed on purpose: surface volumes_report (aborted WRITE transaction), sections (pending sections must never
+    be read read-only), exchange (follows the working shortcut project), execute_csharp, and **every write**. Writes
+    still require the active drawing: undo grouping, the working database and the revision tracking that binds
+    confirmation tokens all belong to the active document.
+  - Same rule as the Revit MCP for writes; Revit refuses typed reads of a non-active document (`DocumentGate.ReadGuard`),
+    so this goes further for reads only. A name that matches two open drawings is refused (pass the full path).
+  - **Built and unit-tested; not yet live-verified** (needs two drawings open after installing).
+- **`horizun_c3d_document` action=geo** (read-only): georeference and orientation of the active drawing.
+  - On an open, non-active drawing the window-only parts (VIEWTWIST, view, viewport) are null with the reason, and the
+    UCS / NORTHDIRECTION / TILEMODE values come from that drawing's Database.
+  - AutoCAD GeoLocation: coordinate system, type of coordinates, design and reference points, north direction (rad and
+    deg) and vector, scale factor and method, units, sea-level correction, the design point in lon/lat.
+  - System variables NORTHDIRECTION, VIEWTWIST, WORLDUCS, UCSNAME, UCSORG, UCSXDIR, UCSYDIR, UCSFOLLOW, UCSVP, TILEMODE,
+    CVPORT, ANGBASE, ANGDIR, GEOMARKERVISIBILITY, plus Database.NorthDirection.
+  - Current UCS, current view (twist, direction) and the active viewport (layout viewport or the model `*Active`).
+  - Civil 3D coordinate system definition and transformation settings (rotation to grid north/azimuth, grid scale
+    factor, reference and rotation points, sea level).
+  - Grid convergence at the design point, computed through the drawing's own GeoLocation transform.
+  - Observations, e.g. "VIEWTWIST is exactly minus the UCS rotation: the view is PLAN to that rotated UCS".
+  - One angle convention, stated in the reply: from drawing +Y, counter-clockwise, plus the clockwise azimuth
+    (`GeoMath`, unit-tested).
+- Live findings (Civil 3D 2025): in tiled model space `Editor.CurrentViewportObjectId` is null (the active viewport is
+  `ActiveViewportId`); with *Apply transformation settings* off, the `TransformationSettings` getter throws
+  `InvalidOperationException`, so that block is null with the reason.
 ## v0.9.3 - 2026-10-19 - Signed binaries
 
 - Binarios firmados con el certificado de HORIZUN GROUP S.A.S. (Certum). Sin cambios de codigo funcional respecto de `main`:

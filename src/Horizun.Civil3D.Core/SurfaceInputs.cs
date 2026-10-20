@@ -27,7 +27,9 @@ public static class SurfaceInputs
     public static string? Validate(JsonObject args)
     {
         var action = Hz.Str(args, "action");
-        if (action == "compare_design") return SurfaceComparison.Validate(args);
+        // Client-filled schema defaults (dry_run, rebuild, max_samples...) say nothing the user chose: strip them first.
+        if (action == "compare_design")
+            return SurfaceComparison.Validate(ToolRules.WithoutDefaults("horizun_c3d_surface", args, new[] { "design", "built", "points", "tolerance" }));
         if (action == null || !ReadActions.Concat(WriteActions).Contains(action)) return "Unknown surface action.";
         foreach (var key in new[] { "action", "name", "handle", "target_document", "new_name", "style", "layer", "description", "base", "comparison", "confirmation_token" })
             if (args[key] != null && (args[key] is not JsonValue v || !v.TryGetValue<string>(out _))) return key+" must be a string.";
@@ -48,6 +50,7 @@ public static class SurfaceInputs
         if (action is "volumes_report" or "create_volume") allowed.UnionWith(new[] { "base", "comparison" });
         if (action == "volumes_report") allowed.UnionWith(new[] { "cut_factor", "fill_factor" });
         if (action == "sample_elevation") allowed.UnionWith(new[] { "points", "line", "step" });
+        args = ToolRules.WithoutDefaults("horizun_c3d_surface", args);
         if (args.Any(kv => kv.Value != null && !allowed.Contains(kv.Key))) return "Field '"+args.First(kv => kv.Value != null && !allowed.Contains(kv.Key)).Key+"' is not used by action "+action+".";
         bool Has(string key) => !string.IsNullOrWhiteSpace(Hz.Str(args, key));
         var names = args["names"] as JsonArray;
@@ -144,7 +147,9 @@ public static class SurfaceInputs
             foreach (var k in new[] { "max_distance", "weeding_distance", "weeding_angle" })
             {
                 if (NonNegative(breaklines, k, strict: false) is { } e) return e;
-                if (kind != "standard" && breaklines[k] != null) return "breaklines." + k + " applies to kind=standard only.";
+                // 0 means "none" (the plug-in's own value when omitted), so a client-filled 0 is not a choice to refuse.
+                if (kind != "standard" && breaklines[k] != null && Hz.Num(breaklines, k) != 0)
+                    return "breaklines." + k + " applies to kind=standard only.";
             }
         }
         if (boundaries != null)

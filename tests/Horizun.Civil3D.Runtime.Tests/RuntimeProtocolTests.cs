@@ -10,7 +10,7 @@ public class RuntimeProtocolTests
 {
     [Fact]
     public void Current_contract_is_identical_on_all_host_runtimes() =>
-        Assert.Equal("e36ee390efbb5d34ee0fe86c", Contract.Hash);
+        Assert.Equal("144382c851319cc5b6358081", Contract.Hash);
 
     [Theory]
     [InlineData("C:terrain.zip", false)]

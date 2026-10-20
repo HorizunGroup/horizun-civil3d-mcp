@@ -1,18 +1,23 @@
 # STATUS - estado actual y QUÉ SIGUE
 
 > Documento VIVO. Toda sesión que termine un bloque de trabajo lo **actualiza** (ver `WORKFLOW.md`).
-> Última actualización: **2026-10-06**, por Claude Code. **Correcciones de la revisión multiagente en la rama `phase-10/review-fixes`** (32 hallazgos; sin commit, sin instalar; contrato sin cambios). Los cambios del plug-in son B y esperan su prueba en vivo (ver "QUÉ SIGUE").
+> Última actualización: **2026-10-20**, por Claude Code: **v0.9.4 integrada, instalada y verificada en vivo; PR abierto** desde la rama `integrar/v0.9.4`: la línea `develop` (v0.8.1/v0.8.2, verificada en vivo el 2026-10-15) se fusiona con `main` v0.9.3. Ver la entrada del mismo día en `SESSION_LOG.md`.
+> Anterior (línea develop): **2026-10-15**, por Claude Code: v0.8.2 instalada y verificada en vivo (287/287 + casos con defaults del cliente). Antes, 2026-10-14: v0.8.2 (`entities draw` vuelve a crear TEXT/MTEXT; el `pattern` por defecto del hatch ya no se cuela en los demás items). Anterior: 2026-10-08, v0.8.1.
+> Anterior (línea main): **2026-10-06**, por Claude Code. **Correcciones de la revisión multiagente en la rama `phase-10/review-fixes`** (32 hallazgos; sin commit, sin instalar; contrato sin cambios). Los cambios del plug-in son B y esperan su prueba en vivo (ver "QUÉ SIGUE").
 > Anterior (Codex): **v0.9.2 publicada y repositorio PUBLIC**; PR#1 integrado tras CI exitosa. Cuatro paquetes y SHA256SUMS coinciden con los hashes remotos. Asset0.8.0 con rutas privadas retirado y respaldado; reportes privados de seguridad habilitados. Instalación2025 conserva78/78 controles y262 hashes correctos. UNDO automático deshabilitado;2024/2026 solo evidencia de compilación/pruebas sin anfitrión. Ver [PUBLIC_READINESS.md](../PUBLIC_READINESS.md).
 
 ## Versión
 
 | Qué | Valor |
 |---|---|
-| Código en el repo | **v0.9.2 + correcciones de revisión sin publicar** (rama `phase-10/review-fixes`): 28 herramientas / 163 acciones / 169 operaciones, contrato `e36ee390efbb5d34ee0fe86c` (sin cambios). 569 Core/Server, 406 por net48/net8/net10. Antes: 552 Core/Server,391 por net48/net8/net10,14 receptor y8 cliente. Builds2024/net48,2025/net8,2026/net8/net10 completos; undo_last reservado pero rechazado sin ejecutar |
-| Instalación | **v0.9.2 operativa2025**. Generación `0.9.2-20261006-085000`, servidor aislado `server-releases/0.9.2-final` registrado en Codex;262 archivos verificados. SECURELOAD y perfil safe_write conservados. Ensayo de78 controles con el payload final y rechazo de UNDO sin cambios |
-| Civil 3D disponible | **2025**: aceptación nativa de corredores, CSV, comparación, planos, copia DWG y exportación de terreno. Revit2025: Toposolid y DirectShape creados, controles independientes y modelos guardados. 2024/2026 no instalados; solo build/pruebas sin anfitrión |
-| Git / GitHub | [Repositorio público](https://github.com/HorizunGroup/horizun-civil3d-mcp). PR#1 integrado en `main` (`2c02c2d`); [release v0.9.2](https://github.com/HorizunGroup/horizun-civil3d-mcp/releases/tag/v0.9.2) con cuatro paquetes y SHA256SUMS. `develop` conserva estado histórico previo. Notas personales en `.local/` ignorado |
-| Perfil de permisos activo | `safe_write`. `settings.json` no existe: se borró tras la prueba de guardado |
+| Código en el repo | **v0.9.4** (rama `integrar/v0.9.4`, PR a `main` abierto; contrato `144382c851319cc5b6358081`): v0.9.3 de `main` + la línea `develop` (lecturas con defaults del cliente, `document geo`, lecturas de dibujos no activos, piso plano del grading, draw de TEXT/MTEXT, AecBaseMgd en C#, `add_data` sin defaults anidados). Contrato nuevo al compilar |
+| `main` | **v0.9.3** (2026-10-19, firma Certum; PRs #1 a #5). Release v0.9.3 publicada. Repositorio **PÚBLICO**: no escribir nombres de clientes ni proyectos reales en docs, tests ni commits |
+| Línea `develop` (integrada en 0.9.4) | v0.8.2 (2026-10-14, contrato `154382e00355bbc7e125cdc4`) y v0.8.1 (2026-10-08, contrato `3cf0d8ccf8312ee217d613c8`), verificadas en vivo el 2026-10-15: verify_live 287/287 |
+| Instalado en la máquina del dueño (Claude) | **v0.9.4, edición de desarrollo** (2026-10-20; 13 + 16 archivos SHA-256 idénticos al build), registrada como `horizun-civil3d`. Verificada en vivo: verify_live 289/291 (los 2 eran el bloque de undo_last, corregido en el script). El conector anterior (`civil3d-mcp`) fue **retirado** el 2026-10-04 |
+| Instalación de la línea main (Codex) | v0.9.2 operativa 2025 según la línea main: generación `0.9.2-20261006-085000`, servidor aislado `server-releases/0.9.2-final` registrado en Codex |
+| Civil 3D disponible | **2025** (ACADVER 25.0s, AeccDbMgd 13.7.0.145). 2024/2026 no instalados; solo build/pruebas sin anfitrión |
+| Git / GitHub | [HorizunGroup/horizun-civil3d-mcp](https://github.com/HorizunGroup/horizun-civil3d-mcp) (público). `main` = versiones con Release; `develop` = trabajo. Push con la cuenta de la organización, nunca con la personal. Notas personales en `.local/` (ignorado) |
+| Perfil de permisos activo | El dueño lo cambia según la prueba (el 2026-10-15 quedó en `unsafe_code` con `execute_csharp` encendido para probar). Volver a `safe_write` al terminar |
 | Integración ChatGPT | Auxiliares instalados, cliente oficial 0.0.15; 111 checks pasan en PowerShell 5.1 y 7.6.5. **pending_user_action**: faltan túnel/clave de cuenta y llamada real. Ver docs/CHATGPT.md |
 | Registro en Claude Desktop | Hecho, como `horizun-civil3d`. Los otros conectores siguen intactos |
 | Registro en Codex | `horizun-civil3d` habilitado por CLI oficial, stdio apunta al EXE instalado. Configuración respaldada y comparación semántica de ajustes previos pasa; catálogo del servidor instalado comprobado |
@@ -23,7 +28,7 @@
 |---|---|---|
 | `horizun_c3d_health` | n/a | Sí |
 | `horizun_c3d_target` | listar o elegir instancia | Sí |
-| `horizun_c3d_document` | `info`, `list_open`, `object_census`, `save` | Sí. El guardado se probó con token y verificación en disco |
+| `horizun_c3d_document` | `info`, `list_open`, `object_census`, `save`, `undo_last`, **`geo`** (v0.8.1) | Sí. El guardado se probó con token y verificación en disco. `geo`: verificado en vivo con la v0.8.2 sobre un dibujo NO activo (2026-10-15) |
 | `horizun_c3d_query` | `list`, `get` (15 tipos) | Sí para superficies y feature lines. Los demás tipos solo están compilados |
 | `horizun_c3d_styles` | `list`, `get` (con quién usa cada estilo) | Sí |
 | `horizun_c3d_probe` | firmas de la API en vivo | Sí |
@@ -83,6 +88,8 @@ Detalle de la evidencia: `docs/CIVIL3D.md`.
 - Las correcciones v0.1.1 y los auxiliares ChatGPT anteriores están incluidos en v0.2.0. Las secciones previas conservan su evidencia histórica.
 
 ## ▶ QUÉ SIGUE (siguiente bloque de trabajo)
+
+00. **v0.9.4 (2026-10-20):** PR `integrar/v0.9.4` → `main` abierto, con tests, instalación y prueba en vivo. El dueño lo revisa y fusiona. Después, solo si él lo pide: Release 0.9.4 con firma Certum (llenar `sha256` en `runtime-release.json`) y alinear `develop` con `main`. Pendiente en vivo: `corridor set_targets` con `use_same_side_target` sobre objetivos de desfase reales.
 
 **Revisión multiagente corregida (2026-10-06, Claude Code):** 32 hallazgos corregidos en la rama `phase-10/review-fixes`, sin commit. Detalle en `CHANGELOG.md` (Unreleased) y la tabla de compuertas en vivo al final de `docs/CIVIL3D.md`.
 

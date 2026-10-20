@@ -9,7 +9,7 @@ public class ContractTests
     public void Hash_is_stable_and_hex()
     {
         // Pinned: a schema or effect change must be a deliberate joint server + plug-in release.
-        Assert.Equal("e36ee390efbb5d34ee0fe86c", Contract.Hash);
+        Assert.Equal("144382c851319cc5b6358081", Contract.Hash);
         Assert.Matches("^[0-9a-f]{24}$", Contract.Hash);
     }
 

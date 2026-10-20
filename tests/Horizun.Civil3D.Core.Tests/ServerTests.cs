@@ -112,6 +112,45 @@ public class WireEndToEndTests
         Assert.Equal(1, r["structuredContent"]!["cmdactive"]!.GetValue<int>());
     }
 
+    // Live (v0.8.1): a dry-run draw of one MTEXT was refused "items[0]: field 'pattern' is not used by mtext"
+    // because the item schema declared pattern default SOLID and the client filled it into every item.
+    [Fact]
+    public void Dry_run_draw_of_mtext_and_text_reaches_the_plugin_without_pattern()
+    {
+        var pipe = "hz-test-" + Guid.NewGuid().ToString("N");
+        JsonObject? sent = null;
+        var fake = FakePlugin(pipe, "tok", req =>
+        {
+            sent = (JsonObject)req["params"]!.DeepClone();
+            return Wire.Reply(Hz.Str(req, "id"), CommandResult.Ok(new JsonObject { ["dry_run"] = true }));
+        });
+        var server = WithInstances(FakeRecord(pipe, "tok"));
+
+        var args = JsonNode.Parse("{\"action\":\"draw\",\"target_document\":\"d.dwg\",\"dry_run\":true,\"items\":[" +
+            "{\"type\":\"mtext\",\"position\":{\"x\":10,\"y\":20},\"text\":\"EJE 6\",\"height\":4.83052,\"layer\":\"EJE VIA\"}," +
+            "{\"type\":\"text\",\"position\":{\"x\":10,\"y\":30},\"text\":\"EJE 6\",\"height\":4.83052}]}")!.AsObject();
+        FillDefaults(Contract.Find("horizun_c3d_entities")!.InputSchema, args);   // what the MCP client does
+        var r = server.ToolsCall("6", new JsonObject { ["name"] = "horizun_c3d_entities", ["arguments"] = args });
+        fake.Wait(5000);
+        Assert.False(r["isError"]!.GetValue<bool>(), r["content"]?.ToJsonString());
+        Assert.NotNull(sent);
+        Assert.All((JsonArray)sent!["items"]!, it => Assert.False(((JsonObject)it!).ContainsKey("pattern")));
+    }
+
+    /// <summary>Fills every schema default the way MCP clients do, including inside array items.</summary>
+    private static void FillDefaults(JsonObject schema, JsonNode? value)
+    {
+        if (value is JsonObject o && schema["properties"] is JsonObject props)
+            foreach (var (k, p) in props)
+            {
+                if (p is not JsonObject ps) continue;
+                if (o[k] == null && ps.TryGetPropertyValue("default", out var d)) o[k] = d?.DeepClone();
+                FillDefaults(ps, o[k]);
+            }
+        else if (value is JsonArray a && schema["items"] is JsonObject items)
+            foreach (var n in a) FillDefaults(items, n);
+    }
+
     [Fact]
     public void Pipe_served_by_another_process_never_receives_the_token()
     {

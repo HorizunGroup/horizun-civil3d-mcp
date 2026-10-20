@@ -710,3 +710,80 @@
 **Evidencia:** 569 Core/Server (17 nuevas pruebas), 406 runtime en cada uno de net48/net8/net10; pruebas Python, bootstrap del plugin, runtime-build, metadatos, confianza y rollback pasan. Builds 2024/net48, 2025/net8, 2026/net8 y 2026/net10: 0 errores (las 5 advertencias de 2024 ya existían). Sondeos nuevos: `acdbmgd.review-fixes.txt` y `AeccDbMgd.review-fixes-part.txt`. Acciones de CI fijadas por SHA resuelto con la API de GitHub.
 **Problemas / decisiones:** no se cambió el valor por defecto de `VerificationSet.Text` (81 llamadas con evidencia en vivo); solo los renombrados pasan `ignoreCase: false`. No se tocó el codificador JSON de Hz.Compact porque el hash del contrato depende de él; se mide el tamaño en el cable antes de enviar. El correo personal del merge `2c02c2d` en el historial público solo se quita reescribiendo historia: decisión del dueño. Sin instalación, sin Civil 3D, sin commit ni push.
 **Qué sigue:** el dueño decide commit/PR; luego instalar 2025 (guardar y cerrar Civil 3D antes) y correr las compuertas en vivo de la tabla "Review fixes" en `docs/CIVIL3D.md`.
+
+---
+
+> Las entradas siguientes (2026-10-08 a 2026-10-15) son de la línea `develop`, paralela a v0.9.x; se integraron en v0.9.4.
+
+## 2026-10-08 - Claude Code (Opus 5.5) - v0.8.1: dry_run por defecto en lecturas + lectura de georreferencia
+**Estado**: EN CURSO (código terminado; falta instalar, verificar en vivo y push)
+
+**Objetivo:**
+1. Bug visto en vivo: `entities query` y `layouts list` se rechazan con "Field 'dry_run' is not used" porque el cliente rellena el `default: true` del esquema. Arreglo genérico: un campo que no usa la acción y solo trae el valor por defecto del esquema se ignora; un valor distinto se sigue rechazando. Tests para todas las herramientas.
+2. Nueva lectura `horizun_c3d_document action=geo`: GeoLocation, NORTHDIRECTION, VIEWTWIST, UCS, viewport activo, ajustes de transformación de Civil 3D y convergencia. Solo lectura, verificada en vivo sin modificar el dibujo abierto del dueño.
+3. (Pedidos añadidos) mismo arreglo para `insert_intermediate` y cualquier default; `execute_csharp` con AecBaseMgd; lecturas tipadas sobre dibujos abiertos NO activos (pedido del dueño); grading con plataforma no plana (vértices interiores + verificación del interior).
+
+**Hecho (sin instalar; el dueño sigue trabajando en Civil 3D):**
+- Commits `ef6a4d1`, `de0b7ca` y el de lecturas no activas en `develop`. 760 tests; plug-in 2025 0/0. Contrato `3cf0d8ccf8312ee217d613c8`.
+- En vivo (v0.8.0): reproducido el rechazo por `dry_run`; API de `geo` leída por el canal C# en modo query (DBMOD sin cambios).
+- Revit MCP revisado: escribe solo en el activo y también rechaza LECTURAS tipadas de un documento no activo (`DocumentGate.ReadGuard`); las excepciones son `copy_between_documents` (lee el origen), `document_session` (guardar/cerrar otro) y `model_diff`.
+- Push pendiente: gh y git autentican con la cuenta personal, no la de Horizun.
+
+**Qué sigue:** instalar v0.8.1 cuando el dueño cierre Civil 3D, verificar en vivo (`docs/CIVIL3D.md` § v0.8.1, incluido el punto 5 con dos dibujos), push con la cuenta de Horizun.
+
+---
+
+## 2026-10-14 - Claude Code (Opus 5.5) - v0.8.2: entities draw no podía crear MTEXT ni TEXT
+**Estado**: TERMINADO (código y tests; sin instalar, sin push)
+
+**Objetivo:** bug visto en vivo al rotular un eje con MTEXT en un plano de cortes: `entities action=draw` rechaza todo item que no sea hatch con "items[0]: field 'pattern' is not used by mtext. Nothing ran." porque el esquema de `items[]` declara `pattern` con `default: "SOLID"` y el cliente MCP lo rellena en TODOS los items (`ToolRules.WithoutDefaults` solo limpia campos de primer nivel). Quitar el default del esquema (el plug-in ya aplica SOLID en el hatch), tests de mtext/text/hatch sin pattern y documentar.
+
+**Hecho:**
+- `ContractCad.cs`: `pattern` de `items[]` sin `default` (descripción: solo hatch, omitido = SOLID). El default vive en `CadInputs.HatchPattern`, que el plug-in usa en el plan, la escritura y la relectura.
+- `CadInputs.DrawItem`: un campo de item con valor `null` se ignora (como en los demás validadores). Un `pattern` no nulo en text/mtext se sigue rechazando por nombre.
+- Tests nuevos: `DrawItemPatternTests` (mtext/text/hatch sin pattern, hatch = SOLID, esquema sin default, `pattern:null` ignorado, guardia contra defaults anidados nuevos) y `WireEndToEndTests.Dry_run_draw_of_mtext_and_text_reaches_the_plugin_without_pattern` (servidor real + plug-in falso, con los defaults rellenados como hace el cliente).
+- Versión 0.8.2, contrato `154382e00355bbc7e125cdc4`. CHANGELOG, `docs/CIVIL3D.md` § v0.8.2 (incluye `eNotApplicable` de rotate/scale sobre etiquetas de Civil 3D como comportamiento conocido) y STATUS.
+
+**Evidencia:** 767/767 tests. Con el esquema de la v0.8.1 los 3 tests nuevos relevantes fallan con el mensaje exacto visto en vivo ("items[0]: field 'pattern' is not used by mtext. Nothing ran."). Plug-in 2025 compila 0/0.
+
+**Problemas / decisiones:** la misma clase de bug existe en `surface add_data`: `breaklines` y `boundaries` declaran defaults anidados (p. ej. `max_distance: 0`, "standard only"), así que `kind=proximity` con el default rellenado por el cliente se rechazaría. No se tocó (fuera del alcance); queda en la lista conocida del test guardián para quitarla al arreglarlo.
+
+**Qué sigue:** instalar v0.8.2 (servidor + plug-in juntos) y verificar en vivo con `docs/CIVIL3D.md` § v0.8.2; arreglar los defaults anidados de `surface add_data`.
+
+---
+
+## 2026-10-15 - Claude Code (Opus 5.5) - v0.8.2 instalada y verificada en vivo
+**Estado**: TERMINADO
+
+**Hecho:**
+- Push de `2da5acf` a `develop` con la cuenta `JuanDaniel-Horizun` (token de `gh` solo para ese comando; la cuenta activa de `gh` sigue siendo la personal).
+- `install.ps1 -Years 2025 -DryRun` y luego la instalación real con Civil 3D cerrado (se detuvieron los 2 servidores MCP que tenía abiertos Claude). Plug-in 12 archivos y servidor 13 archivos SHA-256 idénticos al build; `horizun-civil3d-mcp 0.8.2`, contrato `154382e00355bbc7e125cdc4`.
+- En vivo (Civil 3D 2025, dos dibujos abiertos: el de ensayo activo y otro nuevo detrás): health reporta 0.8.2 y el contrato nuevo; `scripts/verify_live.py` **287/287** (`verify-20261015-104002.json`).
+- Desde el cliente Claude (con los defaults del esquema rellenados por el cliente): `surface list`, `surface get` con estadísticas de isopaca (reconciliación 0,0014 % y 0,01 %), `surface rebuild` en ensayo, `document geo` y `query list` sobre el dibujo NO activo (la ventana activa no cambia), y `entities draw` de MTEXT + TEXT: ensayo con token y aplicación con 7/7 controles `match`. En v0.8.0/0.8.1 estas llamadas fallaban con "Field '...' is not used by action ...".
+
+**Después, con el dueño en `unsafe_code`:** `execute_csharp` (query) compila tipos fuertes (`TinSurface`, `Autodesk.Aec.DatabaseServices.Entity`): el arreglo de AecBaseMgd funciona. Grading geométrico sobre una plataforma INCLINADA pero plana (z = 101,5 + 0,05·(x − 60), 5 vértices, offset 1 m + talud 1:1 a HZ_EG): `plan.floor` planar con residuo 0, 368 vértices interiores; aplicado con 9/9 controles, incluidos 350/350 puntos interiores fuera de vértices del TIN (queda cubierto el caso de plataforma inclinada visto en un proyecto real).
+
+**No probado:** `surface add_data` con `kind=proximity` sigue con el bug de defaults anidados (pendiente).
+
+**Qué sigue:** arreglar los defaults anidados de `surface add_data`; publicar Release (merge a `main`) cuando el dueño lo pida.
+
+
+---
+
+## 2026-10-20 - Claude Code (Opus 5.5) - v0.9.4: integrar la línea develop con main v0.9.3
+**Estado**: TERMINADO (PR abierto, sin fusionar)
+
+**Objetivo:** `develop` (v0.8.1/v0.8.2, verificada en vivo el 2026-10-15) y `main` (v0.9.3, firma Certum) divergían desde v0.8.0. Rama `integrar/v0.9.4` desde develop + merge de origin/main, conservando los dos conjuntos de cambios; arreglar los defaults anidados de `surface add_data`; tests, build 2025, instalar, verificar en vivo y abrir PR a main (sin fusionarlo ni publicar Release).
+
+**Conflictos resueltos:** `ICommand.Document` (regla de ambigüedad de main ANTES de devolver el activo + lecturas no activas de develop), versión 0.9.4 (Directory.Build.props y los 4 manifiestos, `sha256` en null hasta la Release, como en 0.9.3), CHANGELOG/SESSION_LOG/CIVIL3D.md (se conservan ambas líneas; las entradas develop renombradas "develop v0.8.x" porque main ya tiene otra v0.8.1), STATUS reescrito. Menciones a un proyecto de cliente quitadas de docs y tests (el repo es público).
+
+**Arreglos encontrados al integrar:** `compare_design` (de main) validaba antes de quitar los defaults del cliente; `add_data` sin defaults anidados (lista `KnownNestedDefaults` vacía; un 0 en campos "solo standard" se acepta para otros kind); `double.IsFinite` de develop no existe en net48 (ahora `Hz.IsFinite`); `SubassemblyTargetInfo.UseSameSideTarget` por reflexión: main NO compilaba para Civil 3D 2025 13.7.145 (la propiedad solo está en 13.7.1402 y 2026), ahora compila y reporta `unsupported_host_api`. `verify_live.py`: el bloque de `undo_last` espera el rechazo de diseño de la 0.9.x (deshacer automático deshabilitado) y restaura el nombre con una escritura normal.
+
+**Evidencia:**
+- Tests: Core 942/942 (net8), Runtime 771/771 en net48, net8 y net10. Plug-in 2025 0 errores / 0 advertencias. 2024 y 2026 no se pueden compilar en esta máquina (no hay sus DLL de Autodesk).
+- `install.ps1 -Years 2025`: plug-in 13 archivos y servidor 16 archivos SHA-256 idénticos al build; `horizun-civil3d-mcp 0.9.4`, contrato `144382c851319cc5b6358081`. Catálogo regenerado (164 acciones).
+- En vivo (Civil 3D 2025 13.7.145, dibujo de ensayo + otro abierto): health 0.9.4; `verify_live.py` 289/291 (`verify-20261020-112446.json`); los 2 fallos eran el bloque de `undo_last` que esperaba el comportamiento viejo, corregido en el script y comprobado a mano (rechazo `unsupported`, `committed:false`, `undo.available:false`, dibujo sin cambios). Por el servidor instalado con defaults rellenados como un cliente: `compare_design` OK; `add_data` proximity con ceros: ensayo + aplicado 4/4; proximity con `max_distance=3` rechazado; MText en ensayo OK; `document geo` y `query list` sobre el dibujo NO activo OK; `corridor get_targets` sobre HZ_COR sin error (0 objetivos: ensamblaje vacío, la lectura por objetivo no se ejercitó).
+- El cliente Claude conservaba en caché el esquema viejo de la herramienta (sin `compare_design`) aun después de reiniciar; el servidor instalado sí publica el nuevo.
+
+**Qué sigue:** el dueño revisa y fusiona el PR `integrar/v0.9.4` → `main`; luego, si él lo pide, Release 0.9.4 con firma Certum (llenar `sha256` en `runtime-release.json`) y alinear `develop` con `main`. Pendientes en vivo: `set_targets` con `use_same_side_target` sobre un corredor con objetivos de desfase; 2024/2026 en equipos que los tengan.
+

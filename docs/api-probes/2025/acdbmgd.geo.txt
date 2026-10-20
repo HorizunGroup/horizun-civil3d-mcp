@@ -1,0 +1,191 @@
+# acdbmgd.dll 25.0.0.0 (Civil 3D 2025)
+== Autodesk.AutoCAD.DatabaseServices.GeoLocationData : Autodesk.AutoCAD.DatabaseServices.DBObject
+  C ()
+  M Void AddMeshPointMap(Int32 index, Point2d sourcePt, Point2d destPt)
+  M Void EraseFromDb()
+  M MeshPointMap GetMeshPointMap(Int32 index)
+  M MeshPointMaps GetMeshPointMaps()
+  M ObjectId PostToDb()
+  M Void ResetMeshPointMaps()
+  M Void SetMeshPointMaps(Point2dCollection sourcePts, Point2dCollection destPts)
+  M Point3d TransformFromLonLatAlt(Point3d geoPt)
+  M GeoDataLonLatAltInfo TransformToLonLatAlt(Double x, Double y, Double z)
+  M Point3d TransformToLonLatAlt(Point3d dwgPt)
+  M Void UpdateTransformationMatrix()
+  P ObjectId BlockTableRecordId {get;set;}
+  P Double CoordinateProjectionRadius {get;set;}
+  P String CoordinateSystem {get;set;}
+  P Point3d DesignPoint {get;set;}
+  P Boolean DoSeaLevelCorrection {get;set;}
+  P String GeoRSSTag {get;set;}
+  P UnitsValue HorizontalUnits {get;set;}
+  P Double HorizontalUnitsScale {get;set;}
+  P Double NorthDirection {get;}
+  P Vector2d NorthDirectionVector {get;set;}
+  P Int32 NumMeshPoints {get;}
+  P Point3d ReferencePoint {get;set;}
+  P ScaleEstimationMethod ScaleEstimationMethod {get;set;}
+  P Double ScaleFactor {get;set;}
+  P Double SeaLevelElevation {get;set;}
+  P TypeOfCoordinates TypeOfCoordinates {get;set;}
+  P Vector3d UpDirection {get;set;}
+  P UnitsValue VerticalUnits {get;set;}
+  P Double VerticalUnitsScale {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.TypeOfCoordinates : System.Enum
+  E CoordinateTypeGeographic
+  E CoordinateTypeGrid
+  E CoordinateTypeLocal
+  E CoordinateTypeUnknown
+  F Int32 value__
+== Autodesk.AutoCAD.DatabaseServices.ScaleEstimationMethod : System.Enum
+  E ScaleEstMethodPrismoidal
+  E ScaleEstMethodReferencePoint
+  E ScaleEstMethodUnity
+  E ScaleEstMethodUserDefined
+  F Int32 value__
+== Autodesk.AutoCAD.DatabaseServices.AbstractViewTableRecord : Autodesk.AutoCAD.DatabaseServices.SymbolTableRecord
+  M ObjectId SetSun(DBObject sun)
+  M Void SetUcs(ObjectId id)
+  M Void SetUcs(OrthographicView view)
+  M Void SetUcs(Point3d origin, Vector3d x, Vector3d y)
+  M Void SetUcsToWorld()
+  M Void SetViewDirection(OrthographicView view)
+  P Color AmbientLightColor {get;set;}
+  P Double BackClipDistance {get;set;}
+  P Boolean BackClipEnabled {get;set;}
+  P ObjectId Background {get;set;}
+  P Double Brightness {get;set;}
+  P Point2d CenterPoint {get;set;}
+  P Double Contrast {get;set;}
+  P Boolean DefaultLightingOn {get;set;}
+  P DefaultLightingType DefaultLightingType {get;set;}
+  P Double Elevation {get;set;}
+  P Boolean FrontClipAtEye {get;set;}
+  P Double FrontClipDistance {get;set;}
+  P Boolean FrontClipEnabled {get;set;}
+  P Double Height {get;set;}
+  P Double LensLength {get;set;}
+  P Boolean PerspectiveEnabled {get;set;}
+  P ObjectId SunId {get;}
+  P Point3d Target {get;set;}
+  P ToneOperatorParameters ToneOperatorParameters {get;set;}
+  P CoordinateSystem3d Ucs {get;}
+  P ObjectId UcsName {get;}
+  P OrthographicView UcsOrthographic {get;}
+  P Vector3d ViewDirection {get;set;}
+  P OrthographicView ViewOrthographic {get;}
+  P Double ViewTwist {get;set;}
+  P ObjectId VisualStyleId {get;set;}
+  P Double Width {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.ViewportTableRecord : Autodesk.AutoCAD.DatabaseServices.AbstractViewTableRecord
+  C ()
+  M ObjectId GetPreviousBackground(DrawableType type)
+  M Void SetPreviousBackground(ObjectId value, DrawableType type)
+  P Int16 CircleSides {get;set;}
+  P Boolean FastZoomsEnabled {get;set;}
+  P Boolean GridAdaptive {get;set;}
+  P Boolean GridBoundToLimits {get;set;}
+  P Boolean GridEnabled {get;set;}
+  P Boolean GridFollow {get;set;}
+  P Point2d GridIncrements {get;set;}
+  P Int16 GridMajor {get;set;}
+  P Boolean GridSubdivisionRestricted {get;set;}
+  P Boolean IconAtOrigin {get;set;}
+  P Boolean IconEnabled {get;set;}
+  P Boolean IsometricSnapEnabled {get;set;}
+  P Point2d LowerLeftCorner {get;set;}
+  P Int32 Number {get;}
+  P Double SnapAngle {get;set;}
+  P Point2d SnapBase {get;set;}
+  P Boolean SnapEnabled {get;set;}
+  P Point2d SnapIncrements {get;set;}
+  P Int16 SnapPair {get;set;}
+  P ToneOperatorParameters ToneOperatorParameters {get;set;}
+  P Boolean UcsFollowMode {get;set;}
+  P Boolean UcsSavedWithViewport {get;set;}
+  P Point2d UpperRightCorner {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.UnitsValue : System.Enum
+  E Angstroms
+  E Astronomical
+  E Centimeters
+  E Decimeters
+  E Dekameters
+  E Feet
+  E Gigameters
+  E Hectometers
+  E Inches
+  E Kilometers
+  E LightYears
+  E Meters
+  E MicroInches
+  E Microns
+  E Miles
+  E Millimeters
+  E Mils
+  E Nanometers
+  E Parsecs
+  E Undefined
+  E USSurveyFeet
+  E USSurveyInch
+  E USSurveyMile
+  E USSurveyYard
+  F Int32 value__
+  E Yards
+  M ObjectIdCollection GetViewports(Boolean bGetPaperspaceVports)
+  M Void SetWorldPaperspaceUcsBaseOrigin(Point3d origin, OrthographicView orthoView)
+  M Void SetWorldUcsBaseOrigin(Point3d origin, OrthographicView orthoView)
+  M Point3d WorldPaperspaceUcsBaseOrigin(OrthographicView orthoView)
+  M Point3d WorldUcsBaseOrigin(OrthographicView orthoView)
+  P ObjectId CurrentViewportTableRecordId {get;}
+  P ObjectId GeoDataObject {get;}
+  P UnitsValue Insunits {get;set;}
+  P Double NorthDirection {get;set;}
+  P CoordinateSystem3d Pucs {get;set;}
+  P ObjectId PucsBase {get;set;}
+  P ObjectId Pucsname {get;set;}
+  P Point3d Pucsorg {get;}
+  P OrthographicView PucsOrthographic {get;}
+  P Vector3d Pucsxdir {get;}
+  P Vector3d Pucsydir {get;}
+  P Boolean TileMode {get;set;}
+  P Int32 TileModeLightSynch {get;set;}
+  P CoordinateSystem3d Ucs {get;set;}
+  P ObjectId UcsBase {get;set;}
+  P ObjectId Ucsname {get;set;}
+  P Point3d Ucsorg {get;}
+  P OrthographicView UcsOrthographic {get;}
+  P ObjectId UcsTableId {get;}
+  P Vector3d Ucsxdir {get;}
+  P Vector3d Ucsydir {get;}
+  P Double ViewportScaleDefault {get;set;}
+  P ObjectId ViewportTableId {get;}
+  M Void GetUcs(Point3d& origin, Vector3d& x, Vector3d& y)
+  M Void SetUcs(ObjectId userCoordinateSystemId)
+  M Void SetUcs(OrthographicView view)
+  M Void SetUcs(Point3d origin, Vector3d x, Vector3d y)
+  M Void SetUcsToWorld()
+  M Void SetViewDirection(OrthographicView view)
+  P Double CustomScale {get;set;}
+  P Int32 Number {get;}
+  P Double TwistAngle {get;set;}
+  P CoordinateSystem3d Ucs {get;set;}
+  P Boolean UcsFollowModeOn {get;set;}
+  P Boolean UcsIconAtOrigin {get;set;}
+  P Boolean UcsIconVisible {get;set;}
+  P ObjectId UcsName {get;}
+  P OrthographicView UcsOrthographic {get;}
+  P Boolean UcsPerViewport {get;set;}
+  P Vector3d ViewDirection {get;set;}
+  M ViewTableRecord GetCurrentView()
+  ? GetViewportNumber Could not find type 'System.Windows.Point' in assembly 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.25\WindowsBase.dll'.
+  M Void SetCurrentView(ViewTableRecord value)
+  M Void UpdateTiledViewportsFromDatabase()
+  M Void UpdateTiledViewportsInDatabase()
+  M ObjectId ViewportIdFromNumber(Int32 viewportNumber)
+  P ObjectId ActiveViewportId {get;}
+  P Matrix3d CurrentUserCoordinateSystem {get;set;}
+  P ObjectId CurrentViewportObjectId {get;}
+== Autodesk.AutoCAD.Geometry.Matrix3d (filtered)
+  P CoordinateSystem3d CoordinateSystem3d {get;}
+== Autodesk.AutoCAD.ApplicationServices.Core.Application (accoremgd, filtered)
+  M static Object GetSystemVariable(String name)

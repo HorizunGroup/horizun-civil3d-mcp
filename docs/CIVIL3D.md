@@ -401,3 +401,76 @@ Contract unchanged (`e36ee390efbb5d34ee0fe86c`). No Civil 3D host was contacted;
 | shortcuts publish manager disposed on failure | B | Regression: publish_shortcuts fixture still passes |
 | editability fails closed on unreadable inputs | B | Regression: write fixtures still pass |
 | Hz.Like, settings tool names, tokens, absolute paths, set_cells duplicates, transport errors | T | none needed beyond regression |
+
+## v0.8.1: default dry_run on reads; document action=geo (2026-10-08)
+
+**Bug, reproduced live on v0.8.0:** `horizun_c3d_layouts action=list` with no `dry_run` from the user returned
+`invalid_input: Field 'dry_run' is not used by action list`. The MCP client filled the schema default.
+
+**geo API behaviour, read live (Civil 3D 2025, real georeferenced drawing, execute_csharp in query mode, transaction
+aborted, DBMOD unchanged):**
+- `Database.GeoDataObject`, `GeoLocationData` (all fields used), `TransformToLonLatAlt(Point3d)` returns X = longitude,
+  Y = latitude; the round trip `TransformFromLonLatAlt` returns the design point within 1.3e-7 m.
+- `NORTHDIRECTION` (sysvar) equals `Database.NorthDirection` and `GeoLocationData.NorthDirection`: radians.
+- `VIEWTWIST` is radians (5.2119 = 298.63 deg); `UCSXDIR`/`UCSYDIR`/`UCSORG` are `Point3d`; `WORLDUCS` is `Int16`.
+- Tiled model space: `Editor.CurrentViewportObjectId` is null; `Editor.ActiveViewportId` is the `*Active`
+  `ViewportTableRecord` (equals `Database.CurrentViewportTableRecordId`).
+- `SettingsDrawing.TransformationSettings` throws `InvalidOperationException` when `ApplyTransformSettings` is false.
+- `SettingsUnitZone.GetCoordinateSystemByCode` returns description, projection, datum, unit and category.
+
+**Live check for the deployed command** (after `scripts/install.ps1`, Claude restarted):
+1. `horizun_c3d_layouts action=list` and `horizun_c3d_entities action=query limit=5` succeed (no dry_run refusal).
+2. `horizun_c3d_entities action=query dry_run=false` is still refused (`dry_run`).
+   `horizun_c3d_feature_line action=create_from_polyline` as a dry run is no longer refused for
+   `insert_intermediate` (seen live on v0.8.0).
+   `horizun_c3d_execute_csharp` (query mode) compiles `var f = (FeatureLine)tr.GetObject(id, OpenMode.ForRead);`
+   without CS0012 (AecBaseMgd now referenced).
+3. `horizun_c3d_document action=geo` on a georeferenced drawing: geolocation present, lon/lat plausible, convergence
+   with `round_trip_error` below 1e-3, `observations` consistent with the UCS/VIEWTWIST variables; DBMOD unchanged.
+4. On a drawing with no GeoLocation: `geolocation.present=false` with the reason, `grid_convergence.value=null`.
+5. Non-active reads: open two drawings (A active, B not). `horizun_c3d_health` lists `bridge.non_active_reads`.
+   - With `target_document=B`: `document info`, `object_census`, `geo` (window parts null with reason), `query list
+     type=surface`, `surface get`, `layers list`, `entities query`, `layouts list` (`current` null) succeed, each
+     with the host message "Read from the open, NON-active drawing"; A stays the active window.
+   - `surface volumes_report` and any write (e.g. `layers create` dry run) with `target_document=B` are refused with
+     `document_mismatch` and the list of what the tool can read.
+   - B's DBMOD is unchanged afterwards (check after activating B by hand).
+6. Grading floor (fixture drawing, not a client drawing): a 4-vertex flat rectangle graded 1:1 to a surface that
+   nearly meets it on one side. `plan.floor.planar=true` with interior vertices; after apply, the check
+   "floor base interior (off-vertex points)" matches every sample, and a Civil 3D surface elevation label inside the
+   platform reads the base elevation. Re-run the original real-project case only with the owner's permission.
+   Note: if data is later added to such a TIN, the Outer boundary must remain the LAST operation of the definition.
+
+### Design: reads and writes on a non-active drawing
+- Reads: `CommandContext.Document(forWrite:false)` returns the named open drawing when `DocumentScope.AllowsNonActive`
+  (listed pair + contract effect Read). `CommandContext.Read` already locks that document and reads its own database in
+  an aborted transaction. Code that reads per-window state (GetSystemVariable, Editor, LayoutManager) must check
+  `CommandContext.IsActive(doc)`; DrawingInfo.File, layouts list and geo do.
+- Writes stay active-only. Making them work elsewhere would need, per write: `doc.LockDocument(Write, label)` of the
+  target, a temporary `HostApplicationServices.WorkingDatabase` switch restored in `finally` (many Civil 3D creation
+  APIs and styles use it), revision tracking and `undo_last` keyed per document, and live proof that the undo step
+  lands in the target's own undo stack. Not done until each write is live-verified that way.
+
+## v0.8.2: entities draw of TEXT/MTEXT no longer refused for pattern (2026-10-14)
+
+**Bug, seen live on v0.8.1 (Civil 3D 2025, client drawing):** a dry-run `horizun_c3d_entities action=draw` of one
+MTEXT (layer, height and text only) returned `invalid_input: items[0]: field 'pattern' is not used by mtext. Nothing
+ran.` The `items[]` schema declared `pattern` with `default: "SOLID"` (meant for hatch) and the MCP client filled it
+into every item. `ToolRules.WithoutDefaults` only strips top-level fields, and `pattern: null` was not an option
+because the client validates the declared type. The label was placed with a Civil 3D note label instead.
+
+**Fix:** no schema default on `pattern`; the hatch default is `CadInputs.HatchPattern` (SOLID when omitted), used by
+the plug-in for the plan, the write and the re-read. A `null`-valued item field is ignored like elsewhere. A test now
+refuses any NEW schema default below the top level of any tool (the surface `breaklines`/`boundaries` defaults
+predate it and are listed as known).
+
+**Known behaviour (seen live 2026-10-14, not a bug of the bridge):** `transform operation=rotate|scale` on a Civil 3D
+note label fails with `eNotApplicable` from `Entity.TransformBy`: Civil 3D labels do not accept that general
+transform. Change a label's position or rotation through its label properties (Civil 3D or `horizun_c3d_labels`
+where it covers it). `move` on labels was not tested.
+
+**Live check for the deployed command** (after `scripts/install.ps1`, Claude restarted):
+1. `horizun_c3d_entities action=draw` dry run with one `mtext` and one `text` item (position, text, height, layer;
+   no pattern): returns the plan with `by_type {mtext:1, text:1}`; apply and the re-read matches text and position.
+2. The same with one `hatch` item on a closed polyline and no pattern: plan and re-read report pattern `SOLID`.
+3. An `mtext` item with `pattern: "ANSI31"` is still refused by name.
