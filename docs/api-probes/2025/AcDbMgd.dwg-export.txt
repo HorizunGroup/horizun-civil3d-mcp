@@ -1,0 +1,543 @@
+# AcDbMgd.dll 25.0.0.0 (Civil 3D 2025)
+== Autodesk.AutoCAD.DatabaseServices.Database : Autodesk.AutoCAD.Runtime.RXObject
+  C (Boolean buildDefaultDrawing, Boolean noDocument)
+  C ()
+  V AbortDxfIn(Object sender, EventArgs e)
+  V AbortDxfOut(Object sender, EventArgs e)
+  V AbortSave(Object sender, EventArgs e)
+  V BeginDeepClone(Object sender, IdMappingEventArgs e)
+  V BeginDeepCloneTranslation(Object sender, IdMappingEventArgs e)
+  V BeginDxfIn(Object sender, EventArgs e)
+  V BeginDxfOut(Object sender, EventArgs e)
+  V BeginInsert(Object sender, BeginInsertEventArgs e)
+  V BeginSave(Object sender, DatabaseIOEventArgs e)
+  V BeginWblockBlock(Object sender, BeginWblockBlockEventArgs e)
+  V BeginWblockEntireDatabase(Object sender, BeginWblockEntireDatabaseEventArgs e)
+  V BeginWblockObjects(Object sender, BeginWblockObjectsEventArgs e)
+  V BeginWblockSelectedObjects(Object sender, BeginWblockSelectedObjectsEventArgs e)
+  V DatabaseConstructed(Object sender, EventArgs e)
+  V DatabaseToBeDestroyed(Object sender, EventArgs e)
+  V DeepCloneAborted(Object sender, EventArgs e)
+  V DeepCloneEnded(Object sender, EventArgs e)
+  V Disposed(Object sender, EventArgs e)
+  V DwgFileOpened(Object sender, DatabaseIOEventArgs e)
+  V DxfInComplete(Object sender, EventArgs e)
+  V DxfOutComplete(Object sender, EventArgs e)
+  V InitialDwgFileOpenComplete(Object sender, EventArgs e)
+  V InsertAborted(Object sender, EventArgs e)
+  V InsertEnded(Object sender, EventArgs e)
+  V InsertMappingAvailable(Object sender, IdMappingEventArgs e)
+  V ObjectAppended(Object sender, ObjectEventArgs e)
+  V ObjectErased(Object sender, ObjectErasedEventArgs e)
+  V ObjectModified(Object sender, ObjectEventArgs e)
+  V ObjectOpenedForModify(Object sender, ObjectEventArgs e)
+  V ObjectReappended(Object sender, ObjectEventArgs e)
+  V ObjectUnappended(Object sender, ObjectEventArgs e)
+  V PartialOpenNotice(Object sender, EventArgs e)
+  V ProxyResurrectionCompleted(Object sender, ProxyResurrectionCompletedEventArgs e)
+  V SaveComplete(Object sender, DatabaseIOEventArgs e)
+  V SystemVariableChanged(Object sender, SystemVariableChangedEventArgs e)
+  V SystemVariableWillChange(Object sender, SystemVariableChangingEventArgs e)
+  V WblockAborted(Object sender, EventArgs e)
+  V WblockEnded(Object sender, EventArgs e)
+  V WblockMappingAvailable(Object sender, IdMappingEventArgs e)
+  V WblockNotice(Object sender, WblockNoticeEventArgs e)
+  V XrefAttachAborted(Object sender, EventArgs e)
+  V XrefAttachEnded(Object sender, EventArgs e)
+  V XrefBeginAttached(Object sender, XrefBeginOperationEventArgs e)
+  V XrefBeginOtherAttached(Object sender, XrefBeginOperationEventArgs e)
+  V XrefBeginRestore(Object sender, XrefBeginOperationEventArgs e)
+  V XrefComandeered(Object sender, XrefComandeeredEventArgs e)
+  V XrefPreXrefLockFile(Object sender, XrefPreXrefLockFileEventArgs e)
+  V XrefRedirected(Object sender, XrefRedirectedEventArgs e)
+  V XrefRestoreAborted(Object sender, EventArgs e)
+  V XrefRestoreEnded(Object sender, EventArgs e)
+  V XrefSubCommandAborted(Object sender, XrefSubCommandEventArgs e)
+  V XrefSubCommandEnd(Object sender, XrefSubCommandEventArgs e)
+  V XrefSubCommandStart(Object sender, XrefVetoableSubCommandEventArgs e)
+  M Void AbortDeepClone(IdMapping idMap)
+  M ObjectId AddDBObject(DBObject appendIt)
+  M Void ApplyPartialOpenFilters(SpatialFilter spatialFilter, LayerFilter layerFilter)
+  M ObjectId AttachXref(String fileName, String blockName)
+  M Void AuditXData(AuditInfo info)
+  M Void BindXrefs(ObjectIdCollection xrefIds, Boolean insertBind)
+  M String ClassDxfName(RXClass getMyDxfName)
+  M Void CloseInput(Boolean closeFile)
+  M Int32 CountEmptyObjects(Int32 flags)
+  M Void CountHardReferences(ObjectIdCollection ids, Int32[] count)
+  M static Database DbFromId(Int64 id)
+  M Void DeepCloneObjects(ObjectIdCollection identifiers, ObjectId id, IdMapping mapping, Boolean deferTranslation)
+  M Void DetachXref(ObjectId xrefId)
+  M Void DisablePartialOpen()
+  M Void DisableUndoRecording(Boolean disable)
+  M Void DxfIn(String fileName, String logFilename)
+  M Void DxfOut(String fileName, Int32 precision, DwgVersion version)
+  M Void DxfOut(String fileName, Int32 precision, Boolean saveThumbnailImage)
+  M Void DxfOutEx(String fileName, Int32 precision, DwgVersion version, Boolean saveThumbnailImage, Int32 nCodePage)
+  M Int32 EraseEmptyObjects(Int32 flags)
+  M FieldEvaluationResult EvaluateFields(FieldEvaluationContext context, String prop)
+  M FieldEvaluationResult EvaluateFields(FieldEvaluationContext context)
+  M FieldEvaluationResult EvaluateFields()
+  M Void ForceWblockDatabaseCopy()
+  M static Database FromAcadDatabase(Object acadDatabase)
+  M static List<Database> GetAllDatabases()
+  M DimStyleTableRecord GetDimensionStyleChildData(RXClass classDescriptor)
+  M ObjectId GetDimensionStyleChildId(RXClass classDescriptor, ObjectId parentStyle)
+  M ObjectId GetDimensionStyleParentId(ObjectId childStyle)
+  M ObjectIdCollection GetDimRecentStyleList()
+  M DimStyleTableRecord GetDimstyleData()
+  M XrefGraph GetHostDwgXrefGraph(Boolean includeGhosts)
+  M DynamicMetaObject GetMetaObject(Expression parameter)
+  M LineWeight GetNearestLineWeight(Int32 weight)
+  M ObjectId GetObjectId(Boolean createIfNotFound, Handle objHandle, Int32 identifier)
+  M DwgVersion[] GetSupportedDxfOutVersions()
+  M DwgVersion[] GetSupportedSaveVersions()
+  M ObjectIdCollection GetViewports(Boolean bGetPaperspaceVports)
+  M StringCollection GetVisualStyleList()
+  M static Int64 IdFromDb(Database dataBase)
+  M ObjectId Insert(String sourceBlockName, String destinationBlockName, Database dataBase, Boolean preserveSourceDatabase)
+  M Void Insert(Matrix3d transform, Database dataBase, Boolean preserveSourceDatabase)
+  M ObjectId Insert(String blockName, Database dataBase, Boolean preserveSourceDatabase)
+  M static Boolean IsObjectNonPersistent(ObjectId id)
+  M Boolean IsValidLineWeight(Int32 weight)
+  M Void LoadLineTypeFile(String lineTypeName, String filename)
+  M Void LoadMlineStyleFile(String mlineStyleName, String fileName)
+  M static Void MarkObjectNonPersistent(ObjectId id, Boolean value)
+  M ObjectId OverlayXref(String fileName, String blockName)
+  M Void Purge(ObjectIdGraph idGraph)
+  M Void Purge(ObjectIdCollection ids)
+  M Void ReadDwgFile(IntPtr drawingFile, Boolean allowCPConversion, String password)
+  M Void ReadDwgFile(String fileName, FileOpenMode mode, Boolean allowCPConversion, String password)
+  M Void ReadDwgFile(String fileName, FileShare fileSharing, Boolean allowCPConversion, String password)
+  M Void ReclaimMemoryFromErasedObjects(ObjectIdCollection ids)
+  M Void ReloadXrefs(ObjectIdCollection xrefIds)
+  M Void ResetTimes()
+  M Void ResolveXrefs(Boolean useThreadEngine, Boolean doNewOnly)
+  M Void RestoreForwardingXrefSymbols()
+  M Void RestoreOriginalXrefSymbols()
+  M Int64 RuntimeId()
+  M Void Save()
+  M Void SaveAs(String fileName, DwgVersion version)
+  M Void SaveAs(String fileName, Boolean bBakAndRename, DwgVersion version, SecurityParameters security)
+  M Void SaveAs(String fileName, SecurityParameters security)
+  M Void SetDimstyleData(DimStyleTableRecord style)
+  M TimeZone SetTimeZoneAsUtcOffset(Double offset)
+  M Void SetWorldPaperspaceUcsBaseOrigin(Point3d origin, OrthographicView orthoView)
+  M Void SetWorldUcsBaseOrigin(Point3d origin, OrthographicView orthoView)
+  M String TimeZoneDescription(TimeZone tz)
+  M Double TimeZoneOffset(TimeZone tz)
+  M Boolean TryGetObjectId(Handle objHandle, ObjectId& id)
+  M Void UnloadXrefs(ObjectIdCollection xrefIds)
+  M Void UpdateExt(Boolean doBestFit)
+  M Database Wblock()
+  M Database Wblock(ObjectId blockId)
+  M Void Wblock(Database outputDataBase, ObjectIdCollection outObjIds, Point3d basePoint, DuplicateRecordCloning cloning)
+  M Database Wblock(ObjectIdCollection outObjIds, Point3d basePoint)
+  M Void WblockCloneObjects(ObjectIdCollection identifiers, ObjectId id, IdMapping mapping, DuplicateRecordCloning cloning, Boolean deferTranslation)
+  M Point3d WorldPaperspaceUcsBaseOrigin(OrthographicView orthoView)
+  M Point3d WorldUcsBaseOrigin(OrthographicView orthoView)
+  M Void XBindXrefs(ObjectIdCollection xrefSymbolIds, Boolean insertBind)
+  P Object AcadDatabase {get;}
+  P Boolean AllowExtendedNames {get;set;}
+  P Double Angbase {get;set;}
+  P Boolean Angdir {get;set;}
+  P Boolean AnnoAllVisible {get;set;}
+  P Boolean AnnotativeDwg {get;set;}
+  P Int32 ApproxNumObjects {get;}
+  P Int32 Attmode {get;set;}
+  P Int32 Aunits {get;set;}
+  P Int32 Auprec {get;set;}
+  P ObjectId BlockTableId {get;}
+  P ObjectId ByBlockLinetype {get;}
+  P ObjectId ByLayerLinetype {get;}
+  P Boolean CameraDisplay {get;set;}
+  P Double CameraHeight {get;set;}
+  P AnnotationScale Cannoscale {get;set;}
+  P Color Cecolor {get;set;}
+  P Double Celtscale {get;set;}
+  P ObjectId Celtype {get;set;}
+  P LineWeight Celweight {get;set;}
+  P Transparency Cetransparency {get;set;}
+  P Double Chamfera {get;set;}
+  P Double Chamferb {get;set;}
+  P Double Chamferc {get;set;}
+  P Double Chamferd {get;set;}
+  P ObjectId Clayer {get;set;}
+  P ObjectId Cmaterial {get;set;}
+  P Int32 Cmljust {get;set;}
+  P Double Cmlscale {get;set;}
+  P ObjectId CmlstyleID {get;set;}
+  P ObjectId ColorDictionaryId {get;}
+  P ObjectId ContinuousLinetype {get;}
+  P Int32 Cshadow {get;set;}
+  P ObjectId CurrentSpaceId {get;}
+  P ObjectId CurrentViewportTableRecordId {get;}
+  P ObjectId DataLinkDictionaryId {get;}
+  P DataLinkManager DataLinkManager {get;}
+  P ObjectId DetailViewStyle {get;set;}
+  P ObjectId DetailViewStyleDictionaryId {get;}
+  P Int32 DgnFrame {get;set;}
+  P Int32 Dimadec {get;set;}
+  P Boolean Dimalt {get;set;}
+  P Int32 Dimaltd {get;set;}
+  P Double Dimaltf {get;set;}
+  P Double Dimaltrnd {get;set;}
+  P Int32 Dimalttd {get;set;}
+  P Int32 Dimalttz {get;set;}
+  P Int32 Dimaltu {get;set;}
+  P Int32 Dimaltz {get;set;}
+  P String Dimapost {get;set;}
+  P Int32 Dimarcsym {get;set;}
+  P Boolean Dimaso {get;set;}
+  P Int32 DimAssoc {get;set;}
+  P Double Dimasz {get;set;}
+  P Int32 Dimatfit {get;set;}
+  P Int32 Dimaunit {get;set;}
+  P Int32 Dimazin {get;set;}
+  P ObjectId Dimblk {get;set;}
+  P ObjectId Dimblk1 {get;set;}
+  P ObjectId Dimblk2 {get;set;}
+  P Double Dimcen {get;set;}
+  P Color Dimclrd {get;set;}
+  P Color Dimclre {get;set;}
+  P Color Dimclrt {get;set;}
+  P Int32 Dimdec {get;set;}
+  P Double Dimdle {get;set;}
+  P Double Dimdli {get;set;}
+  P Char Dimdsep {get;set;}
+  P Double Dimexe {get;set;}
+  P Double Dimexo {get;set;}
+  P Int32 Dimfrac {get;set;}
+  P Double Dimfxlen {get;set;}
+  P Boolean DimfxlenOn {get;set;}
+  P Double Dimgap {get;set;}
+  P Double Dimjogang {get;set;}
+  P Int32 Dimjust {get;set;}
+  P ObjectId Dimldrblk {get;set;}
+  P Double Dimlfac {get;set;}
+  P Boolean Dimlim {get;set;}
+  P ObjectId Dimltex1 {get;set;}
+  P ObjectId Dimltex2 {get;set;}
+  P ObjectId Dimltype {get;set;}
+  P Int32 Dimlunit {get;set;}
+  P LineWeight Dimlwd {get;set;}
+  P LineWeight Dimlwe {get;set;}
+  P String Dimpost {get;set;}
+  P Double Dimrnd {get;set;}
+  P Boolean Dimsah {get;set;}
+  P Double Dimscale {get;set;}
+  P Boolean Dimsd1 {get;set;}
+  P Boolean Dimsd2 {get;set;}
+  P Boolean Dimse1 {get;set;}
+  P Boolean Dimse2 {get;set;}
+  P Boolean Dimsho {get;set;}
+  P Boolean Dimsoxd {get;set;}
+  P ObjectId Dimstyle {get;set;}
+  P ObjectId DimStyleTableId {get;}
+  P Int32 Dimtad {get;set;}
+  P Int32 Dimtdec {get;set;}
+  P Double Dimtfac {get;set;}
+  P Int32 Dimtfill {get;set;}
+  P Color Dimtfillclr {get;set;}
+  P Boolean Dimtih {get;set;}
+  P Boolean Dimtix {get;set;}
+  P Double Dimtm {get;set;}
+  P Int32 Dimtmove {get;set;}
+  P Boolean Dimtofl {get;set;}
+  P Boolean Dimtoh {get;set;}
+  P Boolean Dimtol {get;set;}
+  P Int32 Dimtolj {get;set;}
+  P Double Dimtp {get;set;}
+  P Double Dimtsz {get;set;}
+  P Double Dimtvp {get;set;}
+  P ObjectId Dimtxsty {get;set;}
+  P Double Dimtxt {get;set;}
+  P Boolean Dimtxtdirection {get;set;}
+  P Int32 Dimtzin {get;set;}
+  P Boolean Dimupt {get;set;}
+  P Int32 Dimzin {get;set;}
+  P Boolean DispSilh {get;set;}
+  P ObjectId dragvs {get;set;}
+  P Byte DrawOrderCtl {get;set;}
+  P Int32 DwfFrame {get;set;}
+  P Boolean DwgFileWasSavedByAutodeskSoftware {get;}
+  P Int32 DxEval {get;set;}
+  P Double Elevation {get;set;}
+  P EndCap EndCaps {get;set;}
+  P Point3d Extmax {get;set;}
+  P Point3d Extmin {get;set;}
+  P Double Facetres {get;set;}
+  P String Filename {get;}
+  P Double Filletrad {get;set;}
+  P Boolean Fillmode {get;set;}
+  P String FingerprintGuid {get;set;}
+  P ObjectId GeoDataObject {get;}
+  P ObjectId GroupDictionaryId {get;}
+  P Int32 HaloGap {get;set;}
+  P Handle Handseed {get;set;}
+  P Int32 HideText {get;set;}
+  P DbHomeView HomeView {get;set;}
+  P Boolean HpInherit {get;set;}
+  P Point2d HpOrigin {get;set;}
+  P String HyperlinkBase {get;set;}
+  P Int32 Indexctl {get;set;}
+  P Point3d Insbase {get;set;}
+  P UnitsValue Insunits {get;set;}
+  P Color Interferecolor {get;set;}
+  P ObjectId Interfereobjvs {get;set;}
+  P ObjectId Interferevpvs {get;set;}
+  P Int32 IntersectColor {get;set;}
+  P Int32 IntersectDisplay {get;set;}
+  P Boolean IsBeingDestroyed {get;}
+  P Boolean IsEmr {get;}
+  P Int32 Isolines {get;set;}
+  P Boolean IsPartiallyOpened {get;}
+  P JoinStyle JoinStyle {get;set;}
+  P MaintenanceReleaseVersion LastSavedAsMaintenanceVersion {get;}
+  P DwgVersion LastSavedAsVersion {get;}
+  P Double Latitude {get;set;}
+  P Int32 LayerEval {get;set;}
+  P LayerFilterTree LayerFilters {get;set;}
+  P Int32 LayerNotify {get;set;}
+  P LayerStateManager LayerStateManager {get;}
+  P ObjectId LayerTableId {get;}
+  P ObjectId LayerZero {get;}
+  P ObjectId LayoutDictionaryId {get;}
+  P Double LensLength {get;set;}
+  P Int32 LightGlyphDisplay {get;set;}
+  P Byte LightingUnits {get;set;}
+  P Boolean LightsInBlocks {get;set;}
+  P Boolean Limcheck {get;set;}
+  P Point2d Limmax {get;set;}
+  P Point2d Limmin {get;set;}
+  P ObjectId LinetypeTableId {get;}
+  P Boolean LineWeightDisplay {get;set;}
+  P Double LoftAng1 {get;set;}
+  P Double LoftAng2 {get;set;}
+  P Double LoftMag1 {get;set;}
+  P Double LoftMag2 {get;set;}
+  P Int32 LoftNormals {get;set;}
+  P Int32 LoftParam {get;set;}
+  P Double Longitude {get;set;}
+  P Double Ltscale {get;set;}
+  P Int32 Lunits {get;set;}
+  P Int32 Luprec {get;set;}
+  P Int32 MaintenanceReleaseVersion {get;}
+  P ObjectId MaterialDictionaryId {get;}
+  P Int32 Maxactvp {get;set;}
+  P MeasurementValue Measurement {get;set;}
+  P String Menu {get;}
+  P Boolean Mirrtext {get;set;}
+  P Double MLeaderscale {get;set;}
+  P ObjectId MLeaderstyle {get;set;}
+  P ObjectId MLeaderStyleDictionaryId {get;}
+  P ObjectId MLStyleDictionaryId {get;}
+  P Boolean MsLtScale {get;set;}
+  P Double MsOleScale {get;set;}
+  P ObjectId NamedObjectsDictionaryId {get;}
+  P Boolean NeedsRecovery {get;}
+  P Double NorthDirection {get;set;}
+  P Int32 NumberOfSaves {get;}
+  P ObjectContextManager ObjectContextManager {get;}
+  P Int32 ObscuredColor {get;set;}
+  P Int32 ObscuredLineType {get;set;}
+  P Boolean OleStartUp {get;set;}
+  P MaintenanceReleaseVersion OriginalFileMaintenanceVersion {get;}
+  P String OriginalFileName {get;}
+  P MaintenanceReleaseVersion OriginalFileSavedByMaintenanceVersion {get;}
+  P DwgVersion OriginalFileSavedByVersion {get;}
+  P DwgVersion OriginalFileVersion {get;}
+  P Boolean Orthomode {get;set;}
+  P ObjectId PaperSpaceVportId {get;}
+  P Int32 PdfFrame {get;set;}
+  P Int32 Pdmode {get;set;}
+  P Double Pdsize {get;set;}
+  P Double Pelevation {get;set;}
+  P Point3d Pextmax {get;set;}
+  P Point3d Pextmin {get;set;}
+  P Point3d Pinsbase {get;set;}
+  P Boolean Plimcheck {get;set;}
+  P Point2d Plimmax {get;set;}
+  P Point2d Plimmin {get;set;}
+  P Boolean PlineEllipse {get;set;}
+  P Boolean Plinegen {get;set;}
+  P Double Plinewid {get;set;}
+  P ObjectId PlotSettingsDictionaryId {get;}
+  P Boolean PlotStyleMode {get;}
+  P ObjectId PlotStyleNameDictionaryId {get;}
+  P PlotStyleDescriptor PlotStyleNameId {get;set;}
+  P String ProjectName {get;set;}
+  P Boolean Psltscale {get;set;}
+  P Double PsolHeight {get;set;}
+  P Double PsolWidth {get;set;}
+  P CoordinateSystem3d Pucs {get;set;}
+  P ObjectId PucsBase {get;set;}
+  P ObjectId Pucsname {get;set;}
+  P Point3d Pucsorg {get;}
+  P OrthographicView PucsOrthographic {get;}
+  P Vector3d Pucsxdir {get;}
+  P Vector3d Pucsydir {get;}
+  P Boolean Qtextmode {get;set;}
+  P ObjectId RegAppTableId {get;}
+  P Boolean Regenmode {get;set;}
+  P Boolean RetainOriginalThumbnailBitmap {get;set;}
+  P Int32 Saveproxygraphics {get;set;}
+  P ObjectId SectionManagerId {get;}
+  P ObjectId SectionViewStyle {get;set;}
+  P ObjectId SectionViewStyleDictionaryId {get;}
+  P SecurityParameters SecurityParameters {get;set;}
+  P Int32 Shadedge {get;set;}
+  P Int32 Shadedif {get;set;}
+  P Double ShadowPlaneLocation {get;set;}
+  P Int32 ShowHist {get;set;}
+  P Double Sketchinc {get;set;}
+  P Boolean Skpoly {get;set;}
+  P Int32 SolidHist {get;set;}
+  P Int32 SortEnts {get;set;}
+  P Boolean Splframe {get;set;}
+  P Int32 Splinesegs {get;set;}
+  P Int32 Splinetype {get;set;}
+  P Double StepSize {get;set;}
+  P Double StepsPerSec {get;set;}
+  P String StyleSheet {get;set;}
+  P DatabaseSummaryInfo SummaryInfo {get;set;}
+  P Int32 Surftab1 {get;set;}
+  P Int32 Surftab2 {get;set;}
+  P Int32 Surftype {get;set;}
+  P Int32 Surfu {get;set;}
+  P Int32 Surfv {get;set;}
+  P ObjectId Tablestyle {get;set;}
+  P ObjectId TableStyleDictionaryId {get;}
+  P DateTime Tdcreate {get;}
+  P TimeSpan Tdindwg {get;}
+  P DateTime Tducreate {get;}
+  P DateTime Tdupdate {get;}
+  P TimeSpan Tdusrtimer {get;}
+  P DateTime Tduupdate {get;}
+  P Double Textsize {get;set;}
+  P ObjectId Textstyle {get;set;}
+  P ObjectId TextStyleTableId {get;}
+  P Double Thickness {get;set;}
+  P Bitmap ThumbnailBitmap {get;set;}
+  P Boolean TileMode {get;set;}
+  P Int32 TileModeLightSynch {get;set;}
+  P TimeZone TimeZone {get;set;}
+  P Double Tracewid {get;set;}
+  P TransactionManager TransactionManager {get;}
+  P Int32 Treedepth {get;set;}
+  P Int32 TStackAlign {get;set;}
+  P Int32 TstackSize {get;set;}
+  P CoordinateSystem3d Ucs {get;set;}
+  P ObjectId UcsBase {get;set;}
+  P ObjectId Ucsname {get;set;}
+  P Point3d Ucsorg {get;}
+  P OrthographicView UcsOrthographic {get;}
+  P ObjectId UcsTableId {get;}
+  P Vector3d Ucsxdir {get;}
+  P Vector3d Ucsydir {get;}
+  P Boolean UndoRecording {get;}
+  P Int32 Unitmode {get;set;}
+  P Int32 UpdateThumbnail {get;set;}
+  P Int32 Useri1 {get;set;}
+  P Int32 Useri2 {get;set;}
+  P Int32 Useri3 {get;set;}
+  P Int32 Useri4 {get;set;}
+  P Int32 Useri5 {get;set;}
+  P Double Userr1 {get;set;}
+  P Double Userr2 {get;set;}
+  P Double Userr3 {get;set;}
+  P Double Userr4 {get;set;}
+  P Double Userr5 {get;set;}
+  P Boolean Usrtimer {get;set;}
+  P String VersionGuid {get;set;}
+  P Double ViewportScaleDefault {get;set;}
+  P ObjectId ViewportTableId {get;}
+  P ObjectId ViewTableId {get;}
+  P Boolean Visretain {get;set;}
+  P ObjectId VisualStyleDictionaryId {get;}
+  P Boolean Worldview {get;set;}
+  P Int32 XclipFrame {get;set;}
+  P ObjectId XrefBlockId {get;}
+  P Boolean XrefEditEnabled {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.FileOpenMode : System.Enum
+  E OpenForReadAndAllShare
+  E OpenForReadAndReadShare
+  E OpenForReadAndWriteNoShare
+  E OpenTryForReadShare
+  F Int32 value__
+== Autodesk.AutoCAD.DatabaseServices.DwgVersion : System.Enum
+  E AC1001
+  E AC1002
+  E AC1003
+  E AC1004
+  E AC1005
+  E AC1006
+  E AC1007
+  E AC1008
+  E AC1009
+  E AC1010
+  E AC1011
+  E AC1012
+  E AC1013
+  E AC1014
+  E AC1015
+  E AC1021
+  E AC1024
+  E AC1027
+  E AC1032
+  E AC1500
+  E AC1800
+  E AC1800a
+  E AC1To2
+  E AC1To40
+  E AC1To50
+  E AC2100a
+  E AC2400a
+  E AC2700a
+  E AC2To10
+  E AC2To20
+  E AC2To21
+  E AC2To22
+  E AC3200a
+  E Current
+  E Max
+  E MC0To0
+  E Newest
+  E Unknown
+  F Int32 value__
+== Autodesk.AutoCAD.DatabaseServices.BlockTable : Autodesk.AutoCAD.DatabaseServices.SymbolTable
+== Autodesk.AutoCAD.DatabaseServices.BlockTableRecord : Autodesk.AutoCAD.DatabaseServices.SymbolTableRecord
+  C ()
+  V BlockInsertionPoints(Object sender, BlockInsertionPointsEventArgs e)
+  F static String ModelSpace
+  F static String PaperSpace
+  M ObjectId AppendEntity(Entity entity)
+  M Void AssumeOwnershipOf(ObjectIdCollection entitiesToMove)
+  M ObjectIdCollection GetAnonymousBlockIds()
+  M ObjectIdCollection GetBlockReferenceIds(Boolean directOnly, Boolean forceValidity)
+  M BlockTableRecordEnumerator GetEnumerator()
+  M ObjectIdCollection GetErasedBlockReferenceIds()
+  M Database GetXrefDatabase(Boolean incrementUnresolved)
+  M Void UpdateAnonymousBlocks()
+  P ObjectId BlockBeginId {get;}
+  P ObjectId BlockEndId {get;}
+  P BlockScaling BlockScaling {get;set;}
+  P String Comments {get;set;}
+  P ObjectId DrawOrderTableId {get;}
+  P Boolean Explodable {get;set;}
+  P Boolean HasAttributeDefinitions {get;}
+  P Boolean HasPreviewIcon {get;}
+  P HyperLinkCollection Hyperlinks {get;}
+  P BlockTableRecord IncludingErased {get;}
+  P Boolean IsAnonymous {get;}
+  P Boolean IsDynamicBlock {get;}
+  P Boolean IsFromExternalReference {get;}
+  P Boolean IsFromOverlayReference {get;set;}
+  P Boolean IsLayout {get;}
+  P Boolean IsUnloaded {get;set;}
+  P ObjectId LayoutId {get;set;}
+  P Point3d Origin {get;set;}
+  P String PathName {get;set;}
+  P Bitmap PreviewIcon {get;set;}
+  P UnitsValue Units {get;set;}
+  P XrefStatus XrefStatus {get;}

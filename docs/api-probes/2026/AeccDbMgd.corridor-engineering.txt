@@ -1,0 +1,135 @@
+# AeccDbMgd.dll 13.8.0.1516 (Civil 3D 2026)
+== Autodesk.Civil.DatabaseServices.BaselineRegion : Autodesk.Civil.CivilWrapper<AeccDbCorridor>
+  M Double[] AdditionalStations()
+  M Void AddStation(Double rawStation, String description)
+  M Void ClearAdditionalStations()
+  M Void DeleteStation(Double rawStation)
+  M ObjectIdCollection ExportSolids(ExportCorridorSolidsParams params, Double startStation, Double endStation, Database targetDatabase)
+  M ObjectIdCollection ExportSolids(ExportCorridorSolidsParams params, Database database)
+  M OverriddenStationInfo[] GetOverriddenStations()
+  M SubassemblyTargetInfoCollection GetTargets()
+  M Void Match(BaselineRegion sourceRegion, RegionMatchType matchOption)
+  M Void Merge(BaselineRegion firstRegion, BaselineRegion lastRegion)
+  M Boolean RemoveOverriddenStation(Double station)
+  M Void SetTargets(SubassemblyTargetInfoCollection updatedTargets)
+  M Double[] SortedStations()
+  M BaselineRegion Split(Double splitStation)
+  P AppliedAssemblyCollection AppliedAssemblies {get;}
+  P AppliedAssemblySetting AppliedAssemblySetting {get;}
+  P ObjectId AssemblyId {get;set;}
+  P ObjectId CorridorId {get;}
+  P Double EndStation {get;set;}
+  P Boolean IsProcessed {get;}
+  P String Name {get;set;}
+  P Boolean NeedsProcessing {get;set;}
+  P OffsetBaselineCollection OffsetBaselines {get;}
+  P Guid RegionGUID {get;}
+  P Double StartStation {get;set;}
+== Autodesk.Civil.DatabaseServices.AppliedAssemblyCollection : Autodesk.Civil.CivilWrapper<AeccDbCorridor>
+  M IEnumerator<AppliedAssembly> GetEnumerator()
+  M AppliedAssembly GetItemAt(Double station)
+  M IEnumerator GetObjectEnumerator()
+  M Double[] Stations()
+  P ObjectId CorridorId {get;}
+  P Int32 Count {get;}
+  P AppliedAssembly Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.AppliedAssembly : Autodesk.Civil.CivilWrapper<AeccDbCorridor>
+  M AppliedSubassemblyCollection GetAppliedSubassemblies()
+  M CalculatedLinkCollection GetLinksByCode(String code)
+  M CalculatedPointCollection GetPointsByCode(String code)
+  M CalculatedShapeCollection GetShapesByCode(String code)
+  P Double AdjustedElevation {get;}
+  P ObjectId AssemblyId {get;}
+  P ObjectId CorridorId {get;}
+  P CalculatedLinkCollection Links {get;}
+  P CalculatedLinkCollection LinksByCode[String code] {get;}
+  P CalculatedPointCollection Points {get;}
+  P CalculatedPointCollection PointsByCode[String code] {get;}
+  P CalculatedShapeCollection Shapes {get;}
+  P CalculatedShapeCollection ShapesByCode[String code] {get;}
+== Autodesk.Civil.DatabaseServices.AppliedAssemblySetting : System.Object
+  P List<AdditionalAppliedAssemblyInfo> AdditionalAppliedAssemblies {get;set;}
+  P Boolean AppliedAdjacentToOffsetTargetStartEnd {get;set;}
+  P Boolean AppliedAtHorizontalGeometryPoints {get;set;}
+  P Boolean AppliedAtOffsetTargetGeometryPoints {get;set;}
+  P Boolean AppliedAtProfileGeometryPoints {get;set;}
+  P Boolean AppliedAtProfileHighLowPoints {get;set;}
+  P Boolean AppliedAtSuperelevationCriticalPoints {get;set;}
+  P CorridorAlongCurveOption CorridorAlongCurvesOption {get;set;}
+  P Double FrequencyAlongCurves {get;set;}
+  P Double FrequencyAlongProfileCurves {get;set;}
+  P Double FrequencyAlongSpirals {get;set;}
+  P Double FrequencyAlongTangents {get;set;}
+  P Double FrequencyAlongTargetCurves {get;set;}
+  P Double MODAlongCurves {get;set;}
+  P Double MODAlongTargetCurves {get;set;}
+  P CorridorAlongOffsetTargetCurveOption TargetCurveOption {get;set;}
+== Autodesk.Civil.DatabaseServices.SubassemblyTargetInfo : Autodesk.AutoCAD.Runtime.DisposableWrapper
+  P String AssemblyGroupName {get;}
+  P String DisplayName {get;}
+  P String LogicalName {get;}
+  P String SubassemblyName {get;}
+  P ObjectIdCollection TargetIds {get;set;}
+  P SubassemblyTargetToOption TargetToOption {get;set;}
+  P SubassemblyLogicalNameType TargetType {get;}
+  P Boolean UseSameSideTarget {get;set;}
+== Autodesk.Civil.DatabaseServices.SubassemblyTargetInfoCollection : Autodesk.AutoCAD.Runtime.DisposableWrapper
+  M IEnumerator<SubassemblyTargetInfo> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  P Int32 Count {get;}
+  P SubassemblyTargetInfo Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.SubassemblyTargetToOption : System.Enum
+  E Farthest
+  E Flattest
+  E Nearest
+  E Steepest
+  F Int32 value__
+== Autodesk.Civil.DatabaseServices.SubassemblyLogicalNameType : System.Enum
+  E Alignment
+  E Elevation
+  E ElevationPipe
+  E Offset
+  E OffsetPipe
+  E Profile
+  E Surface
+  F Int32 value__
+== Autodesk.Civil.DatabaseServices.CalculatedShape : Autodesk.Civil.DatabaseServices.CalculatedSubentity
+  P Double Area {get;}
+  P CalculatedLinkCollection CalculatedLinks {get;}
+  P CorridorCodeCollection CorridorCodes {get;}
+== Autodesk.Civil.DatabaseServices.CalculatedLink : Autodesk.Civil.DatabaseServices.CalculatedSubentity
+  P CalculatedPointCollection CalculatedPoints {get;}
+  P CorridorCodeCollection CorridorCodes {get;}
+  P CorridorLinkDrawOverride DrawOverride {get;}
+== Autodesk.Civil.DatabaseServices.CalculatedPoint : Autodesk.Civil.DatabaseServices.CalculatedSubentity
+  P CorridorCodeCollection CorridorCodes {get;}
+  P Vector3d NormalToBaseline {get;}
+  P Vector3d NormalToSubassembly {get;}
+  P Point3d StationOffsetElevationToBaseline {get;}
+  P Point3d StationOffsetElevationToSubassembly {get;}
+  P Point3d XYZ {get;}
+== Autodesk.Civil.DatabaseServices.CorridorCodeCollection : Autodesk.Civil.CivilWrapper<AeccDbCorridor>
+  M Void Add(String code)
+  M Void Clear()
+  M IEnumerator<String> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  P ObjectId CorridorId {get;}
+  P Int32 Count {get;}
+  P String Item[Int32 index] {get;}
+== Autodesk.Civil.DatabaseServices.AdditionalAppliedAssemblyInfo : System.Object
+  C (Double station, String description)
+  P String Description {get;set;}
+  P Double Station {get;set;}
+== Autodesk.Civil.DatabaseServices.OverriddenStationInfo : System.ValueType
+  F Boolean IsGeometryOverridden
+  F Boolean IsParameterOverridden
+  F Double Station
+== Autodesk.Civil.DatabaseServices.OffsetBaselineCollection : Autodesk.Civil.CivilWrapper<AeccDbCorridor>
+  M IEnumerator<OffsetBaseline> GetEnumerator()
+  M IEnumerator GetObjectEnumerator()
+  M String[] OffsetBaselineNames()
+  P ObjectId CorridorId {get;}
+  P Int32 Count {get;}
+  P OffsetBaseline Item[Guid offsetGUID] {get;}
+  P OffsetBaseline Item[String baselineName] {get;}
+  P OffsetBaseline Item[Int32 index] {get;}

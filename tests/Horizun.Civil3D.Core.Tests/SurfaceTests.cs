@@ -314,3 +314,38 @@ public class SurfaceAnalysisMathTests
             Assert.Null(SchemaCheck.Validate(Contract.Find("horizun_c3d_surface")!.InputSchema, A(json)));
     }
 }
+
+/// <summary>v0.9.4: add_data declares no nested defaults; the zeros and the 1.0 / true a client may still fill are
+/// the plug-in's own values when a field is omitted, so they are accepted for every kind.</summary>
+public class AddDataClientFilledValuesTests
+{
+    private static JsonObject Parse(string json) => (JsonObject)JsonNode.Parse(json)!;
+
+    [Theory]
+    [InlineData("""{"action":"add_data","name":"EG","target_document":"F.dwg","dry_run":true,"rebuild":true,"breaklines":{"handles":["1A"],"kind":"proximity","mid_ordinate":1.0,"max_distance":0,"weeding_distance":0,"weeding_angle":0}}""")]
+    [InlineData("""{"action":"add_data","name":"EG","target_document":"F.dwg","breaklines":{"handles":["1A"],"kind":"non_destructive","max_distance":0}}""")]
+    [InlineData("""{"action":"add_data","name":"EG","target_document":"F.dwg","breaklines":{"handles":["1A"],"kind":"standard","max_distance":2,"weeding_distance":0.5,"weeding_angle":4}}""")]
+    [InlineData("""{"action":"add_data","name":"EG","target_document":"F.dwg","boundaries":{"handles":["2B"],"kind":"outer","non_destructive":true,"mid_ordinate":1.0}}""")]
+    public void Client_filled_values_are_accepted(string json)
+    {
+        var args = Parse(json);
+        Assert.Null(SchemaCheck.Validate(Contract.Find("horizun_c3d_surface")!.InputSchema, args));
+        Assert.Null(SurfaceInputs.Validate(args));
+    }
+
+    [Theory]
+    [InlineData("""{"action":"add_data","name":"EG","target_document":"F.dwg","breaklines":{"handles":["1A"],"kind":"proximity","max_distance":3}}""")]
+    [InlineData("""{"action":"add_data","name":"EG","target_document":"F.dwg","breaklines":{"handles":["1A"],"kind":"non_destructive","weeding_distance":0.2}}""")]
+    public void A_real_standard_only_value_on_another_kind_is_still_refused(string json) =>
+        Assert.Contains("kind=standard only", SurfaceInputs.Validate(Parse(json)));
+
+    [Fact]
+    public void Breaklines_and_boundaries_declare_no_nested_default()
+    {
+        var props = (JsonObject)Contract.Find("horizun_c3d_surface")!.InputSchema["properties"]!;
+        foreach (var group in new[] { "breaklines", "boundaries" })
+            foreach (var (name, field) in (JsonObject)props[group]!["properties"]!)
+                Assert.False(((JsonObject)field!).ContainsKey("default"), group + "." + name + " declares a default");
+    }
+}
+

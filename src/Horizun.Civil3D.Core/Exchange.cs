@@ -17,6 +17,7 @@ namespace Horizun.Civil3D.Core;
 public sealed class LandXmlModel
 {
     public bool Metric = true;
+    public string ImperialLinearUnit = "foot";
     public string AppVersion = "";
     public List<LxSurface> Surfaces = new();
     public List<LxAlignment> Alignments = new();
@@ -36,11 +37,13 @@ public sealed record LxAlignment(string Name, string Description, double StaStar
 public static class LandXmlWriter
 {
     public const string Ns = "http://www.landxml.org/schema/LandXML-1.2";
-    private static string F(double v) => v.ToString("0.########", CultureInfo.InvariantCulture);
+    private static string F(double v) => v.ToString("R", CultureInfo.InvariantCulture);
     private static string NE(double x, double y) => F(y) + " " + F(x);
 
     public static string Write(LandXmlModel m, DateTime now)
     {
+        if (!m.Metric && m.ImperialLinearUnit is not ("foot" or "USSurveyFoot"))
+            throw new ArgumentException("Imperial linear units must identify foot or USSurveyFoot.", nameof(m));
         XNamespace ns = Ns;
         var root = new XElement(ns + "LandXML",
             new XAttribute("version", "1.2"), new XAttribute("date", now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)),
@@ -48,7 +51,7 @@ public static class LandXmlWriter
             new XElement(ns + "Units", m.Metric
                 ? new XElement(ns + "Metric", new XAttribute("areaUnit", "squareMeter"), new XAttribute("linearUnit", "meter"), new XAttribute("volumeUnit", "cubicMeter"),
                     new XAttribute("temperatureUnit", "celsius"), new XAttribute("pressureUnit", "milliBars"), new XAttribute("angularUnit", "decimal degrees"), new XAttribute("directionUnit", "decimal degrees"))
-                : new XElement(ns + "Imperial", new XAttribute("areaUnit", "squareFoot"), new XAttribute("linearUnit", "USSurveyFoot"), new XAttribute("volumeUnit", "cubicYard"),
+                : new XElement(ns + "Imperial", new XAttribute("areaUnit", "squareFoot"), new XAttribute("linearUnit", m.ImperialLinearUnit), new XAttribute("volumeUnit", "cubicYard"),
                     new XAttribute("temperatureUnit", "fahrenheit"), new XAttribute("pressureUnit", "inHG"), new XAttribute("angularUnit", "decimal degrees"), new XAttribute("directionUnit", "decimal degrees"))),
             new XElement(ns + "Application", new XAttribute("name", "Horizun Civil 3D MCP"), new XAttribute("manufacturer", "Horizun Group"), new XAttribute("version", m.AppVersion)));
         if (m.Surfaces.Count > 0)
@@ -170,7 +173,7 @@ public static class PointFile
                     case 'D': desc = string.Join(sep == ' ' ? " " : sep.ToString(), f.Skip(k)); k = format.Length; break;
                 }
             }
-            if (!ok || !double.IsFinite(x) || !double.IsFinite(y) || !double.IsFinite(z)) { if (errors.Count < 20) errors.Add("line " + (i + 1) + ": not " + format + ": " + line); continue; }
+            if (!ok || !Hz.IsFinite(x) || !Hz.IsFinite(y) || !Hz.IsFinite(z)) { if (errors.Count < 20) errors.Add("line " + (i + 1) + ": not " + format + ": " + line); continue; }
             rows.Add(new Row(num, x, y, z, desc));
         }
         return rows;

@@ -246,7 +246,7 @@ internal sealed class CleanupCommand : ICommand
         else
         {
             var path = Hz.Str(ctx.Args, "standard_path")!;
-            if (!Path.IsPathRooted(path) || !File.Exists(path)) throw new HzRefusal(ErrorCodes.NotFound, "standard_path must be an existing absolute .json path.");
+            if (!RuntimeCompat.IsPathFullyQualified(path) || !File.Exists(path)) throw new HzRefusal(ErrorCodes.NotFound, "standard_path must be an existing absolute .json path.");
             std = JsonNode.Parse(File.ReadAllText(path)) as JsonObject ?? throw new HzRefusal(ErrorCodes.InvalidInput, "The standard file is not a JSON object.");
         }
         var issues = new JsonArray();

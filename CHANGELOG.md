@@ -1,6 +1,25 @@
 # Changelog
 
-## v0.8.2 - unreleased - entities draw can create TEXT and MTEXT again (Claude Code)
+## v0.9.4 - unreleased - develop line integrated into v0.9.3
+
+Merges the `develop` line (built on v0.8.0 in parallel with v0.9.x and live-verified on Civil 3D 2025 on
+2026-10-15) into v0.9.3. Everything in v0.9.3 is kept; the entries below marked "develop" describe what arrives.
+
+- **Reads accept the defaults an MCP client fills in** (`dry_run`, `rebuild`, `max_samples`... on read actions), and
+  validation ignores every schema default the client did not really choose (`ToolRules.WithoutDefaults`).
+- **`document action=geo`** (GeoLocation, UCS, NORTHDIRECTION, VIEWTWIST, grid convergence) and **typed reads of an
+  open, non-active drawing** for the actions listed in health `bridge.non_active_reads`; writes still need the active
+  drawing. Name resolution keeps the v0.9.3 ambiguity rule: a name matching two open drawings is refused with the
+  candidates before the active drawing is returned.
+- **`grading create_geometric` keeps a planar platform flat**: a grid of interior vertices on the plane of the
+  innermost line and an off-vertex re-read of the floor (`plan.floor`).
+- **`entities draw` creates TEXT and MTEXT again** (the hatch `pattern` default no longer leaks into other items).
+- **`execute_csharp` references AecBaseMgd**, so scripts can use strongly typed Civil 3D surfaces.
+- **`surface add_data` no longer declares nested defaults** in `breaklines`/`boundaries`: `kind=proximity` (or
+  `non_destructive`) with every schema default filled by the client is accepted; the defaults are applied by the
+  validator instead.
+
+## develop v0.8.2 - 2026-10-14 (integrated in v0.9.4) - entities draw can create TEXT and MTEXT again (Claude Code)
 
 Contract `154382e00355bbc7e125cdc4` (install server and plug-in together, restart the MCP client).
 
@@ -23,7 +42,7 @@ Contract `154382e00355bbc7e125cdc4` (install server and plug-in together, restar
 - `transform rotate|scale` on a Civil 3D note label fails with `eNotApplicable` (Civil 3D labels do not accept
   `Entity.TransformBy`). `docs/CIVIL3D.md` § v0.8.2.
 
-## v0.8.1 - 2026-10-08 - reads no longer refused for a default dry_run; document action=geo (Claude Code)
+## develop v0.8.1 - 2026-10-08 (integrated in v0.9.4) - reads no longer refused for a default dry_run; document action=geo (Claude Code)
 
 Contract `3cf0d8ccf8312ee217d613c8` (install server and plug-in together, restart the MCP client).
 
@@ -85,6 +104,164 @@ Contract `3cf0d8ccf8312ee217d613c8` (install server and plug-in together, restar
 - Live findings (Civil 3D 2025): in tiled model space `Editor.CurrentViewportObjectId` is null (the active viewport is
   `ActiveViewportId`); with *Apply transformation settings* off, the `TransformationSettings` getter throws
   `InvalidOperationException`, so that block is null with the reason.
+## v0.9.3 - 2026-10-19 - Signed binaries
+
+- Binarios firmados con el certificado de HORIZUN GROUP S.A.S. (Certum). Sin cambios de codigo funcional respecto de `main`:
+  esta version empaqueta tal cual el arbol que ya incluia las correcciones de la revision multiagente de abajo.
+- La release se publica con un flujo de firma en CI: borrador -> aprobacion del environment `firma-certum` ->
+  `scripts/firmar-release.ps1` firma, regenera `SHA256SUMS` y los hashes de `runtime-release.json` dentro de los
+  paquetes, verifica y publica. Ver `RELEASING.md`.
+- Prueba `Pipe_served_by_another_process_never_receives_the_token`: la carrera de desconexion del cliente rechazado ("pipe is being closed") ya no rompe la CI; solo cambia la prueba.
+- `runtime-release.json` del repositorio ya no fija el SHA-256 del ZIP (`"sha256": null`): el ZIP firmado no existe
+  cuando se etiqueta, y el arranque del plugin lee el digest del asset publicado en GitHub. El pin de los paquetes
+  plugin/MCPB queda dentro de ellos y se reescribe al firmar.
+
+## Multi-agent review fixes (included in v0.9.3; branch `phase-10/review-fixes`)
+
+Fixes for the 32 findings that survived a five-dimension multi-agent review with adversarial verification.
+Contract unchanged (`e36ee390efbb5d34ee0fe86c`), so the server and the plug-in stay compatible with v0.9.2.
+Plug-in fixes are built (B) and not live-verified; Core/Server fixes are unit-tested (T).
+
+- **Points:** `create`/`import` with `group` no longer replace a point group's custom query (which dropped its
+  members). A group whose query is not a standard query is refused by name; `_All Points` is left untouched; the
+  plan reports the group's previous point count and verify checks that the previous members are still in it.
+  Explicitly numbered rows are added before auto-numbered rows, so a mixed request cannot collide after confirmation.
+- **Sections:** plan, read and verify transactions open sample lines, groups and sections for write with the
+  locked-layer override (Civil 3D aborts on read-only access to pending sections; a locked layer no longer turns a
+  read into a failure). `create_sample_lines` into an existing group and `create_section_views` refuse a
+  non-editable group in the plan.
+- **Wildcards:** `Hz.Like` is an iterative O(n·m) matcher; a pattern such as `*-*-*-…Z` can no longer backtrack
+  exponentially on the Civil 3D thread.
+- **Pipe security:** the pipe name has a random part published only in the user-only discovery file; the first
+  pipe instance must create the pipe (`FirstPipeInstance`; on net48 a pre-existing pipe is refused) and the bridge
+  stops listening rather than join a pipe it did not create. The server connects with identification-level
+  impersonation and sends the token only after `GetNamedPipeServerProcessId` equals the discovered acad.exe pid.
+- **Transport errors:** a request larger than the pipe limit once encoded is refused before sending; truncated or
+  malformed replies and wrapped read faults are tool-level Transport errors that keep the "check the drawing" warning.
+- **Permissions:** an `allowed_tools`/`denied_tools` entry that is not an exact tool name fails closed to `read_only`.
+- **Tokens:** spent confirmation tokens are kept until they expire, so a replay reports `already_used`, not `unknown`.
+- **Verification:** layout and pressure-network renames compare case-sensitively; an unreadable structure sump is a
+  failed check with its reason, not a skipped one; `add_data` with `rebuild=false` does not check breakline
+  elevations against the stale TIN and says so. Editability fails closed when `is_reference` or the layer cannot be read.
+- **Inputs:** absolute-path checks use `IsPathFullyQualified` (drive- or root-relative paths such as `C:x.csv` are
+  refused); `set_cells` refuses a repeated (row, col); `split_region` refuses a split station that coincides with an
+  additional applied station; `blocks define` refuses source entities from different spaces in the plan.
+- **Data shortcuts:** the publish manager is disposed on failure.
+- **Installer:** in package mode, years chosen by default skip (and report) a year the package cannot serve instead of
+  blocking the others; a running installed server is refused before files are touched; plug-in install attempts keep
+  only their log on failure and the three newest attempts; installs keep the five newest backups.
+- **CI and privacy:** GitHub actions pinned to commit SHAs; trust-registration tests run in CI; package privacy tests
+  use a generic user-profile pattern instead of a personal account name.
+- **Docs:** README surface/undo/profile text, capability review counts, regenerated capability catalog hash, STATUS
+  heading, the shipped workflow skill (`undo_last` disabled) and the Core test that now pins the contract hash.
+- **API probes:** `acdbmgd.review-fixes.txt` (Transaction.GetObject overloads, Hatch, Curve, Entity, DBText,
+  Dimension, MLeaderStyle, AttributeReference, XrefGraph, Database) and `AeccDbMgd.review-fixes-part.txt` (Part).
+- Evidence: 569 Core/Server tests; 406 runtime tests on each of net48/net8/net10; Python, plug-in bootstrap, runtime
+  build, metadata, trust and rollback script tests pass. Plug-in builds 2024/net48, 2025/net8, 2026/net8 and
+  2026/net10: 0 errors.
+
+## v0.9.2 - 2026-10-06 - Public readiness
+
+- Published v0.9.2 and made the repository public after explicit authorization and successful PR#1 CI. Four packages plus SHA256SUMS match GitHub digests. Withdrew the backed-up0.8.0 installer containing private build paths and enabled private vulnerability reporting.
+- Normalized a Windows short-path assertion in the acceptance-client test after CI exposed runner path aliases; eight local client tests and subsequent remote CI pass. Production packages remain unchanged.
+- Automatic `undo_last` is disabled before native execution after a new fixture demonstrated unreliable native attribution/restoration. The reserved action returns unsupported/committed=false; writes no longer advertise an automatic inverse. Manual Civil UNDO is available to the operator.
+- Experimental bounded native-field snapshots were removed after the failed acceptance, without retrying the committed UNDO. No restoration claim is made.
+- Native2025 engineering rerun: 78 controls pass; three automatic-UNDO request variants are refused and independent entity reads stay unchanged.
+- Added SECURITY.md, public readiness scope, complete-history/source secret scanning in CI and compiler path mapping for distributable binaries. A historical docstring false positive has a single exact exception.
+- Updated public docs to distinguish native2025/Revit2025 evidence from build-only2024/2026 compatibility. Contract is `e36ee390efbb5d34ee0fe86c`; 28 tools/163 declared actions remain.
+
+## v0.9.1 - 2026-10-05 - Native acceptance fixes (local)
+
+- DWG export uses the full native database save rather than Wblock, preserves unreferenced blocks, and verifies source identity, dirty state, GUIDs and source file hash before publishing.
+- Source hashing tolerates the native file writer's shared handle. DBMOD preservation spans the transaction commit; final live export passes 8/8 checks, followed by independent read-only elevation checks on the copy.
+- Explicit trusted-path registration backs up existing Civil profiles, confines trust to the declared plugin year directory, checks concurrent edits and rolls back failures without changing SECURELOAD. Bootstrap installation plans describe this registration before confirmation.
+- Corridor target getters respect native target type and target count constraints; unavailable fields return null with a reason. Option setters validate the native enumeration for each target type.
+- Native corridor acceptance passes 64 checks. Alignment viewport activation/restoration fixes eNotInPaperspace; 22 final checks pass and the saved viewport survives reopening. Created-surface UNDO passes independent absence checks, while generic container restoration remains explicitly partial.
+- Revit mesh placement validates the transform direction against native shared-coordinate controls. Explicit mesh tolerances account for measured Revit storage precision; repeated placement of the same package is refused.
+- Civil terrain transferred to a generated Revit 2025 project as editable Toposolid and DirectShape. Independent shared-coordinate controls and typed element rereads pass; the model was saved. DirectShape maximum measured residual: 0.002994 mm with an explicitly requested 0.01 mm tolerance.
+- 552 Core tests and 391 runtime tests in each of net48/net8/net10 pass. Civil 2024/net48, 2025/net8 and 2026/net8/net10 builds pass. Live evidence for absent Civil 2024/2026 remains pending.
+- Version remains local; no GitHub release or push.
+
+## v0.9.0 - 2026-10-05 - Engineering and interoperability (prepared)
+
+Deployment: installed release on the available Civil 2025 machine; 44 bundle +15
+server files independently verified by SHA-256. Actual installed stdio catalog,
+schema and safe_write refusals pass. Corrected RuntimeRequirements scope per
+ComponentEntry and canonical .Net AppType; packaging rejects parent scope,
+wrong-year range and wrong AppType. Installed XML backed up and hashes reread.
+Fresh Civil2025 startup publishes the bridge. Four surface writes verified;
+paired TIN comparison passes 3/3 samples with RMSE 0.02m. No GitHub publication
+or live Revit transfer.
+
+- Contract `171049b89c39afc5120da6ff`: 28 tools / 163 actions; server and add-in must be updated together.
+- Surface compare_design returns signed vertical deviations, inclusive tolerances, min/max/mean/MAE/RMSE and honest missing sample coverage.
+- Corridor target reads/writes, applied geometry, average-end-area region/code/material estimates and guarded native split/merge with full supported definition snapshots. Unsupported offsets/overrides and incompatible merges refuse.
+- Editable COGO CSV roundtrip binds units, source geometry/descriptions and point identities; apply edits uses plan/token and new-transaction verification. File export is FullWrite and excluded from DWG UNDO.
+- Alignment-linked layout viewports persist station metadata and refresh explicitly; local chord camera orientation is declared as an estimate, not native view frames.
+- Terrain package adds exact triangle OBJ. Separate authorized Revit Python receiver rehearses DirectShape with geometric reread and rollback, without enabling its channel. Helper supports -ExactMesh and old Toposolid packages.
+- 544 Core/Server tests; 383 overlapping tests per runtime; seven Python receiver guards. Synthetic engineering fixture generator added. Actual Autodesk builds/package gates recorded in handoff/SESSION_LOG.md; no live transfer or deployment inferred from tests.
+
+## v0.8.1 - 2026-10-05 - Cross-product parity review (prepared, not deployed)
+
+Current prepared contract `b5cfe04b65b9b303d9241d4b`: install server and add-in together and restart the MCP client.
+The earlier cross-product preparation used `a9b1dd257fd965fa8893bde3`; it was not published.
+The subsequent capability expansion used `60ab4ce4eb7756190fa7f4bf`, also not published.
+
+### Civil 3D 2024 and 2026 completed reference builds
+- Complete add-in builds now pass for 2024/net48 and 2026/net8/net10 against signed Autodesk references. Fixed cross-year obj source inclusion, Framework enum/Zip/encoding overloads and absent 2024 cloud-reference flags; reference surfaces remain protected.
+- Host metadata accepts official Framework 4.7 SDK references for net48 and net8 Civil libraries under net10 AutoCAD; four added selection/rejection tests bring Core/Server to 496. Offline API signatures captured for 2024 and 2026.
+- Release packages now include 2024/2025/2026 net8, with a separate 2026 net10 ZIP. No new live evidence, deployment or publication. Reference provenance and update matching limits are in docs/COMPATIBILITY.md.
+
+### Earlier runtime preparation (superseded build status)
+- Core now targets net48/net8/net10; compatible finite checks, hashing/random bytes, paths, file replacement and BCL/compiler bridges. The out-of-process server remains self-contained .NET 8.
+- Add-in platform port for 2024, explicit 2026 net8/net10 variants, CLR/year startup refusal and Framework pipe ACL constructor. These complete Autodesk builds remain pending because the owner does not have either target version installed.
+- Installer selects runtime from PE metadata without executing Autodesk code; checks year/managed versions, records host-builds.json and refuses mismatched prebuilt packages. Custom reference roots and 2024 R24.3 bundle range added. Offline probes select Framework mscorlib or matching .NET 8/10 BCL.
+- 492 Core/Server tests and 335 overlapping host-independent/production-pipe tests on each of Framework 4.8, .NET 8 and .NET 10. Contract remains b5cfe04b65b9b303d9241d4b. Plugin 2025 builds with zero warnings/errors; wrong-year/missing references are refused. CI runtime matrix added.
+- No 2024/2026 Autodesk API probes, full add-in binaries or new live evidence. Current prepared packages contain only 2025. See docs/COMPATIBILITY.md for the acceptance gates.
+
+### Terrain interoperability with Revit
+- `exchange export_revit` (FullWrite): one visible TIN -> new ZIP containing precise LandXML and provenance/units/coordinate/geometry manifest; stage and post-write byte comparison. No source save or automatic thinning.
+- `prepare-revit-terrain.ps1`: guarded extraction, hash/count/unit checks and a separate existing Revit Toposolid rollback-rehearsal request; explicit model/type/level. Included in runtime helpers and plugin/MCPB; PowerShell 5.1 CI gate added.
+- Native Revit point import retriangulates; non-convex coverage requires explicit review. Shared coordinates/rotation/elevation and resulting native surface are not established by export or parser tests.
+- LandXML doubles now use round-trip precision. 28 tools / 152 actions; 490 Core/Server tests pass; clean plugin 2025 build; 21 helper checks in PS 5.1 and 29 in PS 7 including actual Core -> helper -> local Revit reader.
+- Interoperability workflow, selected remaining engineering priorities and live fixture acceptance recorded. No actual transfer, installation or new L evidence; Revit health was blocked by a modal dialog.
+
+### External capability benchmark
+- `docs/BENCHMARK.md`: three pinned public Civil 3D MCP repositories, Dynamo, Camber, CTC CIM Project Suite and Autodesk Grading Optimization; source implementations, conditional paths and publisher claims distinguished.
+- Prioritized gaps: corridor targets/applied geometry, material QTO, pressure parts/connections, drainage, advanced roads, sheet production and as-built reports, alongside execution/UNDO recovery.
+- Reproducible analytical/live-fixture protocol recorded. No competitor installation, performance measurements, product-code changes or new live support evidence in this review.
+
+### Capability expansion
+- 28 tools, 151 declared actions; generated catalog and ordered capability gap review.
+- `horizun_c3d_capabilities`: server-side action/schema/effect/permission discovery, with explicit non-live evidence scope.
+- `horizun_c3d_audit`: read-only units/xref/reference/currency audit, preserving unreadable and unknown counts.
+- `exchange export_dwg`: whole-database copy, staging, reopening and structural comparison; no source Save As or destination overwrite.
+- Four pressure-network actions on `horizun_c3d_pipes`: paginated list/get including parts and connectivity, verified empty-network creation and rename. Catalog sizing and part placement remain pending.
+- CSV/LandXML file exports now require FullWrite, as do PDF/DWG. Fixture tests respect this policy.
+- LandXML reads Civil design units and distinguishes international/US survey foot instead of inferring units from INSUNITS.
+- 473 Core/Server tests pass and the plugin builds for 2025 with no warnings/errors. New Autodesk paths have no live evidence yet.
+
+### Fixed
+- Pipe reads enforce the byte limit even when the final block contains the newline. MCP stdin is bounded and tool-call admission is limited to 32 concurrent calls. Plugin replies are measured in UTF-8 bytes.
+- Duplicate drawing basenames/stems are refused with candidates instead of silently accepting the active drawing.
+- The C# channel no longer claims query mode is read-only or guarantees rollback of independent transactions/files. Script execution invalidates prior confirmation and undo state; results remain unverified.
+- UNDO registration excludes external effects, arbitrary scripts and empty DWG transactions. Modified objects without a prior snapshot produce an explicit incomplete-verification result after UNDO, with a warning against automatic retry.
+- PDF output is staged and checked before atomic replacement, retains the previous file as a named backup, and refuses promotion if the destination changes during plotting. CSV and LandXML also stage and validate before publishing.
+- Claude registration is prevalidated, refuses an active Claude process, detects concurrent configuration edits, writes atomically and participates in installation rollback together with the installation manifest. Restart state is recorded explicitly.
+- Installation rollback attempts every restoration and reports `rollback_incomplete` with errors if any action fails, instead of claiming restoration unconditionally.
+
+### Added
+- Codex/Claude plugin manifests, marketplace metadata and setup/project-workflow skills.
+- Windows PowerShell bootstrap exposes runtime status and a planned installation tool if the matching prebuilt runtime is missing. Installed server/add-in hashes are checked before forwarding stdio. Packaged distributions carry their release ZIP and pinned SHA-256.
+- Portable plugin ZIP and Claude Desktop MCPB builder; no SDK/Python requirement for prebuilt client installation.
+- Isolated PowerShell bootstrap/registration/package gates and CI coverage alongside the ChatGPT tunnel suite.
+- Cross-product review with Revit, Navisworks, Power BI and Microsoft Project in `docs/CROSS_PRODUCT_REVIEW.md`.
+
+### Evidence and limits
+- Initial parity gate: 445/445 Core/Server tests; capability expansion: 473/473; current interoperability block: 490/490. Plugin 2025 release build: zero errors/warnings. PowerShell 5.1/7 bootstrap tests include forwarding and capability discovery against the published server. Registration and 111 ChatGPT checks passed in the preceding block; rebuilt distribution gates and updated workflow skill validation pass.
+- Packaging default output directory now resolves after parameter binding, fixing an observed PowerShell 5.1 `-File` failure when OutDirectory was omitted. Default invocation and package gates pass.
+- Permission profiles retain Revit-compatible global scope per Windows user; owner dialogs and instructions now disclose it. The earlier classification of shared permissions as a defect is withdrawn.
+- No installation, real drawing mutation, commit, push or publication was performed. Host behavior of these fixes still requires a live fixture regression. Complete modified-object UNDO verification needs captured prior values.
 
 ## v0.8.0 - 2026-10-04 - undo_last; previous connector retired; first GitHub release (Claude Code)
 

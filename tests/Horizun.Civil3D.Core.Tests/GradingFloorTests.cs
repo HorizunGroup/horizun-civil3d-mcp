@@ -4,7 +4,7 @@ using Horizun.Civil3D.Core;
 namespace Horizun.Civil3D.Core.Tests;
 
 /// <summary>
-/// Live bug (v0.8.0, "Primavera 2"): a 4-vertex flat base graded to the surface came out TILTED in Civil 3D
+/// Live bug (v0.8.0, real project): a 4-vertex flat base graded to the surface came out TILTED in Civil 3D
 /// (389 of 2153 base samples at 42.50, the rest down to 40.51) because no TIN vertex lay inside the base and the
 /// daylight almost touched it. The floor fill puts vertices on the base plane and re-reads off-vertex points.
 /// </summary>

@@ -1,0 +1,1412 @@
+# AcDbMgd.dll 25.1.0.0 (Civil 3D 2026)
+== Autodesk.AutoCAD.Colors.Color : Autodesk.AutoCAD.Runtime.DisposableWrapper
+  C ()
+  M Void Audit(AuditInfo auditInfo)
+  M Object Clone()
+  M Int32 CompareTo(Object obj)
+  M static Color DwgIn(DwgFiler inputFiler)
+  M Void DwgOut(DwgFiler outputFiler)
+  M static Color DxfIn(DxfFiler inputFiler, Int32 groupCodeOffset)
+  M Void DxfOut(DxfFiler outputFiler, Int32 groupCodeOffset)
+  M Boolean Equals(Object obj)
+  M static Color FromColor(Color value)
+  M static Color FromColor(Color value)
+  M static Color FromColorIndex(ColorMethod colorMethod, Int16 colorIndex)
+  M static Color FromDictionaryName(String name)
+  M static Color FromEntityColor(EntityColor eclr)
+  M static Color FromNames(String colorName, String bookName)
+  M static Color FromRgb(Byte red, Byte green, Byte blue)
+  M static Color GetColorValue(Int16 colorIndex, Color backgroundColor)
+  M Int32 GetHashCode()
+  M String ToString()
+  M String ToString(IFormatProvider provider)
+  P Byte Blue {get;}
+  P String BookName {get;}
+  P Int16 ColorIndex {get;}
+  P ColorMethod ColorMethod {get;}
+  P String ColorName {get;}
+  P String ColorNameForDisplay {get;}
+  P Color ColorValue {get;}
+  P String Description {get;}
+  P String DictionaryKey {get;}
+  P Int32 DictionaryKeyLength {get;}
+  P EntityColor EntityColor {get;}
+  P String Explanation {get;}
+  P Byte Green {get;}
+  P Boolean HasBookName {get;}
+  P Boolean HasColorName {get;}
+  P Boolean IsByAci {get;}
+  P Boolean IsByBlock {get;}
+  P Boolean IsByColor {get;}
+  P Boolean IsByLayer {get;}
+  P Boolean IsByPen {get;}
+  P Boolean IsForeground {get;}
+  P Boolean IsNone {get;}
+  P Int16 PenIndex {get;}
+  P Byte Red {get;}
+== Autodesk.AutoCAD.DatabaseServices.AlignedDimension : Autodesk.AutoCAD.DatabaseServices.Dimension
+  C (Point3d line1Point, Point3d line2Point, Point3d dimensionLinePoint, String dimensionText, ObjectId dimensionStyle)
+  C ()
+  P Point3d DimLinePoint {get;set;}
+  P Double Oblique {get;set;}
+  P Point3d XLine1Point {get;set;}
+  P Point3d XLine2Point {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.AnnotationScale : Autodesk.AutoCAD.DatabaseServices.ObjectContext
+  C ()
+  P String CollectionName {get;}
+  P Double DrawingUnits {get;set;}
+  P Boolean IsTemporaryScale {get;}
+  P String Name {get;set;}
+  P Double PaperUnits {get;set;}
+  P Double Scale {get;}
+  P IntPtr UniqueIdentifier {get;}
+== Autodesk.AutoCAD.DatabaseServices.BlockTable : Autodesk.AutoCAD.DatabaseServices.SymbolTable
+== Autodesk.AutoCAD.DatabaseServices.BlockTableRecord : Autodesk.AutoCAD.DatabaseServices.SymbolTableRecord
+  C ()
+  V BlockInsertionPoints(Object sender, BlockInsertionPointsEventArgs e)
+  F static String ModelSpace
+  F static String PaperSpace
+  M ObjectId AppendEntity(Entity entity)
+  M Void AssumeOwnershipOf(ObjectIdCollection entitiesToMove)
+  M ObjectIdCollection GetAnonymousBlockIds()
+  M ObjectIdCollection GetBlockReferenceIds(Boolean directOnly, Boolean forceValidity)
+  M BlockTableRecordEnumerator GetEnumerator()
+  M ObjectIdCollection GetErasedBlockReferenceIds()
+  M Database GetXrefDatabase(Boolean incrementUnresolved)
+  M Void UpdateAnonymousBlocks()
+  P ObjectId BlockBeginId {get;}
+  P ObjectId BlockEndId {get;}
+  P BlockScaling BlockScaling {get;set;}
+  P String Comments {get;set;}
+  P ObjectId DrawOrderTableId {get;}
+  P Boolean Explodable {get;set;}
+  P Boolean HasAttributeDefinitions {get;}
+  P Boolean HasPreviewIcon {get;}
+  P HyperLinkCollection Hyperlinks {get;}
+  P BlockTableRecord IncludingErased {get;}
+  P Boolean IsAnonymous {get;}
+  P Boolean IsDynamicBlock {get;}
+  P Boolean IsFromExternalReference {get;}
+  P Boolean IsFromOverlayReference {get;set;}
+  P Boolean IsLayout {get;}
+  P Boolean IsUnloaded {get;set;}
+  P ObjectId LayoutId {get;set;}
+  P Point3d Origin {get;set;}
+  P String PathName {get;set;}
+  P Bitmap PreviewIcon {get;set;}
+  P UnitsValue Units {get;set;}
+  P XrefStatus XrefStatus {get;}
+== Autodesk.AutoCAD.DatabaseServices.Database : Autodesk.AutoCAD.Runtime.RXObject
+  C (Boolean buildDefaultDrawing, Boolean noDocument)
+  C ()
+  V AbortDxfIn(Object sender, EventArgs e)
+  V AbortDxfOut(Object sender, EventArgs e)
+  V AbortSave(Object sender, EventArgs e)
+  V BeginDeepClone(Object sender, IdMappingEventArgs e)
+  V BeginDeepCloneTranslation(Object sender, IdMappingEventArgs e)
+  V BeginDeepCloning(Object sender, IdMappingEventArgs e)
+  V BeginDxfIn(Object sender, EventArgs e)
+  V BeginDxfOut(Object sender, EventArgs e)
+  V BeginInsert(Object sender, BeginInsertEventArgs e)
+  V BeginSave(Object sender, DatabaseIOEventArgs e)
+  V BeginWblockBlock(Object sender, BeginWblockBlockEventArgs e)
+  V BeginWblockEntireDatabase(Object sender, BeginWblockEntireDatabaseEventArgs e)
+  V BeginWblockObjects(Object sender, BeginWblockObjectsEventArgs e)
+  V BeginWblockSelectedObjects(Object sender, BeginWblockSelectedObjectsEventArgs e)
+  V DatabaseConstructed(Object sender, EventArgs e)
+  V DatabaseToBeDestroyed(Object sender, EventArgs e)
+  V DeepCloneAborted(Object sender, EventArgs e)
+  V DeepCloneEnded(Object sender, EventArgs e)
+  V Disposed(Object sender, EventArgs e)
+  V DwgFileOpened(Object sender, DatabaseIOEventArgs e)
+  V DxfInComplete(Object sender, EventArgs e)
+  V DxfOutComplete(Object sender, EventArgs e)
+  V InitialDwgFileOpenComplete(Object sender, EventArgs e)
+  V InsertAborted(Object sender, EventArgs e)
+  V InsertEnded(Object sender, EventArgs e)
+  V InsertMappingAvailable(Object sender, IdMappingEventArgs e)
+  V ObjectAppended(Object sender, ObjectEventArgs e)
+  V ObjectErased(Object sender, ObjectErasedEventArgs e)
+  V ObjectModified(Object sender, ObjectEventArgs e)
+  V ObjectOpenedForModify(Object sender, ObjectEventArgs e)
+  V ObjectReappended(Object sender, ObjectEventArgs e)
+  V ObjectUnappended(Object sender, ObjectEventArgs e)
+  V PartialOpenNotice(Object sender, EventArgs e)
+  V ProxyResurrectionCompleted(Object sender, ProxyResurrectionCompletedEventArgs e)
+  V SaveComplete(Object sender, DatabaseIOEventArgs e)
+  V SystemVariableChanged(Object sender, SystemVariableChangedEventArgs e)
+  V SystemVariableWillChange(Object sender, SystemVariableChangingEventArgs e)
+  V WblockAborted(Object sender, EventArgs e)
+  V WblockEnded(Object sender, EventArgs e)
+  V WblockMappingAvailable(Object sender, IdMappingEventArgs e)
+  V WblockNotice(Object sender, WblockNoticeEventArgs e)
+  V XrefAttachAborted(Object sender, EventArgs e)
+  V XrefAttachEnded(Object sender, EventArgs e)
+  V XrefBeginAttached(Object sender, XrefBeginOperationEventArgs e)
+  V XrefBeginOtherAttached(Object sender, XrefBeginOperationEventArgs e)
+  V XrefBeginRestore(Object sender, XrefBeginOperationEventArgs e)
+  V XrefComandeered(Object sender, XrefComandeeredEventArgs e)
+  V XrefPreXrefLockFile(Object sender, XrefPreXrefLockFileEventArgs e)
+  V XrefRedirected(Object sender, XrefRedirectedEventArgs e)
+  V XrefRestoreAborted(Object sender, EventArgs e)
+  V XrefRestoreEnded(Object sender, EventArgs e)
+  V XrefSubCommandAborted(Object sender, XrefSubCommandEventArgs e)
+  V XrefSubCommandEnd(Object sender, XrefSubCommandEventArgs e)
+  V XrefSubCommandStart(Object sender, XrefVetoableSubCommandEventArgs e)
+  M Void AbortDeepClone(IdMapping idMap)
+  M ObjectId AddDBObject(DBObject appendIt)
+  M Void ApplyPartialOpenFilters(SpatialFilter spatialFilter, LayerFilter layerFilter)
+  M ObjectId AttachXref(String fileName, String blockName)
+  M Void AuditXData(AuditInfo info)
+  M Void BindXrefs(ObjectIdCollection xrefIds, Boolean insertBind)
+  M String ClassDxfName(RXClass getMyDxfName)
+  M Void CloseInput(Boolean closeFile)
+  M Int32 CountEmptyObjects(Int32 flags)
+  M Void CountHardReferences(ObjectIdCollection ids, Int32[] count)
+  M static Database DbFromId(Int64 id)
+  M Void DeepCloneObjects(ObjectIdCollection identifiers, ObjectId id, IdMapping mapping, Boolean deferTranslation)
+  M Void DetachXref(ObjectId xrefId)
+  M Void DisablePartialOpen()
+  M Void DisableUndoRecording(Boolean disable)
+  M Void DxfIn(String fileName, String logFilename)
+  M Void DxfOut(String fileName, Int32 precision, DwgVersion version)
+  M Void DxfOut(String fileName, Int32 precision, Boolean saveThumbnailImage)
+  M Void DxfOutEx(String fileName, Int32 precision, DwgVersion version, Boolean saveThumbnailImage, Int32 nCodePage)
+  M Int32 EraseEmptyObjects(Int32 flags)
+  M FieldEvaluationResult EvaluateFields(FieldEvaluationContext context, String prop)
+  M FieldEvaluationResult EvaluateFields(FieldEvaluationContext context)
+  M FieldEvaluationResult EvaluateFields()
+  M Void ForceWblockDatabaseCopy()
+  M static Database FromAcadDatabase(Object acadDatabase)
+  M static List<Database> GetAllDatabases()
+  M DimStyleTableRecord GetDimensionStyleChildData(RXClass classDescriptor)
+  M ObjectId GetDimensionStyleChildId(RXClass classDescriptor, ObjectId parentStyle)
+  M ObjectId GetDimensionStyleParentId(ObjectId childStyle)
+  M ObjectIdCollection GetDimRecentStyleList()
+  M DimStyleTableRecord GetDimstyleData()
+  M XrefGraph GetHostDwgXrefGraph(Boolean includeGhosts)
+  M DynamicMetaObject GetMetaObject(Expression parameter)
+  M LineWeight GetNearestLineWeight(Int32 weight)
+  M ObjectId GetObjectId(Boolean createIfNotFound, Handle objHandle, Int32 identifier)
+  M DwgVersion[] GetSupportedDxfOutVersions()
+  M DwgVersion[] GetSupportedSaveVersions()
+  M ObjectIdCollection GetViewports(Boolean bGetPaperspaceVports)
+  M StringCollection GetVisualStyleList()
+  M static Int64 IdFromDb(Database dataBase)
+  M ObjectId Insert(String sourceBlockName, String destinationBlockName, Database dataBase, Boolean preserveSourceDatabase)
+  M Void Insert(Matrix3d transform, Database dataBase, Boolean preserveSourceDatabase)
+  M ObjectId Insert(String blockName, Database dataBase, Boolean preserveSourceDatabase)
+  M static Boolean IsObjectNonPersistent(ObjectId id)
+  M Boolean IsValidLineWeight(Int32 weight)
+  M Void LoadLineTypeFile(String lineTypeName, String filename)
+  M Void LoadMlineStyleFile(String mlineStyleName, String fileName)
+  M static Void MarkObjectNonPersistent(ObjectId id, Boolean value)
+  M ObjectId OverlayXref(String fileName, String blockName)
+  M Void Purge(ObjectIdGraph idGraph)
+  M Void Purge(ObjectIdCollection ids)
+  M Void ReadDwgFile(IntPtr drawingFile, Boolean allowCPConversion, String password)
+  M Void ReadDwgFile(String fileName, FileOpenMode mode, Boolean allowCPConversion, String password)
+  M Void ReadDwgFile(String fileName, FileShare fileSharing, Boolean allowCPConversion, String password)
+  M Void ReclaimMemoryFromErasedObjects(ObjectIdCollection ids)
+  M Void ReloadXrefs(ObjectIdCollection xrefIds)
+  M Void ResetTimes()
+  M Void ResolveXrefs(Boolean useThreadEngine, Boolean doNewOnly)
+  M Void RestoreForwardingXrefSymbols()
+  M Void RestoreOriginalXrefSymbols()
+  M Int64 RuntimeId()
+  M Void Save()
+  M Void SaveAs(String fileName, DwgVersion version)
+  M Void SaveAs(String fileName, Boolean bBakAndRename, DwgVersion version, SecurityParameters security)
+  M Void SaveAs(String fileName, SecurityParameters security)
+  M Void SetDimstyleData(DimStyleTableRecord style)
+  M TimeZone SetTimeZoneAsUtcOffset(Double offset)
+  M Void SetWorldPaperspaceUcsBaseOrigin(Point3d origin, OrthographicView orthoView)
+  M Void SetWorldUcsBaseOrigin(Point3d origin, OrthographicView orthoView)
+  M String TimeZoneDescription(TimeZone tz)
+  M Double TimeZoneOffset(TimeZone tz)
+  M Boolean TryGetObjectId(Handle objHandle, ObjectId& id)
+  M Void UnloadXrefs(ObjectIdCollection xrefIds)
+  M Void UpdateExt(Boolean doBestFit)
+  M Database Wblock()
+  M Database Wblock(ObjectId blockId)
+  M Void Wblock(Database outputDataBase, ObjectIdCollection outObjIds, Point3d basePoint, DuplicateRecordCloning cloning)
+  M Database Wblock(ObjectIdCollection outObjIds, Point3d basePoint)
+  M Void WblockCloneObjects(ObjectIdCollection identifiers, ObjectId id, IdMapping mapping, DuplicateRecordCloning cloning, Boolean deferTranslation)
+  M Point3d WorldPaperspaceUcsBaseOrigin(OrthographicView orthoView)
+  M Point3d WorldUcsBaseOrigin(OrthographicView orthoView)
+  M Void XBindXrefs(ObjectIdCollection xrefSymbolIds, Boolean insertBind)
+  P Object AcadDatabase {get;}
+  P Boolean AllowExtendedNames {get;set;}
+  P Double Angbase {get;set;}
+  P Boolean Angdir {get;set;}
+  P Boolean AnnoAllVisible {get;set;}
+  P Boolean AnnotativeDwg {get;set;}
+  P Int32 ApproxNumObjects {get;}
+  P Int32 Attmode {get;set;}
+  P Int32 Aunits {get;set;}
+  P Int32 Auprec {get;set;}
+  P ObjectId BlockTableId {get;}
+  P ObjectId ByBlockLinetype {get;}
+  P ObjectId ByLayerLinetype {get;}
+  P Boolean CameraDisplay {get;set;}
+  P Double CameraHeight {get;set;}
+  P AnnotationScale Cannoscale {get;set;}
+  P Color Cecolor {get;set;}
+  P Double Celtscale {get;set;}
+  P ObjectId Celtype {get;set;}
+  P LineWeight Celweight {get;set;}
+  P Transparency Cetransparency {get;set;}
+  P Double Chamfera {get;set;}
+  P Double Chamferb {get;set;}
+  P Double Chamferc {get;set;}
+  P Double Chamferd {get;set;}
+  P ObjectId Clayer {get;set;}
+  P ObjectId Cmaterial {get;set;}
+  P Int32 Cmljust {get;set;}
+  P Double Cmlscale {get;set;}
+  P ObjectId CmlstyleID {get;set;}
+  P ObjectId ColorDictionaryId {get;}
+  P ObjectId ContinuousLinetype {get;}
+  P Int32 Cshadow {get;set;}
+  P ObjectId CurrentSpaceId {get;}
+  P ObjectId CurrentViewportTableRecordId {get;}
+  P ObjectId DataLinkDictionaryId {get;}
+  P DataLinkManager DataLinkManager {get;}
+  P ObjectId DetailViewStyle {get;set;}
+  P ObjectId DetailViewStyleDictionaryId {get;}
+  P Int32 DgnFrame {get;set;}
+  P Int32 Dimadec {get;set;}
+  P Boolean Dimalt {get;set;}
+  P Int32 Dimaltd {get;set;}
+  P Double Dimaltf {get;set;}
+  P Double Dimaltrnd {get;set;}
+  P Int32 Dimalttd {get;set;}
+  P Int32 Dimalttz {get;set;}
+  P Int32 Dimaltu {get;set;}
+  P Int32 Dimaltz {get;set;}
+  P String Dimapost {get;set;}
+  P Int32 Dimarcsym {get;set;}
+  P Boolean Dimaso {get;set;}
+  P Int32 DimAssoc {get;set;}
+  P Double Dimasz {get;set;}
+  P Int32 Dimatfit {get;set;}
+  P Int32 Dimaunit {get;set;}
+  P Int32 Dimazin {get;set;}
+  P ObjectId Dimblk {get;set;}
+  P ObjectId Dimblk1 {get;set;}
+  P ObjectId Dimblk2 {get;set;}
+  P Double Dimcen {get;set;}
+  P Color Dimclrd {get;set;}
+  P Color Dimclre {get;set;}
+  P Color Dimclrt {get;set;}
+  P Int32 Dimdec {get;set;}
+  P Double Dimdle {get;set;}
+  P Double Dimdli {get;set;}
+  P Char Dimdsep {get;set;}
+  P Double Dimexe {get;set;}
+  P Double Dimexo {get;set;}
+  P Int32 Dimfrac {get;set;}
+  P Double Dimfxlen {get;set;}
+  P Boolean DimfxlenOn {get;set;}
+  P Double Dimgap {get;set;}
+  P Double Dimjogang {get;set;}
+  P Int32 Dimjust {get;set;}
+  P ObjectId Dimldrblk {get;set;}
+  P Double Dimlfac {get;set;}
+  P Boolean Dimlim {get;set;}
+  P ObjectId Dimltex1 {get;set;}
+  P ObjectId Dimltex2 {get;set;}
+  P ObjectId Dimltype {get;set;}
+  P Int32 Dimlunit {get;set;}
+  P LineWeight Dimlwd {get;set;}
+  P LineWeight Dimlwe {get;set;}
+  P String Dimpost {get;set;}
+  P Double Dimrnd {get;set;}
+  P Boolean Dimsah {get;set;}
+  P Double Dimscale {get;set;}
+  P Boolean Dimsd1 {get;set;}
+  P Boolean Dimsd2 {get;set;}
+  P Boolean Dimse1 {get;set;}
+  P Boolean Dimse2 {get;set;}
+  P Boolean Dimsho {get;set;}
+  P Boolean Dimsoxd {get;set;}
+  P ObjectId Dimstyle {get;set;}
+  P ObjectId DimStyleTableId {get;}
+  P Int32 Dimtad {get;set;}
+  P Int32 Dimtdec {get;set;}
+  P Double Dimtfac {get;set;}
+  P Int32 Dimtfill {get;set;}
+  P Color Dimtfillclr {get;set;}
+  P Boolean Dimtih {get;set;}
+  P Boolean Dimtix {get;set;}
+  P Double Dimtm {get;set;}
+  P Int32 Dimtmove {get;set;}
+  P Boolean Dimtofl {get;set;}
+  P Boolean Dimtoh {get;set;}
+  P Boolean Dimtol {get;set;}
+  P Int32 Dimtolj {get;set;}
+  P Double Dimtp {get;set;}
+  P Double Dimtsz {get;set;}
+  P Double Dimtvp {get;set;}
+  P ObjectId Dimtxsty {get;set;}
+  P Double Dimtxt {get;set;}
+  P Boolean Dimtxtdirection {get;set;}
+  P Int32 Dimtzin {get;set;}
+  P Boolean Dimupt {get;set;}
+  P Int32 Dimzin {get;set;}
+  P Boolean DispSilh {get;set;}
+  P ObjectId dragvs {get;set;}
+  P Byte DrawOrderCtl {get;set;}
+  P Int32 DwfFrame {get;set;}
+  P Boolean DwgFileWasSavedByAutodeskSoftware {get;}
+  P Int32 DxEval {get;set;}
+  P Double Elevation {get;set;}
+  P EndCap EndCaps {get;set;}
+  P Point3d Extmax {get;set;}
+  P Point3d Extmin {get;set;}
+  P Double Facetres {get;set;}
+  P String Filename {get;}
+  P Double Filletrad {get;set;}
+  P Boolean Fillmode {get;set;}
+  P String FingerprintGuid {get;set;}
+  P ObjectId GeoDataObject {get;}
+  P ObjectId GroupDictionaryId {get;}
+  P Int32 HaloGap {get;set;}
+  P Handle Handseed {get;set;}
+  P Int32 HideText {get;set;}
+  P DbHomeView HomeView {get;set;}
+  P Boolean HpInherit {get;set;}
+  P Point2d HpOrigin {get;set;}
+  P String HyperlinkBase {get;set;}
+  P Int32 Indexctl {get;set;}
+  P Point3d Insbase {get;set;}
+  P UnitsValue Insunits {get;set;}
+  P Color Interferecolor {get;set;}
+  P ObjectId Interfereobjvs {get;set;}
+  P ObjectId Interferevpvs {get;set;}
+  P Int32 IntersectColor {get;set;}
+  P Int32 IntersectDisplay {get;set;}
+  P Boolean IsBeingDestroyed {get;}
+  P Boolean IsEmr {get;}
+  P Int32 Isolines {get;set;}
+  P Boolean IsPartiallyOpened {get;}
+  P JoinStyle JoinStyle {get;set;}
+  P MaintenanceReleaseVersion LastSavedAsMaintenanceVersion {get;}
+  P DwgVersion LastSavedAsVersion {get;}
+  P Double Latitude {get;set;}
+  P Int32 LayerEval {get;set;}
+  P LayerFilterTree LayerFilters {get;set;}
+  P Int32 LayerNotify {get;set;}
+  P LayerStateManager LayerStateManager {get;}
+  P ObjectId LayerTableId {get;}
+  P ObjectId LayerZero {get;}
+  P ObjectId LayoutDictionaryId {get;}
+  P Double LensLength {get;set;}
+  P Int32 LightGlyphDisplay {get;set;}
+  P Byte LightingUnits {get;set;}
+  P Boolean LightsInBlocks {get;set;}
+  P Boolean Limcheck {get;set;}
+  P Point2d Limmax {get;set;}
+  P Point2d Limmin {get;set;}
+  P ObjectId LinetypeTableId {get;}
+  P Boolean LineWeightDisplay {get;set;}
+  P Double LoftAng1 {get;set;}
+  P Double LoftAng2 {get;set;}
+  P Double LoftMag1 {get;set;}
+  P Double LoftMag2 {get;set;}
+  P Int32 LoftNormals {get;set;}
+  P Int32 LoftParam {get;set;}
+  P Double Longitude {get;set;}
+  P Double Ltscale {get;set;}
+  P Int32 Lunits {get;set;}
+  P Int32 Luprec {get;set;}
+  P Int32 MaintenanceReleaseVersion {get;}
+  P ObjectId MaterialDictionaryId {get;}
+  P Int32 Maxactvp {get;set;}
+  P MeasurementValue Measurement {get;set;}
+  P String Menu {get;}
+  P Boolean Mirrtext {get;set;}
+  P Double MLeaderscale {get;set;}
+  P ObjectId MLeaderstyle {get;set;}
+  P ObjectId MLeaderStyleDictionaryId {get;}
+  P ObjectId MLStyleDictionaryId {get;}
+  P Boolean MsLtScale {get;set;}
+  P Double MsOleScale {get;set;}
+  P ObjectId NamedObjectsDictionaryId {get;}
+  P Boolean NeedsRecovery {get;}
+  P Double NorthDirection {get;set;}
+  P Int32 NumberOfSaves {get;}
+  P ObjectContextManager ObjectContextManager {get;}
+  P Int32 ObscuredColor {get;set;}
+  P Int32 ObscuredLineType {get;set;}
+  P Boolean OleStartUp {get;set;}
+  P MaintenanceReleaseVersion OriginalFileMaintenanceVersion {get;}
+  P String OriginalFileName {get;}
+  P MaintenanceReleaseVersion OriginalFileSavedByMaintenanceVersion {get;}
+  P DwgVersion OriginalFileSavedByVersion {get;}
+  P DwgVersion OriginalFileVersion {get;}
+  P Boolean Orthomode {get;set;}
+  P ObjectId PaperSpaceVportId {get;}
+  P Int32 PdfFrame {get;set;}
+  P Int32 Pdmode {get;set;}
+  P Double Pdsize {get;set;}
+  P Double Pelevation {get;set;}
+  P Point3d Pextmax {get;set;}
+  P Point3d Pextmin {get;set;}
+  P Point3d Pinsbase {get;set;}
+  P Boolean Plimcheck {get;set;}
+  P Point2d Plimmax {get;set;}
+  P Point2d Plimmin {get;set;}
+  P Boolean PlineEllipse {get;set;}
+  P Boolean Plinegen {get;set;}
+  P Double Plinewid {get;set;}
+  P ObjectId PlotSettingsDictionaryId {get;}
+  P Boolean PlotStyleMode {get;}
+  P ObjectId PlotStyleNameDictionaryId {get;}
+  P PlotStyleDescriptor PlotStyleNameId {get;set;}
+  P String ProjectName {get;set;}
+  P Boolean Psltscale {get;set;}
+  P Double PsolHeight {get;set;}
+  P Double PsolWidth {get;set;}
+  P CoordinateSystem3d Pucs {get;set;}
+  P ObjectId PucsBase {get;set;}
+  P ObjectId Pucsname {get;set;}
+  P Point3d Pucsorg {get;}
+  P OrthographicView PucsOrthographic {get;}
+  P Vector3d Pucsxdir {get;}
+  P Vector3d Pucsydir {get;}
+  P Boolean Qtextmode {get;set;}
+  P ObjectId RegAppTableId {get;}
+  P Boolean Regenmode {get;set;}
+  P Boolean RetainOriginalThumbnailBitmap {get;set;}
+  P Int32 Saveproxygraphics {get;set;}
+  P ObjectId SectionManagerId {get;}
+  P ObjectId SectionViewStyle {get;set;}
+  P ObjectId SectionViewStyleDictionaryId {get;}
+  P SecurityParameters SecurityParameters {get;set;}
+  P Int32 Shadedge {get;set;}
+  P Int32 Shadedif {get;set;}
+  P Double ShadowPlaneLocation {get;set;}
+  P Int32 ShowHist {get;set;}
+  P Double Sketchinc {get;set;}
+  P Boolean Skpoly {get;set;}
+  P Int32 SolidHist {get;set;}
+  P Int32 SortEnts {get;set;}
+  P Boolean Splframe {get;set;}
+  P Int32 Splinesegs {get;set;}
+  P Int32 Splinetype {get;set;}
+  P Double StepSize {get;set;}
+  P Double StepsPerSec {get;set;}
+  P String StyleSheet {get;set;}
+  P DatabaseSummaryInfo SummaryInfo {get;set;}
+  P Int32 Surftab1 {get;set;}
+  P Int32 Surftab2 {get;set;}
+  P Int32 Surftype {get;set;}
+  P Int32 Surfu {get;set;}
+  P Int32 Surfv {get;set;}
+  P ObjectId Tablestyle {get;set;}
+  P ObjectId TableStyleDictionaryId {get;}
+  P DateTime Tdcreate {get;}
+  P TimeSpan Tdindwg {get;}
+  P DateTime Tducreate {get;}
+  P DateTime Tdupdate {get;}
+  P TimeSpan Tdusrtimer {get;}
+  P DateTime Tduupdate {get;}
+  P Double Textsize {get;set;}
+  P ObjectId Textstyle {get;set;}
+  P ObjectId TextStyleTableId {get;}
+  P Double Thickness {get;set;}
+  P Bitmap ThumbnailBitmap {get;set;}
+  P Boolean TileMode {get;set;}
+  P Int32 TileModeLightSynch {get;set;}
+  P TimeZone TimeZone {get;set;}
+  P Double Tracewid {get;set;}
+  P TransactionManager TransactionManager {get;}
+  P Int32 Treedepth {get;set;}
+  P Int32 TStackAlign {get;set;}
+  P Int32 TstackSize {get;set;}
+  P CoordinateSystem3d Ucs {get;set;}
+  P ObjectId UcsBase {get;set;}
+  P ObjectId Ucsname {get;set;}
+  P Point3d Ucsorg {get;}
+  P OrthographicView UcsOrthographic {get;}
+  P ObjectId UcsTableId {get;}
+  P Vector3d Ucsxdir {get;}
+  P Vector3d Ucsydir {get;}
+  P Boolean UndoRecording {get;}
+  P Int32 Unitmode {get;set;}
+  P Int32 UpdateThumbnail {get;set;}
+  P Int32 Useri1 {get;set;}
+  P Int32 Useri2 {get;set;}
+  P Int32 Useri3 {get;set;}
+  P Int32 Useri4 {get;set;}
+  P Int32 Useri5 {get;set;}
+  P Double Userr1 {get;set;}
+  P Double Userr2 {get;set;}
+  P Double Userr3 {get;set;}
+  P Double Userr4 {get;set;}
+  P Double Userr5 {get;set;}
+  P Boolean Usrtimer {get;set;}
+  P String VersionGuid {get;set;}
+  P Double ViewportScaleDefault {get;set;}
+  P ObjectId ViewportTableId {get;}
+  P ObjectId ViewTableId {get;}
+  P Boolean Visretain {get;set;}
+  P ObjectId VisualStyleDictionaryId {get;}
+  P Boolean Worldview {get;set;}
+  P Int32 XclipFrame {get;set;}
+  P ObjectId XrefBlockId {get;}
+  P Boolean XrefEditEnabled {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.DBObject : Autodesk.AutoCAD.GraphicsInterface.Drawable
+  V Cancelled(Object sender, EventArgs e)
+  V Copied(Object sender, ObjectEventArgs e)
+  V Erased(Object sender, ObjectErasedEventArgs e)
+  V Goodbye(Object sender, EventArgs e)
+  V Modified(Object sender, EventArgs e)
+  V ModifiedXData(Object sender, EventArgs e)
+  V ModifyUndone(Object sender, EventArgs e)
+  V ObjectClosed(Object sender, ObjectClosedEventArgs e)
+  V OpenedForModify(Object sender, EventArgs e)
+  V Reappended(Object sender, EventArgs e)
+  V SubObjectModified(Object sender, ObjectEventArgs e)
+  V Unappended(Object sender, EventArgs e)
+  M Void AddContext(ObjectContext context)
+  M Void ApplyPaperOrientationTransform(Viewport viewport)
+  M Void ApplyPartialUndo(DwgFiler undoFiler, RXClass classObj)
+  M Void Audit(AuditInfo auditInfo)
+  M Void Cancel()
+  M Void Close()
+  M Void CloseAndPage(Boolean onlyWhenClean)
+  M Void CreateExtensionDictionary()
+  M DecomposeForSaveReplacementRecord DecomposeForSave(DwgVersion version)
+  M DBObject DeepClone(DBObject ownerPointer, IdMapping idMap, Boolean isPrimary)
+  M Void DisableUndoRecording(Boolean disable)
+  M Void DowngradeOpen()
+  M Void DowngradeToNotify(Boolean wasWritable)
+  M Void DwgIn(DwgFiler filer)
+  M Void DwgOut(DwgFiler filer)
+  M Void DxfIn(DxfFiler filer)
+  M Void DxfOut(DxfFiler filer)
+  M Void Erase()
+  M Void Erase(Boolean erasing)
+  M static ObjectId FromAcadObject(Object acadObj)
+  M Byte[] GetBinaryDataForKey(String key)
+  M DBObjectEventExtender GetEventExtender(Boolean create)
+  M ObjectId GetField(String propertyName)
+  M ObjectId GetField()
+  M FullDwgVersion GetObjectSaveVersion(DxfFiler filer)
+  M FullDwgVersion GetObjectSaveVersion(DwgFiler filer)
+  M IParameter GetParameterInterface(String name, Boolean runtimeInterface)
+  M ObjectIdCollection GetPersistentReactorIds()
+  M List<RXObject> GetReactors()
+  M List<RXObject> GetTransientReactors()
+  M ResultBuffer GetXDataForApplication(String applicationName)
+  M Void HandOverTo(DBObject newPointer, Boolean keepXData, Boolean keepExtensionDictionary)
+  M Boolean HasContext(ObjectContext context)
+  M Boolean HasPersistentReactor(ObjectId objId)
+  M static Boolean IsCustomObject(ObjectId id)
+  M Void ReleaseExtensionDictionary()
+  M Void RemoveContext(ObjectContext context)
+  M Void RemoveField(ObjectId id)
+  M ObjectId RemoveField(String propertyName)
+  M ObjectId RemoveField()
+  M Void ResetScaleDependentProperties()
+  M Void SetBinaryDataForKey(String key, Byte[] chunk)
+  M ObjectId SetField(String propertyName, Field field)
+  M ObjectId SetField(Field field)
+  M Boolean SetFromStyle()
+  M Void SetObjectIdsInFlux()
+  M Void SetPaperOrientation(Boolean bPaperOrientation)
+  M Boolean SupportsCollection(String collectionName)
+  M Void SwapIdWith(ObjectId otherId, Boolean swapExtendedData, Boolean swapExtensionDictionary)
+  M Void SwapReferences(IdMapping idMap)
+  M Boolean UpgradeFromNotify()
+  M Void UpgradeOpen()
+  M DBObject WblockClone(RXObject ownerPointer, IdMapping idMap, Boolean isPrimary)
+  M Void XDataTransformBy(Matrix3d transform)
+  P Object AcadObject {get;}
+  P AnnotativeStates Annotative {get;set;}
+  P Guid ClassID {get;}
+  P Database Database {get;}
+  P Drawable Drawable {get;}
+  P ObjectId ExtensionDictionary {get;}
+  P Handle Handle {get;}
+  P Boolean HasFields {get;}
+  P Boolean HasSaveVersionOverride {get;set;}
+  P ObjectId Id {get;}
+  P Boolean IsAProxy {get;}
+  P Boolean IsCancelling {get;}
+  P Boolean IsErased {get;}
+  P Boolean IsEraseStatusToggled {get;}
+  P Boolean IsModified {get;}
+  P Boolean IsModifiedGraphics {get;}
+  P Boolean IsModifiedXData {get;}
+  P Boolean IsNewObject {get;}
+  P Boolean IsNotifyEnabled {get;}
+  P Boolean IsNotifying {get;}
+  P Boolean IsObjectIdsInFlux {get;}
+  P Boolean IsPersistent {get;}
+  P Boolean IsReadEnabled {get;}
+  P Boolean IsReallyClosing {get;}
+  P Boolean IsTransactionResident {get;}
+  P Boolean IsUndoing {get;}
+  P Boolean IsWriteEnabled {get;}
+  P DuplicateRecordCloning MergeStyle {get;set;}
+  P FullDwgVersion ObjectBirthVersion {get;}
+  P ObjectId ObjectId {get;}
+  P ObjectId OwnerId {get;set;}
+  P PaperOrientationStates PaperOrientation {get;}
+  P DwgFiler UndoFiler {get;}
+  P ResultBuffer XData {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.DimStyleTableRecord : Autodesk.AutoCAD.DatabaseServices.SymbolTableRecord
+  C ()
+  M ObjectId GetArrowId(DimArrowFlag whichArrow)
+  P Int32 Dimadec {get;set;}
+  P Boolean Dimalt {get;set;}
+  P Int32 Dimaltd {get;set;}
+  P Double Dimaltf {get;set;}
+  P Double Dimaltrnd {get;set;}
+  P Int32 Dimalttd {get;set;}
+  P Int32 Dimalttz {get;set;}
+  P Int32 Dimaltu {get;set;}
+  P Int32 Dimaltz {get;set;}
+  P String Dimapost {get;set;}
+  P Int32 Dimarcsym {get;set;}
+  P Double Dimasz {get;set;}
+  P Int32 Dimatfit {get;set;}
+  P Int32 Dimaunit {get;set;}
+  P Int32 Dimazin {get;set;}
+  P ObjectId Dimblk {get;set;}
+  P ObjectId Dimblk1 {get;set;}
+  P ObjectId Dimblk2 {get;set;}
+  P Double Dimcen {get;set;}
+  P Color Dimclrd {get;set;}
+  P Color Dimclre {get;set;}
+  P Color Dimclrt {get;set;}
+  P Int32 Dimdec {get;set;}
+  P Double Dimdle {get;set;}
+  P Double Dimdli {get;set;}
+  P Char Dimdsep {get;set;}
+  P Double Dimexe {get;set;}
+  P Double Dimexo {get;set;}
+  P Int32 Dimfrac {get;set;}
+  P Double Dimfxlen {get;set;}
+  P Boolean DimfxlenOn {get;set;}
+  P Double Dimgap {get;set;}
+  P Double Dimjogang {get;set;}
+  P Int32 Dimjust {get;set;}
+  P ObjectId Dimldrblk {get;set;}
+  P Double Dimlfac {get;set;}
+  P Boolean Dimlim {get;set;}
+  P ObjectId Dimltex1 {get;set;}
+  P ObjectId Dimltex2 {get;set;}
+  P ObjectId Dimltype {get;set;}
+  P Int32 Dimlunit {get;set;}
+  P LineWeight Dimlwd {get;set;}
+  P LineWeight Dimlwe {get;set;}
+  P String Dimpost {get;set;}
+  P Double Dimrnd {get;set;}
+  P Boolean Dimsah {get;set;}
+  P Double Dimscale {get;set;}
+  P Boolean Dimsd1 {get;set;}
+  P Boolean Dimsd2 {get;set;}
+  P Boolean Dimse1 {get;set;}
+  P Boolean Dimse2 {get;set;}
+  P Boolean Dimsoxd {get;set;}
+  P Int32 Dimtad {get;set;}
+  P Int32 Dimtdec {get;set;}
+  P Double Dimtfac {get;set;}
+  P Int32 Dimtfill {get;set;}
+  P Color Dimtfillclr {get;set;}
+  P Boolean Dimtih {get;set;}
+  P Boolean Dimtix {get;set;}
+  P Double Dimtm {get;set;}
+  P Int32 Dimtmove {get;set;}
+  P Boolean Dimtofl {get;set;}
+  P Boolean Dimtoh {get;set;}
+  P Boolean Dimtol {get;set;}
+  P Int32 Dimtolj {get;set;}
+  P Double Dimtp {get;set;}
+  P Double Dimtsz {get;set;}
+  P Double Dimtvp {get;set;}
+  P ObjectId Dimtxsty {get;set;}
+  P Double Dimtxt {get;set;}
+  P Boolean Dimtxtdirection {get;set;}
+  P Int32 Dimtzin {get;set;}
+  P Boolean Dimupt {get;set;}
+  P Int32 Dimzin {get;set;}
+  P Boolean IsModifiedForRecompute {get;}
+== Autodesk.AutoCAD.DatabaseServices.DwgVersion : System.Enum
+  E AC1001
+  E AC1002
+  E AC1003
+  E AC1004
+  E AC1005
+  E AC1006
+  E AC1007
+  E AC1008
+  E AC1009
+  E AC1010
+  E AC1011
+  E AC1012
+  E AC1013
+  E AC1014
+  E AC1015
+  E AC1021
+  E AC1024
+  E AC1027
+  E AC1032
+  E AC1500
+  E AC1800
+  E AC1800a
+  E AC1To2
+  E AC1To40
+  E AC1To50
+  E AC2100a
+  E AC2400a
+  E AC2700a
+  E AC2To10
+  E AC2To20
+  E AC2To21
+  E AC2To22
+  E AC3200a
+  E Current
+  E Max
+  E MC0To0
+  E Newest
+  E Unknown
+  F Int32 value__
+== Autodesk.AutoCAD.DatabaseServices.DynamicBlockReferenceProperty : System.Object
+  M Object[] GetAllowedValues()
+  P ObjectId BlockId {get;}
+  P String Description {get;}
+  P String PropertyName {get;}
+  P Int16 PropertyTypeCode {get;}
+  P Boolean ReadOnly {get;}
+  P Boolean Show {get;}
+  P DynamicBlockReferencePropertyUnitsType UnitsType {get;}
+  P Object Value {get;set;}
+  P Boolean VisibleInCurrentVisibilityState {get;}
+== Autodesk.AutoCAD.DatabaseServices.FileOpenMode : System.Enum
+  E OpenForReadAndAllShare
+  E OpenForReadAndReadShare
+  E OpenForReadAndWriteNoShare
+  E OpenTryForReadShare
+  F Int32 value__
+== Autodesk.AutoCAD.DatabaseServices.LayerStateManager : Autodesk.AutoCAD.Runtime.RXObject
+  C (Database database)
+  V AbortLayerStateDelete(Object sender, LayerStateEventArgs e)
+  V AbortLayerStateRename(Object sender, LayerStateRenameEventArgs e)
+  V AbortLayerStateRestore(Object sender, LayerStateEventArgs e)
+  V LayerStateCompareFailed(Object sender, LayerStateEventArgs e)
+  V LayerStateCreated(Object sender, LayerStateEventArgs e)
+  V LayerStateDeleted(Object sender, LayerStateDeletedEventArgs e)
+  V LayerStateRenamed(Object sender, LayerStateRenameEventArgs e)
+  V LayerStateRestored(Object sender, LayerStateEventArgs e)
+  V LayerStateToBeDeleted(Object sender, LayerStateEventArgs e)
+  V LayerStateToBeRenamed(Object sender, LayerStateRenameEventArgs e)
+  V LayerStateToBeRestored(Object sender, LayerStateEventArgs e)
+  M Boolean CompareLayerStateToDb(String name, ObjectId idVp)
+  M Void DeleteLayerState(String name)
+  M Void ExportLayerState(String nameToExport, String fileName)
+  M String GetLayerStateDescription(String name)
+  M ArrayList GetLayerStateLayers(String name, Boolean bInvert)
+  M LayerStateMasks GetLayerStateMask(String name)
+  M ArrayList GetLayerStateNames(Boolean bIncludeHidden, Boolean bIncludeXref)
+  M Boolean HasLayerState(String name)
+  M Void ImportLayerState(String fileName)
+  M Void ImportLayerStateFromDb(String name, Database database)
+  M Boolean LayerStateHasViewportData(String name)
+  M ObjectId LayerStatesDictionaryId(Boolean createIfNotPresent)
+  M Void RenameLayerState(String name, String newName)
+  M Void RestoreLayerState(String name, ObjectId id, Int32 undefinedLayerStatePolicy, LayerStateMasks clientMask)
+  M Void SaveLayerState(String name, LayerStateMasks mask, ObjectId id)
+  M Void SetLayerStateDescription(String name, String description)
+  M Void SetLayerStateMask(String name, LayerStateMasks mask)
+  P String LastRestoredLayerState {get;}
+== Autodesk.AutoCAD.DatabaseServices.LayerTable : Autodesk.AutoCAD.DatabaseServices.SymbolTable
+  M Void GenerateUsageData()
+  M SymbolTableEnumerator GetEnumerator()
+  M ObjectIdCollection GetUnreconciledLayers()
+  P Boolean HasUnreconciledLayers {get;}
+  P LayerTable IncludingHidden {get;}
+  P LayerTable SkippingReconciled {get;}
+== Autodesk.AutoCAD.DatabaseServices.LayerTableRecord : Autodesk.AutoCAD.DatabaseServices.SymbolTableRecord
+  C ()
+  M LayerViewportProperties GetViewportOverrides(ObjectId viewportId)
+  M Boolean HasViewportOverrides(ObjectId viewportId)
+  M Void RemoveAllOverrides()
+  P Color Color {get;set;}
+  P String Description {get;set;}
+  P EntityColor EntityColor {get;}
+  P Boolean HasOverrides {get;}
+  P Boolean IsFrozen {get;set;}
+  P Boolean IsHidden {get;set;}
+  P Boolean IsLocked {get;set;}
+  P Boolean IsOff {get;set;}
+  P Boolean IsPlottable {get;set;}
+  P Boolean IsReconciled {get;set;}
+  P Boolean IsUsed {get;}
+  P ObjectId LinetypeObjectId {get;set;}
+  P LineWeight LineWeight {get;set;}
+  P ObjectId MaterialId {get;set;}
+  P String PlotStyleName {get;set;}
+  P ObjectId PlotStyleNameId {get;set;}
+  P Transparency Transparency {get;set;}
+  P Boolean ViewportVisibilityDefault {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.LayoutManager : Autodesk.AutoCAD.Runtime.RXObject
+  V AbortLayoutCopied(Object sender, LayoutEventArgs e)
+  V AbortLayoutRemoved(Object sender, LayoutEventArgs e)
+  V AbortLayoutRename(Object sender, LayoutRenamedEventArgs e)
+  V LayoutCopied(Object sender, LayoutCopiedEventArgs e)
+  V LayoutCreated(Object sender, LayoutEventArgs e)
+  V LayoutRemoved(Object sender, LayoutEventArgs e)
+  V LayoutRenamed(Object sender, LayoutRenamedEventArgs e)
+  V LayoutsRefresh(Object sender, EventArgs e)
+  V LayoutsReordered(Object sender, EventArgs e)
+  V LayoutSwitched(Object sender, LayoutEventArgs e)
+  V LayoutToBeCopied(Object sender, LayoutEventArgs e)
+  V LayoutToBeRemoved(Object sender, LayoutEventArgs e)
+  V LayoutToBeRenamed(Object sender, LayoutRenamedEventArgs e)
+  V PlotStyleTableChanged(Object sender, PlotStyleTableChangedEventArgs e)
+  M Void CloneLayout(String copyName, String newName, Int32 newTabOrder)
+  M Void CopyLayout(String copyName, String newName)
+  M ObjectId CreateLayout(String newName)
+  M Void DeleteLayout(String deleteName)
+  M ObjectId GetLayoutId(String name)
+  M ObjectId GetNonRectangularViewportIdFromClipId(ObjectId clipId)
+  M Boolean LayoutExists(String name)
+  M Void RenameLayout(String oldName, String newName)
+  M Void SetCurrentLayoutId(ObjectId layoutId)
+  P static LayoutManager Current {get;}
+  P String CurrentLayout {get;set;}
+  P Int32 LayoutCount {get;}
+== Autodesk.AutoCAD.DatabaseServices.Leader : Autodesk.AutoCAD.DatabaseServices.Curve
+  C ()
+  M Boolean AppendVertex(Point3d pointToAdd)
+  M Void EvaluateLeader()
+  M DimStyleTableRecord GetDimstyleData()
+  M Void RemoveLastVertex()
+  M Void SetDimstyleData(DimStyleTableRecord style)
+  M Void SetPlane(Plane value)
+  M Boolean SetVertexAt(Int32 index, Point3d pointValue)
+  M Point3d VertexAt(Int32 value)
+  P Double AnnoHeight {get;}
+  P ObjectId Annotation {get;set;}
+  P Vector3d AnnotationOffset {get;set;}
+  P AnnotationType AnnoType {get;}
+  P Double AnnoWidth {get;}
+  P Double Dimasz {get;set;}
+  P Color Dimclrd {get;set;}
+  P ObjectId DimensionStyle {get;set;}
+  P String DimensionStyleName {get;set;}
+  P Double Dimgap {get;set;}
+  P ObjectId Dimldrblk {get;set;}
+  P LineWeight Dimlwd {get;set;}
+  P Boolean Dimsah {get;set;}
+  P Double Dimscale {get;set;}
+  P Int32 Dimtad {get;set;}
+  P Double Dimtxt {get;set;}
+  P Point3d FirstVertex {get;}
+  P Boolean HasArrowHead {get;set;}
+  P Boolean HasHookLine {get;}
+  P Boolean IsSplined {get;set;}
+  P Point3d LastVertex {get;}
+  P Vector3d Normal {get;}
+  P Int32 NumVertices {get;}
+  P ObjectId TextStyleId {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.MLeader : Autodesk.AutoCAD.DatabaseServices.Entity
+  C ()
+  M Void AddFirstVertex(Int32 leaderLineIndex, Point3d point)
+  M Void AddLastVertex(Int32 leaderLineIndex, Point3d point)
+  M Int32 AddLeader()
+  M Int32 AddLeaderLine(Point3d point)
+  M Int32 AddLeaderLine(Int32 leaderIndex)
+  M Point3d ConnectionPoint(Vector3d direction, TextAttachmentDirection textAttachmentDirection)
+  M Point3d ConnectionPoint(Vector3d direction)
+  M Double GetArrowSize(Int32 leaderLineIndex)
+  M ObjectId GetArrowSymbolId(Int32 leaderLineIndex)
+  M AttributeReference GetBlockAttribute(ObjectId attDefId)
+  M Extents3d GetContentGeomExtents()
+  M IntPtr getContextDataManager()
+  M Vector3d GetDogleg(Int32 leaderIndex)
+  M Double GetDoglegLength(Int32 leaderIndex)
+  M Point3d GetFirstVertex(Int32 leaderLineIndex)
+  M Point3d GetLastVertex(Int32 leaderLineIndex)
+  M Int32 GetLeaderIndex(Int32 leaderLineIndex)
+  M ArrayList GetLeaderIndexes()
+  M Color GetLeaderLineColor(Int32 leaderLineIndex)
+  M ArrayList GetLeaderLineIndexes(Int32 leaderIndex)
+  M LeaderType GetLeaderLineType(Int32 leaderLineIndex)
+  M ObjectId GetLeaderLineTypeId(Int32 leaderLineIndex)
+  M LineWeight GetLeaderLineWeight(Int32 leaderLineIndex)
+  M Void getOverridedMLeaderStyle(MLeaderStyle mleaderStyle)
+  M Plane GetPlane()
+  M TextAttachmentType GetTextAttachmentType(LeaderDirectionType leaderDirection)
+  M Point3d GetVertex(Int32 leaderLineIndex, Int32 index)
+  M Boolean HasContent()
+  M Void MoveMLeader(Vector3d vec, MoveType type)
+  M Void PostMLeaderToDb(Database db)
+  M Void recomputeBreakPoints()
+  M Void RemoveFirstVertex(Int32 leaderLineIndex)
+  M Void RemoveLastVertex(Int32 leaderLineIndex)
+  M Void RemoveLeader(Int32 index)
+  M Void RemoveLeaderLine(Int32 leaderLineIndex)
+  M Void SetArrowSize(Int32 leaderLineIndex, Double arrowSize)
+  M Void SetArrowSymbolId(Int32 leaderLineIndex, ObjectId id)
+  M Void SetBlockAttribute(ObjectId attDefId, AttributeReference attributeValue)
+  M Void SetContextDataManager(IntPtr contextDataManager)
+  M Void SetDogleg(Int32 leaderIndex, Vector3d vector)
+  M Void SetDoglegLength(Int32 leaderIndex, Double doglegLength)
+  M Void SetFirstVertex(Int32 leaderLineIndex, Point3d point)
+  M Void SetLastVertex(Int32 leaderLineIndex, Point3d point)
+  M Void SetLeaderLineColor(Int32 leaderLineIndex, Color leaderLineTypeId)
+  M Void SetLeaderLineType(Int32 leaderLineIndex, LeaderType leaderLineType)
+  M Void SetLeaderLineTypeId(Int32 leaderLineIndex, ObjectId leaderLineTypeId)
+  M Void SetLeaderLineWeight(Int32 leaderLineIndex, LineWeight leaderLineWeight)
+  M Void SetPlane(Plane value)
+  M Void SetTextAttachmentType(TextAttachmentType textAttachmentType, LeaderDirectionType leaderDirection)
+  M Void SetVertex(Int32 leaderLineIndex, Int32 index, Point3d point)
+  M Int32 VerticesCount(Int32 leaderLineIndex)
+  P Double ArrowSize {get;set;}
+  P ObjectId ArrowSymbolId {get;set;}
+  P Color BlockColor {get;set;}
+  P BlockConnectionType BlockConnectionType {get;set;}
+  P ObjectId BlockContentId {get;set;}
+  P Point3d BlockPosition {get;set;}
+  P Double BlockRotation {get;set;}
+  P Scale3d BlockScale {get;set;}
+  P ContentType ContentType {get;set;}
+  P Double DoglegLength {get;set;}
+  P Boolean EnableAnnotationScale {get;set;}
+  P Boolean EnableDogleg {get;set;}
+  P Boolean EnableFrameText {get;set;}
+  P Boolean EnableLanding {get;set;}
+  P Boolean ExtendLeaderToText {get;set;}
+  P Double LandingGap {get;set;}
+  P Int32 LeaderCount {get;}
+  P Color LeaderLineColor {get;set;}
+  P Int32 LeaderLineCount {get;}
+  P LeaderType LeaderLineType {get;set;}
+  P ObjectId LeaderLineTypeId {get;set;}
+  P LineWeight LeaderLineWeight {get;set;}
+  P ObjectId MLeaderStyle {get;set;}
+  P MText MText {get;set;}
+  P Vector3d Normal {get;}
+  P Double Scale {get;set;}
+  P TextAlignmentType TextAlignmentType {get;set;}
+  P TextAngleType TextAngleType {get;set;}
+  P TextAttachmentDirection TextAttachmentDirection {get;set;}
+  P TextAttachmentType TextAttachmentType {get;set;}
+  P Color TextColor {get;set;}
+  P Double TextHeight {get;set;}
+  P Point3d TextLocation {get;set;}
+  P ObjectId TextStyleId {get;set;}
+  P Point3d ToleranceLocation {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.MText : Autodesk.AutoCAD.DatabaseServices.Entity
+  C ()
+  M Void ConvertFieldToText()
+  M Int32 CorrectSpelling()
+  M Void ExplodeFragments(MTextFragmentCallback enumerator)
+  M Void ExplodeFragments(MTextFragmentCallback enumerator, Object userData)
+  M Void ExplodeFragments(MTextFragmentCallback enumerator, Object userData, WorldDraw context)
+  M Point3dCollection GetBoundingPoints()
+  M Double GetColumnHeight(Int32 index)
+  M String getMTextWithFieldCodes()
+  M Void SetAttachmentMovingLocation(AttachmentPoint value)
+  M Void SetColumnHeight(Int32 index, Double height)
+  M Int32 SetContentsRtf(String value)
+  M Void SetDynamicColumns(Double width, Double gutter, Boolean auto_height)
+  M Void SetStaticColumns(Double width, Double gutter, Int32 count)
+  P Double ActualHeight {get;}
+  P Double ActualWidth {get;}
+  P static String AlignChange {get;}
+  P Double Ascent {get;}
+  P AttachmentPoint Attachment {get;set;}
+  P Boolean BackgroundFill {get;set;}
+  P Color BackgroundFillColor {get;set;}
+  P Double BackgroundScaleFactor {get;set;}
+  P Transparency BackgroundTransparency {get;set;}
+  P static String BlockBegin {get;}
+  P static String BlockEnd {get;}
+  P static String ColorChange {get;}
+  P Boolean ColumnAutoHeight {get;set;}
+  P Int32 ColumnCount {get;set;}
+  P Boolean ColumnFlowReversed {get;set;}
+  P Double ColumnGutterWidth {get;set;}
+  P ColumnType ColumnType {get;set;}
+  P Double ColumnWidth {get;set;}
+  P String Contents {get;set;}
+  P String ContentsRTF {get;set;}
+  P Double Descent {get;}
+  P Vector3d Direction {get;set;}
+  P FlowDirection FlowDirection {get;set;}
+  P static String FontChange {get;}
+  P Double Height {get;set;}
+  P static String HeightChange {get;}
+  P static String LineBreak {get;}
+  P Double LineSpaceDistance {get;set;}
+  P Double LineSpacingFactor {get;set;}
+  P LineSpacingStyle LineSpacingStyle {get;set;}
+  P Point3d Location {get;set;}
+  P static String NonBreakSpace {get;}
+  P Vector3d Normal {get;set;}
+  P static String ObliqueChange {get;}
+  P static String OverlineOff {get;}
+  P static String OverlineOn {get;}
+  P static String ParagraphBreak {get;}
+  P Double Rotation {get;set;}
+  P Boolean ShowBorders {get;set;}
+  P static String StackStart {get;}
+  P static String StrikethroughOff {get;}
+  P static String StrikethroughOn {get;}
+  P String Text {get;}
+  P Double TextHeight {get;set;}
+  P ObjectId TextStyleId {get;set;}
+  P String TextStyleName {get;}
+  P static String TrackChange {get;}
+  P static String UnderlineOff {get;}
+  P static String UnderlineOn {get;}
+  P Boolean UseBackgroundColor {get;set;}
+  P Double Width {get;set;}
+  P static String WidthChange {get;}
+== Autodesk.AutoCAD.DatabaseServices.ObjectContextCollection : Autodesk.AutoCAD.Runtime.RXObject
+  M Void AddContext(ObjectContext ctxt)
+  M ObjectContext GetContext(String contextName)
+  M ObjectContextCollectionEnumerator GetEnumerator()
+  M Boolean HasContext(String contextName)
+  M IEnumerator IEnumerable.GetEnumerator()
+  M Void RemoveContext(String contextName)
+  P ObjectContext CurrentContext {get;set;}
+  P String Name {get;}
+== Autodesk.AutoCAD.DatabaseServices.ObjectContextManager : Autodesk.AutoCAD.Runtime.RXObject
+  C ()
+  M ObjectContextCollection GetContextCollection(String collectionName)
+  M Void RegisterContextCollection(String collectionName, ObjectContextCollection collection)
+  M Void UnregisterContextCollection(String collectionName)
+== Autodesk.AutoCAD.DatabaseServices.ObjectErasedEventArgs : System.EventArgs
+  P DBObject DBObject {get;}
+  P Boolean Erased {get;}
+== Autodesk.AutoCAD.DatabaseServices.ObjectEventArgs : System.EventArgs
+  P DBObject DBObject {get;}
+== Autodesk.AutoCAD.DatabaseServices.ObjectId : System.ValueType
+  C (IntPtr oldId)
+  M Boolean Compare(ObjectId value1)
+  M Int32 CompareTo(ObjectId other)
+  M ObjectId ConvertToRedirectedId()
+  M Boolean Equals(Object obj)
+  M Int32 GetHashCode()
+  M DynamicMetaObject GetMetaObject(Expression parameter)
+  M DBObject GetObject(OpenMode mode, Boolean openErased, Boolean forceOpenOnLockedLayer)
+  M DBObject GetObject(OpenMode mode, Boolean openErased)
+  M DBObject GetObject(OpenMode mode)
+  M DBObject Open(OpenMode mode, Boolean openErased, Boolean forceOpenOnLockedLayer)
+  M DBObject Open(OpenMode mode, Boolean openErased)
+  M DBObject Open(OpenMode mode)
+  M String ToString(IFormatProvider provider)
+  M String ToString()
+  P Database Database {get;}
+  P Handle Handle {get;}
+  P Boolean IsEffectivelyErased {get;}
+  P Boolean IsErased {get;}
+  P Boolean IsNull {get;}
+  P Boolean IsResident {get;}
+  P Boolean IsValid {get;}
+  P Boolean IsWellBehaved {get;}
+  P Handle NonForwardedHandle {get;}
+  P static ObjectId Null {get;}
+  P RXClass ObjectClass {get;}
+  P Boolean ObjectLeftOnDisk {get;}
+  P Int64 OldId {get;}
+  P IntPtr OldIdPtr {get;}
+  P Database OriginalDatabase {get;}
+== Autodesk.AutoCAD.DatabaseServices.PlotSettingsValidator : Autodesk.AutoCAD.Runtime.DisposableWrapper
+  M StringCollection GetCanonicalMediaNameList(PlotSettings plotSet)
+  M String GetLocaleMediaName(PlotSettings plotSet, Int32 index)
+  M String GetLocaleMediaName(PlotSettings plotSet, String canonicalName)
+  M StringCollection GetPlotDeviceList()
+  M StringCollection GetPlotStyleSheetList()
+  M Void RefreshLists(PlotSettings plotSet)
+  M Void SetCanonicalMediaName(PlotSettings plotSet, String mediaName)
+  M Void SetClosestMediaName(PlotSettings plotSet, Double paperWidth, Double paperHeight, PlotPaperUnit units, Boolean matchPrintableArea)
+  M Void SetCurrentStyleSheet(PlotSettings plotSet, String styleSheetName)
+  M Void SetCustomPrintScale(PlotSettings plotSet, CustomScale scale)
+  M Void SetDefaultPlotConfig(PlotSettings plotSet)
+  M Void SetPlotCentered(PlotSettings plotSet, Boolean isCentered)
+  M Void SetPlotConfigurationName(PlotSettings plotSet, String plotDeviceName, String mediaName)
+  M Void SetPlotOrigin(PlotSettings plotSet, Point2d origin)
+  M Void SetPlotPaperUnits(PlotSettings plotSet, PlotPaperUnit units)
+  M Void SetPlotRotation(PlotSettings plotSet, PlotRotation rotationType)
+  M Void SetPlotType(PlotSettings plotSet, PlotType plotAreaType)
+  M Void SetPlotViewName(PlotSettings plotSet, String viewName)
+  M Void SetPlotWindowArea(PlotSettings plotSet, Extents2d windowArea)
+  M Void SetStdScale(PlotSettings plotSet, Double standardScale)
+  M Void SetStdScaleType(PlotSettings plotSet, StdScaleType scaleType)
+  M Void SetUseStandardScale(PlotSettings plotSet, Boolean useStandard)
+  M Void SetZoomToPaperOnUpdate(PlotSettings plotSet, Boolean doZoom)
+  P static PlotSettingsValidator Current {get;}
+== Autodesk.AutoCAD.DatabaseServices.RotatedDimension : Autodesk.AutoCAD.DatabaseServices.Dimension
+  C (Double rotation, Point3d line1Point, Point3d line2Point, Point3d dimensionLinePoint, String dimensionText, ObjectId dimensionStyle)
+  C ()
+  P Point3d DimLinePoint {get;set;}
+  P Double Oblique {get;set;}
+  P Double Rotation {get;set;}
+  P Point3d XLine1Point {get;set;}
+  P Point3d XLine2Point {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.SymbolTable : Autodesk.AutoCAD.DatabaseServices.DBObject
+  M ObjectId Add(SymbolTableRecord value)
+  M SymbolTableEnumerator GetEnumerator()
+  M Boolean Has(ObjectId id)
+  M Boolean Has(String key)
+  P SymbolTable IncludingErased {get;}
+  P ObjectId Item[String key] {get;}
+== Autodesk.AutoCAD.DatabaseServices.SystemVariableChangedEventArgs : System.EventArgs
+  P Boolean Changed {get;}
+  P String Name {get;}
+== Autodesk.AutoCAD.DatabaseServices.Table : Autodesk.AutoCAD.DatabaseServices.BlockReference
+  C ()
+  M CellAlignment Alignment(Int32 row, Int32 col)
+  M CellAlignment Alignment(RowType type)
+  M Point3d AttachmentPoint(Int32 row, Int32 col)
+  M Color BackgroundColor(Int32 row, Int32 col)
+  M Color BackgroundColor(RowType type)
+  M Double BlockRotation(Int32 row, Int32 col)
+  M Double BlockScale(Int32 row, Int32 col)
+  M ObjectId BlockTableRecordId(Int32 row, Int32 col)
+  M Boolean CanDeleteColumns(Int32 index, Int32 nCount)
+  M Boolean CanDeleteRows(Int32 index, Int32 nCount)
+  M Boolean CanInsertColumn(Int32 index)
+  M Boolean CanInsertRow(Int32 index)
+  M TableStyleOverride[] CellStyleOverrides(Int32 row, Int32 col)
+  M TableCellType CellType(Int32 row, Int32 col)
+  M Void ClearSubSelection()
+  M Void ClearTableStyleOverrides(Int32 options)
+  M Double ColumnWidth(Int32 col)
+  M Color ContentColor(Int32 row, Int32 col)
+  M Color ContentColor(RowType type)
+  M CellRange CopyFrom(Table source, TableCopyOptions options, CellRange sourceRange, CellRange targetRange)
+  M CellRange CopyFrom(LinkedTableData source, TableCopyOptions options, CellRange sourceRange, CellRange targetRange)
+  M Void CopyFrom(LinkedTableData source, TableCopyOptions options)
+  M Int32 CreateContent(Int32 row, Int32 column, Int32 contentIndex)
+  M DataType DataType(Int32 row, Int32 col)
+  M DataType DataType(RowType type)
+  M Void DeleteCellContent(Int32 row, Int32 col)
+  M Void DeleteColumns(Int32 col, Int32 columns)
+  M Void DeleteContent(CellRange A_0)
+  M Void DeleteContent(Int32 row, Int32 column, Int32 contentIndex)
+  M Void DeleteContent(Int32 row, Int32 column)
+  M Void DeleteRows(Int32 row, Int32 rows)
+  M ObjectId FieldId(Int32 row, Int32 col)
+  M Void Fill(CellRange fillRange, CellRange sourceRange, TableFillOptions options)
+  M String Format(Int32 row, Int32 col)
+  M String Format(RowType type)
+  M Void GenerateLayout()
+  M String GetBlockAttributeValue(Int32 row, Int32 column, Int32 contentIndex, ObjectId attDefId)
+  M String GetBlockAttributeValue(Int32 row, Int32 col, ObjectId attributeDefinitionId)
+  M ObjectId GetBlockTableRecordId(Int32 row, Int32 column, Int32 contentIndex)
+  M Double GetBreakHeight(Int32 index)
+  M Vector3d GetBreakOffset(Int32 index)
+  M Double GetBreakSpacing()
+  M Void GetCellExtents(Int32 row, Int32 col, Boolean isOuterCell, Point3dCollection pts)
+  M CellStates GetCellState(Int32 row, Int32 column)
+  M String GetCellStyle(Int32 row, Int32 column)
+  M String GetColumnName(Int32 index)
+  M Color GetContentColor(Int32 row, Int32 column, Int32 contentIndex)
+  M CellContentLayout GetContentLayout(Int32 row, Int32 column)
+  M CellContentTypes GetContentTypes(Int32 row, Int32 column, Int32 contentIndex)
+  M CellContentTypes GetContentTypes(Int32 row, Int32 column)
+  M Object GetCustomData(Int32 row, Int32 column, String key)
+  M Int32 GetCustomData(Int32 row, Int32 column)
+  M String GetDataFormat(Int32 row, Int32 column, Int32 contentIndex)
+  M String GetDataFormat(Int32 row, Int32 column)
+  M ObjectIdCollection GetDataLink(CellRange range)
+  M ObjectIdCollection GetDataLink()
+  M ObjectId GetDataLink(Int32 row, Int32 column)
+  M CellRange GetDataLinkRange(Int32 row, Int32 column)
+  M DataTypeParameter GetDataType(Int32 row, Int32 column, Int32 contentIndex)
+  M TableEnumerator GetEnumerator(CellRange range, TableEnumeratorOption option)
+  M TableEnumerator GetEnumerator()
+  M ObjectId GetFieldId(Int32 row, Int32 column, Int32 contentIndex)
+  M String GetFormula(Int32 row, Int32 column, Int32 contentIndex)
+  M Color GetGridColor(Int32 row, Int32 column, GridLineType gridLineType)
+  M Double GetGridDoubleLineSpacing(Int32 row, Int32 column, GridLineType gridLineType)
+  M GridLineStyle GetGridLineStyle(Int32 row, Int32 column, GridLineType gridLineType)
+  M ObjectId GetGridLinetype(Int32 row, Int32 column, GridLineType gridLineType)
+  M LineWeight GetGridLineWeight(Int32 row, Int32 column, GridLineType gridLineType)
+  M GridPropertyParameter GetGridProperty(Int32 row, Int32 column, GridLineType gridLineType)
+  M Visibility GetGridVisibility(Int32 row, Int32 column, GridLineType gridLineType)
+  M Boolean GetIsAutoScale(Int32 row, Int32 column, Int32 contentIndex)
+  M Double GetMargin(Int32 row, Int32 column, CellMargins margin)
+  M Boolean GetMergeAllEnabled(Int32 row, Int32 column)
+  M CellRange GetMergeRange(Int32 row, Int32 column)
+  M Int32 GetNumberOfContents(Int32 row, Int32 column)
+  M CellProperties GetOverrides(Int32 row, Int32 column, GridLineType gridLineType)
+  M CellProperties GetOverrides(Int32 row, Int32 column, Int32 contentIndex)
+  M Double GetRotation(Int32 row, Int32 column, Int32 contentIndex)
+  M Double GetScale(Int32 row, Int32 column, Int32 contentIndex)
+  M Double GetTextHeight(Int32 row, Int32 column, Int32 contentIndex)
+  M String GetTextString(Int32 row, Int32 column, Int32 contentIndex, FormatOption formatOption)
+  M String GetTextString(Int32 row, Int32 column, Int32 contentIndex)
+  M ObjectId GetTextStyleId(Int32 row, Int32 column, Int32 contentIndex)
+  M String GetToolTip(Int32 row, Int32 column)
+  M Object GetValue(Int32 row, Int32 column, Int32 contentIndex, FormatOption formatOption)
+  M Object GetValue(Int32 row, Int32 column, Int32 contentIndex)
+  M Color GridColor(Int32 row, Int32 col, CellEdgeMasks edge)
+  M Color GridColor(GridLineType gridlineType, RowType type)
+  M LineWeight GridLineWeight(Int32 row, Int32 col, CellEdgeMasks edge)
+  M LineWeight GridLineWeight(GridLineType gridlineType, RowType type)
+  M Boolean GridVisibility(Int32 row, Int32 col, CellEdgeMasks edge)
+  M Boolean GridVisibility(GridLineType gridlineType, RowType type)
+  M Boolean HasFormula(Int32 row, Int32 column, Int32 contentIndex)
+  M TableHitTestInfo HitTest(Point3d point, Vector3d viewVector)
+  M IEnumerator IEnumerable.GetEnumerator()
+  M Void InsertColumns(Int32 col, Double width, Int32 columns)
+  M Void InsertColumnsAndInherit(Int32 col, Int32 inheritFrom, Int32 numCols)
+  M Void InsertRows(Int32 row, Double height, Int32 rows)
+  M Void InsertRowsAndInherit(Int32 index, Int32 inheritFrom, Int32 numRows)
+  M Boolean IsAutoScale(Int32 row, Int32 col)
+  M Boolean IsBackgroundColorNone(Int32 row, Int32 col)
+  M Boolean IsBackgroundColorNone(RowType type)
+  M Boolean IsContentEditable(Int32 row, Int32 column)
+  M Boolean IsEmpty(Int32 row, Int32 column)
+  M Boolean IsFormatEditable(Int32 row, Int32 column)
+  M Boolean IsLinked(Int32 row, Int32 column)
+  M Boolean IsMergedCell(Int32 row, Int32 col, CellRange& range)
+  M Void MergeCells(CellRange range)
+  M Double MinimumColumnWidth(Int32 col)
+  M Double MinimumRowHeight(Int32 row)
+  M Void MoveContent(Int32 row, Int32 column, Int32 fromIndex, Int32 toIndex)
+  M Void RecomputeTableBlock(Boolean forceUpdate)
+  M Void RemoveAllOverrides(Int32 row, Int32 column)
+  M Void RemoveDataLink()
+  M Void RemoveDataLink(Int32 row, Int32 column)
+  M Void ReselectSubRegion(FullSubentityPath[] paths)
+  M Void ResetValue(Int32 row, Int32 col)
+  M Double RowHeight(Int32 row)
+  M RowType RowType(Int32 row)
+  M TableHitTestInfo Select(Point3d pickingPoint, Vector3d hitTestViewDirection, Vector3d hitTestViewOrientation, Boolean allowOutside, Boolean inPickFirst, FullSubentityPath[] paths)
+  M CellRange SelectSubRegion(Point3d cornerPoint1, Point3d cornerPoint2, Vector3d selectionViewDirection, Vector3d hitTestViewDirection, SelectType selectionType, Boolean includeCurrentSelection, Boolean inPickFirst, FullSubentityPath[] paths)
+  M Void SetAlignment(Int32 row, Int32 col, CellAlignment align)
+  M Void SetAlignment(CellAlignment align, Int32 rowTypes)
+  M Void SetAutoScale(Int32 row, Int32 col, Boolean autoFit)
+  M Void SetBackgroundColor(Int32 row, Int32 col, Color color)
+  M Void SetBackgroundColor(Color color, Int32 rowTypes)
+  M Void SetBackgroundColorNone(Int32 row, Int32 col, Boolean value)
+  M Void SetBackgroundColorNone(Boolean value, Int32 rowTypes)
+  M Void SetBlockAttributeValue(Int32 row, Int32 column, Int32 contentIndex, ObjectId attDefId, String value)
+  M Void SetBlockAttributeValue(Int32 row, Int32 col, ObjectId attributeDefinitionId, String value)
+  M Void SetBlockRotation(Int32 row, Int32 col, Double rotationalAngle)
+  M Void SetBlockScale(Int32 row, Int32 col, Double scale)
+  M Void SetBlockTableRecordId(Int32 row, Int32 column, Int32 contentIndex, ObjectId blockId, Boolean autoFit)
+  M Void SetBlockTableRecordId(Int32 row, Int32 col, ObjectId blockId, Boolean autoFit)
+  M Void SetBreakHeight(Int32 index, Double height)
+  M Void SetBreakOffset(Int32 index, Vector3d offset)
+  M Void SetBreakSpacing(Double spacing)
+  M Void SetCellState(Int32 row, Int32 column, CellStates cellState)
+  M Void SetCellStyle(Int32 row, Int32 column, String styleName)
+  M Void SetCellType(Int32 row, Int32 col, TableCellType type)
+  M Void SetColumnName(Int32 index, String name)
+  M Void SetColumnWidth(Double width)
+  M Void SetColumnWidth(Int32 col, Double width)
+  M Void SetContentColor(Int32 row, Int32 column, Int32 contentIndex, Color color)
+  M Void SetContentColor(Int32 row, Int32 col, Color color)
+  M Void SetContentColor(Color color, Int32 rowType)
+  M Void SetContentLayout(Int32 row, Int32 column, CellContentLayout layout)
+  M Void SetCustomData(Int32 row, Int32 column, String key, Object value)
+  M Void SetCustomData(Int32 row, Int32 column, Int32 data)
+  M Void SetDataFormat(Int32 row, Int32 column, Int32 contentIndex, String format)
+  M Void SetDataFormat(Int32 row, Int32 column, String format)
+  M Void SetDataLink(CellRange range, ObjectId dataLinkId, Boolean bUpdate)
+  M Void SetDataLink(Int32 row, Int32 column, ObjectId dataLinkId, Boolean bUpdate)
+  M Void SetDataType(Int32 row, Int32 column, Int32 contentIndex, DataTypeParameter dataType)
+  M Void SetDataType(Int32 row, Int32 col, DataType nDataType, UnitType nUnitType)
+  M Void SetDataType(DataType nDataType, UnitType nUnitType, Int32 rowTypes)
+  M Void SetFieldId(Int32 row, Int32 column, Int32 contentIndex, ObjectId fieldId, CellOption option)
+  M Void SetFieldId(Int32 row, Int32 col, ObjectId fieldId)
+  M Void SetFormat(Int32 row, Int32 col, String pFormat)
+  M Void SetFormat(String pFormat, Int32 rowTypes)
+  M Void SetFormula(Int32 row, Int32 column, Int32 contentIndex, String formula)
+  M Void SetGridColor(Int32 row, Int32 column, GridLineType gridLineType, Color color)
+  M Void SetGridColor(Int32 row, Int32 col, Int16 edges, Color color)
+  M Void SetGridColor(Color color, Int32 borders, Int32 rows)
+  M Void SetGridDoubleLineSpacing(Int32 row, Int32 column, GridLineType gridLineType, Double spacing)
+  M Void SetGridLineStyle(Int32 row, Int32 column, GridLineType gridLineType, GridLineStyle lineStyle)
+  M Void SetGridLinetype(Int32 row, Int32 column, GridLineType gridLineType, ObjectId linetype)
+  M Void SetGridLineWeight(Int32 row, Int32 column, GridLineType gridLineType, LineWeight lineWeight)
+  M Void SetGridLineWeight(Int32 row, Int32 col, Int16 edges, LineWeight value)
+  M Void SetGridLineWeight(LineWeight lineWeight, Int32 borders, Int32 rows)
+  M Void SetGridProperty(CellRange rangeIn, GridLineType gridLineTypes, GridPropertyParameter gridProp)
+  M Void SetGridProperty(Int32 row, Int32 column, GridLineType gridLineType, GridPropertyParameter gridProperty)
+  M Void SetGridVisibility(Int32 row, Int32 column, GridLineType gridLineType, Visibility visibility)
+  M Void SetGridVisibility(Int32 row, Int32 col, Int16 edges, Boolean value)
+  M Void SetGridVisibility(Boolean visible, Int32 borders, Int32 rows)
+  M Void SetIsAutoScale(Int32 row, Int32 column, Int32 contentIndex, Boolean autoFit)
+  M Void SetMargin(Int32 row, Int32 column, CellMargins margin, Double value)
+  M Void SetMergeAllEnabled(Int32 row, Int32 column, Boolean enable)
+  M Void SetOverrides(Int32 row, Int32 column, GridLineType gridLineType, CellProperties override)
+  M Void SetOverrides(Int32 row, Int32 column, Int32 contentIndex, CellProperties override)
+  M Void SetRotation(Int32 row, Int32 column, Int32 contentIndex, Double angle)
+  M Void SetRowHeight(Double height)
+  M Void SetRowHeight(Int32 row, Double height)
+  M Void SetScale(Int32 row, Int32 column, Int32 contentIndex, Double scale)
+  M Void SetSize(Int32 numRows, Int32 numCols)
+  M Void SetTextHeight(Int32 row, Int32 column, Int32 contentIndex, Double height)
+  M Void SetTextHeight(Int32 row, Int32 col, Double height)
+  M Void SetTextHeight(Double height, Int32 rowTypes)
+  M Void SetTextRotation(Int32 row, Int32 col, RotationAngle rot)
+  M Void SetTextString(Int32 row, Int32 column, Int32 contentIndex, String text)
+  M Void SetTextString(Int32 row, Int32 col, String value)
+  M Void SetTextStyle(Int32 row, Int32 col, ObjectId id)
+  M Void SetTextStyle(ObjectId id, Int32 rowTypes)
+  M Void SetTextStyleId(Int32 row, Int32 column, Int32 contentIndex, ObjectId id)
+  M Void SetToolTip(Int32 row, Int32 column, String toolTip)
+  M Void SetValue(Int32 row, Int32 column, Int32 contentIndex, String value, ParseOption parseOption)
+  M Void SetValue(Int32 row, Int32 column, Int32 contentIndex, Object value, ParseOption parseOption)
+  M Void SetValue(Int32 row, Int32 column, Int32 contentIndex, Object value)
+  M Void SetValue(Int32 row, Int32 col, String pText, ParseOption nOption)
+  M Void SetValue(Int32 row, Int32 col, Object pValue)
+  M Void SuppressRegenerateTable(Boolean suppress)
+  M TableStyleOverride[] TableStyleOverrides()
+  M Double TextHeight(Int32 row, Int32 col)
+  M Double TextHeight(RowType type)
+  M RotationAngle TextRotation(Int32 row, Int32 col)
+  M String TextString(Int32 row, Int32 col, FormatOption nOption)
+  M String TextString(Int32 row, Int32 col)
+  M String TextStringConst(Int32 row, Int32 col)
+  M ObjectId TextStyle(Int32 row, Int32 col)
+  M ObjectId TextStyle(RowType type)
+  M UnitType UnitType(Int32 row, Int32 col)
+  M UnitType UnitType(RowType type)
+  M Void UnmergeCells(CellRange range)
+  M Void UpdateDataLink(UpdateDirection dir, UpdateOption option)
+  M Void UpdateDataLink(Int32 row, Int32 column, UpdateDirection dir, UpdateOption option)
+  M Object Value(Int32 row, Int32 col)
+  P Boolean BreakEnabled {get;set;}
+  P TableBreakFlowDirection BreakFlowDirection {get;set;}
+  P TableBreakOptions BreakOptions {get;set;}
+  P CellRange Cells {get;}
+  P ColumnsCollection Columns {get;}
+  P Vector3d Direction {get;set;}
+  P FlowDirection FlowDirection {get;set;}
+  P Boolean HasSubSelection {get;}
+  P Double Height {get;set;}
+  P Double HorizontalCellMargin {get;set;}
+  P Boolean IsHeaderSuppressed {get;set;}
+  P Boolean IsTitleSuppressed {get;set;}
+  P Double MinimumTableHeight {get;}
+  P Double MinimumTableWidth {get;}
+  P Int32 NumColumns {get;set;}
+  P Int32 NumRows {get;set;}
+  P RowsCollection Rows {get;}
+  P CellRange SubSelection {get;set;}
+  P ObjectId TableStyle {get;set;}
+  P String TableStyleName {get;}
+  P Double VerticalCellMargin {get;set;}
+  P Double Width {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.XrefGraphNode : Autodesk.AutoCAD.DatabaseServices.GraphNode
+  P ObjectId BlockTableRecordId {get;}
+  P Database Database {get;}
+  P Boolean IsNested {get;}
+  P String Name {get;}
+  P XrefNotificationStatus XrefNotificationStatus {get;}
+  P XrefStatus XrefStatus {get;}

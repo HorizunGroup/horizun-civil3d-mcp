@@ -99,7 +99,7 @@ internal sealed class TablesCommand : ICommand
                 else
                 {
                     var path = Hz.Str(ctx.Args, "csv")!;
-                    if (!Path.IsPathRooted(path) || !File.Exists(path)) throw new HzRefusal(ErrorCodes.NotFound, "csv must be an existing absolute path. Nothing changed.");
+                    if (!RuntimeCompat.IsPathFullyQualified(path) || !File.Exists(path)) throw new HzRefusal(ErrorCodes.NotFound, "csv must be an existing absolute path. Nothing changed.");
                     data = ReadCsv(path);
                     if (data.Count == 0) throw new HzRefusal(ErrorCodes.InvalidInput, "The CSV has no rows. Nothing changed.");
                     var n = data.Max(r => r.Count);

@@ -30,7 +30,7 @@ public static class GeoMath
     /// <summary>Angle of (x, y) from +Y, counter-clockwise, degrees in (-180, 180]; null for a zero or non-finite vector.</summary>
     public static double? FromYCcwDeg(double x, double y)
     {
-        if (!double.IsFinite(x) || !double.IsFinite(y) || Math.Sqrt(x * x + y * y) < 1e-12) return null;
+        if (!Hz.IsFinite(x) || !Hz.IsFinite(y) || Math.Sqrt(x * x + y * y) < 1e-12) return null;
         return Wrap180(Deg(Math.Atan2(-x, y)));
     }
 

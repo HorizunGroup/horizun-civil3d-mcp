@@ -1,21 +1,26 @@
 # STATUS - estado actual y QUÉ SIGUE
 
 > Documento VIVO. Toda sesión que termine un bloque de trabajo lo **actualiza** (ver `WORKFLOW.md`).
-> Última actualización: **2026-10-15**, por Claude Code: v0.8.2 instalada y verificada en vivo (287/287 + casos con defaults del cliente). Antes, 2026-10-14: v0.8.2 (`entities draw` vuelve a crear TEXT/MTEXT; el `pattern` por defecto del hatch ya no se cuela en los demás items). Anterior: 2026-10-08, v0.8.1.
+> Última actualización: **2026-10-20**, por Claude Code: **integración v0.9.4 EN CURSO** en la rama `integrar/v0.9.4`: la línea `develop` (v0.8.1/v0.8.2, verificada en vivo el 2026-10-15) se fusiona con `main` v0.9.3. Ver la entrada del mismo día en `SESSION_LOG.md`.
+> Anterior (línea develop): **2026-10-15**, por Claude Code: v0.8.2 instalada y verificada en vivo (287/287 + casos con defaults del cliente). Antes, 2026-10-14: v0.8.2 (`entities draw` vuelve a crear TEXT/MTEXT; el `pattern` por defecto del hatch ya no se cuela en los demás items). Anterior: 2026-10-08, v0.8.1.
+> Anterior (línea main): **2026-10-06**, por Claude Code. **Correcciones de la revisión multiagente en la rama `phase-10/review-fixes`** (32 hallazgos; sin commit, sin instalar; contrato sin cambios). Los cambios del plug-in son B y esperan su prueba en vivo (ver "QUÉ SIGUE").
+> Anterior (Codex): **v0.9.2 publicada y repositorio PUBLIC**; PR#1 integrado tras CI exitosa. Cuatro paquetes y SHA256SUMS coinciden con los hashes remotos. Asset0.8.0 con rutas privadas retirado y respaldado; reportes privados de seguridad habilitados. Instalación2025 conserva78/78 controles y262 hashes correctos. UNDO automático deshabilitado;2024/2026 solo evidencia de compilación/pruebas sin anfitrión. Ver [PUBLIC_READINESS.md](../PUBLIC_READINESS.md).
 
 ## Versión
 
 | Qué | Valor |
 |---|---|
-| Código en el repo | **v0.8.2** (2026-10-14; en `develop`, sin Release en `main`): contrato `154382e00355bbc7e125cdc4`, 767 tests. Corrige `entities draw` de MTEXT/TEXT rechazado por `pattern` (default del esquema rellenado por el cliente en todos los items). Ver CHANGELOG |
-| v0.8.1 | (2026-10-08): contrato `3cf0d8ccf8312ee217d613c8`, 760 tests. Corrige el rechazo de lecturas por `dry_run` por defecto y añade `document action=geo` (georreferencia, UCS, VIEWTWIST, convergencia) y lecturas tipadas sobre dibujos abiertos NO activos (lista en health `non_active_reads`; escrituras siguen exigiendo el activo). Ver CHANGELOG |
-| v0.8.0 (anterior) | 26 herramientas, contrato `550ff5cb0f7cdce48d7194d5`, 435 tests. Verificado en vivo: 294/294 con FULL WRITE aplicado + accesos directos + 2 instancias. Pendiente en vivo: `undo_last` y la publicación que asocia el dibujo |
-| Instalado en la máquina del dueño | **v0.8.2, edición de desarrollo** (2026-10-14, 12 archivos del plug-in y 13 del servidor SHA-256 idénticos al build), registrada como `horizun-civil3d`. Verificada en vivo el 2026-10-15 (incluye execute_csharp con AecBaseMgd y grading de plataforma inclinada plana). El conector anterior (`civil3d-mcp`) fue **retirado** el 2026-10-04 (respaldo en `Desarrollos\Civil3D MCP\_archivo\`) |
-| Civil 3D disponible | Solo **2025** (ACADVER 25.0s, AeccDbMgd 13.7.0.145) |
-| Git / GitHub | `HorizunGroup/horizun-civil3d-mcp` (privado). Ramas `develop` (trabajo) y `main` (versiones estables, cada una con Release e instalable `.zip`). Las notas personales van en `.local/` (ignorado) |
-| Perfil de permisos activo | El 2026-10-08 `settings.json` existía con `unsafe_code` y `execute_csharp` encendido (lo puso el dueño para diagnosticar). Volver a `safe_write` cuando termine |
+| Código en el repo | **v0.9.4 en integración** (rama `integrar/v0.9.4`, sin PR todavía): v0.9.3 de `main` + la línea `develop` (lecturas con defaults del cliente, `document geo`, lecturas de dibujos no activos, piso plano del grading, draw de TEXT/MTEXT, AecBaseMgd en C#, `add_data` sin defaults anidados). Contrato nuevo al compilar |
+| `main` | **v0.9.3** (2026-10-19, firma Certum; PRs #1 a #5). Release v0.9.3 publicada. Repositorio **PÚBLICO**: no escribir nombres de clientes ni proyectos reales en docs, tests ni commits |
+| Línea `develop` (integrada en 0.9.4) | v0.8.2 (2026-10-14, contrato `154382e00355bbc7e125cdc4`) y v0.8.1 (2026-10-08, contrato `3cf0d8ccf8312ee217d613c8`), verificadas en vivo el 2026-10-15: verify_live 287/287 |
+| Instalado en la máquina del dueño (Claude) | **v0.8.2, edición de desarrollo**, registrada como `horizun-civil3d` (12 + 13 archivos SHA-256 idénticos al build). El conector anterior (`civil3d-mcp`) fue **retirado** el 2026-10-04 |
+| Instalación de la línea main (Codex) | v0.9.2 operativa 2025 según la línea main: generación `0.9.2-20261006-085000`, servidor aislado `server-releases/0.9.2-final` registrado en Codex |
+| Civil 3D disponible | **2025** (ACADVER 25.0s, AeccDbMgd 13.7.0.145). 2024/2026 no instalados; solo build/pruebas sin anfitrión |
+| Git / GitHub | [HorizunGroup/horizun-civil3d-mcp](https://github.com/HorizunGroup/horizun-civil3d-mcp) (público). `main` = versiones con Release; `develop` = trabajo. Push con la cuenta de la organización, nunca con la personal. Notas personales en `.local/` (ignorado) |
+| Perfil de permisos activo | El dueño lo cambia según la prueba (el 2026-10-15 quedó en `unsafe_code` con `execute_csharp` encendido para probar). Volver a `safe_write` al terminar |
 | Integración ChatGPT | Auxiliares instalados, cliente oficial 0.0.15; 111 checks pasan en PowerShell 5.1 y 7.6.5. **pending_user_action**: faltan túnel/clave de cuenta y llamada real. Ver docs/CHATGPT.md |
 | Registro en Claude Desktop | Hecho, como `horizun-civil3d`. Los otros conectores siguen intactos |
+| Registro en Codex | `horizun-civil3d` habilitado por CLI oficial, stdio apunta al EXE instalado. Configuración respaldada y comparación semántica de ajustes previos pasa; catálogo del servidor instalado comprobado |
 
 ## Herramientas existentes (fase 0 y primer bloque de fase 1)
 
@@ -29,7 +34,7 @@
 | `horizun_c3d_probe` | firmas de la API en vivo | Sí |
 | `horizun_c3d_surface` | list, get, sample_elevation, volumes_report, rename, set_style, duplicate_style, create_tin, create_volume, rebuild, **add_data, paste** | **Sí**: 46/46 en el dibujo de ensayo, deshacer incluido (v0.3.4) |
 
-### Herramientas de la fase 3 (v0.6.x): VERIFICADAS EN VIVO 284/284 (2026-10-02)
+### Herramientas de la fase 3 (v0.6.x): acciones v0.6.x VERIFICADAS EN VIVO 284/284 (2026-10-02). Las acciones añadidas después (p. ej. `pressure_*`) tienen su propio grado en `docs/CIVIL3D.md`; no se suponen verificadas en vivo
 
 | Bloque | Herramientas |
 |---|---|
@@ -46,10 +51,10 @@ Detalle de la evidencia: `docs/CIVIL3D.md`.
 
 ## Pendientes conocidos (pequeños)
 
-1. Superficies v0.3.4: verificadas en vivo (46/46). Lo pendiente en vivo es v0.4.0+ (ver QUÉ SIGUE).
+1. Automatic undo_last deshabilitado: ensayo nuevo no retiró una línea; snapshots experimentales no cubrieron toda la topología. Se rechaza antes de ejecutar y no se anuncia una inversa automática. UNDO manual requiere inspección.
 2. **Probar "busy" con un diálogo modal** abierto (Opciones). Solo está probado con un comando (`LINE`).
 3. **Investigar los objetos `AeccDbVAlignment` sin alineamientos** (79 en un dibujo real de cliente, probablemente internos de gradings) antes de contarlos como perfiles.
-4. Las versiones de Civil 3D 2026 y 2027 compilan, pero no se pueden probar en esta máquina. 2023 y 2024 (net48) no están soportadas.
+4. 2024/2026 compilan contra referencias reales firmadas. Falta L y coincidencia de actualizaciones instaladas; 2024 rechaza UseSameSideTarget no disponible. 2026 necesita net8 o net10 según actualización. 2023 no es target; 2027 no tiene nueva evidencia.
 
 ## Correcciones de la revisión (Codex, 2026-10-01)
 
@@ -84,19 +89,47 @@ Detalle de la evidencia: `docs/CIVIL3D.md`.
 
 ## ▶ QUÉ SIGUE (siguiente bloque de trabajo)
 
-00. **v0.8.2 sin instalar ni publicar** (cambia el contrato: servidor + plug-in juntos). Instalar cuando el dueño cierre Civil 3D (guardar antes) y verificar con `docs/CIVIL3D.md` § v0.8.2: draw de mtext/text sin pattern y hatch SOLID por defecto.
+00. **v0.9.4 (integración, 2026-10-20):** terminar la rama `integrar/v0.9.4` (tests, build 2025, instalación con Civil 3D cerrado, prueba en vivo con verify_live + llamadas con defaults del cliente) y abrir el PR a `main`. El dueño revisa y fusiona; la Release y la firma Certum van después y solo cuando él lo pida.
 
-0. **v0.8.1 INSTALADA el 2026-10-09** (SHA-256 verificado, 12 + 13 archivos; push a `develop` con la cuenta de Horizun). Falta verificar en vivo con la lista de `docs/CIVIL3D.md` § v0.8.1: lecturas sin rechazo por `dry_run` y `document action=geo`.
+**Revisión multiagente corregida (2026-10-06, Claude Code):** 32 hallazgos corregidos en la rama `phase-10/review-fixes`, sin commit. Detalle en `CHANGELOG.md` (Unreleased) y la tabla de compuertas en vivo al final de `docs/CIVIL3D.md`.
+
+0. **Antes que nada:** el dueño decide si se hace commit/PR de la rama. Después, con Civil 3D cerrado (**guardar primero**), instalar con `pwsh scripts/install.ps1 -Years 2025` y correr las compuertas en vivo de la tabla "Review fixes" de `docs/CIVIL3D.md` sobre el fixture (grupo de puntos con consulta personalizada, secciones en capa bloqueada, health con el nuevo nombre de pipe, regresiones de pipes/shortcuts). Solo entonces subir esas filas a L y decidir versión (0.9.3).
+
+**Publicación completada:** autorización reiterada y nueva sesión con aprobación de ejecución permitieron push. PR#1 pasó CI (`37476925655`) y se integró en `2c02c2d6122c9904df15e03aa8a6ca7c819998df`. Release0.9.2 publicada con cinco hashes remotos idénticos. ZIP0.8.0 retirado después de verificar respaldo; tag/fuente conservados. Visibilidad PUBLIC verificada y reportes privados de seguridad habilitados. Configuración instalada y evidencia nativa conservadas.
+
+1. Piloto controlado2025 según la matriz de evidencia pública; registrar resultados sobre copias autorizadas. No describir todas las acciones declaradas como certificadas ni anunciar restauración automática.
+2. Ejecutar aceptación en anfitriones 2024 y 2026 cuando existan, usando el runtime y referencias de su actualización. El dueño confirmó que no están instalados: no volver a pedir rutas ni declarar L para esos años.
+3. Bloque futuro: investigar atribución nativa y snapshots completos antes de reactivar undo_last. Mantener cantidades estimadas y refresco explícito documentados.
+
+## Plan histórico anterior (sustituido por la aceptación de v0.9.1)
+
+**Inicio resuelto en nueva instancia2025:** health y comparación de superficies ya pasan. El dibujo de ensayo nuevo permanece abierto y sin guardar; guardar si se quiere conservar. Una instancia anterior sin ventana sigue abierta y no fue terminada. **Qué sigue:** aceptación de corredores/CSV/viewports/UNDO en fixture y abrir Revit para ensayar transferencia real, con controles independientes. 2024/2026 requieren L en sus equipos.
+
+**Prioridad actual tras la comparación con Revit/Navisworks/Power BI/Project:**
+
+**Compatibilidad pedida por el dueño:** compilaciones completas terminadas para 2024 y ambas familias 2026; sondeos offline reales y diferencias corregidas. Paquete canónico 2024/2025/2026 net8 y ZIP separado 2026 net10. El dueño confirma que no las tiene: no volver a pedir su ruta. **Qué sigue:** medir versiones de DLL en el equipo de destino, respetar `host-builds.json`, instalar después de guardar/cerrar y ejecutar fixture; Toposolid Revit y ubicación/fidelidad siguen pendientes de L. Ver `docs/COMPATIBILITY.md`.
+
+**Prioridad del dueño:** probar los bloques ya implementados. Autorizó **ensayo con archivos nuevos**. `.local/engineering-fixture-20261005` contiene TIN XML/OBJ/ZIP de 100 m², CSV de ejemplo, RMSE esperado 0.02 m y peticiones de creación nativa. No equivale a DWG/RVT creados. **Qué sigue:** instalar servidor+addin juntos después de confirmar guardar/cerrar según WORKFLOW; abrir Civil/Revit, crear fixture y modelo nuevo por API, ensayar Toposolid y/o DirectShape, medir controles e interiores, y comprobar targets/split-merge/CSV/viewports/UNDO. Python de Revit requiere su autorización existente, nunca se autoactiva.
+
+1. Revisar `docs/BENCHMARK.md`, `docs/CAPABILITY_REVIEW.md` y `docs/CAPABILITY_CATALOG.md`. Se compararon tres MCP públicos, Dynamo, Camber, CTC CIM Project Suite y Grading Optimization. El catálogo ya puede consultarse sin Civil 3D con `horizun_c3d_capabilities`; su disponibilidad no prueba al anfitrión.
+2. Desplegar el ZIP preparado servidor + add-in juntos: pedir **guardar dibujos y cerrar Civil 3D**, esperar confirmación, instalar y reiniciar el cliente MCP. No se hizo esta instalación durante la revisión.
+3. Probar en el fixture: auditoría; presión (list/get/red vacía/rename); copia DWG sin guardar el origen; LandXML métrico/pie internacional/pie US con INSUNITS distinto; CSV/XML/DWG denegados bajo safe_write. Mantener regresiones de dibujos homónimos, C# query, UNDO, PDF existente + fallo y carga del plugin/MCPB.
+   Añadir `export_revit` con hash/conectividad/coordenadas y rechazo bajo safe_write. Con el DWG/superficie y modelo destino identificados por el dueño, ejecutar ensayo Toposolid y contrastar controles/rotación/cota/nivel e interiores. Revit tiene un modal que debe resolver la persona; no fue cerrado automáticamente.
+4. Completar snapshots anteriores para verificar UNDO de modificaciones. Actualmente se informa honestamente verificación incompleta, sin reintentar el UNDO ya ejecutado.
+5. Con instrucción del dueño: commit/push y publicación de v0.8.1 con ZIP, plugin ZIP, MCPB y hashes. Los artefactos locales no son una release publicada.
+6. Siguiente bloque de interoperabilidad: probar transferencia y sondear malla exacta/3DFACE/DirectShape para preservar TIN/huecos, separado del Toposolid editable. Mantener snapshots de UNDO, planes transaccionales y estado de operaciones; después targets/geometría aplicada + cantidades trazables y presión. Los criterios están en `docs/INTEROPERABILITY.md` y `docs/BENCHMARK.md`; una secuencia de commits no equivale a todo-o-nada.
+
+**Hoja de ruta histórica que continúa pendiente:**
 
 1. ~~Probar el camino aplicado de FULL WRITE~~: **HECHO 2026-10-02** (294/294). Falta solo publicar y referenciar accesos directos, que necesitan un proyecto.
 2. ~~Accesos directos~~: **HECHO 2026-10-04** (publicar y referenciar con asociación automática, dos instancias). Falta re-ejecutar en vivo la publicación de la v0.7.4 (ahora asocia el dibujo).
 3. **Probar los botones "Canal C#" y "Escritura completa"** pulsados a mano (encender, `execute_csharp`, apagar, apagado automático al reiniciar) y `shortcuts_publish`/`shortcuts_reference` con un proyecto de accesos directos real.
 3. **Probar en dibujos reales** (con permiso del dueño, nunca sin él): etiquetas sobre referencias de accesos directos, corredores con ensamblajes importados (`assembly_import`) y redes con el catálogo del cliente.
-4. **Siguientes funciones:** `execute_plan` todo-o-nada; espirales en alineaciones y en el LandXML; redes de presión; Excel y Power BI.
+4. **Siguientes funciones:** `execute_plan` todo-o-nada; espirales; piezas y conexiones de redes de presión (la red vacía y sus consultas ya están compiladas); cómputos, Excel y Power BI.
 5. **Pendientes menores:** busy con diálogo modal, breakline proximity, `AeccDbVAlignment` y el índice de `SetPointElevation`.
 
 **Ciclo de despliegue** (cada versión nueva):
-1. El dueño cierra Civil 3D sin guardar el dibujo de ensayo.
+1. El dueño **guarda su trabajo antes de cerrar Civil 3D** y confirma el cierre. La regresión se hace después sobre un fixture nuevo.
 2. Correr `scripts/install.ps1 -Years 2025`.
 3. El dueño abre Civil 3D, ejecuta `NEW` y pulsa "Dibujo de ensayo".
 4. Correr `python scripts/verify_live.py`.

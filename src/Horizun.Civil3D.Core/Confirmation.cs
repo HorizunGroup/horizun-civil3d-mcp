@@ -120,7 +120,7 @@ public sealed class ConfirmationStore
                 return new(ConfirmationState.Missing,
                     "dry_run=false needs the confirmation_token returned by a dry run of exactly this request. " +
                     "Run it with dry_run=true first, read the plan, then apply with that token. Nothing was changed.");
-            if (!_issued.TryGetValue(token, out var e))
+            if (!_issued.TryGetValue(token!, out var e))
                 return new(ConfirmationState.Unknown,
                     "No such confirmation token. Tokens are single-use, expire after 10 minutes and do not survive a " +
                     "Civil 3D restart. Re-run the dry run. Nothing was changed.");
@@ -155,12 +155,14 @@ public sealed class ConfirmationStore
         }
     }
 
-    public int OutstandingCount { get { lock (_lock) { Prune(); return _issued.Count; } } }
+    public int OutstandingCount { get { lock (_lock) { Prune(); return _issued.Count(kv => !kv.Value.Used); } } }
 
+    // Spent tokens are kept until they expire, so a replay is reported as "already used" (one approval, one
+    // execution) instead of "unknown", which could make an agent think the first apply never happened.
     private void Prune()
     {
         var now = _now();
-        foreach (var k in _issued.Where(kv => kv.Value.Used || now > kv.Value.ExpiresUtc).Select(kv => kv.Key).ToList())
+        foreach (var k in _issued.Where(kv => now > kv.Value.ExpiresUtc).Select(kv => kv.Key).ToList())
             _issued.Remove(k);
     }
 }

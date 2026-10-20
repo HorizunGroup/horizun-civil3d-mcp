@@ -128,7 +128,7 @@ internal static class GeoInfo
             var back = g.TransformFromLonLatAlt(ll);
             var roundTrip = Math.Sqrt(Math.Pow(back.X - p.X, 2) + Math.Pow(back.Y - p.Y, 2));
             o["round_trip_error"] = Hz.Finite(roundTrip, 9);
-            if (!double.IsFinite(roundTrip) || roundTrip > 1e-3)
+            if (!Hz.IsFinite(roundTrip) || roundTrip > 1e-3)
                 return Fail(o, "The lon/lat round trip of the design point does not return to it (error " + roundTrip + " drawing units).");
             if (Math.Abs(ll.Y) + NorthStepDeg >= 90) return Fail(o, "The design point is at a pole.");
             var q = g.TransformFromLonLatAlt(new Point3d(ll.X, ll.Y + NorthStepDeg, ll.Z));

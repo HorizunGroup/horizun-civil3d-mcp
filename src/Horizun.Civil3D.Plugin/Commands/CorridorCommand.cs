@@ -19,7 +19,7 @@ using Horizun.Civil3D.Plugin.Civil;
 
 namespace Horizun.Civil3D.Plugin.Commands;
 
-internal sealed class CorridorCommand : ICommand
+internal sealed partial class CorridorCommand : ICommand
 {
     public string Name => "corridor";
 
@@ -35,6 +35,12 @@ internal sealed class CorridorCommand : ICommand
             "create" => Create(ctx),
             "add_region" => AddRegion(ctx),
             "rebuild" => Rebuild(ctx),
+            "get_targets" => GetTargets(ctx),
+            "set_targets" => SetTargets(ctx),
+            "applied_geometry" => AppliedGeometry(ctx, false),
+            "region_quantities" => AppliedGeometry(ctx, true),
+            "split_region" => RestructureRegion(ctx, false),
+            "merge_regions" => RestructureRegion(ctx, true),
             _ => CreateSurface(ctx),
         };
     }
@@ -120,7 +126,7 @@ internal sealed class CorridorCommand : ICommand
     {
         var name = Hz.Str(ctx.Args, "new_name")!;
         var insert = Resolve.P(ctx.Args["insert"]);
-        var type = Enum.Parse<AssemblyType>(Hz.Str(ctx.Args, "assembly_type") ?? "UndividedCrownedRoad");
+        var type = (AssemblyType)Enum.Parse(typeof(AssemblyType), Hz.Str(ctx.Args, "assembly_type") ?? "UndividedCrownedRoad");
         var id = ObjectId.Null;
         return WriteFlow.Run(ctx, "HZ_CORRIDOR",
             (doc, tr, plan) =>
@@ -152,7 +158,7 @@ internal sealed class CorridorCommand : ICommand
             (doc, tr, plan) =>
             {
                 Resolve.Unique(doc, tr, "assembly", name);
-                if (!Path.IsPathRooted(path) || !File.Exists(path)) throw new HzRefusal(ErrorCodes.NotFound, "source_dwg must be an existing absolute .dwg path: " + path + ". Nothing changed.");
+                if (!RuntimeCompat.IsPathFullyQualified(path) || !File.Exists(path)) throw new HzRefusal(ErrorCodes.NotFound, "source_dwg must be an existing absolute .dwg path: " + path + ". Nothing changed.");
                 if (string.Equals(Path.GetFullPath(path), Path.GetFullPath(doc.Name), StringComparison.OrdinalIgnoreCase))
                     throw new HzRefusal(ErrorCodes.InvalidInput, "source_dwg is the target drawing itself. Nothing changed.");
                 using (var src = new Database(false, true))

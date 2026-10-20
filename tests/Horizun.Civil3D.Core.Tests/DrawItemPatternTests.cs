@@ -44,18 +44,9 @@ public class DrawItemPatternTests
     public void A_pattern_on_mtext_is_still_refused_by_name() =>
         Assert.Contains("'pattern' is not used by mtext", Draw(Mtext.TrimEnd('}') + ",\"pattern\":\"SOLID\"}"));
 
-    /// <summary>Nested defaults that predate this guard. Same risk (a filled breaklines.max_distance=0 with
-    /// kind=proximity is refused "applies to kind=standard only"); remove each entry when its default is moved out.</summary>
-    private static readonly string[] KnownNestedDefaults =
-    {
-        "horizun_c3d_surface/breaklines/properties/kind",
-        "horizun_c3d_surface/breaklines/properties/mid_ordinate",
-        "horizun_c3d_surface/breaklines/properties/max_distance",
-        "horizun_c3d_surface/breaklines/properties/weeding_distance",
-        "horizun_c3d_surface/breaklines/properties/weeding_angle",
-        "horizun_c3d_surface/boundaries/properties/non_destructive",
-        "horizun_c3d_surface/boundaries/properties/mid_ordinate",
-    };
+    /// <summary>Nested defaults allowed below the top level: none. The surface add_data breaklines/boundaries defaults
+    /// were moved out in v0.9.4 (the plug-in applies them when a field is omitted).</summary>
+    private static readonly string[] KnownNestedDefaults = Array.Empty<string>();
 
     /// <summary>The class of bug: a "default" below the top-level properties is filled by clients where it does not
     /// apply, and WithoutDefaults cannot strip it. No NEW nested default may appear.</summary>

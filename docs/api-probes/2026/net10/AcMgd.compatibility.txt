@@ -1,0 +1,63 @@
+# acmgd.dll 25.1.0.0 (Civil 3D 2026)
+== Autodesk.AutoCAD.ApplicationServices.Application : Autodesk.AutoCAD.ApplicationServices.Core.Application
+  V BeginCustomizationMode(Object sender, EventArgs e)
+  V DisplayingCustomizeDialog(Object sender, TabbedDialogEventArgs e)
+  V DisplayingDraftingSettingsDialog(Object sender, TabbedDialogEventArgs e)
+  V DisplayingOptionDialog(Object sender, TabbedDialogEventArgs e)
+  V EndCustomizationMode(Object sender, EventArgs e)
+  M static Void AddDefaultContextMenuExtension(ContextMenuExtension menuExtension)
+  M static Void AddObjectContextMenuExtension(RXClass runtimeClass, ContextMenuExtension menuExtension)
+  M static Void CommitModalWindow(Boolean commitValue)
+  ? DoDragDrop Could not find type 'System.Windows.DependencyObject' in assembly 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.11\WindowsBase.dll'.
+  M static Void DoDragDrop(Control control, Object data, DragDropEffects allowedEffects, DropTarget target)
+  M static Void InvokeContextHelp(IntPtr window, Int32 contextId, String helpPrefix, HelpEventArgs hlpevent)
+  M static Void InvokeContextHelp(IntPtr window, Int32 contextId, String helpPrefix)
+  M static Void InvokeContextHelp(IntPtr window, Int32 contextId)
+  M static Void InvokeHelp(String fileName, String topic)
+  M static Boolean InvokeHelpForExternal(String functionName)
+  M static Boolean IsConnectEnabled()
+  M static Boolean LoadMainMenu(String filename)
+  M static Boolean LoadPartialMenu(String filename)
+  M static Void PostSearchQuery(String searchString)
+  M static Void ReloadAllMenus()
+  M static Void RemoveDefaultContextMenuExtension(ContextMenuExtension menuExtension)
+  M static Void RemoveObjectContextMenuExtension(RXClass runtimeClass, ContextMenuExtension menuExtension)
+  M static Boolean SetCurrentWorkspace(String workspacename)
+  M static DialogResult ShowModalDialog(IntPtr owner, Form formToShow)
+  M static DialogResult ShowModalDialog(IntPtr owner, Form formToShow, Boolean persistSizeAndPosition)
+  M static DialogResult ShowModalDialog(Form formToShow)
+  M static DialogResult ShowModalDialog(IWin32Window owner, Form formToShow)
+  M static DialogResult ShowModalDialog(IWin32Window owner, Form formToShow, Boolean persistSizeAndPosition)
+  M static Boolean ShowModalWindow(Uri htmlPage)
+  M static Boolean ShowModalWindow(IntPtr owner, Uri htmlPage)
+  M static Boolean ShowModalWindow(IntPtr owner, Uri htmlPage, Boolean persistSizeAndPosition)
+  M static Void ShowModelessDialog(IntPtr owner, Form formToShow)
+  M static Void ShowModelessDialog(IntPtr owner, Form formToShow, Boolean persistSizeAndPosition)
+  M static Void ShowModelessDialog(Form formToShow)
+  M static Void ShowModelessDialog(IWin32Window owner, Form formToShow)
+  M static Void ShowModelessDialog(IWin32Window owner, Form formToShow, Boolean persistSizeAndPosition)
+  M static Void ShowModelessWindow(Uri htmlPage)
+  M static Void ShowModelessWindow(IntPtr owner, Uri htmlPage)
+  M static Void ShowModelessWindow(IntPtr owner, Uri htmlPage, Boolean persistSizeAndPosition)
+  ? ToSystemDrawingPoint Could not find type 'System.Windows.Point' in assembly 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.11\WindowsBase.dll'.
+  ? ToSystemDrawingSize Could not find type 'System.Windows.Size' in assembly 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.11\WindowsBase.dll'.
+  ? ToSystemWindowsPoint Could not find type 'System.Windows.Point' in assembly 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.11\WindowsBase.dll'.
+  ? ToSystemWindowsSize Could not find type 'System.Windows.Size' in assembly 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.11\WindowsBase.dll'.
+  M static Boolean UnloadPartialMenu(String filename)
+  P static Object AcadApplication {get;}
+  P static Boolean DisplayTextScreen {get;set;}
+  P static DocumentWindowCollection DocumentWindowCollection {get;}
+  P static InfoCenter InfoCenter {get;}
+  P static Boolean IsInCustomizationMode {get;set;}
+  P static Object MenuBar {get;}
+  P static Object MenuGroups {get;}
+  P static Window NonInPlaceMainWindow {get;}
+  P static Object Preferences {get;}
+  P static StatusBar StatusBar {get;}
+  P static DataBindings UIBindings {get;}
+== Autodesk.AutoCAD.ApplicationServices.DocumentCollectionExtension : System.Object
+  M static Document Add(DocumentCollection docCol, String templateFileName)
+  M static Void CloseAll(DocumentCollection docCol)
+  M static Document Open(DocumentCollection docCol, String fileName, Boolean forReadOnly, String password)
+  M static Document Open(DocumentCollection docCol, String fileName, Boolean forReadOnly)
+  M static Document Open(DocumentCollection docCol, String fileName)

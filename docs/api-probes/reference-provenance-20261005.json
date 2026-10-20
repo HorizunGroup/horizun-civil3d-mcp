@@ -1,0 +1,296 @@
+[
+  {
+    "reference_set": "2024",
+    "file": "accoremgd.dll",
+    "sha256": "2b613b1ec6e68300e71b17d3d50702992f8460484cea17c03214ce4c9d2b4434",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Rafael, S=California, C=US"
+  },
+  {
+    "reference_set": "2024",
+    "file": "AcCui.dll",
+    "sha256": "d68777e8bfa131527977b48346abd99106d7f18c02b6797f6beae37a721f041a",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Rafael, S=California, C=US"
+  },
+  {
+    "reference_set": "2024",
+    "file": "acdbmgd.dll",
+    "sha256": "fc48a2d62c133d9ade32acc99ef14588bfa9286d7cf2cecba8be82a00506bf4a",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Rafael, S=California, C=US"
+  },
+  {
+    "reference_set": "2024",
+    "file": "acdbmgdbrep.dll",
+    "sha256": "937802421df73ee9ea926fca95302d446804396154dec42020fc7e5a7e9cebb2",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Rafael, S=California, C=US"
+  },
+  {
+    "reference_set": "2024",
+    "file": "acmgd.dll",
+    "sha256": "3f495f7afd430306925ebc10d7f706108fd0ec54630571db8e6c01cd63d3ba2c",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Rafael, S=California, C=US"
+  },
+  {
+    "reference_set": "2024",
+    "file": "AdWindows.dll",
+    "sha256": "fc115b3d4b99b8b129297bb0db44eb90df972821e9611f1a81e5520a0e67a17f",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Rafael, S=California, C=US"
+  },
+  {
+    "reference_set": "2024",
+    "file": "AecBaseMgd.dll",
+    "sha256": "450c9b5af30610ccf853d96cce325bb97dd609c49f77a366a79b4a65443a9354",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Rafael, S=California, C=US"
+  },
+  {
+    "reference_set": "2024",
+    "file": "AecPropDataMgd.dll",
+    "sha256": "084582fdea81d95073937d9f9d8ed23fee35280094adb354363a772929541e03",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Rafael, S=California, C=US"
+  },
+  {
+    "reference_set": "2024",
+    "file": "AeccDataShortcutMgd.dll",
+    "sha256": "3965792cbf8072953ba1ee646fe0cadfbed773f14cb63be3b51c7e564660ce8e",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Rafael, S=California, C=US"
+  },
+  {
+    "reference_set": "2024",
+    "file": "AeccDbMgd.dll",
+    "sha256": "0bd3dba305281d21854c80144f3d90cf14acc1950335af4d6d84bc66be63e60d",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Rafael, S=California, C=US"
+  },
+  {
+    "reference_set": "2024",
+    "file": "AeccPressurePipesMgd.dll",
+    "sha256": "6386836f797d977c868418d5c815e349f218c3571c4b370b03c08306365e4d3a",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Rafael, S=California, C=US"
+  },
+  {
+    "reference_set": "2026",
+    "file": "accoremgd.dll",
+    "sha256": "77eb421995e5dfbcc28e66cd4ee50718746c0c6ae26fad50bae174ad373201fe",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026",
+    "file": "AcCui.dll",
+    "sha256": "05a223e8d96555ab6799ee74d9badd7de3f096f28fd1645f15e75f8499a48def",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026",
+    "file": "acdbmgd.dll",
+    "sha256": "c4c1133a1d35fbdb5deb9b98d0cf9df62684ca3c0621ae11f9d28352388ffc78",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026",
+    "file": "acdbmgdbrep.dll",
+    "sha256": "d5cb3e82e753d770a61fdc2de3ec50716a8ff0437265b7262c4a4645657319ec",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026",
+    "file": "acmgd.dll",
+    "sha256": "d34ef77113688cd15c287a7278975a0286e40660502e4b7b03e37f12e4c1a4d1",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026",
+    "file": "AdWindows.dll",
+    "sha256": "70bc45746f2e83465437474ce853886c3fa4b0b311974baebe652479bdb2a838",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026",
+    "file": "AecBaseMgd.dll",
+    "sha256": "d71cce5addde59960104db57fc6c9ddeb58cbe0b7f42372518373d5c463ecd2c",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026",
+    "file": "AecPropDataMgd.dll",
+    "sha256": "4eef2c9e2a3abd7d7ddf225c782feeed402280cc265bb5583531764cd36d9f77",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026",
+    "file": "AeccDataShortcutMgd.dll",
+    "sha256": "8a36081c8aaab925f6f90e30a492884c88e6379eafe3e4fae12bc8a2ee07f893",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026",
+    "file": "AeccDbMgd.dll",
+    "sha256": "3742562d832386be431d0692bba581809d81b39326ae685b8f998eac6c732646",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026",
+    "file": "AeccDrainageDesignMgd.dll",
+    "sha256": "0b394e5f2e2a74f87c762f959accb85458e39995dad9593b003b9effb9731ee8",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026",
+    "file": "AeccPressurePipesMgd.dll",
+    "sha256": "2ee6d7ce08dbbe263163f0e88a857699437f83b3a1ce9571bb48e7cef8372889",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "AcCoreMgd.dll",
+    "sha256": "7e5fbe6f587c3ad2f9d10036a8fcbdf3668fd9f07f4817b604567bbee74cdaa7",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "AcCui.dll",
+    "sha256": "7be0283c500c45b0d1ceba56a0b8bee8dab016b53373058db4a52b8fdf152abc",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "AcDbMgd.dll",
+    "sha256": "809883b07b3ecc448879f63d93d9b79327625215777e81bd110c80aa2cd93e89",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "acdbmgdbrep.dll",
+    "sha256": "5d46e2521051bee5c97fe5e46c032f22ded15228d79efa30cc1d7143ddcf8e9b",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "AcDx.dll",
+    "sha256": "bcc56069244cc2b7b305714bdd52357b4bf1546def04c4b971f51c9a77bf19ce",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "AcMgd.dll",
+    "sha256": "2ac5b33918859188d6d06fa45947e9421f3b3e2600f150e73b313451ad536bd9",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "AcMr.dll",
+    "sha256": "416c7fd8ae8069d1d87e10ad5bcd654d6ebfd4f625ee47f29c4f762b5aeb3888",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "AcSeamless.dll",
+    "sha256": "c8784d8dbabbe8a936b8bdcad679ac8a1fc36a667d6c06b60deaec59c01a4f59",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "AcTcMgd.dll",
+    "sha256": "0dc88512b866277a664486ca6a82dedfca9e39b69364dac2c16e817c686d1121",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "AcWindows.dll",
+    "sha256": "44a8b0d46d13f68ceee208a462d73a59c27c9094f18a82b3c2c62af774f4cbb0",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "AdUIMgd.dll",
+    "sha256": "2364bd130a0f405c802885e0f1af425f34d902600ec491e9f5bca9c861bd326e",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "AdUiPalettes.dll",
+    "sha256": "9b36720a458fedeedc297459d07a86854ca1e9da25536a50a2284cfb2b3625a3",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "AdWindows.dll",
+    "sha256": "2ade4f5650220d7f9143e7c16da666d856df54aa050d1f94e770bc8b110b214c",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "AecBaseMgd.dll",
+    "sha256": "d71cce5addde59960104db57fc6c9ddeb58cbe0b7f42372518373d5c463ecd2c",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "AecPropDataMgd.dll",
+    "sha256": "4eef2c9e2a3abd7d7ddf225c782feeed402280cc265bb5583531764cd36d9f77",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "AeccDataShortcutMgd.dll",
+    "sha256": "8a36081c8aaab925f6f90e30a492884c88e6379eafe3e4fae12bc8a2ee07f893",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "AeccDbMgd.dll",
+    "sha256": "3742562d832386be431d0692bba581809d81b39326ae685b8f998eac6c732646",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "AeccDrainageDesignMgd.dll",
+    "sha256": "0b394e5f2e2a74f87c762f959accb85458e39995dad9593b003b9effb9731ee8",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  },
+  {
+    "reference_set": "2026-net10",
+    "file": "AeccPressurePipesMgd.dll",
+    "sha256": "2ee6d7ce08dbbe263163f0e88a857699437f83b3a1ce9571bb48e7cef8372889",
+    "signature": "Valid",
+    "signer": "CN=\"Autodesk, Inc.\", O=\"Autodesk, Inc.\", L=San Francisco, S=California, C=US"
+  }
+]

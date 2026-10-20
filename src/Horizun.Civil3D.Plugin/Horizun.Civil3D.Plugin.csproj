@@ -2,20 +2,26 @@
   <!--
     Horizun Civil 3D plug-in, loaded inside acad.exe (Civil 3D).
     Build one binary per Civil 3D year:  dotnet build -p:Civil3DYear=2025
-      2025, 2026 -> net8.0-windows     2027 -> net10.0-windows (confirm on a 2027 machine)
-      2023, 2024 (net48) are not built yet: refused below rather than half-supported.
+      2024 -> net48. 2025/2026 -> net8 or net10, matching the installed Autodesk update.
+      2026 requires an explicit Civil3DRuntime (net8 through 2026.2.1; net10 from 2026.2.2).
+      No year-specific support is claimed before its Autodesk build and live gates.
     Autodesk assemblies are referenced from the LOCAL installation and never copied.
   -->
   <PropertyGroup>
-    <TargetFramework Condition="'$(Civil3DYear)' &gt;= '2027'">net10.0-windows</TargetFramework>
-    <TargetFramework Condition="'$(Civil3DYear)' &lt; '2027'">net8.0-windows</TargetFramework>
+    <Civil3DYear Condition="'$(Civil3DYear)' == ''">2025</Civil3DYear>
+    <Civil3DRuntime Condition="'$(Civil3DRuntime)' == '' And '$(Civil3DYear)' == '2024'">net48</Civil3DRuntime>
+    <Civil3DRuntime Condition="'$(Civil3DRuntime)' == '' And '$(Civil3DYear)' == '2025'">net8</Civil3DRuntime>
+    <Civil3DRuntime Condition="'$(Civil3DRuntime)' == '' And '$(Civil3DYear)' == '2027'">net10</Civil3DRuntime>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework Condition="'$(Civil3DRuntime)' == 'net48'">net48</TargetFramework>
+    <TargetFramework Condition="'$(Civil3DRuntime)' == 'net10'">net10.0-windows</TargetFramework>
     <AssemblyName>Horizun.Civil3D</AssemblyName>
     <RootNamespace>Horizun.Civil3D.Plugin</RootNamespace>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <OutputPath>bin\$(Configuration)\$(Civil3DYear)\</OutputPath>
+    <OutputPath>bin\$(Configuration)\$(Civil3DYear)\$(Civil3DRuntime)\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <DefineConstants>$(DefineConstants);C3D$(Civil3DYear)</DefineConstants>
     <!-- Edition: development (default, HZ_DEVTOOLS) or release (-p:HorizunEdition=release: no developer buttons). -->
@@ -24,11 +30,27 @@
     <AcadDir Condition="'$(AcadDir)' == ''">C:\Program Files\Autodesk\AutoCAD $(Civil3DYear)</AcadDir>
     <NoWarn>$(NoWarn);MSB3277;CA1416</NoWarn>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <!-- Exclude every year's generated sources, not just the selected intermediate path. -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);obj\**;bin\**</DefaultItemExcludes>
   </PropertyGroup>
 
   <Target Name="HorizunCheckCivil3D" BeforeTargets="ResolveAssemblyReferences">
-    <Error Condition="'$(Civil3DYear)' &lt; '2025'" Text="Civil 3D $(Civil3DYear) (net48) is not supported by this build yet." />
+    <Error Condition="'$(Civil3DYear)' != '2024' And '$(Civil3DYear)' != '2025' And '$(Civil3DYear)' != '2026' And '$(Civil3DYear)' != '2027'" Text="Build targets are Civil 3D 2024, 2025, 2026 and 2027. Each requires its own Autodesk DLLs and live validation." />
+    <Error Condition="'$(Civil3DRuntime)' != 'net48' And '$(Civil3DRuntime)' != 'net8' And '$(Civil3DRuntime)' != 'net10'" Text="Specify -p:Civil3DRuntime=net8 or net10 for Civil 3D 2026, matching the installed update (2026.2.2+ uses net10)." />
+    <Error Condition="('$(Civil3DYear)' == '2024' And '$(Civil3DRuntime)' != 'net48') Or ('$(Civil3DYear)' != '2024' And '$(Civil3DRuntime)' == 'net48')" Text="Only Civil 3D 2024 uses net48; modern years require net8/net10." />
+    <Error Condition="'$(Civil3DYear)' == '2027' And '$(Civil3DRuntime)' != 'net10'" Text="Civil 3D 2027 requires net10." />
     <Error Condition="!Exists('$(AcadDir)\C3D\AeccDbMgd.dll')" Text="Civil 3D $(Civil3DYear) not found: $(AcadDir)\C3D\AeccDbMgd.dll is missing. An AutoCAD without Civil 3D does not count." />
+    <GetAssemblyIdentity AssemblyFiles="$(AcadDir)\acmgd.dll">
+      <Output TaskParameter="Assemblies" ItemName="HostAssemblyIdentity" />
+    </GetAssemblyIdentity>
+    <PropertyGroup>
+      <ExpectedAcadVersion Condition="'$(Civil3DYear)' == '2024'">24.3.</ExpectedAcadVersion>
+      <ExpectedAcadVersion Condition="'$(Civil3DYear)' == '2025'">25.0.</ExpectedAcadVersion>
+      <ExpectedAcadVersion Condition="'$(Civil3DYear)' == '2026'">25.1.</ExpectedAcadVersion>
+      <ExpectedAcadVersion Condition="'$(Civil3DYear)' == '2027'">26.0.</ExpectedAcadVersion>
+      <ActualAcadVersion>%(HostAssemblyIdentity.Version)</ActualAcadVersion>
+    </PropertyGroup>
+    <Error Condition="!$([System.String]::Copy('$(ActualAcadVersion)').StartsWith('$(ExpectedAcadVersion)'))" Text="Autodesk DLL year mismatch: Civil 3D $(Civil3DYear) requires acmgd $(ExpectedAcadVersion)*; found $(ActualAcadVersion). Do not substitute another year's DLLs." />
   </Target>
 
   <ItemGroup>
@@ -38,11 +60,20 @@
     <Reference Include="AdWindows"><HintPath>$(AcadDir)\AdWindows.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="AecBaseMgd"><HintPath>$(AcadDir)\ACA\AecBaseMgd.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="AeccDbMgd"><HintPath>$(AcadDir)\C3D\AeccDbMgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="AeccPressurePipesMgd"><HintPath>$(AcadDir)\C3D\AeccPressurePipesMgd.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="AeccDataShortcutMgd"><HintPath>$(AcadDir)\C3D\AeccDataShortcutMgd.dll</HintPath><Private>false</Private></Reference>
   </ItemGroup>
 
   <ItemGroup>
     <AssemblyMetadata Include="Civil3DYear" Value="$(Civil3DYear)" />
+    <AssemblyMetadata Include="Civil3DRuntime" Value="$(Civil3DRuntime)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Civil3DRuntime)' == 'net48'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all" />
+    <PackageReference Include="PolySharp" Version="1.15.0" PrivateAssets="all" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
   </ItemGroup>
 
   <ItemGroup>

@@ -57,7 +57,7 @@ Dueño: **Juan Daniel Unigarro Pabón**, BIM Manager y consultor en Horizun AEC 
 Claude / cliente MCP
    │ MCP por stdio (JSON-RPC, una línea por mensaje)
 horizun-civil3d-mcp.exe            src/Horizun.Civil3D.Server   (.NET 8, autocontenido)
-   │ named pipe "Horizun.Civil3D-<pid>" + token de 256 bits (archivo discovery\civil3d-<año>-<pid>.json)
+   │ named pipe "Horizun.Civil3D-<pid>-<aleatorio>" + token de 256 bits; el servidor comprueba el pid antes de enviar (archivo discovery\civil3d-<año>-<pid>.json)
 Horizun.Civil3D.dll en acad.exe    src/Horizun.Civil3D.Plugin   (un build por año: -p:Civil3DYear=2025)
    │ RequestGate (FIFO, 16) → hilo principal, contexto de aplicación (control oculto + timer + Idle) → LockDocument → Transaction
 API .NET de Civil 3D (AeccDbMgd) + AutoCAD

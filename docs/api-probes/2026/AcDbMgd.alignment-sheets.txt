@@ -1,0 +1,134 @@
+# acdbmgd.dll 25.1.0.0 (Civil 3D 2026)
+== Autodesk.AutoCAD.DatabaseServices.Viewport : Autodesk.AutoCAD.DatabaseServices.Entity
+  C ()
+  M Void FreezeLayersInViewport(IEnumerator layerIds)
+  M ObjectIdCollection GetFrozenLayers()
+  M ObjectId GetPreviousBackground(DrawableType type)
+  M Void GetUcs(Point3d& origin, Vector3d& x, Vector3d& y)
+  M Boolean IsLayerFrozenInViewport(ObjectId layerId)
+  M Void SetPreviousBackground(ObjectId value, DrawableType type)
+  M Void SetShadePlot(ShadePlotType type, ObjectId shadePlotId)
+  M ObjectId SetSun(DBObject sun)
+  M Void SetUcs(ObjectId userCoordinateSystemId)
+  M Void SetUcs(OrthographicView view)
+  M Void SetUcs(Point3d origin, Vector3d x, Vector3d y)
+  M Void SetUcsToWorld()
+  M Void SetViewDirection(OrthographicView view)
+  M Void ThawAllLayersInViewport()
+  M Void ThawLayersInViewport(IEnumerator layerIds)
+  M Void UpdateDisplay()
+  P Color AmbientLightColor {get;set;}
+  P AnnotationScale AnnotationScale {get;set;}
+  P Double BackClipDistance {get;set;}
+  P Boolean BackClipOn {get;set;}
+  P ObjectId Background {get;set;}
+  P Double Brightness {get;set;}
+  P Point3d CenterPoint {get;set;}
+  P Int32 CircleSides {get;set;}
+  P Double Contrast {get;set;}
+  P Double CustomScale {get;set;}
+  P Boolean DefaultLightingOn {get;set;}
+  P DefaultLightingType DefaultLightingType {get;set;}
+  P String EffectivePlotStyleSheet {get;}
+  P Double Elevation {get;set;}
+  P Boolean FastZoomOn {get;set;}
+  P Boolean FrontClipAtEyeOn {get;set;}
+  P Double FrontClipDistance {get;set;}
+  P Boolean FrontClipOn {get;set;}
+  P Boolean GridAdaptive {get;set;}
+  P Boolean GridBoundToLimits {get;set;}
+  P Boolean GridFollow {get;set;}
+  P Vector2d GridIncrement {get;set;}
+  P Int16 GridMajor {get;set;}
+  P Boolean GridOn {get;set;}
+  P Boolean GridSubdivisionRestricted {get;set;}
+  P Double Height {get;set;}
+  P Boolean HiddenLinesRemoved {get;set;}
+  P Double LensLength {get;set;}
+  P Boolean LinkedToSheetView {get;}
+  P Boolean Locked {get;set;}
+  P ObjectId NonRectClipEntityId {get;set;}
+  P Boolean NonRectClipOn {get;set;}
+  P Int32 Number {get;}
+  P Boolean On {get;set;}
+  P Boolean PerspectiveOn {get;set;}
+  P Boolean PlotAsRaster {get;}
+  P String PlotStyleSheet {get;set;}
+  P Boolean PlotWireframe {get;}
+  P ShadePlotType ShadePlot {get;set;}
+  P ObjectId ShadePlotId {get;}
+  P Double SnapAngle {get;set;}
+  P Point2d SnapBasePoint {get;set;}
+  P Vector2d SnapIncrement {get;set;}
+  P Boolean SnapIsometric {get;set;}
+  P Int32 SnapIsoPair {get;set;}
+  P Boolean SnapOn {get;set;}
+  P StandardScaleType StandardScale {get;set;}
+  P ObjectId SunId {get;}
+  P Bitmap Thumbnail {get;set;}
+  P ToneOperatorParameters ToneOperatorParameters {get;set;}
+  P Boolean Transparent {get;set;}
+  P Double TwistAngle {get;set;}
+  P CoordinateSystem3d Ucs {get;set;}
+  P Boolean UcsFollowModeOn {get;set;}
+  P Boolean UcsIconAtOrigin {get;set;}
+  P Boolean UcsIconVisible {get;set;}
+  P ObjectId UcsName {get;}
+  P OrthographicView UcsOrthographic {get;}
+  P Boolean UcsPerViewport {get;set;}
+  P Point2d ViewCenter {get;set;}
+  P Vector3d ViewDirection {get;set;}
+  P Double ViewHeight {get;set;}
+  P OrthographicView ViewOrthographic {get;}
+  P Point3d ViewTarget {get;set;}
+  P ObjectId VisualStyleId {get;set;}
+  P Double Width {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.Xrecord : Autodesk.AutoCAD.DatabaseServices.DBObject
+  C ()
+  M Void Append(ResultBuffer data)
+  M XrecordEnumerator GetEnumerator()
+  M IEnumerator IEnumerableGetEnumerator()
+  M IEnumerator<TypedValue> IEnumerableTypedValueGetEnumerator()
+  P ResultBuffer Data {get;set;}
+  P DuplicateRecordCloning MergeStyle {get;set;}
+  P Boolean XlateReferences {get;set;}
+== Autodesk.AutoCAD.DatabaseServices.ResultBuffer : Autodesk.AutoCAD.Runtime.DisposableWrapper
+  C (TypedValue[] values)
+  C ()
+  M Void Add(Object value)
+  M Void Add(TypedValue value)
+  M TypedValue[] AsArray()
+  M static ResultBuffer Create(IntPtr buffer, Boolean autoDelete)
+  M Boolean Equals(Object obj)
+  M ResultBufferEnumerator GetEnumerator()
+  M Int32 GetHashCode()
+  M String ToString()
+  M String ToString(IFormatProvider provider)
+  M String ToString(String format, IFormatProvider provider)
+== Autodesk.AutoCAD.DatabaseServices.TypedValue : System.ValueType
+  C (Int32 typeCode, Object value)
+  C (Int32 typeCode)
+  M Boolean Equals(Object obj)
+  M Int32 GetHashCode()
+  M String ToString(String format, IFormatProvider provider)
+  M String ToString(IFormatProvider provider)
+  M String ToString()
+  P Int16 TypeCode {get;}
+  P Object Value {get;}
+== Autodesk.AutoCAD.DatabaseServices.DBDictionary : Autodesk.AutoCAD.DatabaseServices.DBObject
+  C ()
+  M Boolean Contains(ObjectId objId)
+  M Boolean Contains(String entryName)
+  M Void CopyTo(DBDictionaryEntry[] array, Int32 index)
+  M ObjectId GetAt(String entryName)
+  M DbDictionaryEnumerator GetEnumerator()
+  M String NameAt(ObjectId objId)
+  M Void Remove(ObjectId objId)
+  M ObjectId Remove(String key)
+  M ObjectId SetAt(String searchKey, DBObject newValue)
+  M Void SetName(String oldName, String newName)
+  P Int32 Count {get;}
+  P DBDictionary IncludingErased {get;}
+  P Object Item[String key] {get;set;}
+  P DuplicateRecordCloning MergeStyle {get;set;}
+  P Boolean TreatElementsAsHard {get;set;}

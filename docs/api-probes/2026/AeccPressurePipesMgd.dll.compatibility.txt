@@ -1,0 +1,188 @@
+# AeccPressurePipesMgd.dll 13.8.0.1516 (Civil 3D 2026)
+== Autodesk.Civil.ApplicationServices.CivilDocumentPressurePipesExtension : System.Object
+  M static ObjectId GetPressureNetworkIdFromPipeRunPath(CivilDocument document, ObjectId idPath)
+  M static ObjectId GetPressureNetworkIdFromPipeRunProfile(CivilDocument document, ObjectId idProfile)
+  M static ObjectIdCollection GetPressurePipeNetworkIds(CivilDocument document)
+  M static Boolean IsPressurePlanLayoutActive(CivilDocument document)
+  M static Boolean IsPressurePlanLayoutByPathActive(CivilDocument document)
+  M static Boolean IsPressureProfileLayoutActive(CivilDocument document)
+  M static Boolean IsPressureProfileLayoutByPathActive(CivilDocument document)
+  M static Void SetPressurePlanLayoutActive(CivilDocument document, Boolean bActive)
+  M static Void SetPressurePlanLayoutByPathActive(CivilDocument document, Boolean bActive)
+  M static Void SetPressureProfileLayoutActive(CivilDocument document, Boolean bActive)
+  M static Void SetPressureProfileLayoutByPathActive(CivilDocument document, Boolean bActive)
+== Autodesk.Civil.DatabaseServices.PressureAppurtenance : Autodesk.Civil.DatabaseServices.PressurePart
+  M Void ConnectToPipe(Int32 portIndex, ObjectId pipeId, Int32 pipePortIndex)
+  P Double InsertionPointOffset {get;}
+  P Double InsertionPointStation {get;}
+  P Point3d Location {get;set;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+== Autodesk.Civil.DatabaseServices.PressureFitting : Autodesk.Civil.DatabaseServices.PressurePart
+  M Void ConnectToPipe(Int32 portIndex, ObjectId pipeId, Int32 pipePortIndex)
+  P Double InsertionPointOffset {get;}
+  P Double InsertionPointStation {get;}
+  P Point3d Location {get;set;}
+  P Double ResultantHorizontalAngle {get;}
+  P Double ResultantVerticalAngle {get;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+== Autodesk.Civil.DatabaseServices.PressurePart : Autodesk.Civil.DatabaseServices.GeoEntity
+  M Void AddToProfileView(ObjectId profileViewId)
+  M Void ConnectToPipe(Int32 portIndex, ObjectId pipeId, Int32 pipePortIndex)
+  M Void DisconnectAt(Int32 index)
+  M Solid3d Get3dBody()
+  M PressurePartConnection GetConnectionAt(Int32 index)
+  M PressurePartSize GetPartSize()
+  M ObjectIdCollection GetProfileViewsDisplayingMe()
+  M Void RemoveFromAllProfileViews()
+  M Void RemoveFromProfileView(ObjectId profileViewId)
+  M Void SwapPartSize(PressurePartSize partSize)
+  P Int32 ConnectionCount {get;}
+  P String Name {get;}
+  P ObjectId NetworkId {get;}
+  P String NetworkName {get;}
+  P ParamBoolCollection ParamsBool {get;}
+  P ParamDoubleCollection ParamsDouble {get;}
+  P ParamLongCollection ParamsLong {get;}
+  P ParamStringCollection ParamsString {get;}
+  P PressureNetworkPartData PartData {get;}
+  P String PartDescription {get;set;}
+  P PressurePartDomainType PartDomain {get;}
+  P String PartFamilyName {get;}
+  P PressurePartType PartType {get;}
+  P Point3d Position {get;set;}
+  P ObjectId ProfileViewPartId {get;}
+  P ObjectId ReferenceAlignmentId {get;set;}
+  P String ReferenceAlignmentName {get;}
+  P ObjectId ReferenceSurfaceId {get;set;}
+  P String ReferenceSurfaceName {get;}
+== Autodesk.Civil.DatabaseServices.PressurePartConnection : Autodesk.AutoCAD.Runtime.DisposableWrapper
+  M Void DeleteUnmanagedObject()
+  P ObjectId ConnectedId {get;}
+  P Int32 ConnectedIndex {get;}
+  P Double Deflection {get;}
+  P String DeflectionUnit {get;}
+  P Vector3d Direction {get;}
+  P Double EngagementLength {get;}
+  P String EngagementLengthUnit {get;}
+  P String JointEndType {get;}
+  P Double NominalDiameter {get;}
+  P String NominalDiameterUnit {get;}
+  P Boolean Open {get;}
+  P Double OutsideDiameter {get;}
+  P String OutsideDiameterUnit {get;}
+  P Point3d Position {get;}
+  P Double WallThickness {get;}
+  P String WallThicknessUnit {get;}
+== Autodesk.Civil.DatabaseServices.PressurePipe : Autodesk.Civil.DatabaseServices.PressurePart
+  M Void ConnectToPipe(Int32 portIndex, ObjectId pipeId, Int32 pipePortIndex)
+  M Void ConnectToStructure(ObjectId structureId)
+  M Void DisconnectFromStructure(ObjectId structureId)
+  M ObjectId GetConnectedStructureIdAt(Int32 portIndex)
+  M PipeVerticalSegment[] GetVerticalSegments()
+  P Double Bearing {get;}
+  P Double Bulge {get;}
+  P Point3d CenterPointLocation {get;}
+  P Double ChordLength {get;}
+  P PipeCurveGeometry CurveGeometry {get;set;}
+  P PressurePartConnection EndConnection {get;}
+  P Double EndDir {get;}
+  P Double EndElevation {get;}
+  P ObjectId EndFittingId {get;}
+  P Double EndOffset {get;}
+  P ObjectId EndPartId {get;}
+  P Point3d EndPoint {get;set;}
+  P Double EndStation {get;}
+  P Boolean HasVerticalSegments {get;}
+  P Double HorizontalRadius {get;}
+  P Double InnerDiameter {get;}
+  P Boolean IsCurve {get;}
+  P Boolean IsVerticalCurve {get;}
+  P Boolean IsVerticalSag {get;}
+  P Double Length2DCenterToCenter {get;}
+  P Double Length3DCenterToCenter {get;}
+  P Double MaximumCover {get;}
+  P Double MinimumCover {get;}
+  P Double NominalDiameter {get;}
+  P Double OuterDiameter {get;}
+  P Double Slope {get;}
+  P PressurePartConnection StartConnection {get;}
+  P Double StartDir {get;}
+  P Double StartElevation {get;}
+  P ObjectId StartFittingId {get;}
+  P Double StartOffset {get;}
+  P ObjectId StartPartId {get;}
+  P Point3d StartPoint {get;set;}
+  P Double StartStation {get;}
+  P ObjectId StyleId {get;set;}
+  P String StyleName {get;set;}
+  P Double VerticalRadius {get;}
+  P Double WallThickness {get;}
+== Autodesk.Civil.DatabaseServices.PressurePipeNetwork : Autodesk.Civil.DatabaseServices.GeoEntity
+  M ObjectId AddAppurtenance(Point3d location, PressurePartSize partSize)
+  M Void AddAppurtenance(ObjectId appurtenanceId)
+  M ObjectId AddCurvePipe(Point3d startPoint, Point3d secondPoint, Point3d endPoint, PressurePartSize partSize)
+  M ObjectId AddCurvePipe(Point3d startPoint, Vector2d startDir, Point3d endPoint, PressurePartSize partSize)
+  M ObjectId AddCurvePipe(PipeCurveGeometry curveGeometry, PressurePartSize partSize)
+  M ObjectId AddFitting(Point3d location, PressurePartSize partSize)
+  M Void AddFitting(ObjectId fittingId)
+  M ObjectId AddLinePipe(LineSegment3d line, PressurePartSize partSize)
+  M Void AddPipe(ObjectId pipeId)
+  M static ObjectId Create(Database database, String networkName)
+  M ObjectIdCollection GetAppurtenanceIds()
+  M ObjectIdCollection GetFittingIds()
+  M ObjectIdCollection GetPipeIds()
+  P String AppurtenanceNameTemplate {get;set;}
+  P ObjectId AppurtenancePlanLabelStyleId {get;set;}
+  P String AppurtenancePlanLabelStyleName {get;set;}
+  P ObjectId AppurtenancePlanLayerId {get;set;}
+  P String AppurtenancePlanLayerName {get;set;}
+  P ObjectId AppurtenanceProfileLabelStyleId {get;set;}
+  P String AppurtenanceProfileLabelStyleName {get;set;}
+  P ObjectId AppurtenanceProfileLayerId {get;set;}
+  P String AppurtenanceProfileLayerName {get;set;}
+  P ObjectId CrossingPressurePipeProfileLabelStyleId {get;set;}
+  P String CrossingPressurePipeProfileLabelStyleName {get;set;}
+  P ObjectId CurrentPartListId {get;set;}
+  P String FittingNameTemplate {get;set;}
+  P ObjectId FittingPlanLabelStyleId {get;set;}
+  P String FittingPlanLabelStyleName {get;set;}
+  P ObjectId FittingPlanLayerId {get;set;}
+  P String FittingPlanLayerName {get;set;}
+  P ObjectId FittingProfileLabelStyleId {get;set;}
+  P String FittingProfileLabelStyleName {get;set;}
+  P ObjectId FittingProfileLayerId {get;set;}
+  P String FittingProfileLayerName {get;set;}
+  P Boolean HasPipeRun {get;}
+  P Boolean IsEmpty {get;}
+  P Double MaximumElevation {get;}
+  P Double MinimumElevation {get;}
+  P String ModifiedAppurtenancePlanLayerName {get;}
+  P String ModifiedAppurtenanceProfileLayerName {get;}
+  P String ModifiedFittingPlanLayerName {get;}
+  P String ModifiedFittingProfileLayerName {get;}
+  P String ModifiedPipePlanLayerName {get;}
+  P String ModifiedPipeProfileLayerName {get;}
+  P String ModifiedPipeSectionLayerName {get;}
+  P ObjectId PartsListId {get;set;}
+  P String PartsListName {get;set;}
+  P String PipeNameTemplate {get;set;}
+  P ObjectId PipePlanLabelStyleId {get;set;}
+  P String PipePlanLabelStyleName {get;set;}
+  P ObjectId PipePlanLayerId {get;set;}
+  P String PipePlanLayerName {get;set;}
+  P ObjectId PipeProfileLabelStyleId {get;set;}
+  P String PipeProfileLabelStyleName {get;set;}
+  P ObjectId PipeProfileLayerId {get;set;}
+  P String PipeProfileLayerName {get;set;}
+  P String PipeRunNameTemplate {get;set;}
+  P PressurePipeRunCollection PipeRuns {get;}
+  P ObjectId PipeSectionLabelStyleId {get;set;}
+  P String PipeSectionLabelStyleName {get;set;}
+  P ObjectId PipeSectionLayerId {get;set;}
+  P String PipeSectionLayerName {get;set;}
+  P ObjectId ReferenceAlignmentId {get;set;}
+  P String ReferenceAlignmentName {get;set;}
+  P ObjectId ReferenceSurfaceId {get;set;}
+  P String ReferenceSurfaceName {get;set;}

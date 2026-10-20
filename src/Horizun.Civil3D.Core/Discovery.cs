@@ -108,7 +108,7 @@ public static class Discovery
         var tmp = path + ".tmp-" + Guid.NewGuid().ToString("N");
         File.WriteAllText(tmp, r.ToJson().ToJsonString(Hz.Indented));
         RestrictToCurrentUser(tmp);
-        File.Move(tmp, path, overwrite: true);
+        RuntimeCompat.MoveReplacing(tmp, path);
         return path;
     }
 
@@ -163,7 +163,11 @@ public static class Discovery
 
     private static void RestrictToCurrentUser(string path)
     {
+#if NET48
+        if (!RuntimeCompat.IsWindows) return;
+#else
         if (!OperatingSystem.IsWindows()) return;
+#endif
         try
         {
             var fi = new FileInfo(path);

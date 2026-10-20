@@ -102,6 +102,16 @@ public class DataTests
     }
 
     private static string? V(string tool, string json) => ToolRules.Validate(tool, JsonNode.Parse(json)!.AsObject());
+
+    [Theory]
+    [InlineData("C:points.csv")]
+    [InlineData("\\points.csv")]
+    [InlineData("points.csv")]
+    public void Drive_or_root_relative_paths_are_not_absolute(string path)
+    {
+        var args = new JsonObject { ["action"] = "export_csv", ["target_document"] = "d", ["output"] = path };
+        Assert.NotNull(ToolRules.Validate("horizun_c3d_points", args));
+    }
     private const string T = "\"target_document\":\"d\",";
 
     [Theory]
@@ -140,7 +150,9 @@ public class DataTests
     {
         Assert.Equal(ToolEffect.FullWrite, Contract.Find("horizun_c3d_exchange")!.EffectFor(new JsonObject { ["action"] = "shortcuts_publish" }));
         Assert.Equal(ToolEffect.FullWrite, Contract.Find("horizun_c3d_points")!.EffectFor(new JsonObject { ["action"] = "erase" }));
-        Assert.Equal(ToolEffect.SafeWrite, Contract.Find("horizun_c3d_exchange")!.EffectFor(new JsonObject { ["action"] = "export_landxml" }));
+        Assert.Equal(ToolEffect.FullWrite, Contract.Find("horizun_c3d_exchange")!.EffectFor(new JsonObject { ["action"] = "export_landxml" }));
+        Assert.Equal(ToolEffect.FullWrite, Contract.Find("horizun_c3d_exchange")!.EffectFor(new JsonObject { ["action"] = "export_dwg" }));
+        Assert.Equal(ToolEffect.FullWrite, Contract.Find("horizun_c3d_points")!.EffectFor(new JsonObject { ["action"] = "export_csv" }));
     }
 
     [Fact]

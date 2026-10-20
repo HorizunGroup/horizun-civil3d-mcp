@@ -1,0 +1,2 @@
+# Reviewed false positive: explanatory confirmation/re-read docstring, not a credential.
+131b142915deceee440f64ac640b1c2fde3984cd:scripts/verify_live.py:generic-api-key:13

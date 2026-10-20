@@ -226,7 +226,10 @@ internal sealed partial class SurfaceCommand
                     checks.Check("paste operations in requested order", Hz.Strings(g.Sources.Select(x => x.Handle.ToString())), actual, ok);
                 }
                 ElevationCheck(checks, tin, "requested vertices", g.Vertices, bnd != null);
-                ElevationCheck(checks, tin, "standard breakline vertices", g.BreaklineChecks, bnd != null);
+                // Breaklines reach the triangulation only on rebuild; without one, the TIN read back is the old one.
+                if (rebuild) ElevationCheck(checks, tin, "standard breakline vertices", g.BreaklineChecks, bnd != null);
+                else if (g.BreaklineChecks.Count > 0)
+                    after["breakline_elevations"] = "not checked: rebuild=false leaves the surface out of date; rebuild it, then sample_elevation.";
                 if (rebuild) checks.Flag("is_out_of_date after rebuild", false, tin.IsOutOfDate);
                 after["counts"] = TinCounts(tin);
                 after["surface"] = Describe(tin, tr, false);
@@ -240,7 +243,7 @@ internal sealed partial class SurfaceCommand
         data["plan"] = plan;
         data["after"] = after;
         data["verified"] = checks.ToJson();
-        data["undo"] = new JsonObject { ["label"] = "HZ_SURFACE", ["instruction"] = "One UNDO in Civil 3D reverts this definition change; no drawing was saved." };
+        data["undo"] = new JsonObject { ["available"] = false, ["label"] = "HZ_SURFACE", ["instruction"] = "Automatic undo_last is disabled. Use Civil 3D native UNDO manually and inspect the result; no drawing was saved." };
         return checks.AllVerified ? CommandResult.Ok(data)
             : CommandResult.Fail(ErrorCodes.VerificationFailed, "The definition change committed but the re-read did not verify every requested item. Inspect after/verified before retrying.", data);
     }

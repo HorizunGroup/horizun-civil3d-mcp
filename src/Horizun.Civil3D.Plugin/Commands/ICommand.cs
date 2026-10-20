@@ -56,8 +56,9 @@ internal sealed class CommandContext
         var full = doc.Name ?? "";
         var t = target.Trim();
         return string.Equals(full, t, StringComparison.OrdinalIgnoreCase)
-               || string.Equals(Path.GetFileName(full), t, StringComparison.OrdinalIgnoreCase)
-               || string.Equals(Path.GetFileNameWithoutExtension(full), t, StringComparison.OrdinalIgnoreCase);
+               || (!Path.IsPathRooted(t) &&
+                   (string.Equals(Path.GetFileName(full), t, StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(Path.GetFileNameWithoutExtension(full), t, StringComparison.OrdinalIgnoreCase)));
     }
 
     /// <summary>
@@ -80,8 +81,6 @@ internal sealed class CommandContext
                     new JsonObject { ["active_document"] = active.Name });
             return active;
         }
-        if (NameMatches(active, target)) return active;
-
         var open = new JsonArray();
         var matches = new List<Document>();
         foreach (Document d in dm)
@@ -92,9 +91,13 @@ internal sealed class CommandContext
         var detail = new JsonObject { ["active_document"] = active.Name, ["open_documents"] = open };
         if (matches.Count == 0)
             throw new HzRefusal(ErrorCodes.DocumentMismatch, "'" + target + "' is not open in this Civil 3D. Nothing ran.", detail);
+        // Ambiguity is checked before the active drawing is returned: a bare file name shared by two open drawings
+        // must not silently resolve to whichever one happens to be active.
         if (matches.Count > 1)
-            throw new HzRefusal(ErrorCodes.DocumentMismatch,
-                "'" + target + "' matches " + matches.Count + " open drawings. Pass the full path. Nothing ran.", detail);
+            throw new HzRefusal(ErrorCodes.Ambiguous,
+                "'" + target + "' matches more than one open drawing. Pass its full path as target_document. Nothing ran.",
+                new JsonObject { ["candidates"] = Hz.Strings(matches.Select(d => d.Name)) });
+        if (matches[0] == active) return active;
 
         // A listed pure read may read another OPEN drawing in place: its own lock, its own database, an aborted
         // transaction. The active window is never changed. Writes always require the active drawing.
@@ -142,7 +145,7 @@ internal sealed class CommandContext
     }
 
     /// <summary>Lock (one undo step, labelled), run, commit. A failed commit throws.</summary>
-    public T Write<T>(Document doc, string undoLabel, Func<Transaction, T> body)
+    public T Write<T>(Document doc, string undoLabel, Func<Transaction, T> body, bool recordUndo = true)
     {
         if (doc.IsReadOnly)
             throw new HzRefusal(ErrorCodes.ReadOnlyDocument,
@@ -157,11 +160,22 @@ internal sealed class CommandContext
             result = body(tr);
             tr.Commit();
         }
+        catch
+        {
+            // The DWG transaction rolls back, but a command body may have
+            // already changed a file or a Civil 3D process setting.
+            Horizun.Civil3D.Plugin.Civil.DrawingRevision.Bump(doc);
+            Horizun.Civil3D.Plugin.Civil.DrawingRevision.ClearLastWrite(doc);
+            throw;
+        }
         finally { touched = Horizun.Civil3D.Plugin.Civil.DrawingRevision.StopRecording(); }
         Horizun.Civil3D.Plugin.Civil.DrawingRevision.Bump(doc); // our own committed edit: older tokens must go stale
-        // Remember it for undo_last: only undoable while the drawing has not changed since this exact moment.
-        Horizun.Civil3D.Plugin.Civil.DrawingRevision.SetLastWrite(doc, new(Horizun.Civil3D.Plugin.Civil.DrawingRevision.Capture(doc),
-            Tool.Name, Action ?? "", undoLabel, touched.Appended, touched.Modified.Count, DateTime.UtcNow));
+        // External effects cannot be reverted by Civil 3D UNDO. An empty DWG transaction
+        // also provides no evidence that the next UNDO step belongs to this request.
+        if (recordUndo && (touched.Appended.Count > 0 || touched.Modified.Count > 0))
+            Horizun.Civil3D.Plugin.Civil.DrawingRevision.SetLastWrite(doc, new(Horizun.Civil3D.Plugin.Civil.DrawingRevision.Capture(doc),
+                Tool.Name, Action ?? "", undoLabel, touched.Appended, touched.Modified.Count, DateTime.UtcNow));
+        else Horizun.Civil3D.Plugin.Civil.DrawingRevision.ClearLastWrite(doc);
         return result;
     }
 

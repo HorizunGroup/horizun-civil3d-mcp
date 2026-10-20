@@ -1,0 +1,188 @@
+# accoremgd.dll 25.1.0.0 (Civil 3D 2026)
+== Autodesk.AutoCAD.ApplicationServices.Core.Application : System.Object
+  V BeginCloseAll(Object sender, BeginCloseAllEventArgs e)
+  V BeginDoubleClick(Object sender, BeginDoubleClickEventArgs e)
+  V BeginExtraction(Object sender, BeginExtractionEventArgs e)
+  V BeginQuit(Object sender, BeginQuitEventArgs e)
+  V EndExtraction(Object sender, EndExtractionEventArgs e)
+  V EnterModal(Object sender, EventArgs e)
+  V Idle(Object sender, EventArgs e)
+  V LeaveModal(Object sender, EventArgs e)
+  V PreTranslateMessage(Object sender, PreTranslateMessageEventArgs e)
+  V QuitAborted(Object sender, EventArgs e)
+  V QuitWillStart(Object sender, EventArgs e)
+  V SystemVariableChanged(Object sender, SystemVariableChangedEventArgs e)
+  V SystemVariableChanging(Object sender, SystemVariableChangingEventArgs e)
+  M static String EvaluateDiesel(String dieselCmd)
+  M static Object GetSystemVariable(String name)
+  M static WhoHasInfo GetWhoHasInfo(String pathname)
+  M static ResultBuffer Invoke(ResultBuffer args)
+  M static Boolean IsFileLocked(String pathname)
+  M static Void LoadJSScript(Uri urlJSFile)
+  M static Void Quit()
+  M static Void SetSystemVariable(String name, Object value)
+  M static Void ShowAlertDialog(String message)
+  M static Nullable<Boolean> ShowModalWindow(Window formToShow)
+  M static Nullable<Boolean> ShowModalWindow(Window owner, Window formToShow)
+  M static Nullable<Boolean> ShowModalWindow(IntPtr owner, Window formToShow)
+  M static Nullable<Boolean> ShowModalWindow(Window owner, Window formToShow, Boolean persistSizeAndPosition)
+  M static Nullable<Boolean> ShowModalWindow(IntPtr owner, Window formToShow, Boolean persistSizeAndPosition)
+  M static Void ShowModelessWindow(Window formToShow)
+  M static Void ShowModelessWindow(Window owner, Window formToShow)
+  M static Void ShowModelessWindow(IntPtr owner, Window formToShow)
+  M static Void ShowModelessWindow(Window owner, Window formToShow, Boolean persistSizeAndPosition)
+  M static Void ShowModelessWindow(IntPtr owner, Window formToShow, Boolean persistSizeAndPosition)
+  M static Object TryGetSystemVariable(String name)
+  M static Void UpdateScreen()
+  P static DocumentCollection DocumentManager {get;}
+  P static Boolean HasPickFirst {get;}
+  P static Boolean IsAdpDisabled {get;}
+  P static Boolean IsInBackgroundMode {get;}
+  P static Boolean IsInPlaceServer {get;}
+  P static Boolean IsQuiescent {get;}
+  P static LongTransactionManager LongTransactionManager {get;}
+  P static Window MainWindow {get;}
+  P static Publisher Publisher {get;}
+  P static RecentDocumentCollection RecentDocuments {get;}
+  P static UnmanagedResources UnmanagedResources {get;}
+  P static UserConfigurationManager UserConfigurationManager {get;}
+  P static Version Version {get;}
+== Autodesk.AutoCAD.ApplicationServices.Document : Autodesk.AutoCAD.Runtime.DisposableWrapper
+  V BeginDocumentClose(Object sender, DocumentBeginCloseEventArgs e)
+  V BeginDwgOpen(Object sender, DrawingOpenEventArgs e)
+  V CloseAborted(Object sender, EventArgs e)
+  V CloseWillStart(Object sender, EventArgs e)
+  V CommandCancelled(Object sender, CommandEventArgs e)
+  V CommandEnded(Object sender, CommandEventArgs e)
+  V CommandFailed(Object sender, CommandEventArgs e)
+  V CommandWillStart(Object sender, CommandEventArgs e)
+  V EndDwgOpen(Object sender, DrawingOpenEventArgs e)
+  V ImpliedSelectionChanged(Object sender, EventArgs e)
+  V LayoutSwitched(Object sender, LayoutSwitchedEventArgs e)
+  V LayoutSwitching(Object sender, LayoutSwitchingEventArgs e)
+  V LispCancelled(Object sender, EventArgs e)
+  V LispEnded(Object sender, EventArgs e)
+  V LispWillStart(Object sender, LispWillStartEventArgs e)
+  V ModelessOperationEnded(Object sender, ModelessOperationEventArgs e)
+  V ModelessOperationWillStart(Object sender, ModelessOperationEventArgs e)
+  V UnknownCommand(Object sender, UnknownCommandEventArgs e)
+  V ViewChanged(Object sender, EventArgs e)
+  M static Document Create(IntPtr unmanagedPointer)
+  M Void DowngradeDocOpen(Boolean bPromptForSave)
+  M Object GetLispSymbol(String name)
+  M DocumentLock LockDocument()
+  M DocumentLock LockDocument(DocumentLockMode lockMode, String globalCommandName, String localCommandName, Boolean promptIfFails)
+  M DocumentLockMode LockMode(Boolean bIncludeMyLocks)
+  M DocumentLockMode LockMode()
+  M Void PopDbmod()
+  M Void PushDbmod()
+  M Void SendStringToExecute(String command, Boolean activate, Boolean wrapUpInactiveDoc, Boolean echoCommand)
+  M Void SetLispSymbol(String name, Object value)
+  M Database TryGetDatabase()
+  M Void UpgradeDocOpen()
+  P String CommandInProgress {get;}
+  P Database Database {get;}
+  P Editor Editor {get;}
+  P DocumentSaveFormat FormatForSave {get;}
+  P Manager GraphicsManager {get;}
+  P Boolean IsActive {get;}
+  P Boolean IsNamedDrawing {get;}
+  P Boolean IsReadOnly {get;}
+  P String Name {get;}
+  P TransactionManager TransactionManager {get;}
+  P Hashtable UserData {get;}
+  P Window Window {get;}
+== Autodesk.AutoCAD.ApplicationServices.DocumentCollection : System.MarshalByRefObject
+  V DocumentActivated(Object sender, DocumentCollectionEventArgs e)
+  V DocumentActivationChanged(Object sender, DocumentActivationChangedEventArgs e)
+  V DocumentBecameCurrent(Object sender, DocumentCollectionEventArgs e)
+  V DocumentCreated(Object sender, DocumentCollectionEventArgs e)
+  V DocumentCreateStarted(Object sender, DocumentCollectionEventArgs e)
+  V DocumentCreationCanceled(Object sender, DocumentCollectionEventArgs e)
+  V DocumentDestroyed(Object sender, DocumentDestroyedEventArgs e)
+  V DocumentLockModeChanged(Object sender, DocumentLockModeChangedEventArgs e)
+  V DocumentLockModeChangeVetoed(Object sender, DocumentLockModeChangeVetoedEventArgs e)
+  V DocumentLockModeWillChange(Object sender, DocumentLockModeWillChangeEventArgs e)
+  V DocumentToBeActivated(Object sender, DocumentCollectionEventArgs e)
+  V DocumentToBeDeactivated(Object sender, DocumentCollectionEventArgs e)
+  V DocumentToBeDestroyed(Object sender, DocumentCollectionEventArgs e)
+  M Void AppContextNewDocument(String templateFileName)
+  M Void AppContextOpenDocument(String fileName)
+  M Void AppContextRecoverDocument(String fileName)
+  M Void CopyTo(Document[] array, Int32 index)
+  M Void ExecuteInApplicationContext(ExecuteInApplicationContextCallback callback, Object data)
+  M ExecutionResult ExecuteInCommandContextAsync(Func<Object,Task> callback, Object data)
+  M Document GetDocument(Database db)
+  M IEnumerator GetEnumerator()
+  M Tuple<Boolean,Document> GetPendingDocumentForSwitch()
+  P Int32 Count {get;}
+  P Document CurrentDocument {get;set;}
+  P DocumentSaveFormat DefaultFormatForSave {get;set;}
+  P Boolean DocumentActivationEnabled {get;set;}
+  P Boolean IsApplicationContext {get;}
+  P Document MdiActiveDocument {get;set;}
+== Autodesk.AutoCAD.ApplicationServices.DocumentLockMode : System.Enum
+  E AutoWrite
+  E ExclusiveWrite
+  E None
+  E NotLocked
+  E ProtectedAutoWrite
+  E Read
+  F Int32 value__
+  E Write
+== Autodesk.AutoCAD.ApplicationServices.SystemVariableChangedEventArgs : System.EventArgs
+  P Boolean Changed {get;}
+  P String Name {get;}
+== Autodesk.AutoCAD.PlottingServices.PlotEngine : Autodesk.AutoCAD.Runtime.DisposableWrapper
+  M Void BeginDocument(PlotInfo plotInfo, String documentName, Object parameters, Int32 copies, Boolean plotToFile, String fileName)
+  M Void BeginGenerateGraphics(Object parameters)
+  M Void BeginPage(PlotPageInfo pageInfo, PlotInfo plotInfo, Boolean lastPage, Object parameters)
+  M Void BeginPlot(PlotProgress plotProgress, Object parameters)
+  M Void Destroy()
+  M Void EndDocument(Object parameters)
+  M Void EndGenerateGraphics(Object parameters)
+  M Void EndPage(Object parameters)
+  M Void EndPlot(Object parameters)
+  P Boolean IsBackgroundPackaging {get;}
+== Autodesk.AutoCAD.PlottingServices.PlotFactory : System.Object
+  M static PlotEngine CreatePreviewEngine(Int32 previewFlags)
+  M static PlotEngine CreatePublishEngine()
+  P static ProcessPlotState ProcessPlotState {get;}
+== Autodesk.AutoCAD.PlottingServices.PlotInfo : Autodesk.AutoCAD.Runtime.RXObject
+  C ()
+  M Boolean IsCompatibleDocument(PlotInfo info)
+  P PlotConfig DeviceOverride {get;set;}
+  P Boolean IsValidated {get;}
+  P ObjectId Layout {get;set;}
+  P Int32 MergeStatus {get;}
+  P PlotSettings OverrideSettings {get;set;}
+  P PlotConfig ValidatedConfig {get;set;}
+  P PlotSettings ValidatedSettings {get;set;}
+== Autodesk.AutoCAD.PlottingServices.PlotInfoValidator : Autodesk.AutoCAD.Runtime.RXObject
+  C ()
+  M Int32 IsCustomPossible(PlotInfo info)
+  M Void Validate(PlotInfo info)
+  P Int32 DimensionalWeight {get;set;}
+  P Int32 MediaBoundsWeight {get;set;}
+  P Int32 MediaGroupWeight {get;set;}
+  P MatchingPolicy MediaMatchingPolicy {get;set;}
+  P Int32 MediaMatchingThreshold {get;set;}
+  P Int32 PrintableBoundsWeight {get;set;}
+  P Int32 SheetDimensionalWeight {get;set;}
+  P Int32 SheetMediaGroupWeight {get;set;}
+== Autodesk.AutoCAD.PlottingServices.PlotPageInfo : Autodesk.AutoCAD.Runtime.RXObject
+  C ()
+  P Int32 EntityCount {get;}
+  P Int32 GradientCount {get;}
+  P Int32 OleObjectCount {get;}
+  P Int32 RasterCount {get;}
+  P Int32 ShadedViewportType {get;}
+== Autodesk.AutoCAD.PlottingServices.PlotProgressDialog : Autodesk.AutoCAD.PlottingServices.PlotProgress
+  C (Boolean isPreview, Int32 sheetCount, Boolean showCancelSheetButton)
+  M Void Destroy()
+  M Void OnBeginPlot()
+  M Void OnBeginSheet()
+  M Void OnEndPlot()
+  M Void OnEndSheet()
+  P Boolean IsSingleSheetPlot {get;}
+  P String PlotMsgString[PlotMessageIndex index] {get;set;}

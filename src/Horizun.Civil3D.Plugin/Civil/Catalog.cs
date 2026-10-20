@@ -261,7 +261,10 @@ internal static class Catalog
         try { Extras(obj, o, u, tr, lk, full); }
         catch (System.Exception ex) { u["extras"] = ex.GetType().Name + ": " + ex.Message; }
 
-        o["editable"] = notEditable.Count == 0;
+        // Editability fails closed: if an input to it could not be read, the answer is unknown (null), not true.
+        var unknown = notEditable.Count == 0 && (u.ContainsKey("is_reference") || u.ContainsKey("layer"));
+        if (unknown) notEditable.Add(JsonValue.Create("editability unknown: " + string.Join(", ", u.Where(kv => kv.Key is "is_reference" or "layer").Select(kv => kv.Key)) + " could not be read"));
+        o["editable"] = unknown ? null : notEditable.Count == 0;
         if (notEditable.Count > 0) o["not_editable_because"] = notEditable;
         if (u.Count > 0) o["unreadable"] = u;
         return o;

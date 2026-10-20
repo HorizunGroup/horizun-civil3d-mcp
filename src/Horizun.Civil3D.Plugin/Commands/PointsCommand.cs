@@ -18,7 +18,7 @@ using CivilSurface = Autodesk.Civil.DatabaseServices.Surface;
 
 namespace Horizun.Civil3D.Plugin.Commands;
 
-internal sealed class PointsCommand : ICommand
+internal sealed partial class PointsCommand : ICommand
 {
     public string Name => "points";
 
@@ -32,6 +32,8 @@ internal sealed class PointsCommand : ICommand
             "create" => Create(ctx, null),
             "import" => Create(ctx, ReadFile(ctx)),
             "export_csv" => ExportCsv(ctx),
+            "export_editable_csv" => ExportEditableCsv(ctx),
+            "apply_csv" => ApplyCsv(ctx),
             "elevations_from_surface" => FromSurface(ctx),
             "group_create" => GroupCreate(ctx),
             _ => Erase(ctx),
@@ -63,7 +65,7 @@ internal sealed class PointsCommand : ICommand
     private static List<CogoPoint> Select(CommandContext ctx, Document doc, Transaction tr)
     {
         var civ = Civ(doc);
-        if (Hz.Str(ctx.Args, "group") is { } g && ctx.Action is "list" or "elevations_from_surface" or "export_csv")
+        if (Hz.Str(ctx.Args, "group") is { } g && ctx.Action is "list" or "elevations_from_surface" or "export_csv" or "export_editable_csv" or "apply_csv")
         {
             var grp = (PointGroup)tr.GetObject(GroupId(doc, tr, g), OpenMode.ForRead);
             return grp.GetPointNumbers().Where(civ.CogoPoints.Contains).Select(n => (CogoPoint)tr.GetObject(civ.CogoPoints.GetPointByPointNumber(n), OpenMode.ForRead)).ToList();
@@ -123,6 +125,8 @@ internal sealed class PointsCommand : ICommand
         var names = fileRows == null ? ((JsonArray)ctx.Args["points"]!).Select(n => Hz.Str((JsonObject)n!, "name")).ToList() : rows.Select(_ => (string?)null).ToList();
         var groupName = Hz.Str(ctx.Args, "group");
         ObjectId groupId = ObjectId.Null;
+        var groupIsAll = false;
+        uint[] groupBefore = [];
         var created = new List<ObjectId>();
         return WriteFlow.Run(ctx, "HZ_POINTS",
             (doc, tr, plan) =>
@@ -133,7 +137,19 @@ internal sealed class PointsCommand : ICommand
                 if (dup.Count > 0) throw new HzRefusal(ErrorCodes.InvalidInput, "Point numbers repeat in the request: " + string.Join(", ", dup.Take(20)) + ". Nothing changed.");
                 var taken = nums.Where(cp.Contains).ToList();
                 if (taken.Count > 0) throw new HzRefusal(ErrorCodes.InvalidInput, taken.Count + " point number(s) already exist (e.g. " + string.Join(", ", taken.Take(10)) + "); existing points are never overwritten. Nothing changed.");
-                if (groupName != null) groupId = GroupId(doc, tr, groupName);
+                if (groupName != null)
+                {
+                    groupId = GroupId(doc, tr, groupName);
+                    var g = (PointGroup)tr.GetObject(groupId, OpenMode.ForRead);
+                    groupIsAll = g.IsAllPointsGroup;
+                    // Only a standard query can be extended by number. Rewriting any other query
+                    // would replace the group's definition and silently drop its members.
+                    if (!groupIsAll && g.GetQuery() is not StandardPointGroupQuery)
+                        throw new HzRefusal(ErrorCodes.InvalidInput, "Point group '" + g.Name + "' is defined by a custom query; adding points by number would replace that query. Add them to the group in Civil 3D, or omit 'group'. Nothing changed.");
+                    groupBefore = g.GetPointNumbers();
+                    plan["group_points_before"] = (long)groupBefore.Length;
+                    plan["group_query"] = groupIsAll ? "all points (no change needed)" : "standard: new numbers appended to IncludeNumbers";
+                }
                 plan["points"] = rows.Count; plan["with_numbers"] = nums.Count; plan["group"] = groupName;
                 plan["first"] = new JsonArray(rows.Take(5).Select(r => (JsonNode)new JsonObject { ["number"] = r.Number is { } n ? (long)n : null, ["x"] = r.X, ["y"] = r.Y, ["z"] = r.Z, ["description"] = r.Description }).ToArray());
                 if (fileRows != null) plan["file"] = Hz.Str(ctx.Args, "file");
@@ -141,16 +157,20 @@ internal sealed class PointsCommand : ICommand
             (doc, tr) =>
             {
                 var cp = Civ(doc).CogoPoints;
-                for (var i = 0; i < rows.Count; i++)
+                // Explicitly numbered rows first, so an auto-numbered row can never take a number
+                // that a later row asks for. `created` keeps request order for the verify step.
+                var ids = new ObjectId[rows.Count];
+                foreach (var i in Enumerable.Range(0, rows.Count).OrderBy(i => rows[i].Number == null ? 1 : 0))
                 {
                     var r = rows[i];
                     var id = cp.Add(new Point3d(r.X, r.Y, r.Z), r.Description, true);
                     var p = (CogoPoint)tr.GetObject(id, OpenMode.ForWrite);
                     if (r.Number is { } n) p.PointNumber = n;
                     if (names[i] is { } nm) p.PointName = nm;
-                    created.Add(id);
+                    ids[i] = id;
                 }
-                if (!groupId.IsNull)
+                created.AddRange(ids);
+                if (!groupId.IsNull && !groupIsAll)
                 {
                     var g = (PointGroup)tr.GetObject(groupId, OpenMode.ForWrite);
                     var q = g.GetQuery() as StandardPointGroupQuery ?? new StandardPointGroupQuery();
@@ -178,6 +198,8 @@ internal sealed class PointsCommand : ICommand
                     var g = (PointGroup)tr.GetObject(groupId, OpenMode.ForRead);
                     var missing = created.Count(id => !g.ContainsPoint(((CogoPoint)tr.GetObject(id, OpenMode.ForRead)).PointNumber));
                     v.Check("points in group " + g.Name, created.Count, created.Count - missing, missing == 0);
+                    var lost = groupBefore.Count(n => !g.ContainsPoint(n));
+                    v.Check("previous members kept in group " + g.Name, groupBefore.Length, groupBefore.Length - lost, lost == 0);
                 }
                 after["points"] = new JsonArray(created.Take(50).Select(id => (JsonNode)PointJson((CogoPoint)tr.GetObject(id, OpenMode.ForRead))).ToArray());
             });
@@ -190,6 +212,14 @@ internal sealed class PointsCommand : ICommand
         var output = Hz.Str(ctx.Args, "output")!;
         var format = Hz.Str(ctx.Args, "format") ?? "PNEZD";
         var rows = new List<PointFile.Row>();
+        bool ValidFile(string path)
+        {
+            var back = PointFile.Parse(File.ReadAllText(path), format, false, out var errors);
+            var worst = back.Zip(rows).Select(z => Math.Max(Math.Abs(z.First.X - z.Second.X),
+                Math.Max(Math.Abs(z.First.Y - z.Second.Y), Math.Abs(z.First.Z - z.Second.Z)))).DefaultIfEmpty(0).Max();
+            return errors.Count == 0 && back.Count == rows.Count && worst <= 0.00005 + 1e-12
+                   && back.Zip(rows).All(z => z.First.Number == z.Second.Number && z.First.Description == z.Second.Description);
+        }
         return WriteFlow.Run(ctx, "HZ_POINTS",
             (doc, tr, plan) =>
             {
@@ -199,7 +229,8 @@ internal sealed class PointsCommand : ICommand
                 if (rows.Count == 0) throw new HzRefusal(ErrorCodes.InvalidInput, "No points to export. Nothing written.");
                 plan["output"] = output; plan["format"] = format; plan["points"] = rows.Count;
             },
-            (doc, tr) => File.WriteAllText(output, PointFile.Write(rows, format), new UTF8Encoding(false)),
+            (doc, tr) => AtomicOutput.Write(output, false,
+                stage => File.WriteAllText(stage, PointFile.Write(rows, format), new UTF8Encoding(false)), ValidFile),
             (doc, tr, v, after) =>
             {
                 v.Flag("file written", true, File.Exists(output));
@@ -208,6 +239,9 @@ internal sealed class PointsCommand : ICommand
                 v.Check("rows read back", rows.Count, back.Count, back.Count == rows.Count && errors.Count == 0);
                 var worst = back.Zip(rows).Select(z => Math.Max(Math.Abs(z.First.X - z.Second.X), Math.Max(Math.Abs(z.First.Y - z.Second.Y), Math.Abs(z.First.Z - z.Second.Z)))).DefaultIfEmpty(0).Max();
                 v.Check("max coordinate difference (4 decimals written)", "<= 0.00005", Hz.Finite(worst, 8), worst <= 0.00005 + 1e-12);
+                v.Check("point numbers and descriptions", rows.Count,
+                    back.Zip(rows).Count(z => z.First.Number == z.Second.Number && z.First.Description == z.Second.Description),
+                    back.Count == rows.Count && back.Zip(rows).All(z => z.First.Number == z.Second.Number && z.First.Description == z.Second.Description));
                 after["file"] = new JsonObject { ["path"] = output, ["bytes"] = new FileInfo(output).Length, ["points"] = back.Count };
             });
     }
@@ -247,7 +281,7 @@ internal sealed class PointsCommand : ICommand
     }
 
     private static Regex Like(string patterns) =>
-        new("^(" + string.Join("|", patterns.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+        new("^(" + string.Join("|", RuntimeCompat.SplitTrimmed(patterns, ',', removeEmpty: true)
             .Select(p => Regex.Escape(p).Replace("\\*", ".*").Replace("\\?", "."))) + ")$", RegexOptions.IgnoreCase);
 
     private static CommandResult GroupCreate(CommandContext ctx)

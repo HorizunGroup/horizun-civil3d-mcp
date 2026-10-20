@@ -178,7 +178,7 @@ internal sealed partial class SurfaceCommand
         data["plan"] = plan;
         data["actual"] = actual;
         data["verified"] = checks.ToJson();
-        data["undo"] = new JsonObject { ["label"] = "HZ_SURFACE", ["instruction"] = "One UNDO in Civil 3D reverts this analysis change; no drawing was saved." };
+        data["undo"] = new JsonObject { ["available"] = false, ["label"] = "HZ_SURFACE", ["instruction"] = "Automatic undo_last is disabled. Use Civil 3D native UNDO manually and inspect the result; no drawing was saved." };
         return checks.AllVerified ? CommandResult.Ok(data)
             : CommandResult.Fail(ErrorCodes.VerificationFailed, "The analysis committed but the re-read did not match every requested band. Inspect actual/verified.", data);
     }
@@ -195,7 +195,7 @@ internal sealed partial class SurfaceCommand
             try
             {
                 var v = slope ? s.FindSlopeAtXY(c.X, c.Y) * SlopeApiFactor : s.FindElevationAtXY(c.X, c.Y);
-                if (double.IsFinite(v)) samples.Add((v, c.Area)); else unreadable++;
+                if (Hz.IsFinite(v)) samples.Add((v, c.Area)); else unreadable++;
             }
             catch (PointNotOnEntityException) { outside++; }
             catch (Exception) { unreadable++; }
@@ -254,7 +254,7 @@ internal sealed partial class SurfaceCommand
                 var c = (JsonObject)value!;
                 if (Hz.Str(c, "layer") is { } layer && !layers.Has(layer))
                     throw new HzRefusal(ErrorCodes.NotFound, "Layer '" + layer + "' does not exist. Nothing changed.");
-                var type = Enum.Parse<SurfaceDisplayStyleType>(SurfaceInputs.DisplayComponents[key]);
+                var type = (SurfaceDisplayStyleType)Enum.Parse(typeof(SurfaceDisplayStyleType), SurfaceInputs.DisplayComponents[key]);
                 foreach (var v in views)
                 {
                     var d = v == "plan" ? style.GetDisplayStylePlan(type) : style.GetDisplayStyleModel(type);
@@ -280,7 +280,7 @@ internal sealed partial class SurfaceCommand
             foreach (var (key, value) in comps)
             {
                 var c = (JsonObject)value!;
-                var type = Enum.Parse<SurfaceDisplayStyleType>(SurfaceInputs.DisplayComponents[key]);
+                var type = (SurfaceDisplayStyleType)Enum.Parse(typeof(SurfaceDisplayStyleType), SurfaceInputs.DisplayComponents[key]);
                 foreach (var v in views)
                 {
                     var d = v == "plan" ? style.GetDisplayStylePlan(type) : style.GetDisplayStyleModel(type);
@@ -302,7 +302,7 @@ internal sealed partial class SurfaceCommand
                 foreach (var (key, value) in comps)
                 {
                     var c = (JsonObject)value!;
-                    var type = Enum.Parse<SurfaceDisplayStyleType>(SurfaceInputs.DisplayComponents[key]);
+                    var type = (SurfaceDisplayStyleType)Enum.Parse(typeof(SurfaceDisplayStyleType), SurfaceInputs.DisplayComponents[key]);
                     foreach (var v in views)
                     {
                         var d = v == "plan" ? style.GetDisplayStylePlan(type) : style.GetDisplayStyleModel(type);
@@ -327,7 +327,7 @@ internal sealed partial class SurfaceCommand
         data["plan"] = plan;
         data["after"] = after;
         data["verified"] = checks.ToJson();
-        data["undo"] = new JsonObject { ["label"] = "HZ_SURFACE", ["instruction"] = "One UNDO in Civil 3D reverts this style change; no drawing was saved." };
+        data["undo"] = new JsonObject { ["available"] = false, ["label"] = "HZ_SURFACE", ["instruction"] = "Automatic undo_last is disabled. Use Civil 3D native UNDO manually and inspect the result; no drawing was saved." };
         return checks.AllVerified ? CommandResult.Ok(data)
             : CommandResult.Fail(ErrorCodes.VerificationFailed, "The style change committed but the re-read did not match every requested property. Inspect after/verified.", data);
     }
