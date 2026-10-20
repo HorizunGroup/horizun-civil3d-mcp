@@ -56,8 +56,12 @@ validates the embedded bundle/server version and builds:
 - `horizun-civil3d-mcp-0.8.1.mcpb`: Claude Desktop extension.
 - `SHA256SUMS`: SHA-256 of the release ZIP, plugin ZIP and MCPB.
 
-The embedded ZIP is pinned by its actual SHA-256 in `runtime-release.json`.
-The source metadata has no invented digest: when there is no embedded ZIP,
+The embedded ZIP is pinned by its actual SHA-256 in `runtime-release.json`
+*inside the plugin ZIP and the MCPB*. Those hashes are rewritten when the release is
+signed (see [RELEASING.md](../RELEASING.md)), so they always match the signed bytes.
+The `runtime-release.json` versioned in the repository carries `"sha256": null`
+on purpose, because the signed ZIP does not exist when the tag is cut:
+the source metadata has no invented digest: when there is no embedded ZIP,
 the bootstrap resolves the exact version's asset digest from GitHub before
 executing it. Failure preserves diagnostics and does not fall back to source
 compilation.

@@ -4,7 +4,7 @@ The bridge between Codex, Claude (or any MCP client) and a running **Autodesk Ci
 
 It is a product of its own, separate from Horizun Revit MCP, but it keeps the same contract:
 
-v0.9.2 includes surface deviation/tolerance/RMSE comparisons, corridor targets and
+v0.9.3 includes surface deviation/tolerance/RMSE comparisons, corridor targets and
 guarded split/merge, region/material quantity estimates, editable COGO CSV and
 explicitly refreshed alignment-linked viewports. Terrain export carries an exact
 OBJ mesh with a separate Revit rollback receiver. See [engineering evidence](docs/CIVIL3D.md);
@@ -34,7 +34,7 @@ Horizun.Civil3D.dll in acad.exe  (src/Horizun.Civil3D.Plugin)
 Civil 3D .NET API (AeccDbMgd) + AutoCAD .NET API
 ```
 
-## Tools (v0.9.2, 28 tools and 163 declared actions)
+## Tools (v0.9.3, 28 tools and 163 declared actions)
 
 The action count comes from the contract's `action` enums. Six tools have no action enum.
 See [capability review](docs/CAPABILITY_REVIEW.md) and use `horizun_c3d_capabilities` to

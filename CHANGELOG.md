@@ -1,6 +1,17 @@
 # Changelog
 
-## Unreleased - 2026-10-06 - Multi-agent review fixes (branch `phase-10/review-fixes`)
+## v0.9.3 - 2026-10-19 - Signed binaries
+
+- Binarios firmados con el certificado de HORIZUN GROUP S.A.S. (Certum). Sin cambios de codigo funcional respecto de `main`:
+  esta version empaqueta tal cual el arbol que ya incluia las correcciones de la revision multiagente de abajo.
+- La release se publica con un flujo de firma en CI: borrador -> aprobacion del environment `firma-certum` ->
+  `scripts/firmar-release.ps1` firma, regenera `SHA256SUMS` y los hashes de `runtime-release.json` dentro de los
+  paquetes, verifica y publica. Ver `RELEASING.md`.
+- `runtime-release.json` del repositorio ya no fija el SHA-256 del ZIP (`"sha256": null`): el ZIP firmado no existe
+  cuando se etiqueta, y el arranque del plugin lee el digest del asset publicado en GitHub. El pin de los paquetes
+  plugin/MCPB queda dentro de ellos y se reescribe al firmar.
+
+## Multi-agent review fixes (included in v0.9.3; branch `phase-10/review-fixes`)
 
 Fixes for the 32 findings that survived a five-dimension multi-agent review with adversarial verification.
 Contract unchanged (`e36ee390efbb5d34ee0fe86c`), so the server and the plug-in stay compatible with v0.9.2.
