@@ -1,5 +1,7 @@
 # Releasing Horizun Civil 3D MCP
 
+**Una aprobación por versión: conecta SimplySign Desktop → Approve en `firma-certum` → listo.**
+
 Every public release carries binaries signed with the **HORIZUN GROUP S.A.S. (Certum)** certificate.
 Published GitHub releases are immutable: a correction is always a new patch version.
 This repository has no automatic build workflow: the add-in needs the Autodesk DLLs, so the assets are
