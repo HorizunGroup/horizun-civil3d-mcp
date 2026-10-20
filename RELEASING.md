@@ -82,3 +82,6 @@ The job fails at the first step with "No se puede firmar" and the draft is left 
 *SimplySign Desktop* (enter the code on the PC, never in a script) and use **Re-run failed jobs** on the run,
 then approve again. If the draft has to be rebuilt, delete the draft and start from step 3; a published
 release can never be replaced.
+
+El runner no llama a signtool: scripts/firmar-release.ps1 envía cada binario al servicio local mediante cola/pendiente/*.json y espera cola/hecho/*.json. La firma, huella y sello se verifican antes de publicar.
+
