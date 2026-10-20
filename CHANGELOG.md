@@ -18,6 +18,14 @@ Merges the `develop` line (built on v0.8.0 in parallel with v0.9.x and live-veri
 - **`surface add_data` no longer declares nested defaults** in `breaklines`/`boundaries`: `kind=proximity` (or
   `non_destructive`) with every schema default filled by the client is accepted; the defaults are applied by the
   validator instead.
+- **Fixes found while integrating:** `compare_design` strips client-filled defaults before its own validator;
+  `UseSameSideTarget` is reached by reflection (main did not build for Civil 3D 2025 13.7.145, where it is absent:
+  now reported as `unsupported_host_api`); develop's `double.IsFinite` replaced by `Hz.IsFinite` for net48;
+  `verify_live.py` expects the v0.9.x `undo_last` refusal.
+- **Verified:** Core 942/942, Runtime 771/771 on net48/net8/net10; plug-in 2025 0/0; installed (13 + 16 files SHA-256
+  identical); live on Civil 3D 2025 13.7.145: `verify_live.py` 289/291 (the 2 were the old `undo_last` expectations,
+  fixed in the script and re-checked), plus client-default calls for `compare_design`, `add_data` proximity
+  (dry run + apply 4/4), MTEXT, `document geo` and reads of a non-active drawing.
 
 ## develop v0.8.2 - 2026-10-14 (integrated in v0.9.4) - entities draw can create TEXT and MTEXT again (Claude Code)
 

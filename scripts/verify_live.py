@@ -239,20 +239,16 @@ def main():
         check("execute_csharp query mode (owner enabled it): read-only, self-reported",
               sc(cs).get("committed") is False and sc(cs).get("host_verified") is False, sc(cs))
 
-    # ---------------- undo (one MCP write = one UNDO step) ----------------
+    # ---------------- undo_last: disabled since v0.9.x (native UNDO attribution is not reliably verifiable) ----------------
     write(dict(tgt, action="rename", name="HZ_PASTE", new_name="HZ_PASTE_U"), "rename for undo check")
-    # undo_last: the bridge's own, guarded UNDO of its last write (refused if anything changed since)
     ud = call("horizun_c3d_document", dict(tgt, action="undo_last"))
-    utok = sc(ud).get("confirmation_token")
-    check("undo_last dry run names the last write (surface rename)", not ud["isError"] and bool(utok)
-          and (sc(ud).get("plan") or {}).get("undo", {}).get("action") == "rename", sc(ud))
-    if utok:
-        ua = call("horizun_c3d_document", dict(tgt, action="undo_last", dry_run=False, confirmation_token=utok))
-        check("undo_last applied", not ua["isError"], sc(ua))
-    check("UNDO reverted the last MCP write as one step (HZ_PASTE_U -> HZ_PASTE)",
-          "HZ_PASTE" in surface_names() and "HZ_PASTE_U" not in surface_names(), surface_names())
-    again = call("horizun_c3d_document", dict(tgt, action="undo_last"))
-    check("a second undo_last is refused (one level only, never someone else's step)", again["isError"], sc(again))
+    check("undo_last is refused before any native UNDO (code unsupported, nothing committed, undo unavailable)",
+          ud["isError"] and sc(ud).get("code") == "unsupported" and sc(ud).get("committed") is False
+          and (sc(ud).get("undo") or {}).get("available") is False, sc(ud))
+    check("the refused undo_last left the drawing as it was (HZ_PASTE_U still there)",
+          "HZ_PASTE_U" in surface_names() and "HZ_PASTE" not in surface_names(), surface_names())
+    # restore the name with an ordinary verified write so the blocks below see the same drawing as before
+    write(dict(tgt, action="rename", name="HZ_PASTE_U", new_name="HZ_PASTE"), "rename back after the undo_last refusal")
 
     # ---------------- PHASE3 action tools (blocks A-D, after the UNDO check: a fatal abort in a block must not hide it) ----------------
     import verify_blocks

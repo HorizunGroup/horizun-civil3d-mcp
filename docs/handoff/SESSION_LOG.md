@@ -771,8 +771,19 @@
 ---
 
 ## 2026-10-20 - Claude Code (Opus 5.5) - v0.9.4: integrar la línea develop con main v0.9.3
-**Estado**: EN CURSO
+**Estado**: TERMINADO (PR abierto, sin fusionar)
 
 **Objetivo:** `develop` (v0.8.1/v0.8.2, verificada en vivo el 2026-10-15) y `main` (v0.9.3, firma Certum) divergían desde v0.8.0. Rama `integrar/v0.9.4` desde develop + merge de origin/main, conservando los dos conjuntos de cambios; arreglar los defaults anidados de `surface add_data`; tests, build 2025, instalar, verificar en vivo y abrir PR a main (sin fusionarlo ni publicar Release).
 
 **Conflictos resueltos:** `ICommand.Document` (regla de ambigüedad de main ANTES de devolver el activo + lecturas no activas de develop), versión 0.9.4 (Directory.Build.props y los 4 manifiestos, `sha256` en null hasta la Release, como en 0.9.3), CHANGELOG/SESSION_LOG/CIVIL3D.md (se conservan ambas líneas; las entradas develop renombradas "develop v0.8.x" porque main ya tiene otra v0.8.1), STATUS reescrito. Menciones a un proyecto de cliente quitadas de docs y tests (el repo es público).
+
+**Arreglos encontrados al integrar:** `compare_design` (de main) validaba antes de quitar los defaults del cliente; `add_data` sin defaults anidados (lista `KnownNestedDefaults` vacía; un 0 en campos "solo standard" se acepta para otros kind); `double.IsFinite` de develop no existe en net48 (ahora `Hz.IsFinite`); `SubassemblyTargetInfo.UseSameSideTarget` por reflexión: main NO compilaba para Civil 3D 2025 13.7.145 (la propiedad solo está en 13.7.1402 y 2026), ahora compila y reporta `unsupported_host_api`. `verify_live.py`: el bloque de `undo_last` espera el rechazo de diseño de la 0.9.x (deshacer automático deshabilitado) y restaura el nombre con una escritura normal.
+
+**Evidencia:**
+- Tests: Core 942/942 (net8), Runtime 771/771 en net48, net8 y net10. Plug-in 2025 0 errores / 0 advertencias. 2024 y 2026 no se pueden compilar en esta máquina (no hay sus DLL de Autodesk).
+- `install.ps1 -Years 2025`: plug-in 13 archivos y servidor 16 archivos SHA-256 idénticos al build; `horizun-civil3d-mcp 0.9.4`, contrato `144382c851319cc5b6358081`. Catálogo regenerado (164 acciones).
+- En vivo (Civil 3D 2025 13.7.145, dibujo de ensayo + otro abierto): health 0.9.4; `verify_live.py` 289/291 (`verify-20261020-112446.json`); los 2 fallos eran el bloque de `undo_last` que esperaba el comportamiento viejo, corregido en el script y comprobado a mano (rechazo `unsupported`, `committed:false`, `undo.available:false`, dibujo sin cambios). Por el servidor instalado con defaults rellenados como un cliente: `compare_design` OK; `add_data` proximity con ceros: ensayo + aplicado 4/4; proximity con `max_distance=3` rechazado; MText en ensayo OK; `document geo` y `query list` sobre el dibujo NO activo OK; `corridor get_targets` sobre HZ_COR sin error (0 objetivos: ensamblaje vacío, la lectura por objetivo no se ejercitó).
+- El cliente Claude conservaba en caché el esquema viejo de la herramienta (sin `compare_design`) aun después de reiniciar; el servidor instalado sí publica el nuevo.
+
+**Qué sigue:** el dueño revisa y fusiona el PR `integrar/v0.9.4` → `main`; luego, si él lo pide, Release 0.9.4 con firma Certum (llenar `sha256` en `runtime-release.json`) y alinear `develop` con `main`. Pendientes en vivo: `set_targets` con `use_same_side_target` sobre un corredor con objetivos de desfase; 2024/2026 en equipos que los tengan.
+
