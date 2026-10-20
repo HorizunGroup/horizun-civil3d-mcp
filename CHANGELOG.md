@@ -7,6 +7,7 @@
 - La release se publica con un flujo de firma en CI: borrador -> aprobacion del environment `firma-certum` ->
   `scripts/firmar-release.ps1` firma, regenera `SHA256SUMS` y los hashes de `runtime-release.json` dentro de los
   paquetes, verifica y publica. Ver `RELEASING.md`.
+- Prueba `Pipe_served_by_another_process_never_receives_the_token`: la carrera de desconexion del cliente rechazado ("pipe is being closed") ya no rompe la CI; solo cambia la prueba.
 - `runtime-release.json` del repositorio ya no fija el SHA-256 del ZIP (`"sha256": null`): el ZIP firmado no existe
   cuando se etiqueta, y el arranque del plugin lee el digest del asset publicado en GitHub. El pin de los paquetes
   plugin/MCPB queda dentro de ellos y se reescribe al firmar.
