@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.9.5 - 2026-10-30
 
 - Fix the 0.9.4 field failure caused by host-builds.json array unrolling in Windows PowerShell 5.1; regression coverage runs explicitly on 5.1.
 - Emit identical installer ERROR lines to stdout and stderr, including partial installs and unexpected terminating errors; preserve exit codes and rollback.

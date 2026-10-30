@@ -801,6 +801,15 @@
 **Qué sigue:** validar de punta a punta en un equipo con 2025+2027 y publicar como 0.9.5 solo con aprobación de Pablo.
 
 
+## 2026-10-30 - Claude Code (Opus 5.5) + Codex - Paquetes 0.9.5
+**Estado**: PAQUETES LISTOS (sin firmar, sin publicar)
+
+- Versión 0.9.5 (Directory.Build.props, los 4 manifiestos, `runtime-release.json` con `sha256: null`, README, PLUGIN_INSTALL, CHANGELOG).
+- Paquetes armados con pwsh 7.6.9 en `.local\release-0.9.5` (el sandbox de Codex no puede ejecutar el alias de pwsh de la Tienda; se ejecutó desde la sesión). Pruebas dentro de install.ps1: Core 942/942, Runtime 771/771 (net48/net8/net10), registro de Claude, rollback, bundle y túnel OK. Plug-in 2024/2025/2026 y 2026 net10: 0 errores. `verify-public-package.ps1`: PASS en los 4 artefactos.
+- SHA-256: `horizun-civil3d-mcp-0.9.5.zip` 32d748ef5e02deb89c74b24ab5f261ed643f6c910f213142409884defe6e8e7a; `-plugin.zip` 494ad1ed3a908aefc182876e81a42fc53dacdb2ea2d4d8fba80854a5ae414f55; `.mcpb` 8b2c89a3fc4fa23fec85a5fb9fe4f78410f25763a2e2314e62ceb33ce2f7ab50; `-2026-net10.zip` en SHA256SUMS.
+- Zip principal: rutas con «/», Contents 2024/2025/2026, host-builds.json con 3 registros, AppVersion 0.9.5, incluye install-bundle.lib.ps1. Ensayo `install.ps1 -DryRun` del paquete extraído con Windows PowerShell 5.1 en este PC (Civil 3D 2025): exit 0, sin stderr.
+- Qué sigue: caso 4 de instalación limpia del Agente Suite en Windows PowerShell 5.1; si pasa, Pablo aprueba, conecta SimplySign y se firma con Certum según RELEASING.md (comprobar antes la tarea «Horizun Servicio de Firma»).
+
 ## 2026-10-30 - Codex - Lectura de host-builds en PowerShell 5.1
 **Estado**: TERMINADO
 

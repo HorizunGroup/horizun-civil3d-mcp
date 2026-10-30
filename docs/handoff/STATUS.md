@@ -1,5 +1,7 @@
 # STATUS - estado actual y QUÉ SIGUE
 
+> 2026-10-30: paquetes 0.9.5 armados con pwsh 7 y verificados (pruebas OK, verify-public-package PASS, ensayo en Windows PowerShell 5.1 OK); sin firmar ni publicar. Corrige la falla de la 0.9.4 al instalar desde la Suite (host-builds.json en PowerShell 5.1). **Qué sigue:** instalación limpia del Agente Suite en 5.1; luego aprobación de Pablo, SimplySign y firma Certum.
+
 > 2026-10-30: corregida la lectura de host-builds de 0.9.4 y verificada con Windows PowerShell 5.1; suites de bundle y rollback y parser pasan, pwsh no disponible; sin instalación ni publicación. **Qué sigue:** probar con pwsh 7, validar de punta a punta en un equipo con 2025+2027 y preparar 0.9.5 siguiendo RELEASING.md.
 
 > Documento VIVO. Toda sesión que termine un bloque de trabajo lo **actualiza** (ver `WORKFLOW.md`).
