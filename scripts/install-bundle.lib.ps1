@@ -32,6 +32,11 @@ function Get-HorizunInstallFailureMessage {
     return "Install failed ($causeText); rollback_incomplete: $ErrorCount undo action(s) failed. Inspect the backup at $BackupDir before retrying."
 }
 
+function Read-HorizunHostBuilds {
+    param([Parameter(Mandatory=$true)][string]$Path)
+    foreach ($record in (Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json)) { $record }
+}
+
 function New-HorizunAssembledBundle {
     [CmdletBinding()]
     param(
@@ -82,13 +87,13 @@ function New-HorizunAssembledBundle {
     $records = @()
     $newRecordsPath = Join-Path $StageBundle 'host-builds.json'
     if (Test-Path -LiteralPath $newRecordsPath) {
-        foreach ($record in (Get-Content -LiteralPath $newRecordsPath -Raw | ConvertFrom-Json)) {
+        foreach ($record in (Read-HorizunHostBuilds -Path $newRecordsPath)) {
             if ($InstallYears -contains [int]$record.year) { $records += $record }
         }
     }
     $oldRecordsPath = Join-Path $PreviousBundle 'host-builds.json'
     if (Test-Path -LiteralPath $oldRecordsPath) {
-        foreach ($record in (Get-Content -LiteralPath $oldRecordsPath -Raw | ConvertFrom-Json)) {
+        foreach ($record in (Read-HorizunHostBuilds -Path $oldRecordsPath)) {
             if ($preserved -contains [int]$record.year) { $records += $record }
         }
     }

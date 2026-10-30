@@ -4,6 +4,20 @@ $ErrorActionPreference = 'Stop'
 function Assert([bool]$condition, [string]$message) { if (-not $condition) { throw $message } }
 $root = Join-Path ([IO.Path]::GetTempPath()) ('horizun-c3d-bundle-test-' + [guid]::NewGuid().ToString('N'))
 try {
+    New-Item -ItemType Directory -Path $root -Force | Out-Null
+    $manifest = Join-Path $root 'host-builds.json'
+    [IO.File]::WriteAllText($manifest, '[{"year":2024,"runtime":"net48"},{"year":2025,"runtime":"net8"},{"year":2026,"runtime":"net8"}]')
+    $records = @(Read-HorizunHostBuilds -Path $manifest)
+    Assert ($records.Count -eq 3) 'Three host records were not unrolled.'
+    foreach ($record in $records) { Assert ([int]$record.year -in @(2024,2025,2026)) 'Invalid host year.' }
+    $lib = (Join-Path $PSScriptRoot 'install-bundle.lib.ps1').Replace("'", "''")
+    $manifestQuoted = $manifest.Replace("'", "''")
+    $count = & powershell.exe -NoProfile -ExecutionPolicy Bypass -Command ". '$lib'; @(Read-HorizunHostBuilds -Path '$manifestQuoted').Count"
+    Assert ($LASTEXITCODE -eq 0 -and ($count -join '').Trim() -eq '3') 'Windows PowerShell 5.1 did not return three host records.'
+    [IO.File]::WriteAllText($manifest, '[{"year":2024,"runtime":"net48"}]')
+    $records = @(Read-HorizunHostBuilds -Path $manifest)
+    Assert ($records.Count -eq 1) 'Single host record was not unrolled.'
+    foreach ($record in $records) { Assert ([int]$record.year -eq 2024) 'Invalid single host year.' }
     $native = Invoke-HorizunNative -FilePath 'cmd.exe' -Arguments @('/c', 'echo out & echo err 1>&2 & exit 0')
     Assert ($native.ExitCode -eq 0 -and $native.StdOut -match 'out' -and $native.StdErr -match 'err') 'Native stdout/stderr capture failed.'
     $native = Invoke-HorizunNative -FilePath 'cmd.exe' -Arguments @('/c', 'exit 5')

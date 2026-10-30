@@ -161,7 +161,7 @@ if ($PackageMode) {
     }
     $hostManifestPath = Join-Path $StageBundle 'host-builds.json'
     if (-not (Test-Path -LiteralPath $hostManifestPath)) { Fail 'This package has no Autodesk runtime metadata. Rebuild it with the current installer.' }
-    $hostBuilds = @(foreach ($record in (Get-Content -LiteralPath $hostManifestPath -Raw | ConvertFrom-Json)) { $record })
+    $hostBuilds = @(Read-HorizunHostBuilds -Path $hostManifestPath)
     foreach ($y in @($Years)) {
         $record = @($hostBuilds | Where-Object { [int]$_.year -eq $y })
         if ($record.Count -ne 1) { Fail "This package must have exactly one Autodesk build record for Civil 3D $y." }

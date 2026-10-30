@@ -1,6 +1,6 @@
 # STATUS - estado actual y QUÉ SIGUE
 
-> 2026-10-30: instalador conserva años omitidos y emite errores por ambos flujos; pruebas locales en Windows PowerShell y .NET pasan, pwsh no disponible; sin instalación ni publicación. **Qué sigue:** probar con pwsh 7, validar de punta a punta en un equipo con 2025+2027 y preparar 0.9.5 siguiendo RELEASING.md.
+> 2026-10-30: corregida la lectura de host-builds de 0.9.4 y verificada con Windows PowerShell 5.1; suites de bundle y rollback y parser pasan, pwsh no disponible; sin instalación ni publicación. **Qué sigue:** probar con pwsh 7, validar de punta a punta en un equipo con 2025+2027 y preparar 0.9.5 siguiendo RELEASING.md.
 
 > Documento VIVO. Toda sesión que termine un bloque de trabajo lo **actualiza** (ver `WORKFLOW.md`).
 > Última actualización: **2026-10-20**, por Claude Code: **v0.9.4 integrada, instalada y verificada en vivo; PR abierto** desde la rama `integrar/v0.9.4`: la línea `develop` (v0.8.1/v0.8.2, verificada en vivo el 2026-10-15) se fusiona con `main` v0.9.3. Ver la entrada del mismo día en `SESSION_LOG.md`.

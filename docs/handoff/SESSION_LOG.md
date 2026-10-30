@@ -800,3 +800,12 @@
 
 **Qué sigue:** validar de punta a punta en un equipo con 2025+2027 y publicar como 0.9.5 solo con aprobación de Pablo.
 
+
+## 2026-10-30 - Codex - Lectura de host-builds en PowerShell 5.1
+**Estado**: TERMINADO
+
+**Objetivo**: corregir el desenrollado de metadatos y comprobarlo en Windows PowerShell 5.1.
+
+- La falla de campo de 0.9.4 se debió al desenrollado de `host-builds.json` en Windows PowerShell 5.1; una prueba explícita en 5.1 cubre ahora el caso.
+- Las suites de bundle y rollback y el parser de ambos scripts pasaron; no se instaló ni publicó. Sigue probar con PowerShell 7 y validar el paquete en un equipo con 2025+2027.
+

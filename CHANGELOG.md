@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Fix the 0.9.4 field failure caused by host-builds.json array unrolling in Windows PowerShell 5.1; regression coverage runs explicitly on 5.1.
 - Emit identical installer ERROR lines to stdout and stderr, including partial installs and unexpected terminating errors; preserve exit codes and rollback.
 - Capture native command stdout, stderr and exit codes independently on Windows PowerShell 5.1; include stderr in failure messages. Avoid the automatic `$matches` variable in bundle assembly.
 - Require PowerShell 7 for package creation; installation remains compatible with Windows PowerShell 5.1.
