@@ -828,3 +828,11 @@
 - La falla de campo de 0.9.4 se debió al desenrollado de `host-builds.json` en Windows PowerShell 5.1; una prueba explícita en 5.1 cubre ahora el caso.
 - Las suites de bundle y rollback y el parser de ambos scripts pasaron; no se instaló ni publicó. Sigue probar con PowerShell 7 y validar el paquete en un equipo con 2025+2027.
 
+## 2026-10-31 - Codex para Agente MCP Civil 3D - Paquete sin git
+**Estado**: TERMINADO
+
+**Objetivo**: corregir la instalación desde paquetes, preparar 0.9.6 y probar sin instalar en los destinos reales. Sin procedimiento validado consultado: servidor de conocimiento no disponible. Reversión mediante el diff local de Git; no se modifican instalaciones reales.
+
+**Hecho / evidencia**: metadatos de build y lectura de commit tolerante; paquete sin invocar git; prueba e2e aislada preparada y documentación de release actualizada. Suites bundle y rollback pasaron en Windows PowerShell 5.1; parser de los tres scripts sin errores. E2E no ejecutada: aún no existe paquete. No se compiló, instaló, firmó ni publicó.
+
+**Qué sigue**: build con pwsh 7, PASS de package-e2e, instalación limpia de Suite desde staging real fuera de git y luego SimplySign.

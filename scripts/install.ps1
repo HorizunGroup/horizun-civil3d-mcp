@@ -277,6 +277,8 @@ if ($PackageOut) {
     Copy-Item (Join-Path $PSScriptRoot 'install-rollback.lib.ps1') (Join-Path $pkg 'install-rollback.lib.ps1')
     Copy-Item (Join-Path $PSScriptRoot 'install-bundle.lib.ps1') (Join-Path $pkg 'install-bundle.lib.ps1')
     Copy-Item (Join-Path $PSScriptRoot 'register-plugin-trust.ps1') (Join-Path $pkg 'register-plugin-trust.ps1')
+    $buildInfo = [ordered]@{ schema = 1; product = 'Horizun Civil 3D MCP'; version = $version; commit = (Get-HorizunInstallCommit -PackageMode $false -ScriptRoot $PSScriptRoot -Repo $Repo); edition = $Edition; built_utc = (Get-Date).ToUniversalTime().ToString('o') }
+    [IO.File]::WriteAllText((Join-Path $pkg 'build-info.json'), ($buildInfo | ConvertTo-Json), (New-Object System.Text.UTF8Encoding($false)))
     $readme = @"
 Horizun Civil 3D MCP $version ($Edition edition)
 
@@ -369,9 +371,7 @@ try {
     if ($installedVersion -ne $serverVersion) { throw "Installed server reports '$installedVersion', expected '$serverVersion'." }
     Ok $installedVersion
 
-    $gitResult = Invoke-HorizunNative -FilePath 'git' -Arguments @('-C', $Repo, 'rev-parse', '--short', 'HEAD')
-    if ($gitResult.ExitCode -ne 0) { throw "Could not read git revision: $($gitResult.StdErr.Trim())" }
-    $commit = $gitResult.StdOut.Trim()
+    $commit = Get-HorizunInstallCommit -PackageMode $PackageMode -ScriptRoot $PSScriptRoot -Repo $Repo
     $manifest = [ordered]@{
         schema = 1; product = 'Horizun Civil 3D MCP'; version = $version; commit = $commit
         installed_utc = (Get-Date).ToUniversalTime().ToString('o'); civil3d_years = $Years

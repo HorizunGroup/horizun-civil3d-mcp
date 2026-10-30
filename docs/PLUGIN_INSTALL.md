@@ -44,16 +44,16 @@ need that switch.
 On a development machine with Autodesk DLLs and the repository SDK:
 
 ```powershell
-pwsh -NoProfile -File scripts/install.ps1 -Years 2025 -Edition release -PackageOut artifacts/horizun-civil3d-mcp-0.9.5.zip
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-plugin.ps1 -ReleasePackage artifacts/horizun-civil3d-mcp-0.9.5.zip -OutDirectory artifacts
+pwsh -NoProfile -File scripts/install.ps1 -Years 2025 -Edition release -PackageOut artifacts/horizun-civil3d-mcp-0.9.6.zip
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-plugin.ps1 -ReleasePackage artifacts/horizun-civil3d-mcp-0.9.6.zip -OutDirectory artifacts
 ```
 
 The first command tests, compiles and packages without installing. The second
 validates the embedded bundle/server version and builds:
 
-- `horizun-civil3d-mcp-0.9.5.zip`: prebuilt Autodesk bundle and MCP server.
-- `horizun-civil3d-mcp-0.9.5-plugin.zip`: portable plugin, skills and embedded release.
-- `horizun-civil3d-mcp-0.9.5.mcpb`: Claude Desktop extension.
+- `horizun-civil3d-mcp-0.9.6.zip`: prebuilt Autodesk bundle and MCP server.
+- `horizun-civil3d-mcp-0.9.6-plugin.zip`: portable plugin, skills and embedded release.
+- `horizun-civil3d-mcp-0.9.6.mcpb`: Claude Desktop extension.
 - `SHA256SUMS`: SHA-256 of the release ZIP, plugin ZIP and MCPB.
 
 The embedded ZIP is pinned by its actual SHA-256 in `runtime-release.json`

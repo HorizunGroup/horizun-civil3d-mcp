@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.6 - 2026-10-31
+
+- The release package no longer needs git: signed 0.9.5 rolled back on every machine outside a git repository, a regression introduced in 0.9.5.
+- Add `build-info.json` with build provenance and a package end-to-end test outside git under Windows PowerShell 5.1, including the 2025+2027 case.
+
 ## 0.9.5 - 2026-10-30
 
 - Fix the 0.9.4 field failure caused by host-builds.json array unrolling in Windows PowerShell 5.1; regression coverage runs explicitly on 5.1.

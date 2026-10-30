@@ -33,14 +33,21 @@ built on the owner's PC; CI only signs and publishes them.
    Then add the net10 line to `SHA256SUMS`. The release has exactly five assets:
    `horizun-civil3d-mcp-X.zip`, `-X-plugin.zip`, `-X-2026-net10.zip`, `-X.mcpb` and `SHA256SUMS`.
    The `.local` reference trees are not versioned; see `docs/COMPATIBILITY.md`.
-3. **Create the DRAFT** release targeting the merge commit, with the assets and the notes
+3. **Before creating the draft**, require PASS from the isolated package test under Windows PowerShell 5.1:
+
+   ```powershell
+   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-e2e.tests.ps1 -Package <out>\horizun-civil3d-mcp-X.zip
+   ```
+
+   Then perform and verify the Suite clean install from its real staging folder outside git.
+4. **Create the DRAFT** release targeting the merge commit, with the assets and the notes
    (the notes must include the line *Binarios firmados con el certificado de HORIZUN GROUP S.A.S. (Certum)*):
 
    ```powershell
    gh release create vX.Y.Z --draft --target <sha-del-merge> --title "Horizun Civil 3D MCP X.Y.Z" --notes-file notes.md <5 assets>
    ```
 
-4. **Before signing**, confirm the scheduled signing service task is `Running`:
+5. **Before signing**, confirm the scheduled signing service task is `Running`:
 
    ```powershell
    Get-ScheduledTask -TaskName 'Horizun Servicio de Firma' | Select State
@@ -52,7 +59,7 @@ built on the owner's PC; CI only signs and publishes them.
    gh workflow run firmar-release.yml -R HorizunGroup/horizun-civil3d-mcp -f tag=vX.Y.Z
    ```
 
-5. **The CI leaves the draft, a notice goes out, and Pablo approves.** Pablo connects *SimplySign Desktop*,
+6. **The CI leaves the draft, a notice goes out, and Pablo approves.** Pablo connects *SimplySign Desktop*,
    opens the run in the *Actions* tab and approves the `firma-certum` environment. The `firmar-y-publicar`
    job (self-hosted runner `horizun-sign`) then signs, verifies and publishes. If anything fails it does
    not publish.

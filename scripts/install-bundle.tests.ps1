@@ -5,6 +5,16 @@ function Assert([bool]$condition, [string]$message) { if (-not $condition) { thr
 $root = Join-Path ([IO.Path]::GetTempPath()) ('horizun-c3d-bundle-test-' + [guid]::NewGuid().ToString('N'))
 try {
     New-Item -ItemType Directory -Path $root -Force | Out-Null
+    Assert ((Get-HorizunInstallCommit -PackageMode $true -ScriptRoot $root -Repo $root) -eq '') 'Missing build info must return empty commit.'
+    $infoPath = Join-Path $root 'build-info.json'
+    [IO.File]::WriteAllText($infoPath, '{broken')
+    Assert ((Get-HorizunInstallCommit -PackageMode $true -ScriptRoot $root -Repo $root) -eq '') 'Malformed build info must return empty commit.'
+    [IO.File]::WriteAllText($infoPath, '{"commit":"abc123"}')
+    Assert ((Get-HorizunInstallCommit -PackageMode $true -ScriptRoot $root -Repo $root) -eq 'abc123') 'Package commit was not read.'
+    $libNoGit = (Join-Path $PSScriptRoot 'install-bundle.lib.ps1').Replace("'", "''")
+    $rootNoGit = $root.Replace("'", "''")
+    $noGitOutput = & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -Command "`$ErrorActionPreference='Stop'; `$env:PATH='C:\Windows\System32'; Set-Location '$rootNoGit'; . '$libNoGit'; if ((Get-HorizunInstallCommit -PackageMode `$true -ScriptRoot '$rootNoGit' -Repo '$rootNoGit') -ne 'abc123') { throw 'Wrong commit' }" 2>&1
+    Assert ($LASTEXITCODE -eq 0 -and @($noGitOutput).Count -eq 0) 'Package lookup failed or emitted an error without git.'
     $manifest = Join-Path $root 'host-builds.json'
     [IO.File]::WriteAllText($manifest, '[{"year":2024,"runtime":"net48"},{"year":2025,"runtime":"net8"},{"year":2026,"runtime":"net8"}]')
     $records = @(Read-HorizunHostBuilds -Path $manifest)

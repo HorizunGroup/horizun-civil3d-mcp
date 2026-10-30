@@ -1,4 +1,19 @@
 #Requires -Version 5.1
+function Get-HorizunInstallCommit {
+    param([bool] $PackageMode, [string] $ScriptRoot, [string] $Repo)
+    if ($PackageMode) {
+        try {
+            $info = Get-Content -LiteralPath (Join-Path $ScriptRoot 'build-info.json') -Raw -ErrorAction Stop | ConvertFrom-Json -ErrorAction Stop
+            if ($info.commit -is [string]) { return $info.commit }
+        } catch { }
+        return ''
+    }
+    try {
+        $result = Invoke-HorizunNative -FilePath 'git' -Arguments @('-C', $Repo, 'rev-parse', '--short', 'HEAD')
+        if ($result.ExitCode -eq 0) { return $result.StdOut.Trim() }
+    } catch { }
+    return ''
+}
 
 function Invoke-HorizunNative {
     param([string]$FilePath, [string[]]$Arguments)
