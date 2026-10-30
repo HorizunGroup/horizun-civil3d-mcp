@@ -52,6 +52,17 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+function Write-InstallError([string] $m) {
+    $line = "ERROR: $m"
+    Write-Host $line -ForegroundColor Red
+    [Console]::Error.WriteLine($line)
+}
+function Fail([string] $m) { Write-InstallError $m; exit 1 }
+trap {
+    $message = $_.Exception.Message -replace '[\r\n]+', ' '
+    Write-InstallError "Unexpected installer error ($message) at line $($_.InvocationInfo.ScriptLineNumber)."
+    exit 1
+}
 $Supported = @(2024, 2025, 2026, 2027)
 $Repo = Split-Path -Parent $PSScriptRoot
 $Stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
@@ -64,7 +75,11 @@ $PackageMode = Test-Path (Join-Path $PSScriptRoot 'Horizun.Civil3D.bundle')
 
 function Step([string] $m) { Write-Host "==> $m" -ForegroundColor Cyan }
 function Ok([string] $m) { Write-Host "    $m" -ForegroundColor Green }
-function Fail([string] $m) { Write-Host "ERROR: $m" -ForegroundColor Red; exit 1 }
+. (Join-Path $PSScriptRoot 'install-bundle.lib.ps1')
+$skipped = New-Object System.Collections.Generic.List[string]
+if ($PackageOut -and $PSVersionTable.PSVersion.Major -lt 7) {
+    Fail 'Packaging requires PowerShell 7 (pwsh): Windows PowerShell 5.1 writes the zip with backslash paths. Run: pwsh -File scripts\install.ps1 ... -PackageOut ...'
+}
 
 function Invoke-Checked([string] $exe, [string[]] $arguments) {
     & $exe @arguments
@@ -87,6 +102,9 @@ function Assert-SameTree([string] $staged, [string] $installed, [string] $what) 
     foreach ($k in $a.Keys) {
         if (-not $b.ContainsKey($k)) { throw "$what verification failed: $k is missing after install." }
         if ($a[$k] -ne $b[$k]) { throw "$what verification failed: $k differs from the build (hash mismatch)." }
+    }
+    foreach ($k in $b.Keys) {
+        if (-not $a.ContainsKey($k)) { throw "$what verification failed: unexpected file $k after install." }
     }
     Ok "$what verified: $($a.Count) files, SHA-256 identical to the build."
     return $a
@@ -133,7 +151,6 @@ if ($PackageMode) {
     # Years the owner named must all be installable. Years picked by default (every installed Civil 3D) are
     # narrowed to the ones this package can serve, and the rest are reported, so one unsupported year does not
     # block the others.
-    $skipped = New-Object System.Collections.Generic.List[string]
     function Skip-OrFail([int] $y, [string] $why) {
         if (-not $YearsDefaulted) { Fail $why }
         $skipped.Add("Civil 3D ${y}: $why")
@@ -144,16 +161,16 @@ if ($PackageMode) {
     }
     $hostManifestPath = Join-Path $StageBundle 'host-builds.json'
     if (-not (Test-Path -LiteralPath $hostManifestPath)) { Fail 'This package has no Autodesk runtime metadata. Rebuild it with the current installer.' }
-    $hostBuilds = @(Get-Content -LiteralPath $hostManifestPath -Raw | ConvertFrom-Json)
+    $hostBuilds = @(foreach ($record in (Get-Content -LiteralPath $hostManifestPath -Raw | ConvertFrom-Json)) { $record })
     foreach ($y in @($Years)) {
         $record = @($hostBuilds | Where-Object { [int]$_.year -eq $y })
         if ($record.Count -ne 1) { Fail "This package must have exactly one Autodesk build record for Civil 3D $y." }
     }
     foreach ($build in $hostBuilds) {
         if ($Years -notcontains [int]$build.year) { continue }
-        $actualJson = & (Join-Path $StageServer 'horizun-civil3d-mcp.exe') --inspect-host $AcadRoots[[int]$build.year] $build.year
-        if ($LASTEXITCODE -ne 0) { Fail "Could not inspect Civil 3D $($build.year)." }
-        $actual = $actualJson | ConvertFrom-Json
+        $result = Invoke-HorizunNative -FilePath (Join-Path $StageServer 'horizun-civil3d-mcp.exe') -Arguments @('--inspect-host', $AcadRoots[[int]$build.year], "$($build.year)")
+        if ($result.ExitCode -ne 0) { Fail "Could not inspect Civil 3D $($build.year): $($result.StdErr.Trim())" }
+        $actual = $result.StdOut | ConvertFrom-Json
         if ($actual.runtime -cne $build.runtime -or $actual.autocad_assembly_version -cne $build.autocad_assembly_version -or $actual.civil_assembly_version -cne $build.civil_assembly_version) {
             Skip-OrFail ([int]$build.year) "This Civil 3D $($build.year) package was built against different Autodesk DLLs/runtime ($($build.runtime)). Obtain a build matching this installed update ($($actual.runtime)); nothing was installed for it."
         }
@@ -161,7 +178,9 @@ if ($PackageMode) {
     foreach ($s in $skipped) { Write-Host "    SKIPPED $s" -ForegroundColor Yellow }
     if (@($Years).Count -eq 0) { Fail 'This package has no build matching any installed Civil 3D. Nothing was installed.' }
     $version = ([xml](Get-Content (Join-Path $StageBundle 'PackageContents.xml'))).ApplicationPackage.AppVersion
-    $serverVersion = & (Join-Path $StageServer 'horizun-civil3d-mcp.exe') --version
+    $result = Invoke-HorizunNative -FilePath (Join-Path $StageServer 'horizun-civil3d-mcp.exe') -Arguments @('--version')
+    if ($result.ExitCode -ne 0) { Fail "Could not read server version: $($result.StdErr.Trim())" }
+    $serverVersion = $result.StdOut.Trim()
     Ok $serverVersion
 } else {
 New-Item -ItemType Directory -Force -Path $Stage | Out-Null
@@ -176,6 +195,7 @@ if (-not $SkipTests) {
     Remove-Item Env:\HORIZUN_C3D_DATA_ROOT
     Invoke-Checked 'powershell' @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', (Join-Path $Repo 'scripts\claude-desktop-registration.tests.ps1'))
     Invoke-Checked 'powershell' @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', (Join-Path $Repo 'scripts\install-rollback.tests.ps1'))
+    Invoke-Checked 'powershell' @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', (Join-Path $Repo 'scripts\install-bundle.tests.ps1'))
     Invoke-Checked 'powershell' @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', (Join-Path $Repo 'scripts\register-plugin-trust.tests.ps1'))
     Invoke-Checked 'powershell' @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', (Join-Path $Repo 'scripts\chatgpt-tunnel.tests.ps1'))
     Ok 'tests passed'
@@ -188,13 +208,15 @@ Step 'Publishing MCP server (self-contained, win-x64)'
 Invoke-Checked 'dotnet' @('publish', (Join-Path $Repo 'src\Horizun.Civil3D.Server\Horizun.Civil3D.Server.csproj'),
     '-c', 'Release', '-r', 'win-x64', '--self-contained', 'true', '-p:PublishSingleFile=true', '-o', $StageServer, '--nologo', '-v', 'q')
 $exe = Join-Path $StageServer 'horizun-civil3d-mcp.exe'
-$serverVersion = & $exe --version
+$result = Invoke-HorizunNative -FilePath $exe -Arguments @('--version')
+if ($result.ExitCode -ne 0) { Fail "Could not read server version: $($result.StdErr.Trim())" }
+$serverVersion = $result.StdOut.Trim()
 Ok $serverVersion
 $hostBuilds = @()
 foreach ($y in $Years) {
-    $hostJson = & $exe --inspect-host $AcadRoots[$y] $y
-    if ($LASTEXITCODE -ne 0) { Fail "Could not inspect Civil 3D $y Autodesk metadata." }
-    $hostInfo = $hostJson | ConvertFrom-Json
+    $result = Invoke-HorizunNative -FilePath $exe -Arguments @('--inspect-host', $AcadRoots[$y], "$y")
+    if ($result.ExitCode -ne 0) { Fail "Could not inspect Civil 3D $y Autodesk metadata: $($result.StdErr.Trim())" }
+    $hostInfo = $result.StdOut | ConvertFrom-Json
     $hostBuilds += $hostInfo
     Step "Building plug-in for Civil 3D $y"
     $out = Join-Path $StageBundle "Contents\$y"
@@ -253,6 +275,7 @@ if ($PackageOut) {
     Copy-Item $PSCommandPath (Join-Path $pkg 'install.ps1')
     Copy-Item (Join-Path $PSScriptRoot 'claude-desktop-registration.lib.ps1') (Join-Path $pkg 'claude-desktop-registration.lib.ps1')
     Copy-Item (Join-Path $PSScriptRoot 'install-rollback.lib.ps1') (Join-Path $pkg 'install-rollback.lib.ps1')
+    Copy-Item (Join-Path $PSScriptRoot 'install-bundle.lib.ps1') (Join-Path $pkg 'install-bundle.lib.ps1')
     Copy-Item (Join-Path $PSScriptRoot 'register-plugin-trust.ps1') (Join-Path $pkg 'register-plugin-trust.ps1')
     $readme = @"
 Horizun Civil 3D MCP $version ($Edition edition)
@@ -287,7 +310,7 @@ $claudeOriginalHash = $null
 if ($RegisterClaudeDesktop) {
     $claudeProcesses = @(Get-Process -Name Claude -ErrorAction SilentlyContinue)
     if ($claudeProcesses.Count -gt 0) {
-        throw 'Claude Desktop is running. Close it before using -RegisterClaudeDesktop; no installed files or client settings were changed.'
+        Fail 'Claude Desktop is running. Close it before using -RegisterClaudeDesktop; no installed files or client settings were changed.'
     }
     . (Join-Path $PSScriptRoot 'claude-desktop-registration.lib.ps1')
     $claudeConfigPath = Join-Path $env:APPDATA 'Claude\claude_desktop_config.json'
@@ -328,22 +351,27 @@ try {
         $rollback.Add({ if (Test-Path -LiteralPath $ServerDir) { Remove-Item -LiteralPath $ServerDir -Recurse -Force -ErrorAction Stop } })
     }
 
+    New-Item -ItemType Directory -Force -Path $Stage | Out-Null
+    $assembledBundle = Join-Path $Stage 'assembled-bundle'
+    $assembly = New-HorizunAssembledBundle -StageBundle $StageBundle -PreviousBundle $BundleDir -Destination $assembledBundle -InstallYears $Years -SupportedYears $Supported
     if (Test-Path $BundleDir) { Remove-Item -Recurse -Force $BundleDir }
-    Copy-Item -Recurse -Force $StageBundle $BundleDir
+    Copy-Item -Recurse -Force $assembledBundle $BundleDir
     if (Test-Path $ServerDir) { Remove-Item -Recurse -Force $ServerDir }
     New-Item -ItemType Directory -Force -Path $ServerDir | Out-Null
     Copy-Item -Recurse -Force (Join-Path $StageServer '*') $ServerDir
 
     Step 'Verifying installed files against the build'
-    $bundleHashes = Assert-SameTree $StageBundle $BundleDir 'Plug-in bundle'
+    $bundleHashes = Assert-SameTree $assembledBundle $BundleDir 'Plug-in bundle'
     $serverHashes = Assert-SameTree $StageServer $ServerDir 'MCP server'
-    $installedVersion = & (Join-Path $ServerDir 'horizun-civil3d-mcp.exe') --version
+    $result = Invoke-HorizunNative -FilePath (Join-Path $ServerDir 'horizun-civil3d-mcp.exe') -Arguments @('--version')
+    if ($result.ExitCode -ne 0) { throw "Could not read installed server version: $($result.StdErr.Trim())" }
+    $installedVersion = $result.StdOut.Trim()
     if ($installedVersion -ne $serverVersion) { throw "Installed server reports '$installedVersion', expected '$serverVersion'." }
     Ok $installedVersion
 
-    $commit = ''
-    try { $commit = (git -C $Repo rev-parse --short HEAD 2>$null) } catch { }
-    if ($LASTEXITCODE -ne 0) { $commit = '(no commit)'; $global:LASTEXITCODE = 0 }
+    $gitResult = Invoke-HorizunNative -FilePath 'git' -Arguments @('-C', $Repo, 'rev-parse', '--short', 'HEAD')
+    if ($gitResult.ExitCode -ne 0) { throw "Could not read git revision: $($gitResult.StdErr.Trim())" }
+    $commit = $gitResult.StdOut.Trim()
     $manifest = [ordered]@{
         schema = 1; product = 'Horizun Civil 3D MCP'; version = $version; commit = $commit
         installed_utc = (Get-Date).ToUniversalTime().ToString('o'); civil3d_years = $Years
@@ -375,14 +403,14 @@ try {
     }
 }
 catch {
-    Write-Host "Install failed: $($_.Exception.Message)" -ForegroundColor Red
+    $cause = $_.Exception.Message
     Write-Host 'Rolling back...' -ForegroundColor Yellow
     $rollbackResult = Invoke-HorizunRollback -Actions $rollback
     if (-not $rollbackResult.Restored) {
         foreach ($rollbackError in $rollbackResult.Errors) { Write-Host "Rollback error: $rollbackError" -ForegroundColor Red }
-        Fail "rollback_incomplete: $($rollbackResult.Errors.Count) undo action(s) failed. Inspect the backup at $BackupDir before retrying."
+        Fail (Get-HorizunInstallFailureMessage -Cause $cause -Restored $false -ErrorCount $rollbackResult.Errors.Count -BackupDir $BackupDir)
     }
-    Fail 'Install failed; previous installation restored.'
+    Fail (Get-HorizunInstallFailureMessage -Cause $cause -Restored $true)
 }
 
 # --- 5. completed installation ----------------------------------------------
@@ -400,5 +428,10 @@ if (-not $RegisterTrustedPath) { Ok 'Unsigned AppData plug-ins require an existi
 if (-not $RegisterClaudeDesktop) {
     Write-Host "    To register in Claude Desktop, re-run with -RegisterClaudeDesktop or add:" -ForegroundColor Gray
     Write-Host "    `"horizun-civil3d`": { `"command`": `"$($exePath -replace '\\','\\')`" }" -ForegroundColor Gray
+}
+if ($skipped.Count -gt 0) {
+    $kept = if ($assembly.PreservedYears.Count) { $assembly.PreservedYears -join ', ' } else { 'none' }
+    Write-InstallError "Partial install: $($skipped -join '; ') Installed: $($Years -join ', '); kept previous add-in: $kept. A preserved older add-in may refuse to start against the new server (contract hash) until a matching build is installed."
+    exit 3
 }
 exit 0

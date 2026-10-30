@@ -787,3 +787,16 @@
 
 **Qué sigue:** el dueño revisa y fusiona el PR `integrar/v0.9.4` → `main`; luego, si él lo pide, Release 0.9.4 con firma Certum (llenar `sha256` en `runtime-release.json`) y alinear `develop` con `main`. Pendientes en vivo: `set_targets` con `use_same_side_target` sobre un corredor con objetivos de desfase; 2024/2026 en equipos que los tengan.
 
+---
+
+## 2026-10-30 - Codex (por encargo del Agente MCP Civil 3D) - Instalador: conservar años omitidos y causa en la línea ERROR
+**Estado:** TERMINADO; seguimiento de errores y compatibilidad del instalador; sin instalación ni publicación.
+
+**Objetivo:** preservar los años omitidos al instalar y comunicar la causa de los fallos por stderr.
+
+**Cambios:** ensamblaje por año con metadatos anteriores y verificación del bundle completo; errores idénticos en stdout y stderr, captura de errores inesperados, ejecución nativa con flujos separados en 5.1, variable local renombrada y empaquetado exclusivo con PowerShell 7. Pruebas integradas en instalador y CI; procedimiento de firma actualizado.
+
+**Evidencia:** pruebas de bundle y rollback pasan en Windows PowerShell; Core 942/942 y Runtime 771/771 en cada plataforma net48, net8 y net10; análisis sintáctico sin errores. `pwsh` no disponible. Sin prueba en equipo con ambas versiones ni instalación real.
+
+**Qué sigue:** validar de punta a punta en un equipo con 2025+2027 y publicar como 0.9.5 solo con aprobación de Pablo.
+

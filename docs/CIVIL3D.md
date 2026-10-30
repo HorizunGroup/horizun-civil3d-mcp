@@ -1,5 +1,7 @@
 # Civil 3D capability matrix and evidence
 
+Installer year preservation and stderr diagnostics (2026-10-30): tested without Civil 3D; end-to-end installation on a 2025+2027 machine remains unverified.
+
 Evidence grades:
 
 | Grade | Meaning |
@@ -474,3 +476,6 @@ where it covers it). `move` on labels was not tested.
    no pattern): returns the plan with `by_type {mtext:1, text:1}`; apply and the re-read matches text and position.
 2. The same with one `hatch` item on a closed polyline and no pattern: plan and re-read report pattern `SOLID`.
 3. An `mtext` item with `pattern: "ANSI31"` is still refused by name.
+# Installer follow-up (2026-10-30)
+
+Local Windows PowerShell tests cover native output capture, installer error streams and rollback; no installation or Civil 3D live test was performed. PowerShell 7 was unavailable.

@@ -52,6 +52,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & ./scripts/install-rollback.tests.ps1
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & ./scripts/install-bundle.tests.ps1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & ./scripts/register-plugin-trust.tests.ps1
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           $pluginTestServer = Join-Path $env:RUNNER_TEMP 'c3d-plugin-test-server'

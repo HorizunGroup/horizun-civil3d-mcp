@@ -19,16 +19,17 @@ built on the owner's PC; CI only signs and publishes them.
    $v = '0.9.3'; $out = "$env:TEMP\c3d-release-$v"; New-Item -ItemType Directory $out -Force
    $refs = "$PWD\.local\autodesk-references"
    # Canonical ZIP: 2024 (net48), 2025 (net8), 2026 (net8)
-   powershell -NoProfile -File scripts/install.ps1 -Years 2024,2025,2026 -Edition release `
+   pwsh -NoProfile -File scripts/install.ps1 -Years 2024,2025,2026 -Edition release `
      -AcadRoots @{2024="$refs\2024"; 2026="$refs\2026"} -PackageOut "$out\horizun-civil3d-mcp-$v.zip"
    # Standalone 2026 net10 ZIP
-   powershell -NoProfile -File scripts/install.ps1 -Years 2026 -Edition release `
+   pwsh -NoProfile -File scripts/install.ps1 -Years 2026 -Edition release `
      -AcadRoots @{2026="$refs\2026-net10"} -PackageOut "$out\horizun-civil3d-mcp-$v-2026-net10.zip"
    # Plugin ZIP, MCPB and their SHA256SUMS
    powershell -NoProfile -File scripts/build-plugin.ps1 -ReleasePackage "$out\horizun-civil3d-mcp-$v.zip" -OutDirectory $out
    powershell -NoProfile -File scripts/verify-public-package.ps1 -Package (Get-ChildItem $out\*.zip,$out\*.mcpb)
    ```
 
+   For 0.9.5, confirm PowerShell 7 (`pwsh`) built both packages; Windows PowerShell 5.1 is refused for packaging.
    Then add the net10 line to `SHA256SUMS`. The release has exactly five assets:
    `horizun-civil3d-mcp-X.zip`, `-X-plugin.zip`, `-X-2026-net10.zip`, `-X.mcpb` and `SHA256SUMS`.
    The `.local` reference trees are not versioned; see `docs/COMPATIBILITY.md`.
@@ -39,7 +40,13 @@ built on the owner's PC; CI only signs and publishes them.
    gh release create vX.Y.Z --draft --target <sha-del-merge> --title "Horizun Civil 3D MCP X.Y.Z" --notes-file notes.md <5 assets>
    ```
 
-4. **Start the signing job:**
+4. **Before signing**, confirm the scheduled signing service task is `Running`:
+
+   ```powershell
+   Get-ScheduledTask -TaskName 'Horizun Servicio de Firma' | Select State
+   ```
+
+   **Start the signing job:**
 
    ```powershell
    gh workflow run firmar-release.yml -R HorizunGroup/horizun-civil3d-mcp -f tag=vX.Y.Z

@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Emit identical installer ERROR lines to stdout and stderr, including partial installs and unexpected terminating errors; preserve exit codes and rollback.
+- Capture native command stdout, stderr and exit codes independently on Windows PowerShell 5.1; include stderr in failure messages. Avoid the automatic `$matches` variable in bundle assembly.
+- Require PowerShell 7 for package creation; installation remains compatible with Windows PowerShell 5.1.
+- Preserve installed add-in years and their metadata when a package cannot install those years; report partial installs on stderr with exit code 3.
+- Include the failure cause in the installer's stderr ERROR line, including incomplete rollback details.
+
 ## v0.9.4 - unreleased - develop line integrated into v0.9.3
 
 Merges the `develop` line (built on v0.8.0 in parallel with v0.9.x and live-verified on Civil 3D 2025 on
