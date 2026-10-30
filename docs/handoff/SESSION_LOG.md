@@ -810,6 +810,16 @@
 - Zip principal: rutas con «/», Contents 2024/2025/2026, host-builds.json con 3 registros, AppVersion 0.9.5, incluye install-bundle.lib.ps1. Ensayo `install.ps1 -DryRun` del paquete extraído con Windows PowerShell 5.1 en este PC (Civil 3D 2025): exit 0, sin stderr.
 - Qué sigue: caso 4 de instalación limpia del Agente Suite en Windows PowerShell 5.1; si pasa, Pablo aprueba, conecta SimplySign y se firma con Certum según RELEASING.md (comprobar antes la tarea «Horizun Servicio de Firma»).
 
+## 2026-10-30 - Claude Code (Opus 5.5) - Publicación v0.9.5
+**Estado**: PUBLICADA (aprobación directa de Pablo)
+
+- Caso 4 del Agente Suite (instalación limpia desde Suite 0.5.9, Windows PowerShell 5.1, Civil 3D 2025): PASÓ con los paquetes sin firmar.
+- PR #8 con CI verde; `main` avanzó por fast-forward a 5f84ad7, el commit desde el que se armaron los paquetes.
+- Borrador v0.9.5 con los 5 assets; la tarea «Horizun Servicio de Firma» estaba en Ready y el runner offline: se arrancaron ambas tareas programadas. `firmar-release.yml` aprobado por Pablo con SimplySign: firmó y publicó.
+- Verificación sobre la release descargada: SHA256SUMS OK en los 4 paquetes; `Horizun.Civil3D*.dll` 2024/2025/2026 y `horizun-civil3d-mcp.exe` con firma válida HORIZUN GROUP S.A.S. y sello de tiempo; `--version` = 0.9.5, contrato 144382c851319cc5b6358081, protocolo 1.
+- Limpieza: borrados `.local\release-0.9.5` (paquetes sin firmar) y la descarga de verificación.
+- Qué sigue: la Suite debe apuntar a los paquetes firmados (SHA nuevos); validar en un equipo con 2025+2027.
+
 ## 2026-10-30 - Codex - Lectura de host-builds en PowerShell 5.1
 **Estado**: TERMINADO
 
