@@ -6,7 +6,7 @@ if ($PSVersionTable.PSVersion.Major -ne 5 -or $PSVersionTable.PSVersion.Minor -n
 function Assert([bool] $condition, [string] $message) { if (-not $condition) { throw $message } }
 function Quote([string] $value) { return "'" + $value.Replace("'", "''") + "'" }
 if (@(Get-Process -Name acad -ErrorAction SilentlyContinue).Count -gt 0) { Write-Host 'ERROR: acad.exe is running; close it after saving before running this test.'; exit 1 }
-if (-not (Test-Path -LiteralPath (Join-Path $Civil2025Root 'C3D\AeccDbMgd.dll'))) { Write-Host 'SKIP: Civil 3D 2025 is not installed at the specified root.'; exit 0 }
+if (-not (Test-Path -LiteralPath (Join-Path $Civil2025Root 'C3D\AeccDbMgd.dll'))) { Write-Host 'SKIP: Civil 3D 2025 is not installed at the specified root. This is NOT a pass.'; exit 2 }
 $base = Join-Path $env:TEMP ('horizun-package-e2e-' + [guid]::NewGuid().ToString('N'))
 try {
     $zip = (Resolve-Path -LiteralPath $Package).Path
