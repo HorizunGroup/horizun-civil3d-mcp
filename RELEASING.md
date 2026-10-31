@@ -16,7 +16,7 @@ built on the owner's PC; CI only signs and publishes them.
    reference trees under `.local/autodesk-references`). Build into an empty folder, never into the repo:
 
    ```powershell
-   $v = '0.9.3'; $out = "$env:TEMP\c3d-release-$v"; New-Item -ItemType Directory $out -Force
+   $v = 'X.Y.Z'; $out = "$env:TEMP\c3d-release-$v"; New-Item -ItemType Directory $out -Force
    $refs = "$PWD\.local\autodesk-references"
    # Canonical ZIP: 2024 (net48), 2025 (net8), 2026 (net8)
    pwsh -NoProfile -File scripts/install.ps1 -Years 2024,2025,2026 -Edition release `
@@ -38,6 +38,9 @@ built on the owner's PC; CI only signs and publishes them.
    ```powershell
    powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-e2e.tests.ps1 -Package <out>\horizun-civil3d-mcp-X.zip
    ```
+
+   It must print `PASS: package end-to-end tests.` and exit 0. Exit 2 (`SKIP`) means Civil 3D 2025 is not
+   installed on this machine: that is not a pass; run it where 2025 is installed.
 
    Then perform and verify the Suite clean install from its real staging folder outside git.
 4. **Create the DRAFT** release targeting the merge commit, with the assets and the notes

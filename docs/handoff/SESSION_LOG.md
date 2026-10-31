@@ -836,3 +836,12 @@
 **Hecho / evidencia**: metadatos de build y lectura de commit tolerante; paquete sin invocar git; prueba e2e aislada preparada y documentación de release actualizada. Suites bundle y rollback pasaron en Windows PowerShell 5.1; parser de los tres scripts sin errores. E2E no ejecutada: aún no existe paquete. No se compiló, instaló, firmó ni publicó.
 
 **Qué sigue**: build con pwsh 7, PASS de package-e2e, instalación limpia de Suite desde staging real fuera de git y luego SimplySign.
+
+## 2026-10-31 - Claude Code (Opus 5.5) - Publicación v0.9.6
+**Estado**: PUBLICADA (aprobación directa de Pablo)
+
+- Causa de la 0.9.5 rota: `install.ps1` exigía `git rev-parse` en modo paquete (regresión de c317a2a). La 0.9.6 lee el commit de `build-info.json`.
+- `package-e2e.tests.ps1` PASS (A: 2025; B: 2025 + 2027 previo, parcial con 2027 conservado). Banco del Agente Suite desde el staging real: con git, sin git y actualización sobre 0.9.3, PASS; revisión de 3 Codex sin bloqueos.
+- PR #9 por fast-forward (`main` = 7de7caf). Firma `firmar-release.yml` aprobada por Pablo con SimplySign.
+- Verificado sobre lo descargado: SHA256SUMS OK, `runtime-release.json` del plugin y del .mcpb fija el zip firmado, firmas válidas con sello, `--version` 0.9.6, `build-info.json` commit 7de7caf.
+- Arreglos posteriores: RELEASING.md con versión genérica; `package-e2e` SKIP sale con exit 2 (no es PASS). Nota: si se agrega a mano la línea net10 a SHA256SUMS, debe ir con LF.
