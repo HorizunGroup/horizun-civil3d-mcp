@@ -1,5 +1,7 @@
 # STATUS - estado actual y QUÉ SIGUE
 
+> 2026-10-31: **v0.9.6 PUBLICADA** y firmada con Certum (`main` = 7de7caf, PR #9). Corrige la 0.9.5, que hacía rollback en todo equipo fuera de git. Verificado sobre lo descargado: SHA256SUMS OK, plugin y .mcpb fijan el zip firmado, DLL y exe con firma válida y sello, servidor 0.9.6. Banco del Agente Suite (sin firmar): con git, sin git y actualización sobre 0.9.3, todo PASS. **Qué sigue:** banco del Agente Suite con el zip firmado, catálogo de la Suite y validar en un equipo real con 2025+2027.
+
 > 2026-10-31: **0.9.5 publicada pero falla fuera de git**; 0.9.6 en preparación. **Qué sigue:** compilar con pwsh 7, obtener PASS en package-e2e, validar la instalación limpia de Suite desde su staging real y luego SimplySign.
 
 > 2026-10-30: **v0.9.5 PUBLICADA** y firmada con Certum (PR #8 fusionado; `main` = 5f84ad7; release v0.9.5 con 5 assets). Verificado sobre lo descargado: los 4 paquetes coinciden con SHA256SUMS, los add-ins 2024/2025/2026 y el servidor tienen firma válida de HORIZUN GROUP S.A.S. con sello, el servidor reporta 0.9.5 / contrato 144382c8. La instalación limpia desde la Suite en Windows PowerShell 5.1 con Civil 3D 2025 pasó antes de firmar. **Qué sigue:** que la Suite apunte a los paquetes firmados (sus SHA cambiaron al firmar) y validar en un equipo con 2025+2027.
