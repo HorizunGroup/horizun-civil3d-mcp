@@ -7,6 +7,7 @@
 //
 //   horizun-civil3d-mcp            run the MCP server on stdio
 //   horizun-civil3d-mcp --version  print version and contract hash
+//   horizun-civil3d-mcp --check-host <root> <year> <host-builds.json>  can this package's build load there
 // -----------------------------------------------------------------------------
 using System.Reflection;
 using System.Text;
@@ -23,6 +24,30 @@ if (args.Length > 0 && args[0] == "--inspect-host")
         if (args.Length != 3 || !int.TryParse(args[2], out var year))
             throw new ArgumentException("Usage: --inspect-host <AutoCAD installation root> <Civil 3D year>");
         Console.WriteLine(HostInspection.Inspect(args[1], year).ToJsonString(Hz.Compact));
+        return 0;
+    }
+    catch (Exception e) { Console.Error.WriteLine(e.Message); return 2; }
+}
+
+if (args.Length > 0 && args[0] == "--check-host")
+{
+    try
+    {
+        if (args.Length != 4 || !int.TryParse(args[2], out var year))
+            throw new ArgumentException("Usage: --check-host <AutoCAD installation root> <Civil 3D year> <host-builds.json>");
+        if (JsonNode.Parse(File.ReadAllText(args[3])) is not JsonArray records)
+            throw new InvalidDataException("host-builds.json is not a JSON array.");
+        var matches = records.OfType<JsonObject>().Where(r => r["year"] is JsonValue v && v.TryGetValue<int>(out var y) && y == year).ToList();
+        if (matches.Count != 1)
+            throw new InvalidDataException("host-builds.json must have exactly one record for Civil 3D " + year + " (found " + matches.Count + ").");
+        var installed = HostInspection.Inspect(args[1], year);
+        var (compatible, reason) = HostInspection.Match(matches[0], installed);
+        var report = new JsonObject
+        {
+            ["year"] = year, ["compatible"] = compatible, ["reason"] = reason,
+            ["installed"] = installed, ["built"] = matches[0].DeepClone(),
+        };
+        Console.WriteLine(report.ToJsonString(Hz.Compact));
         return 0;
     }
     catch (Exception e) { Console.Error.WriteLine(e.Message); return 2; }

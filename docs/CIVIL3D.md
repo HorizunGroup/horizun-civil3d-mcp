@@ -13,6 +13,13 @@ Evidence grades:
 
 A capability is "supported" only with **L** for that year.
 
+## Update matching — 2026-11-03 (B: compiled and tested, no live load yet)
+
+Package install accepts a Civil update equal to or newer than the build's (`--check-host`). Release add-ins
+are built against each release's first update. Live step still pending: on a Civil 3D 2025 whose `AeccDbMgd`
+differs from the build's (`host-builds.json`), install the package, open Civil 3D, and confirm the
+Horizun ribbon loads and `horizun_c3d_health` answers. Then run `scripts/verify_live` on the fixture.
+
 ## v0.9.1 native acceptance — 2026-10-05
 
 **Current v0.9.2 update (2026-10-06):** engineering rerun passes78/78 on Civil2025.

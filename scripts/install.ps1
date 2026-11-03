@@ -166,17 +166,18 @@ if ($PackageMode) {
         $record = @($hostBuilds | Where-Object { [int]$_.year -eq $y })
         if ($record.Count -ne 1) { Fail "This package must have exactly one Autodesk build record for Civil 3D $y." }
     }
+    # Same release with an equal or newer Autodesk update binds; the server decides (HostInspection.Match).
     foreach ($build in $hostBuilds) {
         if ($Years -notcontains [int]$build.year) { continue }
-        $result = Invoke-HorizunNative -FilePath (Join-Path $StageServer 'horizun-civil3d-mcp.exe') -Arguments @('--inspect-host', $AcadRoots[[int]$build.year], "$($build.year)")
+        $result = Invoke-HorizunNative -FilePath (Join-Path $StageServer 'horizun-civil3d-mcp.exe') -Arguments @('--check-host', $AcadRoots[[int]$build.year], "$($build.year)", $hostManifestPath)
         if ($result.ExitCode -ne 0) { Fail "Could not inspect Civil 3D $($build.year): $($result.StdErr.Trim())" }
-        $actual = $result.StdOut | ConvertFrom-Json
-        if ($actual.runtime -cne $build.runtime -or $actual.autocad_assembly_version -cne $build.autocad_assembly_version -or $actual.civil_assembly_version -cne $build.civil_assembly_version) {
-            Skip-OrFail ([int]$build.year) "This Civil 3D $($build.year) package was built against different Autodesk DLLs/runtime ($($build.runtime)). Obtain a build matching this installed update ($($actual.runtime)); nothing was installed for it."
-        }
+        $check = $result.StdOut | ConvertFrom-Json
+        if ($check.compatible -ne $true) {
+            Skip-OrFail ([int]$build.year) "$($check.reason) Nothing was installed for it."
+        } else { Ok $check.reason }
     }
     foreach ($s in $skipped) { Write-Host "    SKIPPED $s" -ForegroundColor Yellow }
-    if (@($Years).Count -eq 0) { Fail 'This package has no build matching any installed Civil 3D. Nothing was installed.' }
+    if (@($Years).Count -eq 0) { Fail ('This package has no build matching any installed Civil 3D. Nothing was installed. ' + ($skipped -join '; ')) }
     $version = ([xml](Get-Content (Join-Path $StageBundle 'PackageContents.xml'))).ApplicationPackage.AppVersion
     $result = Invoke-HorizunNative -FilePath (Join-Path $StageServer 'horizun-civil3d-mcp.exe') -Arguments @('--version')
     if ($result.ExitCode -ne 0) { Fail "Could not read server version: $($result.StdErr.Trim())" }
