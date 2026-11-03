@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.7 - 2026-11-03
+
+- Fix the 0.9.6 field failure "This package has no build matching any installed Civil 3D" on Civil 3D 2025: package-mode install required the client's Autodesk assembly versions to equal the build PC's update (2025 `AeccDbMgd 13.7.0.1402`). The installer now asks the server (`--check-host`, `HostInspection.Match`): same year, runtime and frameworks, same release, installed build equal or newer.
+- An older update is refused with the required version, and the final `ERROR:` line now carries every per-year skip reason so field diagnostics show the cause.
+- Release packages are built against the first Civil update of each release (2024 13.6.342, 2025 13.7.145, 2026 13.8.280); the plug-ins compile against them with 0 errors.
+
 ## 0.9.6 - 2026-10-31
 
 - The release package no longer needs git: signed 0.9.5 rolled back on every machine outside a git repository, a regression introduced in 0.9.5.

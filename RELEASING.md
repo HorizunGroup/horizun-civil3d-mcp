@@ -12,15 +12,21 @@ built on the owner's PC; CI only signs and publishes them.
 1. **Version and PR.** Bump the version everywhere it is declared (`Directory.Build.props`,
    `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`, `packaging/claude-desktop/manifest.json`,
    `runtime-release.json`, README) and add a `CHANGELOG.md` entry. Open a PR, wait for CI, merge.
-2. **Build locally from the merged commit** (clean `main`, Autodesk 2025 installed; 2024 and 2026 use the
-   reference trees under `.local/autodesk-references`). Build into an empty folder, never into the repo:
+2. **Build locally from the merged commit** (clean `main`, Autodesk 2025 installed). Every year of the
+   canonical ZIP is built against the **first** Civil update of that release (reference trees under
+   `.local/autodesk-references`, see `docs/COMPATIBILITY.md`), never against the build PC's installed update:
+   the installer accepts a host whose Civil build is equal or newer than the one in `host-builds.json`, so a
+   package built against the latest update refuses every client on an older one (0.9.6 field failure).
+   Build into an empty folder, never into the repo:
 
    ```powershell
    $v = 'X.Y.Z'; $out = "$env:TEMP\c3d-release-$v"; New-Item -ItemType Directory $out -Force
    $refs = "$PWD\.local\autodesk-references"
-   # Canonical ZIP: 2024 (net48), 2025 (net8), 2026 (net8)
+   # Canonical ZIP: 2024 (net48), 2025 (net8), 2026 (net8), each against the release's first update
    pwsh -NoProfile -File scripts/install.ps1 -Years 2024,2025,2026 -Edition release `
-     -AcadRoots @{2024="$refs\2024"; 2026="$refs\2026"} -PackageOut "$out\horizun-civil3d-mcp-$v.zip"
+     -AcadRoots @{2024="$refs\2024-13.6.342"; 2025="$refs\2025-13.7.145"; 2026="$refs\2026-13.8.280"} `
+     -PackageOut "$out\horizun-civil3d-mcp-$v.zip"
+   # host-builds.json must then record civil 13.6.342.0 / 13.7.0.145 / 13.8.0.280.
    # Standalone 2026 net10 ZIP
    pwsh -NoProfile -File scripts/install.ps1 -Years 2026 -Edition release `
      -AcadRoots @{2026="$refs\2026-net10"} -PackageOut "$out\horizun-civil3d-mcp-$v-2026-net10.zip"

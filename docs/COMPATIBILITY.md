@@ -61,9 +61,26 @@ assuming that the marketing year permanently determines the CLR.
 
 `host-builds.json` in the bundle records year, runtime, target framework and
 the AutoCAD/Civil managed assembly versions used for each build. Package-mode
-installation compares those versions with the local Autodesk DLL metadata,
-rejecting mismatched updates before copying installed files. Bundle ranges
-include `R24.3` (2024), `R25.0` (2025) and `R25.1` (2026).
+installation runs `horizun-civil3d-mcp --check-host <root> <year> host-builds.json`
+(`HostInspection.Match`) before copying installed files. Year, runtime and target
+frameworks must be equal; AutoCAD and Civil assembly versions must be the same
+release (Major.Minor) and the installed build **equal or newer** than the build's.
+Autodesk's managed DLLs are not strong-named and Civil's carry the update build
+(2025: `AeccDbMgd 13.7.0.<build>`), so a plug-in compiled against build N binds on
+any host with build >= N. An older host is refused with the required version in the
+single `ERROR:` line. Until 0.9.6 the versions had to be identical, so a package
+built against 2025 `13.7.0.1402` refused every other 2025 update in the field.
+Bundle ranges include `R24.3` (2024), `R25.0` (2025) and `R25.1` (2026).
+
+Release builds therefore use reference trees with the **first** Civil update of
+each release, from Autodesk's signed `Civil3D.NET` NuGet packages (only DLLs
+extracted, nothing executed), with the AutoCAD base DLLs of the same tree:
+`2024-13.6.342` (13.6.342.0), `2025-13.7.145` (13.7.0.145; AutoCAD 25.0.0.0 DLLs
+from an installed 2025, identical across updates) and `2026-13.8.280`
+(13.8.0.280). On 2026-11-03 the 2024, 2025 and 2026 net8 plug-ins compiled
+against those trees with 0 errors, so every member used exists in the first update.
+This is compile evidence; the live gate is loading on an older update.
+Civil 3D 2023 has no build in this product (supported: 2024-2027).
 
 Each prepared package contains **one built runtime variant per included year**.
 A package produced with 2026.2.2+ references is not the package for an earlier

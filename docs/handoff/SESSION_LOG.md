@@ -845,3 +845,25 @@
 - PR #9 por fast-forward (`main` = 7de7caf). Firma `firmar-release.yml` aprobada por Pablo con SimplySign.
 - Verificado sobre lo descargado: SHA256SUMS OK, `runtime-release.json` del plugin y del .mcpb fija el zip firmado, firmas válidas con sello, `--version` 0.9.6, `build-info.json` commit 7de7caf.
 - Arreglos posteriores: RELEASING.md con versión genérica; `package-e2e` SKIP sale con exit 2 (no es PASS). Nota: si se agrega a mano la línea net10 a SHA256SUMS, debe ir con LF.
+
+## 2026-11-03 - Claude Code (Opus 5.5) - Civil 3D 2025 sin build en la 0.9.6
+**Estado**: TERMINADO (PR abierto, sin publicar)
+
+**Objetivo**: corregir «This package has no build matching any installed Civil 3D» que reportaron 2 equipos de clientes con 2025 (diagnósticos de la Suite del 30-oct al 3-nov).
+
+- Causa: en modo paquete, `install.ps1` comparaba con igualdad exacta las versiones de `host-builds.json` con las del equipo. La 0.9.6 registró 2025 `AeccDbMgd 13.7.0.1402` (este PC, ya actualizado; antes tenía 13.7.0.145). Todo 2025 con otra actualización se saltaba y, sin otro año, salía ese error, sin la causa.
+- Arreglo: `HostInspection.Match` + `--check-host` (mismo año, runtime y frameworks; misma versión mayor.menor; instalada >= compilada). La línea `ERROR:` final trae las razones. Las compilaciones de release usan la primera actualización de cada año (NuGet firmados de Autodesk); 2024, 2025 y 2026 net8 compilan con 0 errores contra ellas.
+- Evidencia: Core 950/950 (8 pruebas nuevas, con la firma 2025 de la falla); bundle y rollback OK; `--check-host` en lectura contra el 2025 de este PC (1402 vs 1402 y 145: compatible; 9999: rechazado con la versión pedida); `-DryRun` del paquete 0.9.6 con el servidor y el script nuevos: con registro 13.7.0.1175 instala, con 13.7.0.9999 da el ERROR con la causa.
+- Ejecución: Codex no se pudo lanzar (el clasificador de permisos bloqueó `codex exec --full-auto`); el cambio lo hizo Claude.
+
+**Qué sigue**: fusionar, armar 0.9.7 según RELEASING.md, firma Certum por Pablo, y prueba en vivo de carga en un 2025 con actualización distinta a la del build.
+
+## 2026-11-03 - Claude Code (Opus 5.5) - Paquetes 0.9.7
+**Estado**: TERMINADO (sin firmar ni publicar)
+
+- Versión 0.9.7 en los 7 archivos que la declaran y CHANGELOG; commit agregado al PR #11 (mismo patrón que la 0.9.6).
+- Paquetes compilados contra los árboles de primera actualización; `host-builds.json`: 13.6.342.0 / 13.7.0.145 / 13.8.0.280.
+- verify-public-package PASS (zip, plugin, mcpb, net10); package-e2e PASS (casos A y B) en Windows PowerShell 5.1.
+- La fusión del PR #11 la bloqueó el clasificador de permisos (fusión sin revisión): queda para el dueño. El borrador de release necesita el commit de fusión.
+
+**Qué sigue**: fusionar #11, `gh release create v0.9.7 --draft --target <sha-fusión>` con `%TEMP%\c3d-release-0.9.7\notes.md` y los 5 assets, luego firma Certum.
