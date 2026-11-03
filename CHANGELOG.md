@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.9.7 - 2026-11-03
 
 - Fix the 0.9.6 field failure "This package has no build matching any installed Civil 3D" on Civil 3D 2025: package-mode install required the client's Autodesk assembly versions to equal the build PC's update (2025 `AeccDbMgd 13.7.0.1402`). The installer now asks the server (`--check-host`, `HostInspection.Match`): same year, runtime and frameworks, same release, installed build equal or newer.
 - An older update is refused with the required version, and the final `ERROR:` line now carries every per-year skip reason so field diagnostics show the cause.
