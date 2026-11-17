@@ -79,7 +79,7 @@ Revit 2025 creation/placement was verified on new saved models, including a rota
 shared-coordinate fixture. Toposolid can retriangulate; the separate DirectShape
 receiver preserves the supplied mesh within an explicit tolerance. These are different representations.
 
-**Live-verified on Civil 3D 2025 (v0.6.9, 2026-10-02): 284/284** with `scripts/verify_live.py` + `scripts/verify_blocks.py` on the fixture drawing. FULL WRITE actions are verified as refused under safe_write. The Horizun Hub ribbon has a **"Canal C#"** button (`HZ_CSHARP`) that turns the C# channel on with a confirmation; it turns itself off at the next Civil 3D start.
+**Live-verified on Civil 3D 2025 (v0.6.9, 2026-10-02): 284/284** with `scripts/verify_live.py` + `scripts/verify_blocks.py` on the fixture drawing. FULL WRITE actions are verified as refused under safe_write. The Horizun Hub ribbon has a **"C# channel"** button (`HZ_CSHARP`) that turns the C# channel on with a confirmation; it turns itself off at the next Civil 3D start.
 
 `docs/CIVIL3D.md` holds the capability matrix and the evidence for each capability. `docs/ROADMAP.md` holds the
 plan for later phases.
@@ -92,21 +92,58 @@ the matching runtime is missing. See [plugin installation and packaging](docs/PL
 Engineering v0.9.1 was installed and native-tested locally. v0.9.2 disables automatic
 UNDO after a new attribution failure; see [public readiness](docs/PUBLIC_READINESS.md).
 
-Download the latest `horizun-civil3d-mcp-<version>.zip` from this repository's **Releases** page. Nothing is compiled
-on your machine and you do not need the source or the .NET SDK.
+### Build from source and install
 
-1. Save your drawings and close every Civil 3D window.
-2. Extract the zip and, inside the extracted folder, run:
+Build on the Windows PC where Civil 3D is installed: the plug-in compiles against that installation's Autodesk DLLs
+(`C:\Program Files\Autodesk\AutoCAD <year>`). The outputs are x64/AnyCPU, so the build PC's processor does not
+matter, but Civil 3D itself is x64-only.
+
+1. Install the prerequisites (once):
+
+```powershell
+winget install Microsoft.DotNet.SDK.10 Microsoft.DotNet.SDK.8 Git.Git
+```
+
+2. Clone this repository and open PowerShell in its root folder.
+3. Build without installing anything. This runs the tests, publishes the server and compiles the plug-in against your
+   Civil 3D DLLs into a temporary staging folder. Civil 3D may stay open for this step.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1 -Years 2027 -Edition release -DryRun
+```
+
+   It succeeds when it ends with `Dry run: nothing installed`. Replace `2027` with your Civil 3D year (2024-2027),
+   or omit `-Years` to build every supported year installed on the PC.
+4. Save your drawings and close every Civil 3D window, then install:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1 -Years 2027 -Edition release -RegisterTrustedPath -RegisterClaudeDesktop
+```
+
+   - `-RegisterTrustedPath` adds only the plug-in's folder to Civil 3D's trusted locations (with a backup).
+   - `-RegisterClaudeDesktop` adds the server to Claude Desktop's config (with a backup). Leave it out if you do not
+     use Claude Desktop. For Claude Code, register the server instead:
+     `claude mcp add horizun-civil3d -- "$env:LOCALAPPDATA\Programs\Horizun\Civil3D-MCP\server\horizun-civil3d-mcp.exe"`
+   - Leave out `-Edition release` to get the development panel (**API probe**, **Test drawing**).
+5. Restart Claude and open Civil 3D. The **Horizun Hub** ribbon tab shows "Bridge status", plus the two
+   owner switches: **C# channel** and **Full write**. Both ask for confirmation and turn themselves off the
+   next time Civil 3D starts. In Claude, `horizun_c3d_health` verifies the live bridge.
+
+Installs to `%APPDATA%\Autodesk\ApplicationPlugins\Horizun.Civil3D.bundle` and
+`%LOCALAPPDATA%\Programs\Horizun\Civil3D-MCP\server\`. Every installed file is checked against the build (SHA-256),
+and a failed install rolls back. To uninstall, close Civil 3D and delete those two folders.
+
+> Civil 3D 2027 builds have not been live-validated yet (see [COMPATIBILITY.md](docs/COMPATIBILITY.md)). If the dry
+> run fails with a "DLL year mismatch" or compile errors, the 2027 API differs from what this code expects.
+
+### Prebuilt release package
+
+A prebuilt `horizun-civil3d-mcp-<version>.zip` (from a **Releases** page) needs no source or .NET SDK. Save your
+drawings, close Civil 3D, extract the zip and run inside it:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\install.ps1 -RegisterClaudeDesktop -RegisterTrustedPath
 ```
-
-3. Restart Claude Desktop and open Civil 3D. The **Horizun Hub** ribbon tab shows "Bridge status", plus the two
-   owner switches: **C# channel** and **Full write**. Both ask for confirmation and turn themselves off the
-   next time Civil 3D starts.
-
-Every installed file is checked against the package (SHA-256), and a failed install rolls back.
 
 ## Learn to direct it
 
