@@ -29,7 +29,7 @@
 .PARAMETER SkipTests
   Skip the unit tests (not recommended).
 .PARAMETER Edition
-  development (default): developer buttons (Dibujo de ensayo, Sondeo API) on the Horizun Hub ribbon.
+  development (default): developer buttons (Test drawing, API probe) on the Horizun Hub ribbon.
   release: the edition people use; no developer buttons. Use it with -PackageOut.
 .PARAMETER PackageOut
   Build and write an installable .zip instead of installing. Whoever receives it extracts it and runs
@@ -289,7 +289,7 @@ Horizun Civil 3D MCP $version ($Edition edition)
 
 Nothing is compiled on this machine. Every installed file is checked against this package (SHA-256).
 "@
-    [System.IO.File]::WriteAllText((Join-Path $pkg 'LEEME.txt'), $readme, (New-Object System.Text.UTF8Encoding($false)))
+    [System.IO.File]::WriteAllText((Join-Path $pkg 'README.txt'), $readme, (New-Object System.Text.UTF8Encoding($false)))
     if (Test-Path $PackageOut) { Remove-Item -Force $PackageOut }
     Compress-Archive -Path (Join-Path $pkg '*') -DestinationPath $PackageOut
     Ok "package: $PackageOut ($([math]::Round((Get-Item $PackageOut).Length / 1MB, 1)) MB)"

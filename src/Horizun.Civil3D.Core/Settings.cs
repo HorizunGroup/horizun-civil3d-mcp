@@ -11,7 +11,7 @@
 //     "denied_tools": [],                   // always wins
 //     "enable_execute_csharp": false,       // second key for the C# escape hatch
 //     "paused": false,                      // owner kill switch: only health answers
-//     "csharp_session_restore_profile": ""  // written ONLY by the "Canal C#" switch (CSharpChannel)
+//     "csharp_session_restore_profile": ""  // written ONLY by the "C# channel" switch (CSharpChannel)
 //   }
 //
 // No file = safe_write. A file that exists but cannot be parsed, or names an

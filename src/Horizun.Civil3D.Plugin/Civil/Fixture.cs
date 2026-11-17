@@ -44,13 +44,13 @@ internal static class Fixture
     {
         if (Convert.ToInt32(AcApp.GetSystemVariable("DWGTITLED")) != 0)
             throw new HzRefusal(ErrorCodes.InvalidInput,
-                "HZ_BUILD_FIXTURE solo trabaja en un dibujo NUEVO sin guardar (NEW con la plantilla de Civil 3D). " +
-                "Este dibujo ya tiene nombre: no se toco nada.");
+                "HZ_BUILD_FIXTURE only works in a NEW, unsaved drawing (NEW from a Civil 3D template). " +
+                "This drawing already has a name: nothing was changed.");
         var civil = CivilDocument.GetCivilDocument(doc.Database);
         if (civil.GetSurfaceIds().Count != 0)
-            throw new HzRefusal(ErrorCodes.InvalidInput, "El dibujo ya tiene superficies. Usa un dibujo nuevo y vacio: no se toco nada.");
+            throw new HzRefusal(ErrorCodes.InvalidInput, "The drawing already has surfaces. Use a new, empty drawing: nothing was changed.");
         if (civil.Styles.SurfaceStyles.Count == 0)
-            throw new HzRefusal(ErrorCodes.NotFound, "El dibujo no tiene estilos de superficie: crealo desde una plantilla de Civil 3D.");
+            throw new HzRefusal(ErrorCodes.NotFound, "The drawing has no surface styles: create it from a Civil 3D template.");
 
         var expected = new JsonObject
         {

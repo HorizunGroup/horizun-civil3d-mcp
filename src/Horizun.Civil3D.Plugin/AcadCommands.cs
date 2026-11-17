@@ -24,29 +24,29 @@ public sealed class AcadCommands
     public void Status()
     {
         var sb = new StringBuilder();
-        sb.AppendLine("Horizun Civil 3D MCP " + App.PluginVersion + "  (Civil 3D " + App.Year + ")  edicion " + App.Edition);
-        sb.AppendLine("Contrato: " + Contract.Hash + "  protocolo " + Contract.ProtocolVersion);
+        sb.AppendLine("Horizun Civil 3D MCP " + App.PluginVersion + "  (Civil 3D " + App.Year + ")  " + App.Edition + " edition");
+        sb.AppendLine("Contract: " + Contract.Hash + "  protocol " + Contract.ProtocolVersion);
         if (App.StartupError != null)
         {
             sb.AppendLine();
-            sb.AppendLine("PUENTE NO INICIADO: " + App.StartupError);
+            sb.AppendLine("BRIDGE NOT STARTED: " + App.StartupError);
         }
         else if (App.Published != null)
         {
             var published = File.Exists(Path.Combine(HorizunPaths.DiscoveryDir(), Discovery.FileName(App.Published.Year, App.Published.Pid)));
-            sb.AppendLine("Canal: " + App.Published.PipeName + (published ? "  (publicado: Claude puede conectarse)" : "  (archivo de descubrimiento AUSENTE)"));
+            sb.AppendLine("Channel: " + App.Published.PipeName + (published ? "  (published: Claude can connect)" : "  (discovery file MISSING)"));
         }
         var s = Settings.Load();
-        sb.AppendLine("Perfil de permisos: " + Settings.ProfileName(s.Profile) + (s.Paused ? "  [PAUSADO]" : "") + "  (" + s.Source + ")");
+        sb.AppendLine("Permission profile: " + Settings.ProfileName(s.Profile) + (s.Paused ? "  [PAUSED]" : "") + "  (" + s.Source + ")");
         if (App.Bridge != null)
         {
             var q = App.Bridge.Gate.Observe();
-            sb.AppendLine("Cola: " + q["waiting"] + " en espera de " + q["capacity"] + (q["running"] != null ? ", ejecutando " + q["running"] : ""));
-            sb.AppendLine("Ultimo comando: " + (App.Bridge.LastCommand ?? "-") +
+            sb.AppendLine("Queue: " + q["waiting"] + " waiting of " + q["capacity"] + (q["running"] != null ? ", running " + q["running"] : ""));
+            sb.AppendLine("Last command: " + (App.Bridge.LastCommand ?? "-") +
                           (App.Bridge.LastCommandUtc is { } t ? "  " + t.ToLocalTime().ToString("HH:mm:ss") : ""));
         }
-        sb.AppendLine("Dibujo activo: " + (AcApp.DocumentManager.MdiActiveDocument?.Name ?? "(ninguno)"));
-        sb.AppendLine("Datos: " + HorizunPaths.DataRoot());
+        sb.AppendLine("Active drawing: " + (AcApp.DocumentManager.MdiActiveDocument?.Name ?? "(none)"));
+        sb.AppendLine("Data: " + HorizunPaths.DataRoot());
         if (Log.Path != null) sb.AppendLine("Log: " + Log.Path);
         AcApp.ShowAlertDialog(sb.ToString());
     }
@@ -61,29 +61,29 @@ public sealed class AcadCommands
             if (CSharpChannel.IsOn(now))
             {
                 var off = CSharpChannel.Disable(path);
-                AcApp.ShowAlertDialog("Canal C# APAGADO.\n\nPerfil de permisos: " + Settings.ProfileName(off.Profile) +
-                                      "\nhorizun_c3d_execute_csharp vuelve a rechazarse.");
+                AcApp.ShowAlertDialog("C# channel OFF.\n\nPermission profile: " + Settings.ProfileName(off.Profile) +
+                                      "\nhorizun_c3d_execute_csharp is refused again.");
             }
             else
             {
                 var answer = System.Windows.MessageBox.Show(
-                    "Encender el canal C# permite que el asistente ejecute codigo C# arbitrario dentro de Civil 3D " +
-                    "(horizun_c3d_execute_csharp). Ese codigo NO pasa por la verificacion de las herramientas tipadas: " +
-                    "sus resultados son auto-reportados.\n\n" +
-                    "El permiso se comparte con TODAS las instancias de Civil 3D de este usuario de Windows.\n" +
-                    "Se apaga al pulsar de nuevo el boton o automaticamente la proxima vez que abras Civil 3D.\n\n" +
-                    "Perfil actual: " + Settings.ProfileName(now.Profile) + "\n\nEncender el canal C#?",
-                    "Horizun - Canal C#", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Warning,
+                    "Turning the C# channel on lets the assistant run arbitrary C# code inside Civil 3D " +
+                    "(horizun_c3d_execute_csharp). That code does NOT go through the verification of the typed tools: " +
+                    "its results are self-reported.\n\n" +
+                    "The permission is shared by ALL Civil 3D instances of this Windows user.\n" +
+                    "It turns off when you press the button again, or automatically the next time you open Civil 3D.\n\n" +
+                    "Current profile: " + Settings.ProfileName(now.Profile) + "\n\nTurn the C# channel on?",
+                    "Horizun - C# channel", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Warning,
                     System.Windows.MessageBoxResult.No);
                 if (answer != System.Windows.MessageBoxResult.Yes) return;
                 var on = CSharpChannel.Enable(path);
                 Log.Info("C# channel turned ON by the user (HZ_CSHARP)");
                 AcApp.ShowAlertDialog(CSharpChannel.IsOn(on)
-                    ? "Canal C# ENCENDIDO hasta que lo apagues o cierres Civil 3D."
-                    : "No se pudo encender el canal C#: " + on.Source);
+                    ? "C# channel ON until you turn it off or close Civil 3D."
+                    : "Could not turn the C# channel on: " + on.Source);
             }
         }
-        catch (System.Exception e) { AcApp.ShowAlertDialog("Canal C#: " + e.Message); }
+        catch (System.Exception e) { AcApp.ShowAlertDialog("C# channel: " + e.Message); }
         finally { Ribbon.Refresh(); }
     }
 
@@ -98,30 +98,30 @@ public sealed class AcadCommands
             {
                 var off = CSharpChannel.DisableFullWrite(path);
                 Log.Info("full write turned OFF by the user (HZ_FULLWRITE)");
-                AcApp.ShowAlertDialog("Escritura completa APAGADA.\n\nPerfil de permisos: " + Settings.ProfileName(off.Profile) +
-                                      (now.Profile == PermissionProfile.UnsafeCode ? "\nEl canal C# tambien quedo apagado." : ""));
+                AcApp.ShowAlertDialog("Full write OFF.\n\nPermission profile: " + Settings.ProfileName(off.Profile) +
+                                      (now.Profile == PermissionProfile.UnsafeCode ? "\nThe C# channel was turned off too." : ""));
             }
             else
             {
                 var answer = System.Windows.MessageBox.Show(
-                    "La escritura completa permite al asistente acciones que no se deshacen con un dry run simple:\n" +
-                    "borrar objetos, purgar, eliminar layouts, imprimir a PDF, borrar puntos, publicar accesos directos y guardar el dibujo.\n\n" +
-                    "Cada una sigue pidiendo dry run + confirmacion y se verifica, y cada cambio en el dibujo se deshace con UNDO, " +
-                    "pero los archivos escritos (PDF, guardado) quedan en disco.\n\n" +
-                    "El permiso se comparte con TODAS las instancias de Civil 3D de este usuario de Windows.\n" +
-                    "Se apaga al pulsar de nuevo el boton o automaticamente la proxima vez que abras Civil 3D.\n\n" +
-                    "Perfil actual: " + Settings.ProfileName(now.Profile) + "\n\nEncender la escritura completa?",
-                    "Horizun - Escritura completa", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Warning,
+                    "Full write allows the assistant to take actions that a simple dry run cannot undo:\n" +
+                    "erase objects, purge, delete layouts, plot to PDF, delete points, publish data shortcuts and save the drawing.\n\n" +
+                    "Each one still requires a dry run + confirmation and is verified, and every change to the drawing can be undone with UNDO, " +
+                    "but files that were written (PDF, save) stay on disk.\n\n" +
+                    "The permission is shared by ALL Civil 3D instances of this Windows user.\n" +
+                    "It turns off when you press the button again, or automatically the next time you open Civil 3D.\n\n" +
+                    "Current profile: " + Settings.ProfileName(now.Profile) + "\n\nTurn full write on?",
+                    "Horizun - Full write", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Warning,
                     System.Windows.MessageBoxResult.No);
                 if (answer != System.Windows.MessageBoxResult.Yes) return;
                 var on = CSharpChannel.EnableFullWrite(path);
                 Log.Info("full write turned ON by the user (HZ_FULLWRITE)");
                 AcApp.ShowAlertDialog(CSharpChannel.IsFullWriteOn(on)
-                    ? "Escritura completa ENCENDIDA hasta que la apagues o cierres Civil 3D."
-                    : "No se pudo encender: " + on.Source);
+                    ? "Full write ON until you turn it off or close Civil 3D."
+                    : "Could not turn it on: " + on.Source);
             }
         }
-        catch (System.Exception e) { AcApp.ShowAlertDialog("Escritura completa: " + e.Message); }
+        catch (System.Exception e) { AcApp.ShowAlertDialog("Full write: " + e.Message); }
         finally { Ribbon.Refresh(); }
     }
 
@@ -136,14 +136,14 @@ public sealed class AcadCommands
             var expected = Fixture.Build(doc);
             var s = (System.Text.Json.Nodes.JsonObject)expected["surfaces"]!;
             var vol = s["HZ_EG_FG_VOL"]!;
-            ed!.WriteMessage("\nHorizun: dibujo de ensayo creado (HZ_EG, HZ_FG, HZ_EG_FG_VOL, HZ_LOCKED, breakline y limite)." +
-                             "\n  Volumen esperado: corte " + Math.Round(vol["cut"]!.GetValue<double>(), 3) +
-                             " / relleno " + Math.Round(vol["fill"]!.GetValue<double>(), 3) + " m3." +
-                             "\n  Valores esperados: " + Path.Combine(HorizunPaths.FixturesDir(), "fixture-expected.json") +
-                             "\n  NO se guardo el dibujo. Ahora corre scripts/verify_live.py.");
+            ed!.WriteMessage("\nHorizun: test drawing created (HZ_EG, HZ_FG, HZ_EG_FG_VOL, HZ_LOCKED, breakline and boundary)." +
+                             "\n  Expected volume: cut " + Math.Round(vol["cut"]!.GetValue<double>(), 3) +
+                             " / fill " + Math.Round(vol["fill"]!.GetValue<double>(), 3) + " m3." +
+                             "\n  Expected values: " + Path.Combine(HorizunPaths.FixturesDir(), "fixture-expected.json") +
+                             "\n  The drawing was NOT saved. Now run scripts/verify_live.py.");
         }
         catch (HzRefusal e) { ed?.WriteMessage("\nHorizun: " + e.Message); }
-        catch (System.Exception e) { Log.Error("HZ_BUILD_FIXTURE", e); ed?.WriteMessage("\nHorizun: fallo al crear el dibujo de ensayo: " + e.Message); }
+        catch (System.Exception e) { Log.Error("HZ_BUILD_FIXTURE", e); ed?.WriteMessage("\nHorizun: could not create the test drawing: " + e.Message); }
     }
 
     [CommandMethod("HZ_PROBE", CommandFlags.Modal)]
@@ -153,13 +153,13 @@ public sealed class AcadCommands
         var asm = ApiProbe.FindAssembly("AeccDbMgd");
         if (asm == null)
         {
-            ed?.WriteMessage("\nHorizun: AeccDbMgd no esta cargado; no es Civil 3D.");
+            ed?.WriteMessage("\nHorizun: AeccDbMgd is not loaded; this is not Civil 3D.");
             return;
         }
         var text = ApiProbe.Dump(asm, ApiProbe.DefaultTypes);
         var desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
         var path = Path.Combine(desktop, "Horizun-C3D-probe-" + App.Year + "-" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".txt");
         File.WriteAllText(path, text);
-        ed?.WriteMessage("\nHorizun: firmas de la API volcadas en " + path);
+        ed?.WriteMessage("\nHorizun: API signatures dumped to " + path);
     }
 }

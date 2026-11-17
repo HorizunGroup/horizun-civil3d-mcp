@@ -3,7 +3,7 @@ using Horizun.Civil3D.Core;
 
 namespace Horizun.Civil3D.Core.Tests;
 
-/// <summary>The "Canal C#" switch: on/off, restore of the previous profile, end of session, never rewrites an invalid file.</summary>
+/// <summary>The "C# channel" switch: on/off, restore of the previous profile, end of session, never rewrites an invalid file.</summary>
 public class CSharpChannelTests : IDisposable
 {
     private readonly string _dir = Path.Combine(Path.GetTempPath(), "hz-csharp-" + Guid.NewGuid().ToString("N"));

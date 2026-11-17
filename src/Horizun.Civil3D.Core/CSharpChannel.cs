@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// Horizun Civil 3D MCP - the C# channel switch used by the "Canal C#" ribbon
+// Horizun Civil 3D MCP - the C# channel switch used by the "C# channel" ribbon
 // button / HZ_CSHARP command (owner request, 2026-10-02).
 //
 // Only a PERSON turns it on (ribbon button or typed command inside Civil 3D, with
@@ -65,7 +65,7 @@ public static class CSharpChannel
         return Settings.Load(path);
     }
 
-    // ---- "Escritura completa" switch (HZ_FULLWRITE): same session rules, one shared restore key ----
+    // ---- "Full write" switch (HZ_FULLWRITE): same session rules, one shared restore key ----
 
     public static bool IsFullWriteOn(Settings s) => !s.FailedClosed && !s.Paused && s.Profile >= PermissionProfile.FullWrite;
 

@@ -44,22 +44,22 @@ internal static class Ribbon
         if (tab.Panels.Any(p => p.Source?.Id == PanelId)) return;
 
         var source = new RibbonPanelSource { Title = "Horizun C3D MCP", Id = PanelId };
-        source.Items.Add(Button("Estado del puente", "HZ_STATUS", RibbonIcons.Glyph.Status,
-            "Estado del puente MCP de Horizun para Civil 3D: version, contrato, perfil de permisos, cola y dibujo activo."));
+        source.Items.Add(Button("Bridge status", "HZ_STATUS", RibbonIcons.Glyph.Status,
+            "Status of the Horizun MCP bridge for Civil 3D: version, contract, permission profile, queue and active drawing."));
         _channel = Button(ChannelText(), "HZ_CSHARP", RibbonIcons.Glyph.Channel,
-            "Enciende o apaga el canal C# (horizun_c3d_execute_csharp) con confirmacion. Se apaga solo al reiniciar Civil 3D.");
+            "Turns the C# channel (horizun_c3d_execute_csharp) on or off, with a confirmation. It turns itself off when Civil 3D restarts.");
         source.Items.Add(_channel);
         _fullWrite = Button(FullWriteText(), "HZ_FULLWRITE", RibbonIcons.Glyph.FullWrite,
-            "Sube el perfil a escritura completa (borrar, purgar, PDF, eliminar layouts, guardar) con confirmacion, o lo baja. Se apaga solo al reiniciar Civil 3D.");
+            "Raises the permission profile to full write (erase, purge, PDF, delete layouts, save) with a confirmation, or lowers it back. It turns itself off when Civil 3D restarts.");
         source.Items.Add(_fullWrite);
         tab.Panels.Add(new RibbonPanel { Source = source });
 #if HZ_DEVTOOLS
         // Developer panel: only in the development build (install.ps1 default); the release package omits it.
-        var dev = new RibbonPanelSource { Title = "Horizun C3D MCP - Desarrollo", Id = PanelId + "_DEV" };
-        dev.Items.Add(Button("Sondeo API", "HZ_PROBE", RibbonIcons.Glyph.Probe,
-            "Vuelca las firmas reales de la API de Civil 3D de esta version a un .txt en el Escritorio."));
-        dev.Items.Add(Button("Dibujo de ensayo", "HZ_BUILD_FIXTURE", RibbonIcons.Glyph.Fixture,
-            "Crea, en un dibujo NUEVO sin guardar, superficies con volumenes conocidos para verificar el MCP en vivo."));
+        var dev = new RibbonPanelSource { Title = "Horizun C3D MCP - Development", Id = PanelId + "_DEV" };
+        dev.Items.Add(Button("API probe", "HZ_PROBE", RibbonIcons.Glyph.Probe,
+            "Dumps the real Civil 3D API signatures of this version to a .txt file on the Desktop."));
+        dev.Items.Add(Button("Test drawing", "HZ_BUILD_FIXTURE", RibbonIcons.Glyph.Fixture,
+            "Creates surfaces with known volumes in a NEW, unsaved drawing, to verify the MCP live."));
         tab.Panels.Add(new RibbonPanel { Source = dev });
 #endif
     }
@@ -69,14 +69,14 @@ internal static class Ribbon
 
     private static string FullWriteText()
     {
-        try { return Horizun.Civil3D.Core.CSharpChannel.IsFullWriteOn(Horizun.Civil3D.Core.Settings.Load()) ? "Escritura completa\nencendida" : "Escritura completa\napagada"; }
-        catch { return "Escritura completa"; }
+        try { return Horizun.Civil3D.Core.CSharpChannel.IsFullWriteOn(Horizun.Civil3D.Core.Settings.Load()) ? "Full write\non" : "Full write\noff"; }
+        catch { return "Full write"; }
     }
 
     private static string ChannelText()
     {
-        try { return Horizun.Civil3D.Core.CSharpChannel.IsOn(Horizun.Civil3D.Core.Settings.Load()) ? "Canal C#\nencendido" : "Canal C#\napagado"; }
-        catch { return "Canal C#"; }
+        try { return Horizun.Civil3D.Core.CSharpChannel.IsOn(Horizun.Civil3D.Core.Settings.Load()) ? "C# channel\non" : "C# channel\noff"; }
+        catch { return "C# channel"; }
     }
 
     /// <summary>Show the channel state on its button (after HZ_CSHARP).</summary>

@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- The Civil 3D user interface is now in English: the Horizun Hub ribbon labels and tooltips ("Bridge status", "C# channel", "Full write", and the development panel's "API probe" and "Test drawing"), the `HZ_STATUS`, `HZ_CSHARP`, `HZ_FULLWRITE`, `HZ_BUILD_FIXTURE` and `HZ_PROBE` dialogs and command-line messages, and the fixture refusals. The edition reads `development` / `release`. Command names, tool names and behaviour are unchanged.
+- The release package's readme is `README.txt` (was `LEEME.txt`).
+
 ## 0.9.7 - 2026-11-03
 
 - Fix the 0.9.6 field failure "This package has no build matching any installed Civil 3D" on Civil 3D 2025: package-mode install required the client's Autodesk assembly versions to equal the build PC's update (2025 `AeccDbMgd 13.7.0.1402`). The installer now asks the server (`--check-host`, `HostInspection.Match`): same year, runtime and frameworks, same release, installed build equal or newer.

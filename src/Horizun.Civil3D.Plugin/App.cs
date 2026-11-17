@@ -31,9 +31,9 @@ public sealed class App : IExtensionApplication
 
     public static string Edition =>
 #if HZ_DEVTOOLS
-        "desarrollo";
+        "development";
 #else
-        "uso";
+        "release";
 #endif
 
     public static int Year { get; } = ReadYear();

@@ -102,8 +102,8 @@ on your machine and you do not need the source or the .NET SDK.
 powershell -ExecutionPolicy Bypass -File .\install.ps1 -RegisterClaudeDesktop -RegisterTrustedPath
 ```
 
-3. Restart Claude Desktop and open Civil 3D. The **Horizun Hub** ribbon tab shows "Estado del puente", plus the two
-   owner switches: **Canal C#** and **Escritura completa**. Both ask for confirmation and turn themselves off the
+3. Restart Claude Desktop and open Civil 3D. The **Horizun Hub** ribbon tab shows "Bridge status", plus the two
+   owner switches: **C# channel** and **Full write**. Both ask for confirmation and turn themselves off the
    next time Civil 3D starts.
 
 Every installed file is checked against the package (SHA-256), and a failed install rolls back.
@@ -126,7 +126,7 @@ for those years remains pending.** See [COMPATIBILITY.md](docs/COMPATIBILITY.md)
 - Branches: `develop` is where work happens; `main` only receives tested versions, and every version on `main` is
   tagged and published as a Release.
 - `pwsh scripts/install.ps1 -RegisterClaudeDesktop` builds from source and installs the **development edition**. It
-  adds a "Desarrollo" ribbon panel with **Sondeo API** and **Dibujo de ensayo** (the deterministic test drawing that
+  adds a "Development" ribbon panel with **API probe** and **Test drawing** (the deterministic test drawing that
   `scripts/verify_live.py` checks against).
 - `pwsh scripts/install.ps1 -Edition release -PackageOut horizun-civil3d-mcp-<version>.zip` builds the **release
   edition** (no developer panel) as an installable zip for a GitHub Release.
